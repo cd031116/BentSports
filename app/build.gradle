@@ -33,4 +33,5 @@ dependencies {
     compile 'com.amap.api:navi-3dmap:latest.integration'
     compile 'com.amap.api:location:latest.integration'
     testCompile 'junit:junit:4.12'
+
 }
