@@ -5,7 +5,7 @@
     android:clipToPadding="true"
     android:fitsSystemWindows="true">
 
-    <com.amap.api.navi.AMapNaviView
+    <com.amap.api.maps.MapView
         android:id="@+id/navi_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
