@@ -35,7 +35,7 @@ public class GuideActivity extends BaseActivity {
     @Override
     public void initView() {
         aMap=mAMapNavi.getMap();
-        aMap.setCustomMapStylePath("style.data");
+        aMap.setCustomMapStylePath("ass/style.data");
     }
 
     @Override
