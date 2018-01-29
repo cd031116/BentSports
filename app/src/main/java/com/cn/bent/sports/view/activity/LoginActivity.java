@@ -1,4 +1,4 @@
-package com.cn.bent.sports.view;
+package com.cn.bent.sports.view.activity;
 
 import android.os.Bundle;
 
