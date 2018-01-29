@@ -35,11 +35,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.LoginActivity" />
+        <activity android:name=".view.activity.LoginActivity" />
 
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="您的Key" />
+            android:value="cb572134e6d1d4d7fb9ffa7346dc8ccb" />
 
         <activity android:name=".view.activity.GuideActivity"></activity>
     </application>

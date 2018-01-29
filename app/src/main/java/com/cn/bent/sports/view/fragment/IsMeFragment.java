@@ -1,10 +1,12 @@
 package com.cn.bent.sports.view.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseFragment;
+import com.cn.bent.sports.view.activity.GuideActivity;
 
 import butterknife.OnClick;
 
@@ -42,7 +44,7 @@ public class IsMeFragment extends BaseFragment{
     void conlick(View view){
         switch (view.getId()){
             case R.id.setting:
-
+            startActivity(new Intent(getActivity(), GuideActivity.class));
                 break;
         }
     }

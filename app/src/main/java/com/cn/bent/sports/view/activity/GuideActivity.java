@@ -3,6 +3,7 @@ package com.cn.bent.sports.view.activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.amap.api.maps.AMap;
 import com.amap.api.navi.AMapHudViewListener;
 import com.amap.api.navi.AMapNavi;
 import com.amap.api.navi.AMapNaviListener;
@@ -18,6 +19,7 @@ import butterknife.Bind;
 public class GuideActivity extends BaseActivity {
     @Bind(R.id.navi_view)
     AMapNaviView mAMapNavi;
+    AMap aMap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +34,8 @@ public class GuideActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        super.initView();
+        aMap=mAMapNavi.getMap();
+        aMap.setCustomMapStylePath("style.data");
     }
 
     @Override
