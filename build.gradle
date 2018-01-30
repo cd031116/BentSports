@@ -21,3 +21,20 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+ext {
+    // android build info
+    android = [
+            compileSdkVersion: 25,
+            buildToolsVersion: "25.0.0",
+            minSdkVersion    : 16,
+            targetSdkVersion : 25,
+            applicationId    : "com.cn.bent.sports",
+            versionCode      : 1,
+            versionName      : "1.0.0"
+    ]
+
+    // support lib version
+    supportLibVersion = "25.0.0"
+    okhttpLibVersion = "2.6.0"
+    fastjsonLibVersion = "1.2.6"
+}

@@ -55,18 +55,15 @@ public class GuideActivity extends BaseActivity {
     @Override
     public void onResume() {
         super.onResume();
-//        mAMapNavi.onResume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-//        mAMapNavi.onPause();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-//        mAMapNavi.onDestroy();
     }
 }

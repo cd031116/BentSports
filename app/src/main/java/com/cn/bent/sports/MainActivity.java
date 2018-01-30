@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cn.bent.sports.base.BaseActivity;
+import com.cn.bent.sports.view.fragment.DoTaskFragment;
 import com.cn.bent.sports.view.fragment.IsMeFragment;
 import com.cn.bent.sports.view.fragment.MainTabFragment;
 
@@ -71,7 +72,7 @@ public class MainActivity extends BaseActivity {
                         mCurrentFragment = MainTabFragment.newInstance(0);
                         break;
                     case 1:
-                        mCurrentFragment =MainTabFragment.newInstance(0);//子Fragment实例
+                        mCurrentFragment = DoTaskFragment.newInstance();//子Fragment实例
                         break;
                     case 2:
                         mCurrentFragment = IsMeFragment.newInstance();

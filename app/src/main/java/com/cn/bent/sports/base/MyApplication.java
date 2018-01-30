@@ -6,11 +6,15 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Vibrator;
 
+import com.cn.bent.sports.database.TaskCationManager;
+
+import org.aisen.android.common.context.GlobalContext;
+
 /**
  * Created by lyj on 17/8/2.
  */
 
-public class MyApplication extends Application {
+public class MyApplication extends GlobalContext {
     public static MyApplication instance;
     private ActivityManagerd activityManager = null;
     @Override
@@ -18,7 +22,7 @@ public class MyApplication extends Application {
         super.onCreate();
         instance = this;
         activityManager = ActivityManagerd.getScreenManager();
-
+        TaskCationManager.setup(this);
     }
     public ActivityManagerd getActivityManager(){
         return activityManager;
