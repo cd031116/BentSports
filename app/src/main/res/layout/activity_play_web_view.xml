@@ -54,7 +54,6 @@
             android:paddingRight="12dp"
             android:paddingTop="5dp" >
 
-
             <TextView
                 android:id="@+id/top_right_text"
                 android:layout_width="wrap_content"
