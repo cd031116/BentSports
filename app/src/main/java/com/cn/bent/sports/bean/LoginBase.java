@@ -8,19 +8,19 @@ import java.io.Serializable;
  */
 
 public class LoginBase implements Serializable {
-         private String id;
+         private String member_id;
     private String mobile;
     private String nickname;
     private String headimg;
     private String add_time;
     private String score;
 
-    public String getId() {
-        return id;
+    public String getMember_id() {
+        return member_id;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setMember_id(String member_id) {
+        this.member_id = member_id;
     }
 
     public String getMobile() {

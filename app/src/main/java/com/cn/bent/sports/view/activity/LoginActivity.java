@@ -41,7 +41,7 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        timerCount = new TimerCount(60000, 1000, t_code);
+
     }
 
 
@@ -53,6 +53,7 @@ public class LoginActivity extends BaseActivity {
     @Override
     public void initView() {
         super.initView();
+        timerCount = new TimerCount(60000, 1000, t_code);
         commit_btn.setEnabled(false);
         edit_photo.addTextChangedListener(new TextWatcher() {
             @Override
@@ -62,17 +63,19 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                if (s.length() == 11) {
+                    t_code.setSelected(true);
+                }else {
+                    t_code.setSelected(false);
+                }
             }
 
             @Override
             public void afterTextChanged(Editable s) {
                 if(s.toString().length()>0){
                     isPhone=true;
-                    t_code.setSelected(true);
                 }else {
                     isPhone=false;
-                    t_code.setSelected(false);
                 }
                 changeview();
             }
@@ -105,7 +108,6 @@ public class LoginActivity extends BaseActivity {
     @Override
     public void initData() {
         super.initData();
-
 
     }
 
@@ -140,12 +142,12 @@ public class LoginActivity extends BaseActivity {
                 .subscribe(new RxObserver<HuiquTBResult>(LoginActivity.this, "getcode", 1, false) {
                     @Override
                     public void onSuccess(int whichRequest, HuiquTBResult result) {
-                        if ("1".equals(result.getCode())) {
-                            timerCount.start();
-                        }else{
+                        if (!"1".equals(result.getCode())) {
                             ToastUtils.showShortToast(LoginActivity.this, "" + result.getMsg());
-                        }
+                        }else{
 
+                        }
+                        timerCount.start();
                     }
 
                     @Override
