@@ -1,19 +1,18 @@
 package com.cn.bent.sports.base;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.support.multidex.MultiDex;
 
 import com.cn.bent.sports.database.TaskCationManager;
 
-import org.aisen.android.common.context.GlobalContext;
 
 /**
  * Created by lyj on 17/8/2.
  */
 
-public class MyApplication extends GlobalContext{
+public class MyApplication extends Application{
     public static MyApplication instance;
     private ActivityManagerd activityManager = null;
 
@@ -55,7 +54,6 @@ public class MyApplication extends GlobalContext{
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-        MultiDex.install(this);
     }
 
     @Override
