@@ -257,8 +257,6 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                             .get(0);
 
 
-
-
                 } else if (result != null && result.getPaths() == null) {
                     ToastUtils.showShortToast(getActivity(), "无结果");
                 }
@@ -269,6 +267,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
             ToastUtils.showShortToast(getActivity(), "无结果");
         }
     }
+
     @Override
     public void onRideRouteSearched(RideRouteResult rideRouteResult, int errorCode) {
 

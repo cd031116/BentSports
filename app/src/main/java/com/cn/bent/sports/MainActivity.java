@@ -94,7 +94,7 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.text1,R.id.iamage1,R.id.iamage2,R.id.text_2,R.id.image_me, R.id.is_me})
+    @OnClick({R.id.text1,R.id.iamage1,R.id.iamage2,R.id.image_me, R.id.is_me})
     void onclick(View v) {
         switch (v.getId()) {
             case R.id.iamage1:
@@ -106,7 +106,6 @@ public class MainActivity extends BaseActivity {
                 switchContent(selected);
                 break;
             case R.id.iamage2:
-            case R.id.text_2:
                 if (selected == 1) {
                     break;
                 }
