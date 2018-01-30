@@ -1,12 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
 
+        <ImageView
+            android:id="@+id/bg_img"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/paiming_img" />
 
+        <ImageView
+            android:id="@+id/head_1"
+            android:layout_width="224px"
+            android:layout_height="224px"
+            android:layout_marginTop="207px"
+            android:layout_marginLeft="425px"
+            android:background="@drawable/jifen_huang" />
 
+        <ImageView
+            android:id="@+id/head_3"
+            android:layout_width="224px"
+            android:layout_height="224px"
+            android:layout_marginTop="437px"
+            android:layout_marginLeft="769px"
+            android:background="@drawable/jifen_huang" />
 
+        <ImageView
+            android:id="@+id/head_2"
+            android:layout_width="224px"
+            android:layout_height="224px"
+            android:layout_marginLeft="105px"
+            android:layout_marginTop="351px"
+            android:background="@drawable/jifen_huang" />
 
-
-
-</LinearLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/range_list"
+        android:layout_below="@id/bg_img"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</RelativeLayout>

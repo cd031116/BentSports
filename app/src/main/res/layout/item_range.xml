@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="174px">
+
+    <TextView
+        android:id="@+id/range_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="60px"
+        android:textColor="#aaaaaa"
+        android:layout_centerVertical="true"
+        android:textSize="46px" />
+    <ImageView
+        android:id="@+id/img_head"
+        android:layout_width="114px"
+        android:layout_height="114px"
+        android:layout_toRightOf="@id/range_num"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="28px"/>
+
+    <TextView
+        android:id="@+id/range_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="28px"
+        android:layout_toRightOf="@id/img_head"
+        android:textColor="#333333"
+        android:layout_centerVertical="true"
+        android:textSize="43px" />
+
+    <TextView
+        android:id="@+id/range_jifen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:paddingRight="42px"
+        android:textColor="#000000"
+        android:textSize="43px" />
+
+    <ImageView
+        android:id="@+id/img_jifen"
+        android:layout_width="63px"
+        android:layout_height="63px"
+        android:layout_toLeftOf="@id/range_jifen"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="32px"/>
+
+</RelativeLayout>

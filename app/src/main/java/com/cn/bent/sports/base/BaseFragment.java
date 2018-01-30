@@ -44,10 +44,10 @@ public abstract class BaseFragment extends Fragment {
             , Bundle savedInstanceState) {
         View view = LayoutInflater.from(mActivity)
                 .inflate(getLayoutId(), container, false);
+        ButterKnife.bind(this,view);
         initView(view, savedInstanceState);
         SupportMultipleScreensUtil.init(mActivity);
         SupportMultipleScreensUtil.scale(view);
-        ButterKnife.bind(this,view);
         return view;
     }
 
