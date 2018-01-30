@@ -31,7 +31,7 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("outdoor/user/getCheckCode")
     Observable<HuiquTBResult> getcode(
-            @Field("phone") String phone);
+            @Field("mobile") String phone);
 
     /**
      * 新闻评论
