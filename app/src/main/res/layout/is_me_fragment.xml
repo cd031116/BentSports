@@ -19,23 +19,26 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/bg_person"
                 android:gravity="center_vertical"
-                android:orientation="horizontal"
                 android:padding="43px">
 
                 <ImageView
                     android:id="@+id/user_photo"
-                    android:layout_width="200px"
-                    android:layout_height="200px"
+                    android:layout_width="208px"
+                    android:layout_height="208px"
+                    android:background="@drawable/default_head"
                     android:layout_centerVertical="true" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="43px"
+                    android:layout_marginLeft="40px"
                     android:layout_toRightOf="@+id/user_photo"
-                    android:text="很多钱" />
+                    android:text="很多钱"
+                    android:textColor="#df4d4d"
+                    android:textSize="48px" />
 
 
                 <ImageView
@@ -44,54 +47,64 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="43px"
-                    android:background="@mipmap/ic_launcher"/>
+                    android:layout_marginRight="51px"
+                    android:background="@drawable/shezhi" />
 
             </RelativeLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#ffffff"
-                android:orientation="vertical"
-                android:padding="43px">
+                android:background="#ffffff">
 
-                <TextView
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="54px"
+                    android:paddingLeft="120px"
+                    android:paddingTop="66px">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="当前积分"
+                        android:textColor="#333333"
+                        android:textSize="43px" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10px"
+                        android:text="1200"
+                        android:textColor="#ffa700"
+                        android:textSize="129px" />
+
+                </LinearLayout>
+
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="43px"
-                    android:text="当前积分"
-                    android:textColor="#333333"
-                    android:textSize="43px" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10px"
-                    android:paddingLeft="43px"
-                    android:text="1200"
-                    android:textSize="70px" />
-
-            </LinearLayout>
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/jifentu" />
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/scan"
                 android:layout_width="match_parent"
                 android:layout_height="144px"
-                android:layout_marginTop="10px"
+                android:layout_marginTop="28px"
                 android:background="#ffffff"
                 android:gravity="center"
                 android:paddingLeft="43px"
                 android:text="收集到的卡片"
-                android:textColor="#333333"
+                android:textColor="#df4d4d"
                 android:textSize="43px" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/card_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#ffffff"
-                android:padding="43px" />
+            <include layout="@layout/card_layout"/>
+
+
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </LinearLayout>

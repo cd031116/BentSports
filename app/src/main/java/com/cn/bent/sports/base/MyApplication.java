@@ -14,7 +14,7 @@ import org.aisen.android.common.context.GlobalContext;
  * Created by lyj on 17/8/2.
  */
 
-public class MyApplication extends GlobalContext {
+public class MyApplication extends Application {
     public static MyApplication instance;
     private ActivityManagerd activityManager = null;
     @Override
