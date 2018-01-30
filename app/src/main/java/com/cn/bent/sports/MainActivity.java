@@ -43,6 +43,7 @@ public class MainActivity extends BaseActivity {
     @Override
     public void initView() {
         super.initView();
+        switchContent(1);
     }
 
     @Override
