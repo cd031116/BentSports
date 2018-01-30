@@ -271,4 +271,4 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     @Override
     public void onRideRouteSearched(RideRouteResult rideRouteResult, int errorCode) {
 
-    }
+    }}
