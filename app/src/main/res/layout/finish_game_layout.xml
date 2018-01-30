@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffd266"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/card_img"
+        android:layout_width="217px"
+        android:layout_height="217px"
+        android:layout_marginTop="500px" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="任务完成，获得卡片"
+        android:textColor="#ffffff"
+        android:textSize="51px" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30px"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+"
+            android:textColor="#de4852"
+            android:textSize="51px" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="36px"
+            android:background="@drawable/jifen" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16px"
+            android:text="100"
+            android:textColor="#de4852"
+            android:textSize="51px" />
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/go_ahead"
+        android:layout_width="720px"
+        android:layout_height="142px"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="150px"
+        android:background="@drawable/commit_bg"
+        android:gravity="center"
+        android:text="继续"
+        android:textColor="#ffffff"
+        android:textSize="51px" />
+</LinearLayout>

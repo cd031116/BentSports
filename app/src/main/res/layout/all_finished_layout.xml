@@ -1,7 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ffd266"
     android:orientation="vertical">
 
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/img_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/tonggdtu"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="320px"
+            android:text="通关达成"
+            android:textColor="#de4852"
+            android:textSize="115px"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="27px"
+            android:text="通关时间 01:59:59"
+            android:textColor="#ffffff"
+            android:textSize="57px"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/game_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="282px"
+        android:layout_marginRight="282px"
+        android:layout_marginTop="670px" />
+
+    <LinearLayout
+        android:id="@+id/all_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/game_list"
+        android:layout_marginLeft="254px"
+        android:layout_marginTop="90px">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="合计"
+            android:textColor="#de4852"
+            android:textSize="51px" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="280px"
+            android:background="@drawable/jifen" />
+
+        <TextView
+            android:id="@+id/all_jifen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="20px"
+            android:text="200"
+            android:textColor="#de4852"
+            android:textSize="51px" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/look_range"
+        android:layout_width="720px"
+        android:layout_height="142px"
+        android:layout_below="@id/all_layout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="150px"
+        android:background="@drawable/commit_bg"
+        android:gravity="center"
+        android:text="去看排行"
+        android:textColor="#ffffff"
+        android:textSize="51px" />
+</RelativeLayout>
