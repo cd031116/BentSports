@@ -96,5 +96,6 @@
         android:layout_height="210px"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10px"
         android:background="@drawable/go_bg" />
 </RelativeLayout>

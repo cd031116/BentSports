@@ -86,7 +86,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                 } else {
                     isLocal = false;
                     //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
-                    ToastUtils.showShortToast(getActivity(), "获取位置信息失败!");
+//                    ToastUtils.showShortToast(getActivity(), "获取位置信息失败!");
                 }
             }
         }
