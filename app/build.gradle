@@ -32,10 +32,12 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile "com.android.support:design:${rootProject.ext.supportLibVersion}"
     compile project(':network')
     compile project(':library-release')
+    compile "com.alibaba:fastjson:${rootProject.ext.fastjsonLibVersion}"
+    compile "com.android.support:design:${rootProject.ext.supportLibVersion}"
     compile "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
+    compile "com.squareup.okhttp:okhttp:${rootProject.ext.okhttpLibVersion}"
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.github.bumptech.glide:glide:4.0.0'

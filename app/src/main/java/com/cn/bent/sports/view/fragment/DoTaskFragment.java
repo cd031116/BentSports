@@ -80,7 +80,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                         isFirstLoc = false;
                         latitude = String.valueOf(aMapLocation.getLatitude());
                         longitude = String.valueOf(aMapLocation.getLongitude());
-                        mStartPoint=new LatLonPoint(aMapLocation.getLatitude(),aMapLocation.getLongitude());
+                        mStartPoint = new LatLonPoint(aMapLocation.getLatitude(), aMapLocation.getLongitude());
                         addLocaToMap();
                     }
                 } else {
@@ -156,7 +156,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                 markerOption.icon(
                         BitmapDescriptorFactory.fromBitmap(BitmapFactory
                                 .decodeResource(getResources(),
-                                        R.drawable.progress_anim)));
+                                        R.drawable.zuobiao)));
                 markerOption.setFlat(true);
                 markerOptionlst.add(markerOption);
                 aMap.addMarker(markerOption);
@@ -174,11 +174,11 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
             return;
         }
         LatLng latlng = new LatLng(Double.valueOf(latitude), Double.valueOf(longitude));
-//        Marker marker = aMap.addMarker(new MarkerOptions()
-//                .position(latlng)
-//                .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
-//                        .decodeResource(getResources(), R.drawable.poi_marker_pressed)))
-//                .draggable(true));
+        Marker marker = aMap.addMarker(new MarkerOptions()
+                .position(latlng)
+                .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
+                        .decodeResource(getResources(), R.drawable.dangqwz)))
+                .draggable(true));
         aMap.moveCamera(CameraUpdateFactory.changeLatLng(latlng));
         aMap.moveCamera(CameraUpdateFactory.zoomTo(17));
         aMap.setMyLocationEnabled(true);

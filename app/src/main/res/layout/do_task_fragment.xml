@@ -13,11 +13,67 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
+        <LinearLayout
+            android:id="@+id/jifen_line"
             android:layout_width="273px"
             android:layout_height="114px"
-            android:background="@drawable/jifendi"/>
+            android:layout_marginTop="20px"
+            android:gravity="center"
+            android:background="@drawable/jifendi"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:drawablePadding="20px"
+                android:drawableLeft="@drawable/go_huang"
+                android:text="O"
+                android:textSize="43px"
+                android:textColor="#ffffff"
+               />
+        </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/time_d"
+            android:layout_width="273px"
+            android:layout_height="114px"
+            android:layout_below="@+id/jifen_line"
+            android:layout_marginTop="40px"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:background="@drawable/shijiandi"
+            >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="@drawable/shijian"
+                />
+            <com.cn.bent.sports.widget.RushBuyCountDownTimerView
+                android:id="@+id/cut_down"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20px"/>
+
+        </LinearLayout>
+
+
+        <ImageView
+            android:id="@+id/shuoming"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="30px"
+            android:background="@drawable/shuoming"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/shuoming"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="42px"
+            android:background="@drawable/quanjintu"/>
 
 
     </RelativeLayout>
