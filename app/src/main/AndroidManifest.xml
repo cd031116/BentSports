@@ -17,6 +17,12 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <!-- 这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="true"/>
 
     <application
         android:name=".base.MyApplication"
@@ -40,6 +46,15 @@
             android:value="cb572134e6d1d4d7fb9ffa7346dc8ccb" />
 
         <activity android:name=".view.activity.GuideActivity"></activity>
+        <activity android:name=".ibeacon.ScanActivity"></activity>
+
+
+        <service android:name="com.minew.beacon.ScanService"/>
+        <receiver android:name="com.minew.beacon.BluetoothChangedReceiver">
+            <intent-filter>
+                <action android:name="android.bluetooth.adapter.action.STATE_CHANGED"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseFragment;
+import com.cn.bent.sports.ibeacon.ScanActivity;
 import com.cn.bent.sports.view.activity.GuideActivity;
 
 import butterknife.OnClick;
@@ -40,11 +41,14 @@ public class IsMeFragment extends BaseFragment{
     }
 
 
-    @OnClick({R.id.setting})
+    @OnClick({R.id.setting,R.id.scan})
     void conlick(View view){
         switch (view.getId()){
             case R.id.setting:
             startActivity(new Intent(getActivity(), GuideActivity.class));
+                break;
+            case R.id.scan:
+                startActivity(new Intent(getActivity(), ScanActivity.class));
                 break;
         }
     }
