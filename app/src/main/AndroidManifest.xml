@@ -57,7 +57,8 @@
         </receiver>
 
         <activity android:name=".view.activity.SettingActivity" />
-        <activity android:name=".view.activity.ChangeNameActivity"></activity>
+        <activity android:name=".view.activity.ChangeNameActivity" />
+        <activity android:name=".view.activity.PlayWebViewActivity"></activity>
     </application>
 
 </manifest>
