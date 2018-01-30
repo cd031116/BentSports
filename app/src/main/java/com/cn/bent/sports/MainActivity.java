@@ -23,7 +23,7 @@ import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity {
     @Bind({R.id.iamage1, R.id.iamage2, R.id.image_me})
-    List<ImageView> mTabs;
+    List<ImageButton> mTabs;
     @Bind({R.id.text1, R.id.text_2, R.id.is_me})
     List<TextView> mText;
     int selected = 0;
