@@ -37,6 +37,7 @@
             android:background="@drawable/jifen_huang" />
     <android.support.v7.widget.RecyclerView
         android:id="@+id/range_list"
+        android:layout_below="@id/bg_img"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 </RelativeLayout>

@@ -93,11 +93,12 @@
             <TextView
                 android:id="@+id/scan"
                 android:layout_width="match_parent"
-                android:layout_height="144px"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="28px"
                 android:background="#ffffff"
                 android:gravity="center"
-                android:paddingLeft="43px"
+                android:paddingTop="60px"
+                android:paddingBottom="96px"
                 android:text="收集到的卡片"
                 android:textColor="#df4d4d"
                 android:textSize="43px" />

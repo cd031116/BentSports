@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Vibrator;
+import android.support.multidex.MultiDex;
 
 import com.cn.bent.sports.database.TaskCationManager;
 
@@ -17,21 +18,22 @@ import org.aisen.android.common.context.GlobalContext;
 public class MyApplication extends Application {
     public static MyApplication instance;
     private ActivityManagerd activityManager = null;
+
     @Override
-    public void onCreate(){
+    public void onCreate() {
         super.onCreate();
         instance = this;
         activityManager = ActivityManagerd.getScreenManager();
         TaskCationManager.setup(this);
     }
-    public ActivityManagerd getActivityManager(){
+
+    public ActivityManagerd getActivityManager() {
         return activityManager;
     }
 
-    public static MyApplication getInstance(){
+    public static MyApplication getInstance() {
         return instance;
     }
-
 
     /**
      * d
@@ -53,8 +55,9 @@ public class MyApplication extends Application {
 
 
     @Override
-    protected void attachBaseContext(Context base){
+    protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 
     @Override
