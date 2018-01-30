@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ededed"
+    android:orientation="vertical"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true"
+    tools:context="com.cn.bent.sports.view.activity.SettingActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="120px"
+        android:background="#ffffff">
+
+        <LinearLayout
+            android:id="@+id/top_left"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="left|center_vertical"
+            android:layout_alignParentLeft="true"
+            android:clickable="true"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="20dp"
+            android:paddingTop="5dp"
+            android:visibility="visible" >
+
+            <ImageView
+                android:id="@+id/top_image"
+                android:layout_width="wrap_content"
+                android:layout_height="60px"
+                android:clickable="false"
+                android:src="@drawable/fanhui_hong"
+                android:contentDescription="@string/app_name" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/top_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1.0"
+            android:gravity="center"
+            android:textColor="#df4d4d"
+            android:textSize="51px"
+            android:text="设置"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+    </RelativeLayout>
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="270px"
+        android:gravity="center_vertical"
+        android:layout_marginTop="28px"
+        android:background="#ffffff"
+        android:padding="43px">
+
+        <ImageView
+            android:id="@+id/user_photo"
+            android:layout_width="170px"
+            android:layout_height="170px"
+            android:background="@drawable/default_head"
+            android:layout_centerVertical="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="40px"
+            android:layout_alignParentRight="true"
+            android:drawablePadding="28px"
+            android:drawableRight="@drawable/jinru_hui"
+            android:text="更换图像"
+            android:textColor="#aaaaaa"
+            android:textSize="43px" />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/ni_ceng"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_marginTop="1px"
+        android:background="#ffffff"
+        android:padding="43px">
+
+        <TextView
+            android:id="@+id/name_t"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="钱非常多"
+            android:textSize="43px"
+            android:textColor="#333333"
+            android:layout_centerVertical="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="40px"
+            android:layout_alignParentRight="true"
+            android:drawablePadding="28px"
+            android:drawableRight="@drawable/jinru_hui"
+            android:text="修改昵称"
+            android:textColor="#aaaaaa"
+            android:textSize="43px" />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_marginTop="1px"
+        android:background="#ffffff"
+        android:padding="43px">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="手机号"
+            android:textSize="43px"
+            android:textColor="#333333"
+            android:layout_centerVertical="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="40px"
+            android:layout_alignParentRight="true"
+            android:text="13666666666"
+            android:textColor="#333333"
+            android:textSize="43px" />
+
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/login"
+        android:layout_width="936px"
+        android:layout_height="142px"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="200px"
+        android:background="@drawable/setting_bg"
+        android:gravity="center"
+        android:padding="30px"
+        android:text="退出登录"
+        android:textColor="#ffffff"
+        android:textSize="51px"/>
+
+
+
+
+
+</LinearLayout>
