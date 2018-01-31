@@ -13,10 +13,15 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.cn.bent.sports.R;
+import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseFragment;
 import com.cn.bent.sports.bean.RangeEntity;
+import com.cn.bent.sports.bean.RankEntity;
 import com.cn.bent.sports.recyclebase.CommonAdapter;
 import com.cn.bent.sports.recyclebase.ViewHolder;
+import com.zhl.network.RxObserver;
+import com.zhl.network.RxSchedulers;
+import com.zhl.network.huiqu.HuiquRxFunction;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -51,29 +56,19 @@ public class MainTabFragment extends BaseFragment {
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
         range_list.setLayoutManager(new LinearLayoutManager(getActivity()));
-        setRecyclerView();
     }
 
-    private void setRecyclerView() {
-        List<RangeEntity> list = new ArrayList<>();
-        RangeEntity rangeEntity = new RangeEntity();
-        rangeEntity.setName("sss");
-        rangeEntity.setJifen("1234");
-        rangeEntity.setNum("2");
-        rangeEntity.setHead_img("http://pic4.40017.cn/scenery/destination/2016/08/15/14/3aPCtM_740x350_00.jpg");
-        list.add(rangeEntity);
-        list.add(rangeEntity);
-        list.add(rangeEntity);
-        list.add(rangeEntity);
-        CommonAdapter<RangeEntity> mAdapter = new CommonAdapter<RangeEntity>(getActivity(), R.layout.item_range, list) {
+    private void setRecyclerView(List<RankEntity.RankListBean> rankListBeen) {
+
+        CommonAdapter<RankEntity.RankListBean> mAdapter = new CommonAdapter<RankEntity.RankListBean>(getActivity(), R.layout.item_range, rankListBeen) {
             @Override
-            protected void convert(ViewHolder holder, RangeEntity rangeEntity, int position) {
-                holder.setText(R.id.range_num, rangeEntity.getNum());
-                holder.setText(R.id.range_name, rangeEntity.getName());
-                holder.setText(R.id.range_jifen, rangeEntity.getJifen());
+            protected void convert(ViewHolder holder, RankEntity.RankListBean rangeEntity, int position) {
+                holder.setText(R.id.range_num, position + "");
+                holder.setText(R.id.range_name, rangeEntity.getNickname());
+                holder.setText(R.id.range_jifen, rangeEntity.getScore() + "");
                 ImageView NormalInfoImg = (ImageView) holder.getView(R.id.img_head);
                 RequestOptions requestOptions = RequestOptions.circleCropTransform();
-                Glide.with(NormalInfoImg.getContext()).load(rangeEntity.getHead_img())
+                Glide.with(NormalInfoImg.getContext()).load(rangeEntity.getHeadimg())
                         .apply(requestOptions)
                         .into(NormalInfoImg);
             }
@@ -83,6 +78,23 @@ public class MainTabFragment extends BaseFragment {
 
     @Override
     protected void initData() {
+
+        BaseApi.getDefaultService(getActivity()).getRankList()
+                .map(new HuiquRxFunction<RankEntity>())
+                .compose(RxSchedulers.<RankEntity>io_main())
+                .subscribe(new RxObserver<RankEntity>(getActivity(), "getRankList", 1, false) {
+                    @Override
+                    public void onSuccess(int whichRequest, RankEntity rankEntity) {
+                        if (rankEntity != null && rankEntity.getRankList() != null && rankEntity.getRankList().size() > 0)
+                            setRecyclerView(rankEntity.getRankList());
+                    }
+
+                    @Override
+                    public void onError(int whichRequest, Throwable e) {
+
+                    }
+                });
+
         Log.e("dasa", "initData: " + Environment.getExternalStorageDirectory().toString() + "/style.data");
         copyFilesFromAssets(getActivity(), "1.txt", Environment.getExternalStorageDirectory().toString() + "/style");
     }

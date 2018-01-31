@@ -2,6 +2,7 @@ package com.cn.bent.sports.api;
 
 
 import com.cn.bent.sports.bean.LoginBase;
+import com.cn.bent.sports.bean.RankEntity;
 import com.zhl.network.huiqu.HuiquResult;
 import com.zhl.network.huiqu.HuiquTBResult;
 
@@ -44,4 +45,6 @@ public interface ApiService {
             @Field("mobile") String mobile,
             @Field("code") String code);
 
+    @GET("outdoor/user/ranklist")
+    Observable<HuiquResult<RankEntity>> getRankList();
 }
