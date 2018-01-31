@@ -1,5 +1,10 @@
 package com.cn.bent.sports.utils;
 
+import android.os.Environment;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -43,5 +48,19 @@ public class DataUtils {
         Date date = new Date(milSecond);
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
         return format.format(date);
+    }
+
+    public static void writeToLocal(InputStream input)
+            throws IOException {
+        String path= Environment.getExternalStorageDirectory()+"paly/asset";
+        int index;
+        byte[] bytes = new byte[1024];
+        FileOutputStream downloadFile = new FileOutputStream(path);
+        while ((index = input.read(bytes)) != -1) {
+            downloadFile.write(bytes, 0, index);
+            downloadFile.flush();
+        }
+        downloadFile.close();
+        input.close();
     }
 }

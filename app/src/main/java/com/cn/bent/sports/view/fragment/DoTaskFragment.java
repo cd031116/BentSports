@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -38,6 +39,7 @@ import com.cn.bent.sports.database.TaskCationManager;
 import com.cn.bent.sports.ibeacon.UserRssi;
 import com.cn.bent.sports.overlay.AMapUtil;
 import com.cn.bent.sports.overlay.WalkRouteOverlay;
+import com.cn.bent.sports.utils.DataUtils;
 import com.cn.bent.sports.utils.ToastUtils;
 import com.cn.bent.sports.view.activity.PlayWebViewActivity;
 import com.cn.bent.sports.widget.ToastDialog;
@@ -46,6 +48,8 @@ import com.minew.beaconset.MinewBeacon;
 import com.minew.beaconset.MinewBeaconManager;
 import com.minew.beaconset.MinewBeaconManagerListener;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -132,12 +136,18 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
         mapView.onCreate(savedInstanceState);
-        aMap.setCustomMapStylePath("file:///android_asset/style");
-        aMap.setMapCustomEnable(true);//true 开启; false 关闭
         mMinewBeaconManager = MinewBeaconManager.getInstance(getActivity());
         if (aMap == null) {
             aMap = mapView.getMap();
         }
+        try {
+            DataUtils.writeToLocal(getActivity().getClass().getClassLoader().getResourceAsStream("assets/style"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String path= Environment.getExternalStorageDirectory()+"paly/asset";
+        aMap.setCustomMapStylePath(path);
+        aMap.setMapCustomEnable(true);//true 开启; false 关闭
         // 绑定 Marker 被点击事件
         aMap.setOnMarkerClickListener(this);
         mRouteSearch = new RouteSearch(getActivity());
