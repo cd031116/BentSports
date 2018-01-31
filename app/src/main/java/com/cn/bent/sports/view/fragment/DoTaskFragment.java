@@ -141,7 +141,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
         if (aMap == null) {
             aMap = mapView.getMap();
         }
-        String path= Environment.getExternalStorageDirectory()+"paly/asset";
+        String path= Environment.getExternalStorageDirectory()+"/paly/asset";
         Log.i("tttt","path="+path);
         File file=new File(path);
         if(file.exists()){
