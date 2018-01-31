@@ -34,7 +34,7 @@ public class MainActivity extends BaseActivity {
     List<ImageButton> mTabs;
     @Bind({R.id.text1, R.id.text_2, R.id.is_me})
     List<TextView> mText;
-    int selected = 0;
+    int selected = 1;
     FragmentManager mFragmentMan;
 
     @Override
@@ -55,9 +55,15 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        switchContent(selected);
+    }
+
+    @Override
     public void initData() {
         super.initData();
-        changeFrament("bFragment", 1);
+        switchContent(selected);
         setdata();
     }
 

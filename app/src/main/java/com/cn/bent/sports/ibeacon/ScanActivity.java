@@ -103,7 +103,7 @@ public class ScanActivity extends BaseActivity {
                 Log.e("dasd", "dasd: " + beacons.size());
                 Collections.sort(beacons, comp);
                 if (beacons != null && beacons.size() > 0) {
-                    Log.e("dasd", "距离:" + beacons.get(0).getDistance() + ",did:" + beacons.get(0).getDeviceId());
+                    Log.e("dasd", "距离:" + beacons.get(0).getDistance() + ",did:" + beacons.get(0).getUuid());
                     scan.setText("距离:" + beacons.get(0).getDistance() + ",did:" + beacons.get(0).getDeviceId());
                     if (beacons.get(0).getDistance() > 5) {
                         showDialogMsg("距离:" + beacons.get(0).getDistance());
