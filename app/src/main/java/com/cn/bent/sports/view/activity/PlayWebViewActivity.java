@@ -12,6 +12,9 @@ import android.webkit.WebView;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.GameEntity;
+import com.cn.bent.sports.bean.LoginBase;
+import com.cn.bent.sports.utils.Constants;
+import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.widget.ToastDialog;
 import com.google.gson.Gson;
 
@@ -22,7 +25,7 @@ public class PlayWebViewActivity extends BaseActivity {
 
     @Bind(R.id.webview)
     WebView mWebView;
-    int uid = 4;
+    LoginBase user ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,13 +35,14 @@ public class PlayWebViewActivity extends BaseActivity {
 
     @Override
     protected int getLayoutId() {
-
         return R.layout.activity_play_web_view;
     }
 
     @Override
     public void initView() {
         super.initView();
+
+        user = (LoginBase) SaveObjectUtils.getInstance(this).getObject(Constants.USER_INFO, null);
         initWebView();
     }
 
@@ -69,27 +73,24 @@ public class PlayWebViewActivity extends BaseActivity {
 
         int gameId = (int) (Math.random() * 5 + 1);
         Log.e("dasa", "initWebView: " + gameId);
+//        mWebView.loadUrl("http://192.168.17.48:8080/?uid=" + user.getMember_id() + "&etype=android");
         switch (gameId) {
-
             case 1:
-                mWebView.loadUrl("http://aihw.zhonghuilv.net/aihuwai/index.html?uid=" + uid + "&etype=android");
+                mWebView.loadUrl("http://aihw.zhonghuilv.net/hby/index.html?uid=" + user.getMember_id() + "&etype=android");
                 break;
             case 2:
-                mWebView.loadUrl("http://aihw.zhonghuilv.net/caishenmiao/index.html?uid=" + uid + "&etype=android");
+                mWebView.loadUrl("http://aihw.zhonghuilv.net/aihuwai/index.html?uid=" + user.getMember_id() + "&etype=android");
                 break;
             case 3:
-                mWebView.loadUrl("http://aihw.zhonghuilv.net/hby/index.html?uid=" + uid + "&etype=android");
+                mWebView.loadUrl("http://aihw.zhonghuilv.net/denglong/index.html?uid=" + user.getMember_id() + "&etype=android");
                 break;
             case 4:
-                mWebView.loadUrl("http://aihw.zhonghuilv.net/denglong/index.html?uid=" + uid + "&etype=android");
+                mWebView.loadUrl("http://aihw.zhonghuilv.net/caishenmiao/index.html?uid=" + user.getMember_id() + "&etype=android");
                 break;
             case 5:
-                mWebView.loadUrl("http://aihw.zhonghuilv.net/aihuwai/index.html?uid=" + uid + "&etype=android");
+                mWebView.loadUrl("http://aihw.zhonghuilv.net/cdm/index.html?uid=" + user.getMember_id() + "&etype=android");
                 break;
         }
-        // 先载入JS代码
-//        mWebView.loadUrl("http://test.cwygp.com/bunengsi/index.html?uid=1&etype=1");
-//        mWebView.loadUrl("http://192.168.16.118:3000/index.html?uid=1");
 
         mWebView.addJavascriptInterface(new JSInterface(), "native");
     }
@@ -126,5 +127,34 @@ public class PlayWebViewActivity extends BaseActivity {
             }
         });
     }
+//    /**
+//     * 清除WebView缓存
+//     */
+//    public void clearWebViewCache(){
+//
+//        //清理Webview缓存数据库
+//        try {
+//            deleteDatabase("webview.db");
+//            deleteDatabase("webviewCache.db");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        //WebView 缓存文件
+//        File appCacheDir = new File(getFilesDir().getAbsolutePath()+APP_CACAHE_DIRNAME);
+//        Log.e(TAG, "appCacheDir path="+appCacheDir.getAbsolutePath());
+//
+//        File webviewCacheDir = new File(getCacheDir().getAbsolutePath()+"/webviewCache");
+//        Log.e(TAG, "webviewCacheDir path="+webviewCacheDir.getAbsolutePath());
+//
+//        //删除webview 缓存目录
+//        if(webviewCacheDir.exists()){
+//            deleteFile(webviewCacheDir);
+//        }
+//        //删除webview 缓存 缓存目录
+//        if(appCacheDir.exists()){
+//            deleteFile(appCacheDir);
+//        }
+//    }
 
 }

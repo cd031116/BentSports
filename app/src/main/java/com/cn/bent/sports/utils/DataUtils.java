@@ -21,13 +21,13 @@ public class DataUtils {
             date.setHours(0);
             date.setMinutes(0);
             date.setSeconds(0);
-            DateFormat format = new SimpleDateFormat("yyyyMMdd hh:mm:ss");
+            DateFormat format = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
             String dateto = format.format(date);
             return getStringToDate(dateto);
         }
      //将字符串转为时间戳
     public static long getStringToDate(String dateString) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd hh:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
         Date date = new Date();
         try{
             date = dateFormat.parse(dateString);
@@ -41,7 +41,7 @@ public class DataUtils {
 //时间戳转换成字符窜
     public static String getDateToString(long milSecond) {
         Date date = new Date(milSecond);
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd hh:mm:ss");
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
         return format.format(date);
     }
 }

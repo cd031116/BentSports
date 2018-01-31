@@ -4,6 +4,7 @@ package com.cn.bent.sports.api;
 import com.cn.bent.sports.bean.AddScoreEntity;
 import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.bean.RankEntity;
+import com.cn.bent.sports.bean.UserMsgEntity;
 import com.zhl.network.huiqu.HuiquResult;
 import com.zhl.network.huiqu.HuiquTBResult;
 
@@ -47,15 +48,24 @@ public interface ApiService {
             @Field("code") String code);
 
     /**
-     *
-     *
      * @return
      */
     @FormUrlEncoded
     @POST("outdoor/user/addscore")
     Observable<HuiquResult<AddScoreEntity>> addScore(
             @Field("cur_user_id") String mobile,
-            @Field("score") int code);
+            @Field("score") int code,
+            @Field("game_id") int game_id);
+
+    /**
+     * 获得用户的基本信息
+     *
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("outdoor/user/getUserMsg")
+    Observable<HuiquResult<UserMsgEntity>> getUserMsg(
+            @Field("cur_user_id") String cur_user_id);
 
     @GET("outdoor/user/ranklist")
     Observable<HuiquResult<RankEntity>> getRankList();

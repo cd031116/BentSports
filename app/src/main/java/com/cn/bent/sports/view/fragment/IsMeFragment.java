@@ -2,17 +2,27 @@ package com.cn.bent.sports.view.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.cn.bent.sports.R;
+import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseFragment;
-import com.cn.bent.sports.event.CardEvent;
+import com.cn.bent.sports.bean.LoginBase;
+import com.cn.bent.sports.bean.UserMsgEntity;
 import com.cn.bent.sports.ibeacon.ScanActivity;
-import com.cn.bent.sports.view.activity.GuideActivity;
+import com.cn.bent.sports.utils.Constants;
+import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.view.activity.PlayWebViewActivity;
 import com.cn.bent.sports.view.activity.SettingActivity;
+import com.zhl.network.RxObserver;
+import com.zhl.network.RxSchedulers;
+import com.zhl.network.huiqu.HuiquRxFunction;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -39,6 +49,14 @@ public class IsMeFragment extends BaseFragment {
     ImageView diandenglong;
     @Bind(R.id.jixiangqian)
     ImageView jixiangqian;
+    @Bind(R.id.user_photo)
+    ImageView user_photo;
+    @Bind(R.id.nick_name)
+    TextView nick_name;
+    @Bind(R.id.score)
+    TextView score;
+
+    private LoginBase user;
 
 
     public static IsMeFragment newInstance() {
@@ -55,36 +73,67 @@ public class IsMeFragment extends BaseFragment {
 
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
+        user = (LoginBase) SaveObjectUtils.getInstance(getActivity()).getObject(Constants.USER_INFO, null);
 
     }
 
     @Override
-    protected void initData() {
-        EventBus.getDefault().register(this);//注册
+    public void onResume() {
+        super.onResume();
+        if (user != null) {
+            BaseApi.getDefaultService(getActivity())
+                    .getUserMsg(user.getMember_id())
+                    .map(new HuiquRxFunction<UserMsgEntity>())
+                    .compose(RxSchedulers.<UserMsgEntity>io_main())
+                    .subscribe(new RxObserver<UserMsgEntity>(getActivity(), "getUserMsg", 1, false) {
+                        @Override
+                        public void onSuccess(int whichRequest, UserMsgEntity userMsgEntity) {
+                            setView(userMsgEntity);
+                        }
+
+                        @Override
+                        public void onError(int whichRequest, Throwable e) {
+
+                        }
+                    });
+        }
     }
 
-    @Subscribe
-    public void onEventMainThread(CardEvent event) {
-        switch (event.getGameId()) {
-            case 2:
-                liunianshou.setBackground(getResources().getDrawable(R.drawable.liunianshou));
-                break;
-            case 3:
-                caidengmi.setBackground(getResources().getDrawable(R.drawable.caidengmi));
-                break;
-            case 4:
-                fangbianpao.setBackground(getResources().getDrawable(R.drawable.fangbianpao));
-                break;
-            case 5:
-                hongbaoyu.setBackground(getResources().getDrawable(R.drawable.hongbaoyu));
-                break;
-            case 6:
-                diandenglong.setBackground(getResources().getDrawable(R.drawable.diandenglong));
-                break;
-            case 7:
-                jixiangqian.setBackground(getResources().getDrawable(R.drawable.jixiangqian));
-                break;
+    @Override
+    protected void initData() {
+    }
 
+    private void setView(UserMsgEntity userMsgEntity) {
+
+        nick_name.setText(userMsgEntity.getUserMsg().getNickname());
+        score.setText(userMsgEntity.getUserMsg().getScore()+"");
+        RequestOptions requestOptions = RequestOptions.circleCropTransform();
+        Glide.with(user_photo.getContext()).load(userMsgEntity.getUserMsg().getHeadimg())
+                .apply(requestOptions)
+                .into(user_photo);
+        if (userMsgEntity.getUserMsg().getCard_num() != null && userMsgEntity.getUserMsg().getCard_num().size() > 0) {
+            for (UserMsgEntity.UserMsgBean.CardNumBean cardBean : userMsgEntity.getUserMsg().getCard_num()) {
+                switch (cardBean.getGame_id()) {
+                    case 1:
+                        hongbaoyu.setBackground(getResources().getDrawable(R.drawable.hongbaoyu));
+                        break;
+                    case 2:
+                        liunianshou.setBackground(getResources().getDrawable(R.drawable.liunianshou));
+                        break;
+                    case 3:
+                        diandenglong.setBackground(getResources().getDrawable(R.drawable.diandenglong));
+                        break;
+                    case 4:
+                        jixiangqian.setBackground(getResources().getDrawable(R.drawable.jixiangqian));
+                        break;
+                    case 5:
+                        caidengmi.setBackground(getResources().getDrawable(R.drawable.caidengmi));
+                        break;
+                    case 6:
+                        fangbianpao.setBackground(getResources().getDrawable(R.drawable.fangbianpao));
+                        break;
+                }
+            }
         }
     }
 

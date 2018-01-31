@@ -16,15 +16,20 @@
             android:id="@+id/head_1"
             android:layout_width="224px"
             android:layout_height="224px"
-            android:layout_marginTop="207px"
+            android:layout_marginTop="263px"
             android:layout_marginLeft="425px"
             android:background="@drawable/jifen_huang" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
 
         <ImageView
             android:id="@+id/head_3"
             android:layout_width="224px"
             android:layout_height="224px"
-            android:layout_marginTop="437px"
+            android:layout_marginTop="493px"
             android:layout_marginLeft="769px"
             android:background="@drawable/jifen_huang" />
 
@@ -33,7 +38,7 @@
             android:layout_width="224px"
             android:layout_height="224px"
             android:layout_marginLeft="105px"
-            android:layout_marginTop="351px"
+            android:layout_marginTop="407px"
             android:background="@drawable/jifen_huang" />
     <android.support.v7.widget.RecyclerView
         android:id="@+id/range_list"
