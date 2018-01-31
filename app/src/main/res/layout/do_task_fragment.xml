@@ -6,7 +6,7 @@
     <com.amap.api.maps.MapView
         android:id="@+id/map_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
 
     <RelativeLayout
@@ -18,19 +18,18 @@
             android:layout_width="273px"
             android:layout_height="114px"
             android:layout_marginTop="20px"
-            android:gravity="center"
             android:background="@drawable/jifendi"
-            >
+            android:gravity="center">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:drawablePadding="20px"
                 android:drawableLeft="@drawable/go_huang"
+                android:drawablePadding="20px"
+                android:gravity="center"
                 android:text="O"
-                android:textSize="43px"
                 android:textColor="#ffffff"
-               />
+                android:textSize="43px" />
         </LinearLayout>
 
         <LinearLayout
@@ -39,22 +38,26 @@
             android:layout_height="114px"
             android:layout_below="@+id/jifen_line"
             android:layout_marginTop="40px"
+            android:background="@drawable/shijiandi"
             android:gravity="center"
             android:orientation="horizontal"
-            android:background="@drawable/shijiandi"
-            >
+            android:paddingLeft="10px">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:background="@drawable/shijian"
-                />
-            <com.cn.bent.sports.widget.RushBuyCountDownTimerView
-                android:id="@+id/cut_down"
+                android:gravity="center" />
+
+            <Chronometer
+                android:id="@+id/ji_timer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20px"/>
+                android:layout_marginLeft="10px"
+                android:format="00:00:00"
+                android:gravity="center"
+                android:textColor="#ffffff"
+                android:textSize="43px" />
 
         </LinearLayout>
 
@@ -65,16 +68,16 @@
             android:layout_height="182px"
             android:layout_alignParentRight="true"
             android:layout_marginTop="30px"
-            android:background="@drawable/shuoming"/>
+            android:background="@drawable/shuoming" />
 
         <ImageView
             android:id="@+id/dao_lan"
             android:layout_width="182px"
             android:layout_height="182px"
-            android:layout_below="@+id/shuoming"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="42px"
-            android:background="@drawable/quanjintu"/>
+            android:layout_below="@+id/shuoming"
+            android:layout_marginTop="22px"
+            android:background="@drawable/quanjintu" />
 
 
     </RelativeLayout>
@@ -84,52 +87,53 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="vertical"
-        android:visibility="gone"
+        android:layout_margin="50px"
         android:background="@drawable/bg_round_white"
-        android:layout_margin="50px">
+        android:orientation="vertical"
+        android:visibility="gone">
 
-            <TextView
-                android:id="@+id/name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="43px"
-                android:text="头脑风暴"
-                android:textSize="53px"
-                android:textColor="#333333"/>
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="43px"
+            android:text="头脑风暴"
+            android:textColor="#333333"
+            android:textSize="53px" />
 
-            <TextView
-                android:id="@+id/juli"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:drawableLeft="@drawable/ju_li"
-                android:padding="43px"
-                android:drawablePadding="20px"
-                android:text="300m"
-                android:textColor="#999999"/>
+        <TextView
+            android:id="@+id/juli"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:drawableLeft="@drawable/ju_li"
+            android:drawablePadding="20px"
+            android:padding="43px"
+            android:text="300m"
+            android:textColor="#999999" />
 
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/name"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="8px"
             android:padding="43px"
-            android:visibility="visible"
             android:text="你还没有到达目的地"
             android:textColor="#999999"
-            android:layout_below="@+id/name"/>
+            android:visibility="visible" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="8px"
-            android:text="到达目的地后,打开蓝牙领取任务"
-            android:textColor="#999999"
-            android:paddingBottom="50px"
             android:layout_marginBottom="50px"
-            android:layout_below="@+id/title"/>
+            android:layout_marginTop="8px"
+            android:paddingBottom="50px"
+            android:text="到达目的地后,打开蓝牙领取任务"
+            android:textColor="#999999" />
 
     </RelativeLayout>
 
