@@ -2,6 +2,8 @@ package com.cn.bent.sports.database;
 
 import android.content.Context;
 
+import com.cn.bent.sports.utils.DataUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +23,13 @@ public class TaskCationManager {
     public static List<TaskCationBean> getHistory() {
         mTaskList.clear();
         mTaskList.addAll(TaskCationDB.getDB().select(null, TaskCationBean.class));
+        for(TaskCationBean bean:mTaskList){
+            if(DataUtils.getlongs()<Long.parseLong(bean.getTimes())){
+                bean.setIsshow(true);
+            }else {
+                bean.setIsshow(false);
+            }
+        }
         return mTaskList;
     }
 
@@ -43,11 +52,11 @@ public class TaskCationManager {
     }
 
     //更新数据
-    public static void update(String index,String times) {
+    public static void update(String index,long times) {
         List<TaskCationBean> mList=TaskCationDB.getDB().select(null, TaskCationBean.class);
         for(TaskCationBean infos:mList){
             if (index.endsWith(String.valueOf(infos.gettId()))){
-                infos.setTimes(times);
+                infos.setTimes(times+"");
             }
         }
         TaskCationDB.getDB().deleteAll(null, TaskCationBean.class);

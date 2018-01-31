@@ -19,7 +19,7 @@ public class GuideActivity extends BaseActivity {
         mapview.onCreate(savedInstanceState);
         aMap=mapview.getMap();
 
-        aMap.setCustomMapStylePath("/sdcard/style.data");
+        aMap.setCustomMapStylePath("file:///android_asset/style");
         aMap.setMapCustomEnable(true);//true 开启; false 关闭
 
     }

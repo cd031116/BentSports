@@ -108,7 +108,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
             if (aMapLocation != null) {
                 isLocal = true;
                 if (aMapLocation.getErrorCode() == 0) {
-//可在其中解析amapLocation获取相应内容。
+                    //可在其中解析amapLocation获取相应内容。
                         isFirstLoc = false;
                         latitude = String.valueOf(aMapLocation.getLatitude());
                         longitude = String.valueOf(aMapLocation.getLongitude());
@@ -117,7 +117,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                 } else {
                     isLocal = false;
                     //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
-//                    ToastUtils.showShortToast(getActivity(), "获取位置信息失败!");
+                    //ToastUtils.showShortToast(getActivity(), "获取位置信息失败!");
                 }
             }
         }
@@ -187,29 +187,30 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                 mList.clear();
             }
             for (TaskCationBean hs : mLoction) {
-                String longitude = hs.getLongitude();
-                String latitude = hs.getLatitude();
-                double dlat = Double.valueOf(latitude).doubleValue();//纬度
-                double dlong = Double.valueOf(longitude).doubleValue();//经度
-                MarkerOptions markerOption = new MarkerOptions();
-                markerOption.position(new LatLng(dlat, dlong));
-                markerOption.title(hs.getName());
-                markerOption.draggable(false);
-                if (hs.isCheck()) {
-                    markerOption.icon(
-                            BitmapDescriptorFactory.fromBitmap(BitmapFactory
-                                    .decodeResource(getResources(),
-                                            R.drawable.zb_icon)));
-                } else {
-                    markerOption.icon(
-                            BitmapDescriptorFactory.fromBitmap(BitmapFactory
-                                    .decodeResource(getResources(),
-                                            R.drawable.zuobiao)));
+                if(!hs.isshow()){
+                    String longitude = hs.getLongitude();
+                    String latitude = hs.getLatitude();
+                    double dlat = Double.valueOf(latitude).doubleValue();//纬度
+                    double dlong = Double.valueOf(longitude).doubleValue();//经度
+                    MarkerOptions markerOption = new MarkerOptions();
+                    markerOption.position(new LatLng(dlat, dlong));
+                    markerOption.title(hs.getName());
+                    markerOption.draggable(false);
+                    if (hs.isCheck()) {
+                        markerOption.icon(
+                                BitmapDescriptorFactory.fromBitmap(BitmapFactory
+                                        .decodeResource(getResources(),
+                                                R.drawable.zb_icon)));
+                    } else {
+                        markerOption.icon(
+                                BitmapDescriptorFactory.fromBitmap(BitmapFactory
+                                        .decodeResource(getResources(),
+                                                R.drawable.zuobiao)));
+                    }
+                    markerOptionlst.add(markerOption);
+                    aMap.addMarker(markerOption);
+                    mList.add(aMap.addMarker(markerOption));
                 }
-
-                markerOptionlst.add(markerOption);
-                aMap.addMarker(markerOption);
-                mList.add(aMap.addMarker(markerOption));
             }
         }
     }
@@ -225,6 +226,10 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
         if (TextUtils.isEmpty(latitude)) {
             return;
         }
+        if(isWark){
+            aMap.clear();
+            searchRouteResult(ROUTE_TYPE_WALK, RouteSearch.WalkDefault);
+        }
         LatLng latlng = new LatLng(Double.valueOf(latitude), Double.valueOf(longitude));
         noMarker = aMap.addMarker(new MarkerOptions()
                 .position(latlng)
@@ -234,11 +239,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
         aMap.moveCamera(CameraUpdateFactory.changeLatLng(latlng));
         aMap.moveCamera(CameraUpdateFactory.zoomTo(15));
         aMap.setMyLocationEnabled(false);
-        if(isWark){
-            aMap.clear();
-            addMarkersToMap();
-            searchRouteResult(ROUTE_TYPE_WALK, RouteSearch.WalkDefault);
-        }
+        addMarkersToMap();
     }
 
     /**
@@ -343,13 +344,12 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     public void onRideRouteSearched(RideRouteResult rideRouteResult, int errorCode) {
 
     }
-
     private void setview(int distance) {
         start_view.setVisibility(View.VISIBLE);
         juli.setText(AMapUtil.getFriendlyLength(distance));
         if(distance<20){
             //打开蓝牙
-            checkBluetooth();
+                checkBluetooth();
         }
     }
 
@@ -361,7 +361,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                 if (confirm) {
                     setcheck();
                     mLoction.get(position).setCheck(true);
-                    addMarkersToMap();
+                    addLocaToMap();
                     mEndPoint = new LatLonPoint(Double.valueOf(mLoction.get(position).getLatitude()).doubleValue(),
                             Double.valueOf(mLoction.get(position).getLongitude()).doubleValue());
                     searchRouteResult(ROUTE_TYPE_WALK, RouteSearch.WalkDefault);
@@ -393,7 +393,6 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     }
 
     private void initListener() {
-
         mMinewBeaconManager.startScan();
         mMinewBeaconManager.setMinewbeaconManagerListener(new MinewBeaconManagerListener() {
             @Override
@@ -437,6 +436,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     }
 
     private void showBLEDialog() {
+        ToastUtils.showShortToast(getActivity(),"已到达目的地附近,请打开蓝牙");
         Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
         startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
     }
