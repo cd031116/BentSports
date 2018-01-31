@@ -1,5 +1,6 @@
 package com.cn.bent.sports.view.activity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,9 +12,11 @@ import android.webkit.WebView;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.GameEntity;
+import com.cn.bent.sports.widget.ToastDialog;
 import com.google.gson.Gson;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 public class PlayWebViewActivity extends BaseActivity {
 
@@ -108,5 +111,19 @@ public class PlayWebViewActivity extends BaseActivity {
         }
     }
 
+    @OnClick(R.id.top_left)
+    void onClick(View view) {
+        new ToastDialog(this, R.style.dialog, "是否离开游戏", new ToastDialog.OnCloseListener() {
+            @Override
+            public void onClick(Dialog dialog, boolean confirm) {
+
+                if (confirm) {
+                    finish();
+                } else {
+                }
+                dialog.dismiss();
+            }
+        });
+    }
 
 }
