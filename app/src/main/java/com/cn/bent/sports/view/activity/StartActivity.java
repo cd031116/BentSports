@@ -77,9 +77,8 @@ public class StartActivity extends BaseActivity {
 
         @Override
         protected String doInBackground(Void... params) {
-            InputStream ad = this.getClass().getClassLoader().getResourceAsStream("assets/style.data");
-            String path= Environment.getExternalStorageDirectory()+"paly/asset"+"style.data";
-            DataUtils.copyFile(ad,path);
+            String path= Environment.getExternalStorageDirectory()+"paly/asset";
+            DataUtils.copyFilesFassets(StartActivity.this,"assets",path);
             return null;
         }
 

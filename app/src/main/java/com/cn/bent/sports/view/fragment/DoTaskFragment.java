@@ -48,6 +48,7 @@ import com.minew.beaconset.MinewBeacon;
 import com.minew.beaconset.MinewBeaconManager;
 import com.minew.beaconset.MinewBeaconManagerListener;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -140,7 +141,11 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
         if (aMap == null) {
             aMap = mapView.getMap();
         }
-        String path= Environment.getExternalStorageDirectory()+"paly/asset"+"style.data";
+        String path= Environment.getExternalStorageDirectory()+"paly/asset";
+        File file=new File(path);
+        if(file.exists()){
+            Log.i("tttt","exists");
+        }
         aMap.setCustomMapStylePath(path);
         aMap.setMapCustomEnable(true);//true 开启; false 关闭
         // 绑定 Marker 被点击事件
