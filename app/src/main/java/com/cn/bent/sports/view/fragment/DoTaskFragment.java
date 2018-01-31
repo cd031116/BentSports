@@ -132,6 +132,8 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
         mapView.onCreate(savedInstanceState);
+        aMap.setCustomMapStylePath("file:///android_asset/style");
+        aMap.setMapCustomEnable(true);//true 开启; false 关闭
         mMinewBeaconManager = MinewBeaconManager.getInstance(getActivity());
         if (aMap == null) {
             aMap = mapView.getMap();
