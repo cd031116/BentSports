@@ -1,21 +1,24 @@
 package com.cn.bent.sports.view.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 
 import com.cn.bent.sports.MainActivity;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseActivity;
+import com.cn.bent.sports.base.SdcardPermissionAction;
 import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.DataUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
+
+import org.aisen.android.support.action.IAction;
 
 import java.io.InputStream;
 
@@ -38,7 +41,7 @@ public class StartActivity extends BaseActivity {
         aa.setAnimationListener(new Animation.AnimationListener(){
             @Override
             public void onAnimationEnd(Animation arg0){
-                redirectTo();
+
             }
 
             @Override
@@ -55,15 +58,21 @@ public class StartActivity extends BaseActivity {
     @Override
     public void initData()  {
         super.initData();
-        boolean a = Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
-        if(a){
-            Log.i("tttt","可以");
-        }else {
-            Log.i("tttt","不支持=");
+        if (this instanceof org.aisen.android.ui.activity.basic.BaseActivity) {
+            org.aisen.android.ui.activity.basic.BaseActivity aisenBaseActivity =
+                    (org.aisen.android.ui.activity.basic.BaseActivity) this;
+            new IAction(aisenBaseActivity, new SdcardPermissionAction(aisenBaseActivity,
+                    null)) {
+                @Override
+                public void doAction() {
+                    MAsyncTask asyncTask = new MAsyncTask();
+                    asyncTask.execute();//开始执行
+                }
+            }.run();
         }
 
-        MAsyncTask asyncTask = new MAsyncTask();
-        asyncTask.execute();//开始执行
+
+
     }
 
     private void redirectTo() {
@@ -85,8 +94,9 @@ public class StartActivity extends BaseActivity {
 
         @Override
         protected String doInBackground(Void... params) {
-            String path= Environment.getExternalStorageState()+"style_pass.data";
+            String path= Environment.getExternalStorageDirectory()+"style.data";
             DataUtils.copyFilesFassets(StartActivity.this,"style.data",path);
+            redirectTo();
             return null;
         }
 

@@ -34,7 +34,7 @@ import butterknife.ButterKnife;
 * */
 
 
-public class BaseActivity extends AppCompatActivity implements BaseViewInterface {
+public class BaseActivity extends org.aisen.android.ui.activity.basic.BaseActivity implements BaseViewInterface {
     protected View contentView;
     private TextView msg;
      private boolean isActive=true;
