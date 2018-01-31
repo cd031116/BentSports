@@ -1,5 +1,6 @@
 package com.cn.bent.sports.ibeacon;
 
+import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +13,10 @@ import android.widget.Toast;
 
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseActivity;
+import com.cn.bent.sports.view.activity.LoginActivity;
+import com.cn.bent.sports.view.activity.SettingActivity;
+import com.cn.bent.sports.widget.GameDialog;
+import com.cn.bent.sports.widget.ToastDialog;
 import com.minew.beaconset.BluetoothState;
 import com.minew.beaconset.MinewBeacon;
 import com.minew.beaconset.MinewBeaconManager;
@@ -29,14 +34,10 @@ import butterknife.Bind;
 public class ScanActivity extends BaseActivity {
     private MinewBeaconManager mMinewBeaconManager;
     private static final int REQUEST_ENABLE_BT = 2;
-    private boolean isScanning;
-    private BeaconListAdapter mAdapter;
     UserRssi comp = new UserRssi();
 
     @Bind(R.id.scan)
     TextView scan;
-    @Bind(R.id.recyeler)
-    RecyclerView mRecycle;
 
 
     @Override
@@ -53,25 +54,13 @@ public class ScanActivity extends BaseActivity {
     public void initView() {
         super.initView();
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        mRecycle.setLayoutManager(layoutManager);
-        mAdapter = new BeaconListAdapter();
-        mRecycle.setAdapter(mAdapter);
-        mRecycle.addItemDecoration(new RecycleViewDivider(this, LinearLayoutManager
-                .HORIZONTAL));
-
         mMinewBeaconManager = MinewBeaconManager.getInstance(this);
         checkBluetooth();
-        initListener();
     }
 
     @Override
     public void initData() {
         super.initData();
-    }
-
-    private void initManager() {
-        mMinewBeaconManager = MinewBeaconManager.getInstance(this);
     }
 
     /**
@@ -88,31 +77,14 @@ public class ScanActivity extends BaseActivity {
                 showBLEDialog();
                 break;
             case BluetoothStatePowerOn:
+                initListener();
                 break;
         }
     }
 
     private void initListener() {
-        scan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (isScanning) {
-                    isScanning = false;
-                    scan.setText("Start");
-                    if (mMinewBeaconManager != null) {
-                        mMinewBeaconManager.stopScan();
-                    }
-                } else {
-                    isScanning = true;
-                    scan.setText("Stop");
-                    try {
-                        mMinewBeaconManager.startScan();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
+
+        mMinewBeaconManager.startScan();
         mMinewBeaconManager.setMinewbeaconManagerListener(new MinewBeaconManagerListener() {
             @Override
             public void onUpdateBluetoothState(BluetoothState state) {
@@ -130,11 +102,13 @@ public class ScanActivity extends BaseActivity {
             public void onRangeBeacons(List<MinewBeacon> beacons) {
                 Log.e("dasd", "dasd: " + beacons.size());
                 Collections.sort(beacons, comp);
-                mAdapter.setData(beacons);
-//                if (beacons != null && beacons.size() > 0) {
-//                    Log.e("dasd", "距离:" + beacons.get(0).getDistance() + ",did:" + beacons.get(0).getDeviceId());
-//                    scan.setText("距离:" + beacons.get(0).getDistance() + ",did:" + beacons.get(0).getDeviceId());
-//                }
+                if (beacons != null && beacons.size() > 0) {
+                    Log.e("dasd", "距离:" + beacons.get(0).getDistance() + ",did:" + beacons.get(0).getDeviceId());
+                    scan.setText("距离:" + beacons.get(0).getDistance() + ",did:" + beacons.get(0).getDeviceId());
+                    if (beacons.get(0).getDistance() > 5) {
+                        showDialogMsg("距离:" + beacons.get(0).getDistance());
+                    }
+                }
             }
 
             @Override
@@ -149,14 +123,32 @@ public class ScanActivity extends BaseActivity {
         });
     }
 
+    GameDialog gameDialog;
+    boolean is = true;
+
+    private void showDialogMsg(String names) {
+        gameDialog = new GameDialog(this, R.style.dialog, new GameDialog.OnCloseListener() {
+            @Override
+            public void onClick(Dialog dialog, boolean confirm) {
+                if (confirm) {
+                    startActivity(new Intent(ScanActivity.this, LoginActivity.class));
+                } else {
+
+                }
+                dialog.dismiss();
+            }
+        });
+        gameDialog.setContent(names);
+        if (is) {
+            is = false;
+            gameDialog.setTitle("提示").show();
+        }
+    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (isScanning) {
-            mMinewBeaconManager.stopScan();
-        }
-
+        mMinewBeaconManager.stopScan();
     }
 
     private void showBLEDialog() {
@@ -169,6 +161,7 @@ public class ScanActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case REQUEST_ENABLE_BT:
+                initListener();
                 break;
         }
     }

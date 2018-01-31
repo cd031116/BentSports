@@ -26,6 +26,15 @@ public class GameDialog extends Dialog implements View.OnClickListener {
     private String positiveName;
     private String negativeName;
     private String title;
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     public GameDialog(Context context) {
         super(context);
         this.mContext = context;
@@ -43,6 +52,12 @@ public class GameDialog extends Dialog implements View.OnClickListener {
         this.content = content;
     }
 
+    public GameDialog(Context context, int themeResId,OnCloseListener
+            listener) {
+        super(context, themeResId);
+        this.mContext = context;
+        this.listener = listener;
+    }
     public GameDialog(Context context, int themeResId, String content, OnCloseListener
             listener) {
         super(context, themeResId);
@@ -74,7 +89,7 @@ public class GameDialog extends Dialog implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.toast_dialog);
+        setContentView(R.layout.game_dialog);
         View rootView = findViewById(android.R.id.content);
         SupportMultipleScreensUtil.init(mContext);
         SupportMultipleScreensUtil.scale(rootView);
@@ -92,7 +107,8 @@ public class GameDialog extends Dialog implements View.OnClickListener {
         if (!TextUtils.isEmpty(positiveName)) {
             submitTxt.setText(positiveName);
         }
-            titleTxt.setText(content);
+
+        titleTxt.setText(getContent());
     }
 
     @Override

@@ -27,7 +27,7 @@ ext {
             compileSdkVersion: 25,
             buildToolsVersion: "25.0.0",
             minSdkVersion    : 16,
-            targetSdkVersion : 25,
+            targetSdkVersion : 21,
             applicationId    : "com.cn.bent.sports",
             versionCode      : 1,
             versionName      : "1.0.0"
