@@ -94,7 +94,7 @@ public class StartActivity extends BaseActivity {
 
         @Override
         protected String doInBackground(Void... params) {
-            String path= Environment.getExternalStorageDirectory()+"style.data";
+            String path= Environment.getExternalStorageDirectory()+"style_pass.data";
             DataUtils.copyFilesFassets(StartActivity.this,"style.data",path);
             redirectTo();
             return null;
