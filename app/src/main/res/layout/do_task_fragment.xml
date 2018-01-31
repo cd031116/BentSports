@@ -61,15 +61,16 @@
 
         <ImageView
             android:id="@+id/shuoming"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="182px"
+            android:layout_height="182px"
             android:layout_alignParentRight="true"
             android:layout_marginTop="30px"
             android:background="@drawable/shuoming"/>
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/dao_lan"
+            android:layout_width="182px"
+            android:layout_height="182px"
             android:layout_below="@+id/shuoming"
             android:layout_alignParentRight="true"
             android:layout_marginTop="42px"

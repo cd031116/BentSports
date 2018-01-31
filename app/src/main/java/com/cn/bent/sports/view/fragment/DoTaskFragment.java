@@ -42,6 +42,7 @@ import com.cn.bent.sports.overlay.WalkRouteOverlay;
 import com.cn.bent.sports.utils.DataUtils;
 import com.cn.bent.sports.utils.ToastUtils;
 import com.cn.bent.sports.view.activity.PlayWebViewActivity;
+import com.cn.bent.sports.view.activity.RuleActivity;
 import com.cn.bent.sports.widget.ToastDialog;
 import com.minew.beaconset.BluetoothState;
 import com.minew.beaconset.MinewBeacon;
@@ -56,6 +57,7 @@ import java.util.Collections;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
  * Created by lyj on 2018/1/29 0029.
@@ -99,10 +101,10 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     private LatLonPoint mStartPoint;//起点，116.335891,39.942295
     private LatLonPoint mEndPoint;//终点，116.481288,39.995576
     private final int ROUTE_TYPE_WALK = 3;
-    private   Marker noMarker;
+    private Marker noMarker;
     UserRssi comp = new UserRssi();
     private WalkRouteOverlay walkRouteOverlay;
-    private boolean isWark=false;
+    private boolean isWark = false;
     private static final int REQUEST_ENABLE_BT = 2;
     private MinewBeaconManager mMinewBeaconManager;
     private String t_ids;
@@ -114,11 +116,11 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                 isLocal = true;
                 if (aMapLocation.getErrorCode() == 0) {
                     //可在其中解析amapLocation获取相应内容。
-                        isFirstLoc = false;
-                        latitude = String.valueOf(aMapLocation.getLatitude());
-                        longitude = String.valueOf(aMapLocation.getLongitude());
-                        mStartPoint = new LatLonPoint(aMapLocation.getLatitude(), aMapLocation.getLongitude());
-                        addLocaToMap();
+                    isFirstLoc = false;
+                    latitude = String.valueOf(aMapLocation.getLatitude());
+                    longitude = String.valueOf(aMapLocation.getLongitude());
+                    mStartPoint = new LatLonPoint(aMapLocation.getLatitude(), aMapLocation.getLongitude());
+                    addLocaToMap();
                 } else {
                     isLocal = false;
                     //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
@@ -141,8 +143,8 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
         if (aMap == null) {
             aMap = mapView.getMap();
         }
-        String path= getActivity().getFilesDir()+"/bent/sport.data";
-        Log.d("kkkk", "initView: "+path);
+        String path = getActivity().getFilesDir() + "/bent/sport.data";
+        Log.d("kkkk", "initView: " + path);
         aMap.setCustomMapStylePath(path);
         aMap.setMapCustomEnable(true);//true 开启; false 关闭
         // 绑定 Marker 被点击事件
@@ -164,7 +166,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
         mLocationClient.setLocationOption(mLocationOption);
         //设置定位模式为AMapLocationMode.Device_Sensors，仅设备模式。
         mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Device_Sensors);
-        mLocationOption.setInterval(1000*10);
+        mLocationOption.setInterval(1000 * 10);
         //启动定位
         mLocationOption.setOnceLocation(true);
         mLocationClient.startLocation();
@@ -175,7 +177,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
         for (int i = 0; i < mList.size(); i++) {
             if (marker.equals(mList.get(i))) {
                 showDialogMsg("是否前往该地点", i);
-                t_ids=i+"";
+                t_ids = i + "";
             }
         }
         return true;
@@ -192,11 +194,11 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     private void addMarkersToMap() {
         ArrayList<MarkerOptions> markerOptionlst = new ArrayList<MarkerOptions>();
         if (mLoction != null) {
-            if(mList!=null){
+            if (mList != null) {
                 mList.clear();
             }
             for (TaskCationBean hs : mLoction) {
-                if(!hs.isshow()){
+                if (!hs.isshow()) {
                     String longitude = hs.getLongitude();
                     String latitude = hs.getLatitude();
                     double dlat = Double.valueOf(latitude).doubleValue();//纬度
@@ -229,13 +231,13 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
      * 在地图上添加marker
      */
     private void addLocaToMap() {
-        if(noMarker!=null){
+        if (noMarker != null) {
             noMarker.remove();
         }
         if (TextUtils.isEmpty(latitude)) {
             return;
         }
-        if(isWark){
+        if (isWark) {
             aMap.clear();
             searchRouteResult(ROUTE_TYPE_WALK, RouteSearch.WalkDefault);
         }
@@ -249,6 +251,19 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
         aMap.moveCamera(CameraUpdateFactory.zoomTo(15));
         aMap.setMyLocationEnabled(false);
         addMarkersToMap();
+    }
+
+
+    @OnClick({R.id.shuoming, R.id.dao_lan})
+    void onclik(View v) {
+        switch (v.getId()) {
+            case R.id.shuoming:
+                startActivity(new Intent(getActivity(), RuleActivity.class));
+                break;
+            case  R.id.dao_lan:
+
+              break;
+        }
     }
 
     /**
@@ -324,17 +339,17 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                     mWalkRouteResult = result;
                     final WalkPath walkPath = mWalkRouteResult.getPaths()
                             .get(0);
-                    if(walkRouteOverlay!=null){
+                    if (walkRouteOverlay != null) {
                         walkRouteOverlay.removeFromMap();
                     }
-                    walkRouteOverlay    = new WalkRouteOverlay(
+                    walkRouteOverlay = new WalkRouteOverlay(
                             getActivity(), aMap, walkPath,
                             mWalkRouteResult.getStartPos(),
                             mWalkRouteResult.getTargetPos());
                     walkRouteOverlay.removeFromMap();
                     walkRouteOverlay.addToMap();
                     walkRouteOverlay.zoomToSpan();
-                    isWark=true;
+                    isWark = true;
                     int dis = (int) walkPath.getDistance();
                     setview(dis);
 
@@ -353,12 +368,13 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     public void onRideRouteSearched(RideRouteResult rideRouteResult, int errorCode) {
 
     }
+
     private void setview(int distance) {
         start_view.setVisibility(View.VISIBLE);
         juli.setText(AMapUtil.getFriendlyLength(distance));
-        if(distance<20){
+        if (distance < 20) {
             //打开蓝牙
-                checkBluetooth();
+            checkBluetooth();
         }
     }
 
@@ -383,6 +399,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     }
 
     //-------------------------------------------蓝牙
+
     /**
      * check Bluetooth state
      */
@@ -390,7 +407,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
         BluetoothState bluetoothState = mMinewBeaconManager.checkBluetoothState();
         switch (bluetoothState) {
             case BluetoothStateNotSupported:
-                    ToastUtils.showShortToast(getActivity(),"手机不支持蓝牙");
+                ToastUtils.showShortToast(getActivity(), "手机不支持蓝牙");
                 break;
             case BluetoothStatePowerOff:
                 showBLEDialog();
@@ -421,11 +438,11 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                 Log.e("dasd", "dasd: " + beacons.size());
                 Collections.sort(beacons, comp);
                 if (beacons != null && beacons.size() > 0) {
-                    if (beacons.get(0).getDistance()>20) {
-                       //弹游戏
-                        Intent intent=new Intent(getActivity(), PlayWebViewActivity.class);
-                        intent.putExtra("gameId",t_ids);
-                            startActivity(intent);
+                    if (beacons.get(0).getDistance() > 20) {
+                        //弹游戏
+                        Intent intent = new Intent(getActivity(), PlayWebViewActivity.class);
+                        intent.putExtra("gameId", t_ids);
+                        startActivity(intent);
                         mMinewBeaconManager.stopScan();
                         start_view.setVisibility(View.GONE);
                     }
@@ -445,7 +462,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     }
 
     private void showBLEDialog() {
-        ToastUtils.showShortToast(getActivity(),"已到达目的地附近,请打开蓝牙");
+        ToastUtils.showShortToast(getActivity(), "已到达目的地附近,请打开蓝牙");
         Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
         startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
     }
