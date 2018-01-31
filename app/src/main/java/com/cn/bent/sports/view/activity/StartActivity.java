@@ -94,8 +94,7 @@ public class StartActivity extends BaseActivity {
 
         @Override
         protected String doInBackground(Void... params) {
-            String path= Environment.getExternalStorageDirectory()+"style_pass.data";
-            DataUtils.copyFilesFassets(StartActivity.this,"style.data",path);
+            DataUtils.copyAssetsToDst(StartActivity.this,"style.data","bent/sport");
             redirectTo();
             return null;
         }

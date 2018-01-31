@@ -86,18 +86,32 @@ public class DataUtils {
         }
     }
 
-    public static void copyFile(InputStream in, String targetPath) {
+    public static void copyAssetsToDst(Context context, String srcPath, String dstPath) {
         try {
-            FileOutputStream fos = new FileOutputStream(new File(targetPath));
-            byte[] buffer = new byte[1024];
-            int byteCount = 0;
-            while ((byteCount = in.read(buffer)) != -1) {// 循环从输入流读取
-                // buffer字节
-                fos.write(buffer, 0, byteCount);// 将读取的输入流写入到输出流
+            String fileNames[] = context.getAssets().list(srcPath);
+            if (fileNames.length > 0) {
+                File file = new File(Environment.getExternalStorageDirectory(), dstPath);
+                if (!file.exists()) file.mkdirs();
+                for (String fileName : fileNames) {
+                    if (!srcPath.equals("")) { // assets 文件夹下的目录
+                        copyAssetsToDst(context, srcPath + File.separator + fileName, dstPath + File.separator + fileName);
+                    } else { // assets 文件夹
+                        copyAssetsToDst(context, fileName, dstPath + File.separator + fileName);
+                    }
+                }
+            } else {
+                File outFile = new File(Environment.getExternalStorageDirectory(), dstPath);
+                InputStream is = context.getAssets().open(srcPath);
+                FileOutputStream fos = new FileOutputStream(outFile);
+                byte[] buffer = new byte[1024];
+                int byteCount;
+                while ((byteCount = is.read(buffer)) != -1) {
+                    fos.write(buffer, 0, byteCount);
+                }
+                fos.flush();
+                is.close();
+                fos.close();
             }
-            fos.flush();// 刷新缓冲区
-            in.close();
-            fos.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
