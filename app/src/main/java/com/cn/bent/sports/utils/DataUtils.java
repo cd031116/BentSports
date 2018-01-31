@@ -18,12 +18,12 @@ public class DataUtils {
         public static long getlongs(){
             Date date = new Date();
             date.setDate(date.getDate()+1);
-            date.setHours(10);
+            date.setHours(0);
             date.setMinutes(0);
             date.setSeconds(0);
             DateFormat format = new SimpleDateFormat("yyyyMMdd hh:mm:ss");
             String dateto = format.format(date);
-            return  Long.parseLong(dateto);
+            return getStringToDate(dateto);
         }
      //将字符串转为时间戳
     public static long getStringToDate(String dateString) {
