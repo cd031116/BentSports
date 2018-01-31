@@ -94,7 +94,7 @@ public class StartActivity extends BaseActivity {
 
         @Override
         protected String doInBackground(Void... params) {
-            DataUtils.copyAssetsToDst(StartActivity.this,"style.data","bent/sport");
+            DataUtils.copyAssetsToDst(StartActivity.this,"style.data","bent/sport.data");
             redirectTo();
             return null;
         }
