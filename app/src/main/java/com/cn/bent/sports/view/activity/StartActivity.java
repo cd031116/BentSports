@@ -78,7 +78,7 @@ public class StartActivity extends BaseActivity {
         @Override
         protected String doInBackground(Void... params) {
             String path= Environment.getExternalStorageDirectory()+"/paly/asset";
-            DataUtils.copyFilesFassets(StartActivity.this,"assets",path);
+            DataUtils.copyFilesFassets(StartActivity.this,"style.data",path);
             return null;
         }
 

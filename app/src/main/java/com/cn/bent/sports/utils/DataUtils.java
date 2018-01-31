@@ -65,7 +65,11 @@ public class DataUtils {
             } else {//如果是文件
                 InputStream is = context.getAssets().open(oldPath);
                 Log.i("tttt","is="+is);
-                FileOutputStream fos = new FileOutputStream(new File(newPath));
+                File fiel=new File(newPath);
+                if(!fiel.exists()){
+                    fiel.mkdirs();
+                }
+                FileOutputStream fos = new FileOutputStream(fiel);
                 Log.i("tttt","fos="+fos);
                 byte[] buffer = new byte[1024];
                 int byteCount=0;
