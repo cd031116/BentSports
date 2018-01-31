@@ -101,6 +101,7 @@ public class DataUtils {
                 }
             } else {
                 File outFile = new File(Environment.getExternalStorageDirectory(), dstPath);
+                outFile.getParentFile().mkdirs();
                 InputStream is = context.getAssets().open(srcPath);
                 FileOutputStream fos = new FileOutputStream(outFile);
                 byte[] buffer = new byte[1024];
