@@ -218,24 +218,24 @@ public class BaseActivity extends org.aisen.android.ui.activity.basic.BaseActivi
     protected void onStop() {
         // TODO Auto-generated method stub
         super.onStop();
-        if(!isForeground(this))
-        {
+//        if(!isForeground(this))
+//        {
             isActive = false;
-        }
+//        }
     }
 
-    private boolean isForeground (Context context)
-    {
-        ActivityManager am = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
-        ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
-        String currentPackageName = cn.getPackageName();
-        if(!TextUtils.isEmpty(currentPackageName) && currentPackageName.equals(getPackageName()))
-        {
-            return true ;
-        }
-
-        return false ;
-    }
+//    private boolean isForeground (Context context)
+//    {
+//        ActivityManager am = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
+//        ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
+//        String currentPackageName = cn.getPackageName();
+//        if(!TextUtils.isEmpty(currentPackageName) && currentPackageName.equals(getPackageName()))
+//        {
+//            return true ;
+//        }
+//
+//        return false ;
+//    }
 
     protected void Fresh() {
 

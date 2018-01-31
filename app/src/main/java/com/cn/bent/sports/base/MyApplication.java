@@ -8,12 +8,14 @@ import android.support.multidex.MultiDex;
 
 import com.cn.bent.sports.database.TaskCationManager;
 
+import org.aisen.android.common.context.GlobalContext;
+
 
 /**
  * Created by lyj on 17/8/2.
  */
 
-public class MyApplication extends Application{
+public class MyApplication extends GlobalContext{
     public static MyApplication instance;
     private ActivityManagerd activityManager = null;
 

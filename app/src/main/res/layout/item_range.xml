@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="174px">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/range_num"
@@ -15,6 +15,7 @@
         android:id="@+id/img_head"
         android:layout_width="114px"
         android:layout_height="114px"
+        android:layout_marginTop="30px"
         android:layout_toRightOf="@id/range_num"
         android:layout_centerVertical="true"
         android:layout_marginLeft="28px"/>

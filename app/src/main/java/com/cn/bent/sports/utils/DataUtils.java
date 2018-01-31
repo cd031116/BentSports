@@ -64,11 +64,7 @@ public class DataUtils {
                 }
             } else {//如果是文件
                 InputStream is = context.getAssets().open(oldPath);
-                File fiel=new File(newPath);
-                if(!fiel.exists()){
-                    fiel.mkdirs();
-                }
-                FileOutputStream fos = new FileOutputStream(fiel);
+                FileOutputStream fos = new FileOutputStream(new File(newPath));
                 Log.i("tttt","fos="+fos);
                 byte[] buffer = new byte[1024];
                 int byteCount=0;
@@ -90,7 +86,7 @@ public class DataUtils {
         try {
             String fileNames[] = context.getAssets().list(srcPath);
             if (fileNames.length > 0) {
-                File file = new File(Environment.getExternalStorageDirectory(), dstPath);
+                File file = new File(context.getFilesDir(), dstPath);
                 if (!file.exists()) file.mkdirs();
                 for (String fileName : fileNames) {
                     if (!srcPath.equals("")) { // assets 文件夹下的目录
@@ -100,8 +96,10 @@ public class DataUtils {
                     }
                 }
             } else {
-                File outFile = new File(Environment.getExternalStorageDirectory(), dstPath);
+                File outFile = new File(context.getFilesDir(), dstPath);
                 outFile.getParentFile().mkdirs();
+
+                Log.d("kkkk", "initView: "+outFile.getPath());
                 InputStream is = context.getAssets().open(srcPath);
                 FileOutputStream fos = new FileOutputStream(outFile);
                 byte[] buffer = new byte[1024];

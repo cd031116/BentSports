@@ -141,7 +141,8 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
         if (aMap == null) {
             aMap = mapView.getMap();
         }
-        String path= Environment.getExternalStorageDirectory()+"bent/sport.data";
+        String path= getActivity().getFilesDir()+"/bent/sport.data";
+        Log.d("kkkk", "initView: "+path);
         aMap.setCustomMapStylePath(path);
         aMap.setMapCustomEnable(true);//true 开启; false 关闭
         // 绑定 Marker 被点击事件
