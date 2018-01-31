@@ -12,6 +12,7 @@ import android.view.animation.Animation;
 import com.cn.bent.sports.MainActivity;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseActivity;
+import com.cn.bent.sports.base.BaseConfig;
 import com.cn.bent.sports.base.SdcardPermissionAction;
 import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.utils.Constants;
@@ -58,6 +59,8 @@ public class StartActivity extends BaseActivity {
     @Override
     public void initData()  {
         super.initData();
+        BaseConfig bg=BaseConfig.getInstance(StartActivity.this);
+       final   int isFirst=bg.getIntValue(Constants.IS_FIRST,0);
         if (this instanceof org.aisen.android.ui.activity.basic.BaseActivity) {
             org.aisen.android.ui.activity.basic.BaseActivity aisenBaseActivity =
                     (org.aisen.android.ui.activity.basic.BaseActivity) this;
@@ -65,13 +68,13 @@ public class StartActivity extends BaseActivity {
                     null)) {
                 @Override
                 public void doAction() {
-                    MAsyncTask asyncTask = new MAsyncTask();
-                    asyncTask.execute();//开始执行
+                  if(isFirst==0){
+                      MAsyncTask asyncTask = new MAsyncTask();
+                      asyncTask.execute();//开始执行
+                  }
                 }
             }.run();
         }
-
-
 
     }
 
@@ -90,14 +93,25 @@ public class StartActivity extends BaseActivity {
 
 
     class  MAsyncTask extends AsyncTask<Void, Integer, String>{
-
-
+        @Override
+        protected void onPreExecute() {
+           showAlert("正在加载..",true);
+            super.onPreExecute();
+        }
         @Override
         protected String doInBackground(Void... params) {
             DataUtils.copyAssetsToDst(StartActivity.this,"style.data","bent/sport.data");
             redirectTo();
             return null;
         }
+        @Override
+        protected void onPostExecute(String s) {
+           dismissAlert();
+            BaseConfig bg=BaseConfig.getInstance(StartActivity.this);
+           bg.setIntValue(Constants.IS_FIRST,1);
+            redirectTo();
 
+            super.onPostExecute(s);
+        }
     }
 }
