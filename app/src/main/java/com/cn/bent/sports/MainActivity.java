@@ -161,7 +161,7 @@ public class MainActivity extends BaseActivity {
 
 
     private void setdata() {
-        if (TaskCationManager.getSize() < 0) {
+        if (TaskCationManager.getSize() <=0) {
             LoginBase user = SaveObjectUtils.getInstance(MainActivity.this).getObject(Constants.USER_INFO, null);
             if (user == null) {
                 return;

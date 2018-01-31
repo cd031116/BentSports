@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -168,8 +169,10 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     private void addMarkersToMap() {
         ArrayList<MarkerOptions> markerOptionlst = new ArrayList<MarkerOptions>();
         aMap.clear();
+        Log.i("tttt","size="+mLoction.size());
         if (mLoction != null) {
             for (TaskCationBean hs : mLoction) {
+                Log.i("tttt","longitude="+longitude);
                 String longitude = hs.getLongitude();
                 String latitude = hs.getLatitude();
                 double dlat = Double.valueOf(latitude).doubleValue();//纬度
@@ -192,7 +195,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
 
                 markerOption.setFlat(true);
                 markerOptionlst.add(markerOption);
-//                aMap.addMarker(markerOption);
+                aMap.addMarker(markerOption);
             }
             mList = aMap.addMarkers(markerOptionlst, true);
         }
@@ -214,7 +217,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                 .draggable(true));
         aMap.moveCamera(CameraUpdateFactory.changeLatLng(latlng));
         aMap.moveCamera(CameraUpdateFactory.zoomTo(17));
-        aMap.setMyLocationEnabled(true);
+        aMap.setMyLocationEnabled(false);
     }
 
     /**
