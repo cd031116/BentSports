@@ -12,10 +12,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cn.bent.sports.base.BaseActivity;
+import com.cn.bent.sports.bean.LoginBase;
+import com.cn.bent.sports.database.TaskCationBean;
+import com.cn.bent.sports.database.TaskCationManager;
+import com.cn.bent.sports.utils.Constants;
+import com.cn.bent.sports.utils.SaveObjectUtils;
+import com.cn.bent.sports.view.activity.LoginActivity;
 import com.cn.bent.sports.view.fragment.DoTaskFragment;
 import com.cn.bent.sports.view.fragment.IsMeFragment;
 import com.cn.bent.sports.view.fragment.MainTabFragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -28,6 +35,7 @@ public class MainActivity extends BaseActivity {
     List<TextView> mText;
     int selected = 0;
     FragmentManager mFragmentMan;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +57,7 @@ public class MainActivity extends BaseActivity {
     @Override
     public void initData() {
         super.initData();
+        setdata();
     }
 
 
@@ -95,7 +104,7 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.text1,R.id.iamage1,R.id.iamage2,R.id.image_me, R.id.is_me})
+    @OnClick({R.id.text1, R.id.iamage1, R.id.iamage2, R.id.image_me, R.id.is_me})
     void onclick(View v) {
         switch (v.getId()) {
             case R.id.iamage1:
@@ -140,6 +149,7 @@ public class MainActivity extends BaseActivity {
             changeFrament("cFragment", 2);
         }
     }
+
     private void initFoot() {
         mTabs.get(0).setSelected(false);
         mTabs.get(1).setSelected(false);
@@ -147,6 +157,23 @@ public class MainActivity extends BaseActivity {
         mText.get(0).setTextColor(Color.parseColor("#333333"));
         mText.get(1).setTextColor(Color.parseColor("#333333"));
         mText.get(2).setTextColor(Color.parseColor("#333333"));
+    }
+
+
+    private void setdata() {
+        if (TaskCationManager.getSize() < 0) {
+            LoginBase user = SaveObjectUtils.getInstance(MainActivity.this).getObject(Constants.USER_INFO, null);
+            if (user == null) {
+                return;
+            }
+            List<TaskCationBean> nList = new ArrayList<>();
+            nList.add(new TaskCationBean(1, user.getMember_id(), "", "113.087689", "28.01294", "歌舞广场", false, false));
+            nList.add(new TaskCationBean(2, user.getMember_id(), "", "113.089341", "28.010676", "财神庙", false, false));
+            nList.add(new TaskCationBean(3, user.getMember_id(), "", "113.089148", "28.007219", "月亮岛", false, false));
+            nList.add(new TaskCationBean(4, user.getMember_id(), "", "113.088107", "28.00558", "竹林", false, false));
+            nList.add(new TaskCationBean(5, user.getMember_id(), "", "113.08631", "28.010676", "财神庙", false, false));
+            nList.add(new TaskCationBean(6, user.getMember_id(), "", "113.085055", "28.003998", "沙滩", false, false));
+        }
     }
 
 

@@ -24,18 +24,29 @@ public class TaskCationManager {
     public static List<TaskCationBean> getHistory() {
         return mTaskList;
     }
-//插入集合数据
+
+    public static int getSize(){
+        List<TaskCationBean> mTaskLists=  TaskCationDB.getDB().select(null, TaskCationBean.class);
+        return mTaskLists.size();
+    }
+
+
+
+
+    //插入集合数据
     public static void insert(List<TaskCationBean> list) {
         TaskCationDB.getDB().insert(null, list);
     }
-//删除所有
+
+    //删除所有
     public static void clear() {
         mTaskList.clear();
         TaskCationDB.getDB().deleteAll(null, TaskCationBean.class);
     }
-//更新数据
-    public static void update(TaskCationBean info){
-        TaskCationDB.getDB().update(null,info);
+
+    //更新数据
+    public static void update(TaskCationBean info) {
+        TaskCationDB.getDB().update(null, info);
     }
 
 

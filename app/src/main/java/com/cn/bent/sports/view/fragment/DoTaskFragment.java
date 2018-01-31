@@ -1,10 +1,13 @@
 package com.cn.bent.sports.view.fragment;
 
+import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.provider.SyncStateContract;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -25,11 +28,14 @@ import com.amap.api.services.route.RideRouteResult;
 import com.amap.api.services.route.RouteSearch;
 import com.amap.api.services.route.WalkPath;
 import com.amap.api.services.route.WalkRouteResult;
-import com.cn.bent.sports.LoctionBean;
 import com.cn.bent.sports.R;
-import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.base.BaseFragment;
+import com.cn.bent.sports.database.TaskCationBean;
+import com.cn.bent.sports.database.TaskCationManager;
 import com.cn.bent.sports.utils.ToastUtils;
+import com.cn.bent.sports.view.activity.LoginActivity;
+import com.cn.bent.sports.view.activity.SettingActivity;
+import com.cn.bent.sports.widget.ToastDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,8 +57,18 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
 
     @Bind(R.id.map_view)
     MapView mapView;
+
+    @Bind(R.id.start_view)
+    RelativeLayout start_view;
+    @Bind(R.id.name)
+    TextView name;
+    @Bind(R.id.juli)
+    TextView juli;
+    @Bind(R.id.title)
+    TextView title;
+
     AMap aMap;
-    private List<LoctionBean> mLoction = new ArrayList<>();
+    private List<TaskCationBean> mLoction = new ArrayList<>();
     private List<Marker> mList = new ArrayList<Marker>();
 
     //声明AMapLocationClient类对象
@@ -76,13 +92,11 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                 isLocal = true;
                 if (aMapLocation.getErrorCode() == 0) {
 //可在其中解析amapLocation获取相应内容。
-                    if (isFirstLoc) {
                         isFirstLoc = false;
                         latitude = String.valueOf(aMapLocation.getLatitude());
                         longitude = String.valueOf(aMapLocation.getLongitude());
                         mStartPoint = new LatLonPoint(aMapLocation.getLatitude(), aMapLocation.getLongitude());
                         addLocaToMap();
-                    }
                 } else {
                     isLocal = false;
                     //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
@@ -112,6 +126,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
 
     @Override
     protected void initData() {
+        mLoction= TaskCationManager.getHistory();
         mLocationClient = new AMapLocationClient(getActivity());
 //设置定位回调监听
         mLocationClient.setLocationListener(mAMapLocationListener);
@@ -133,18 +148,26 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     public boolean onMarkerClick(Marker marker) {
         for (int i = 0; i < mList.size(); i++) {
             if (marker.equals(mList.get(i))) {
-                mEndPoint=new LatLonPoint( Double.valueOf(mLoction.get(i).getLatitude()).doubleValue(),
-                        Double.valueOf(mLoction.get(i).getLongitude()).doubleValue());
-                searchRouteResult(ROUTE_TYPE_WALK, RouteSearch.WalkDefault);
+                showDialogMsg("是否前往该地点",i);
             }
         }
         return true;
     }
 
+    private void setcheck(){
+        for(TaskCationBean hs : mLoction){
+            hs.setCheck(false);
+        }
+    }
+
+
+
+
     private void addMarkersToMap() {
         ArrayList<MarkerOptions> markerOptionlst = new ArrayList<MarkerOptions>();
+        aMap.clear();
         if (mLoction != null) {
-            for (LoctionBean hs : mLoction) {
+            for (TaskCationBean hs : mLoction) {
                 String longitude = hs.getLongitude();
                 String latitude = hs.getLatitude();
                 double dlat = Double.valueOf(latitude).doubleValue();//纬度
@@ -153,13 +176,21 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                 markerOption.position(new LatLng(dlat, dlong));
                 markerOption.title(hs.getName());
                 markerOption.draggable(false);
-                markerOption.icon(
-                        BitmapDescriptorFactory.fromBitmap(BitmapFactory
-                                .decodeResource(getResources(),
-                                        R.drawable.zuobiao)));
+                if(hs.isCheck()){
+                    markerOption.icon(
+                            BitmapDescriptorFactory.fromBitmap(BitmapFactory
+                                    .decodeResource(getResources(),
+                                            R.drawable.zuobiao_xuanz)));
+                }else {
+                    markerOption.icon(
+                            BitmapDescriptorFactory.fromBitmap(BitmapFactory
+                                    .decodeResource(getResources(),
+                                            R.drawable.zuobiao)));
+                }
+
                 markerOption.setFlat(true);
                 markerOptionlst.add(markerOption);
-                aMap.addMarker(markerOption);
+//                aMap.addMarker(markerOption);
             }
             mList = aMap.addMarkers(markerOptionlst, true);
         }
@@ -255,7 +286,8 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                     mWalkRouteResult = result;
                     final WalkPath walkPath = mWalkRouteResult.getPaths()
                             .get(0);
-
+                    int dis = (int) walkPath.getDistance();
+                    setview(dis);
 
                 } else if (result != null && result.getPaths() == null) {
                     ToastUtils.showShortToast(getActivity(), "无结果");
@@ -271,4 +303,34 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     @Override
     public void onRideRouteSearched(RideRouteResult rideRouteResult, int errorCode) {
 
-    }}
+    }
+
+    private void   setview(int distance){
+        start_view.setVisibility(View.VISIBLE);
+
+        juli.setText(distance+"m");
+
+
+
+    }
+
+
+    private void showDialogMsg(String names,final  int position) {
+        new ToastDialog(getActivity(), R.style.dialog, names, new ToastDialog.OnCloseListener() {
+            @Override
+            public void onClick(Dialog dialog, boolean confirm) {
+                if (confirm) {
+                    setcheck();
+                    addMarkersToMap();
+                    mLoction.get(position).setCheck(true);
+                    mEndPoint=new LatLonPoint( Double.valueOf(mLoction.get(position).getLatitude()).doubleValue(),
+                            Double.valueOf(mLoction.get(position).getLongitude()).doubleValue());
+                    searchRouteResult(ROUTE_TYPE_WALK, RouteSearch.WalkDefault);
+                } else {
+
+                }
+                dialog.dismiss();
+            }
+        }).setTitle("提示").show();
+    }
+}

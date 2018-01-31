@@ -78,7 +78,59 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/start_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:background="@drawable/bg_round_white"
+        android:layout_margin="50px">
 
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="43px"
+                android:text="头脑风暴"
+                android:textSize="53px"
+                android:textColor="#333333"/>
+
+            <TextView
+                android:id="@+id/juli"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:drawableLeft="@drawable/ju_li"
+                android:padding="43px"
+                android:drawablePadding="20px"
+                android:text="300m"
+                android:textColor="#999999"/>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8px"
+            android:padding="43px"
+            android:visibility="visible"
+            android:text="你还没有到达目的地"
+            android:textColor="#999999"
+            android:layout_below="@+id/name"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8px"
+            android:text="到达目的地后,打开蓝牙领取任务"
+            android:textColor="#999999"
+            android:paddingBottom="50px"
+            android:layout_marginBottom="50px"
+            android:layout_below="@+id/title"/>
+
+    </RelativeLayout>
 
 
 </RelativeLayout>
