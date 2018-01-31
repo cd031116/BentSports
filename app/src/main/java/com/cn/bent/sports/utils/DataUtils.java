@@ -64,7 +64,6 @@ public class DataUtils {
                 }
             } else {//如果是文件
                 InputStream is = context.getAssets().open(oldPath);
-                Log.i("tttt","is="+is);
                 File fiel=new File(newPath);
                 if(!fiel.exists()){
                     fiel.mkdirs();

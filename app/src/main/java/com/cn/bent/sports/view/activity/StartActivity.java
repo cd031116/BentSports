@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 
@@ -54,6 +55,13 @@ public class StartActivity extends BaseActivity {
     @Override
     public void initData()  {
         super.initData();
+        boolean a = Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
+        if(a){
+            Log.i("tttt","可以");
+        }else {
+            Log.i("tttt","不支持=");
+        }
+
         MAsyncTask asyncTask = new MAsyncTask();
         asyncTask.execute();//开始执行
     }
@@ -77,7 +85,7 @@ public class StartActivity extends BaseActivity {
 
         @Override
         protected String doInBackground(Void... params) {
-            String path= Environment.getExternalStorageDirectory()+"/paly/asset";
+            String path= Environment.getExternalStorageState()+"style_pass.data";
             DataUtils.copyFilesFassets(StartActivity.this,"style.data",path);
             return null;
         }

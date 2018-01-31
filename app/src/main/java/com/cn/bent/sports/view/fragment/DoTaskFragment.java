@@ -141,12 +141,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
         if (aMap == null) {
             aMap = mapView.getMap();
         }
-        String path= Environment.getExternalStorageDirectory()+"/paly/asset";
-        Log.i("tttt","path="+path);
-        File file=new File(path);
-        if(file.exists()){
-            Log.i("tttt","exists");
-        }
+        String path= Environment.getExternalStorageState()+"style_pass.data";
         aMap.setCustomMapStylePath(path);
         aMap.setMapCustomEnable(true);//true 开启; false 关闭
         // 绑定 Marker 被点击事件
