@@ -8,6 +8,7 @@ import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseFragment;
 import com.cn.bent.sports.ibeacon.ScanActivity;
 import com.cn.bent.sports.view.activity.GuideActivity;
+import com.cn.bent.sports.view.activity.PlayWebViewActivity;
 import com.cn.bent.sports.view.activity.SettingActivity;
 
 import butterknife.OnClick;
@@ -42,7 +43,7 @@ public class IsMeFragment extends BaseFragment{
     }
 
 
-    @OnClick({R.id.setting,R.id.scan})
+    @OnClick({R.id.setting,R.id.scan,R.id.user_photo})
     void conlick(View view){
         switch (view.getId()){
             case R.id.setting:
@@ -50,6 +51,9 @@ public class IsMeFragment extends BaseFragment{
                 break;
             case R.id.scan:
                 startActivity(new Intent(getActivity(), ScanActivity.class));
+                break;
+            case R.id.user_photo:
+                startActivity(new Intent(getActivity(), PlayWebViewActivity.class));
                 break;
         }
     }
