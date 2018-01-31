@@ -64,6 +64,7 @@
         <activity android:name=".view.activity.LoginActivity" />
         <activity android:name=".view.activity.ContinueActivity" />
         <activity android:name=".view.activity.RuleActivity"></activity>
+        <activity android:name=".view.activity.ZoomActivity"></activity>
     </application>
 
 </manifest>
