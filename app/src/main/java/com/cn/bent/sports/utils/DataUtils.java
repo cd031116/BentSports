@@ -1,7 +1,10 @@
 package com.cn.bent.sports.utils;
 
+import android.content.Context;
 import android.os.Environment;
+import android.util.Log;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -62,5 +65,22 @@ public class DataUtils {
         }
         downloadFile.close();
         input.close();
+    }
+
+    public static void copyFile(InputStream in, String targetPath) {
+        try {
+            FileOutputStream fos = new FileOutputStream(new File(targetPath));
+            byte[] buffer = new byte[1024];
+            int byteCount = 0;
+            while ((byteCount = in.read(buffer)) != -1) {// 循环从输入流读取
+                // buffer字节
+                fos.write(buffer, 0, byteCount);// 将读取的输入流写入到输出流
+            }
+            fos.flush();// 刷新缓冲区
+            in.close();
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

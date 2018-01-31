@@ -42,9 +42,6 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mFragmentMan = getSupportFragmentManager();
-        Log.i("kkkk","aaaaaaaaaa="+ DataUtils.getDateToString(DataUtils.getlongs()));
-        long timeStamp = System.currentTimeMillis();
-        Log.i("kkkk","bbbbbb="+ DataUtils.getDateToString(timeStamp));
 
     }
 

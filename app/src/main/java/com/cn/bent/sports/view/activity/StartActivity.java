@@ -1,6 +1,8 @@
 package com.cn.bent.sports.view.activity;
 
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.animation.AlphaAnimation;
@@ -11,7 +13,10 @@ import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.utils.Constants;
+import com.cn.bent.sports.utils.DataUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
+
+import java.io.InputStream;
 
 public class StartActivity extends BaseActivity {
 
@@ -49,6 +54,8 @@ public class StartActivity extends BaseActivity {
     @Override
     public void initData()  {
         super.initData();
+        MAsyncTask asyncTask = new MAsyncTask();
+        asyncTask.execute();//开始执行
     }
 
     private void redirectTo() {
@@ -62,5 +69,19 @@ public class StartActivity extends BaseActivity {
 //        }
         startActivity(new Intent(StartActivity.this,MainActivity.class));
         StartActivity.this.finish();
+    }
+
+
+    class  MAsyncTask extends AsyncTask<Void, Integer, String>{
+
+
+        @Override
+        protected String doInBackground(Void... params) {
+            InputStream ad = this.getClass().getClassLoader().getResourceAsStream("assets/style.data");
+            String path= Environment.getExternalStorageDirectory()+"paly/asset"+"style.data";
+            DataUtils.copyFile(ad,path);
+            return null;
+        }
+
     }
 }
