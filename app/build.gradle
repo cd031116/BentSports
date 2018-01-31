@@ -10,6 +10,7 @@ android {
         versionCode rootProject.ext.android.versionCode
         versionName rootProject.ext.android.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     lintOptions {
         checkReleaseBuilds false
@@ -60,5 +61,6 @@ dependencies {
     compile 'com.amap.api:navi-3dmap:latest.integration'
     compile 'com.amap.api:location:latest.integration'
     compile 'com.amap.api:search:latest.integration'
+    compile 'com.android.support:multidex:1.0.1'
     testCompile 'junit:junit:4.12'
 }

@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.support.multidex.MultiDex;
 
 import com.cn.bent.sports.database.TaskCationManager;
 
@@ -50,11 +51,11 @@ public class MyApplication extends Application{
         return info;
     }
 
-
     @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
-    }
+     protected void attachBaseContext(Context base) {
+                 super.attachBaseContext(base);
+                 MultiDex.install(this) ;
+            }
 
     @Override
     public void onTerminate() {
