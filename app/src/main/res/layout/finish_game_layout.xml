@@ -9,6 +9,7 @@
         android:id="@+id/card_img"
         android:layout_width="217px"
         android:layout_height="217px"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="500px" />
 
     <TextView
@@ -17,6 +18,7 @@
         android:layout_gravity="center_horizontal"
         android:text="任务完成，获得卡片"
         android:textColor="#ffffff"
+        android:layout_marginTop="178px"
         android:textSize="51px" />
 
     <LinearLayout
@@ -41,6 +43,7 @@
             android:background="@drawable/jifen" />
 
         <TextView
+            android:id="@+id/scord"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16px"

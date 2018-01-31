@@ -62,6 +62,7 @@
         <activity android:name=".view.activity.ChangeNameActivity" />
         <activity android:name=".view.activity.PlayWebViewActivity" />
         <activity android:name=".view.activity.LoginActivity"></activity>
+        <activity android:name=".view.activity.ContinueActivity"></activity>
     </application>
 
 </manifest>

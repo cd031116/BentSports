@@ -1,6 +1,7 @@
 package com.cn.bent.sports.database;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,12 +17,13 @@ public class TaskCationManager {
     public static void setup(Context context) {
         TaskCationDB.setup(context);
 
-        mTaskList.clear();
-        mTaskList.addAll(TaskCationDB.getDB().select(null, TaskCationBean.class));
     }
 
     //获得所有
     public static List<TaskCationBean> getHistory() {
+        mTaskList.clear();
+        mTaskList.addAll(TaskCationDB.getDB().select(null, TaskCationBean.class));
+        Log.i("tttt","mTaskList.size="+mTaskList.size());
         return mTaskList;
     }
 

@@ -1,6 +1,7 @@
 package com.cn.bent.sports.api;
 
 
+import com.cn.bent.sports.bean.AddScoreEntity;
 import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.bean.RankEntity;
 import com.zhl.network.huiqu.HuiquResult;
@@ -44,6 +45,17 @@ public interface ApiService {
     Observable<HuiquResult<LoginBase>> Loging(
             @Field("mobile") String mobile,
             @Field("code") String code);
+
+    /**
+     *
+     *
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("outdoor/user/addscore")
+    Observable<HuiquResult<AddScoreEntity>> addScore(
+            @Field("cur_user_id") String mobile,
+            @Field("score") int code);
 
     @GET("outdoor/user/ranklist")
     Observable<HuiquResult<RankEntity>> getRankList();

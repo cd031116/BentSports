@@ -85,6 +85,9 @@ public class TaskCationBean  implements Serializable {
         this.name = name;
     }
 
+    public TaskCationBean() {
+    }
+
     public TaskCationBean(int tId, String user_id, String times, String longitude, String latitude, String name, boolean isshow, boolean isCheck) {
         this.tId = tId;
         this.user_id = user_id;

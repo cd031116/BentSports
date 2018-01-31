@@ -129,7 +129,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
 
     @Override
     protected void initData() {
-        mLoction= TaskCationManager.getHistory();
+        mLoction.addAll(TaskCationManager.getHistory());
         mLocationClient = new AMapLocationClient(getActivity());
 //设置定位回调监听
         mLocationClient.setLocationListener(mAMapLocationListener);
