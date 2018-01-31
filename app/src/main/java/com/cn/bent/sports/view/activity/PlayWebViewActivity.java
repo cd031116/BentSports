@@ -72,19 +72,19 @@ public class PlayWebViewActivity extends BaseActivity {
         switch (gameId) {
 
             case 1:
-                mWebView.loadUrl("http://aihw.zhonghuilv.net/aihuwai/index.html?uid=" + uid + "&etype=1");
+                mWebView.loadUrl("http://aihw.zhonghuilv.net/aihuwai/index.html?uid=" + uid + "&etype=android");
                 break;
             case 2:
-                mWebView.loadUrl("http://aihw.zhonghuilv.net/caishenmiao/index.html?uid=" + uid + "&etype=1");
+                mWebView.loadUrl("http://aihw.zhonghuilv.net/caishenmiao/index.html?uid=" + uid + "&etype=android");
                 break;
             case 3:
-                mWebView.loadUrl("http://aihw.zhonghuilv.net/hby/index.html?uid=" + uid + "&etype=1");
+                mWebView.loadUrl("http://aihw.zhonghuilv.net/hby/index.html?uid=" + uid + "&etype=android");
                 break;
             case 4:
-                mWebView.loadUrl("http://aihw.zhonghuilv.net/denglong/index.html?uid=" + uid + "&etype=1");
+                mWebView.loadUrl("http://aihw.zhonghuilv.net/denglong/index.html?uid=" + uid + "&etype=android");
                 break;
             case 5:
-                mWebView.loadUrl("http://aihw.zhonghuilv.net/aihuwai/index.html?uid=" + uid + "&etype=1");
+                mWebView.loadUrl("http://aihw.zhonghuilv.net/aihuwai/index.html?uid=" + uid + "&etype=android");
                 break;
         }
         // 先载入JS代码
@@ -102,6 +102,7 @@ public class PlayWebViewActivity extends BaseActivity {
     class JSInterface {
         @JavascriptInterface
         public void h5Result(String ss) {
+            Log.e("dasa", "h5Result: "+ss );
             Gson gson = new Gson();
             GameEntity gameEntity = gson.fromJson(ss, GameEntity.class);
             Intent intent = new Intent(PlayWebViewActivity.this, ContinueActivity.class);

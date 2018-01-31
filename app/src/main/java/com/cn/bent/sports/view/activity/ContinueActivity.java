@@ -11,9 +11,12 @@ import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.AddScoreEntity;
 import com.cn.bent.sports.bean.GameEntity;
+import com.cn.bent.sports.event.CardEvent;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.HuiquRxFunction;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.Serializable;
 
@@ -35,6 +38,7 @@ public class ContinueActivity extends BaseActivity {
 
     private String  uid;
     private int  score;
+    private int  gameId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +56,7 @@ public class ContinueActivity extends BaseActivity {
         GameEntity game = (GameEntity) getIntent().getSerializableExtra("game");
         uid=game.getUid();
         score=game.getScord();
+        gameId=game.getGameId();
         scord.setText(score+"");
         switch (game.getGameId()){
             case 2:
@@ -75,6 +80,7 @@ public class ContinueActivity extends BaseActivity {
                     public void onSuccess(int whichRequest, AddScoreEntity addScoreEntity) {
                         if (addScoreEntity.getAddStatus()==1){
                             Log.e("dasa", "onSuccess: 上传成功");
+                            EventBus.getDefault().post(new CardEvent(gameId));
                         }
                     }
 
