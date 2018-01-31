@@ -22,7 +22,6 @@ public class TaskCationBean  implements Serializable {
     private  String name;
     private boolean isshow;
     private boolean isCheck;
-
     public boolean isCheck() {
         return isCheck;
     }

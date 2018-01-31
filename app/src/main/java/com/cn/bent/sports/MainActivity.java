@@ -17,6 +17,7 @@ import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.database.TaskCationBean;
 import com.cn.bent.sports.database.TaskCationManager;
 import com.cn.bent.sports.utils.Constants;
+import com.cn.bent.sports.utils.DataUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.view.activity.LoginActivity;
 import com.cn.bent.sports.view.fragment.DoTaskFragment;
@@ -41,6 +42,10 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mFragmentMan = getSupportFragmentManager();
+        Log.i("kkkk","aaaaaaaaaa="+ DataUtils.getDateToString(DataUtils.getlongs()));
+        long timeStamp = System.currentTimeMillis();
+        Log.i("kkkk","bbbbbb="+ DataUtils.getDateToString(timeStamp));
+
     }
 
 
@@ -168,9 +173,7 @@ public class MainActivity extends BaseActivity {
 
 
     private void setdata() {
-        Log.i("tttt","setdata="+TaskCationManager.getSize() );
         if (TaskCationManager.getSize() <=0) {
-            Log.i("tttt","getSize=");
             LoginBase user = SaveObjectUtils.getInstance(MainActivity.this).getObject(Constants.USER_INFO, null);
             List<TaskCationBean> nList = new ArrayList<>();
 //            nList.add(new TaskCationBean(1, user.getMember_id(), "", "113.087689", "28.01294", "歌舞广场", false, false));
@@ -183,7 +186,6 @@ public class MainActivity extends BaseActivity {
             nList.add(new TaskCationBean(2,"123", "", "112.992531", "28.119808", "财神庙", false, false));
             nList.add(new TaskCationBean(3, "123", "", "112.996222", "28.115455", "月亮岛", false, false));
             TaskCationManager.insert(nList);
-            Log.i("tttt","insert=");
         }
     }
 

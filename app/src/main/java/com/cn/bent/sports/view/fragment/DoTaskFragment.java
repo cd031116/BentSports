@@ -1,6 +1,7 @@
 package com.cn.bent.sports.view.fragment;
 
 import android.app.Dialog;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -33,14 +35,19 @@ import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseFragment;
 import com.cn.bent.sports.database.TaskCationBean;
 import com.cn.bent.sports.database.TaskCationManager;
+import com.cn.bent.sports.ibeacon.UserRssi;
 import com.cn.bent.sports.overlay.AMapUtil;
 import com.cn.bent.sports.overlay.WalkRouteOverlay;
 import com.cn.bent.sports.utils.ToastUtils;
-import com.cn.bent.sports.view.activity.LoginActivity;
-import com.cn.bent.sports.view.activity.SettingActivity;
+import com.cn.bent.sports.view.activity.PlayWebViewActivity;
 import com.cn.bent.sports.widget.ToastDialog;
+import com.minew.beaconset.BluetoothState;
+import com.minew.beaconset.MinewBeacon;
+import com.minew.beaconset.MinewBeaconManager;
+import com.minew.beaconset.MinewBeaconManagerListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.Bind;
@@ -87,6 +94,13 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     private LatLonPoint mStartPoint;//起点，116.335891,39.942295
     private LatLonPoint mEndPoint;//终点，116.481288,39.995576
     private final int ROUTE_TYPE_WALK = 3;
+    private   Marker noMarker;
+    UserRssi comp = new UserRssi();
+    private WalkRouteOverlay walkRouteOverlay;
+    private boolean isWark=false;
+    private static final int REQUEST_ENABLE_BT = 2;
+    private MinewBeaconManager mMinewBeaconManager;
+    private String t_ids;
     //---------------------
     AMapLocationListener mAMapLocationListener = new AMapLocationListener() {
         @Override
@@ -95,13 +109,11 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                 isLocal = true;
                 if (aMapLocation.getErrorCode() == 0) {
 //可在其中解析amapLocation获取相应内容。
-                    if (isFirstLoc) {
                         isFirstLoc = false;
                         latitude = String.valueOf(aMapLocation.getLatitude());
                         longitude = String.valueOf(aMapLocation.getLongitude());
                         mStartPoint = new LatLonPoint(aMapLocation.getLatitude(), aMapLocation.getLongitude());
                         addLocaToMap();
-                    }
                 } else {
                     isLocal = false;
                     //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
@@ -120,6 +132,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
         mapView.onCreate(savedInstanceState);
+        mMinewBeaconManager = MinewBeaconManager.getInstance(getActivity());
         if (aMap == null) {
             aMap = mapView.getMap();
         }
@@ -131,7 +144,6 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
 
     @Override
     protected void initData() {
-        mLoction = TaskCationManager.getHistory();
         mLocationClient = new AMapLocationClient(getActivity());
 //设置定位回调监听
         mLocationClient.setLocationListener(mAMapLocationListener);
@@ -143,10 +155,10 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
         mLocationClient.setLocationOption(mLocationOption);
         //设置定位模式为AMapLocationMode.Device_Sensors，仅设备模式。
         mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Device_Sensors);
+        mLocationOption.setInterval(1000*10);
         //启动定位
         mLocationOption.setOnceLocation(true);
         mLocationClient.startLocation();
-        addMarkersToMap();
     }
 
     @Override
@@ -154,6 +166,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
         for (int i = 0; i < mList.size(); i++) {
             if (marker.equals(mList.get(i))) {
                 showDialogMsg("是否前往该地点", i);
+                t_ids=i+"";
             }
         }
         return true;
@@ -163,15 +176,12 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
         for (TaskCationBean hs : mLoction) {
             hs.setCheck(false);
         }
-        for (Marker marker : mList) {
-            marker.remove();
-        }
+        aMap.clear();
     }
 
 
     private void addMarkersToMap() {
         ArrayList<MarkerOptions> markerOptionlst = new ArrayList<MarkerOptions>();
-        Log.i("tttt", "size=" + mLoction.size());
         if (mLoction != null) {
             if(mList!=null){
                 mList.clear();
@@ -209,18 +219,26 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
      * 在地图上添加marker
      */
     private void addLocaToMap() {
+        if(noMarker!=null){
+            noMarker.remove();
+        }
         if (TextUtils.isEmpty(latitude)) {
             return;
         }
         LatLng latlng = new LatLng(Double.valueOf(latitude), Double.valueOf(longitude));
-        Marker marker = aMap.addMarker(new MarkerOptions()
+        noMarker = aMap.addMarker(new MarkerOptions()
                 .position(latlng)
                 .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
                         .decodeResource(getResources(), R.drawable.dangqwz)))
                 .draggable(true));
         aMap.moveCamera(CameraUpdateFactory.changeLatLng(latlng));
-        aMap.moveCamera(CameraUpdateFactory.zoomTo(17));
+        aMap.moveCamera(CameraUpdateFactory.zoomTo(15));
         aMap.setMyLocationEnabled(false);
+        if(isWark){
+            aMap.clear();
+            addMarkersToMap();
+            searchRouteResult(ROUTE_TYPE_WALK, RouteSearch.WalkDefault);
+        }
     }
 
     /**
@@ -230,6 +248,8 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     public void onResume() {
         super.onResume();
         mapView.onResume();
+        mLoction = TaskCationManager.getHistory();
+        addMarkersToMap();
     }
 
     /**
@@ -294,14 +314,17 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                     mWalkRouteResult = result;
                     final WalkPath walkPath = mWalkRouteResult.getPaths()
                             .get(0);
-
-                    WalkRouteOverlay walkRouteOverlay = new WalkRouteOverlay(
+                    if(walkRouteOverlay!=null){
+                        walkRouteOverlay.removeFromMap();
+                    }
+                    walkRouteOverlay    = new WalkRouteOverlay(
                             getActivity(), aMap, walkPath,
                             mWalkRouteResult.getStartPos(),
                             mWalkRouteResult.getTargetPos());
                     walkRouteOverlay.removeFromMap();
                     walkRouteOverlay.addToMap();
                     walkRouteOverlay.zoomToSpan();
+                    isWark=true;
                     int dis = (int) walkPath.getDistance();
                     setview(dis);
 
@@ -324,6 +347,10 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     private void setview(int distance) {
         start_view.setVisibility(View.VISIBLE);
         juli.setText(AMapUtil.getFriendlyLength(distance));
+        if(distance<20){
+            //打开蓝牙
+            checkBluetooth();
+        }
     }
 
 
@@ -345,4 +372,83 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
             }
         }).setTitle("提示").show();
     }
+
+    //-------------------------------------------蓝牙
+    /**
+     * check Bluetooth state
+     */
+    private void checkBluetooth() {
+        BluetoothState bluetoothState = mMinewBeaconManager.checkBluetoothState();
+        switch (bluetoothState) {
+            case BluetoothStateNotSupported:
+                    ToastUtils.showShortToast(getActivity(),"手机不支持蓝牙");
+                break;
+            case BluetoothStatePowerOff:
+                showBLEDialog();
+                break;
+            case BluetoothStatePowerOn:
+                initListener();
+                break;
+        }
+    }
+
+    private void initListener() {
+
+        mMinewBeaconManager.startScan();
+        mMinewBeaconManager.setMinewbeaconManagerListener(new MinewBeaconManagerListener() {
+            @Override
+            public void onUpdateBluetoothState(BluetoothState state) {
+                switch (state) {
+                    case BluetoothStatePowerOff:
+                        Toast.makeText(getActivity(), "蓝牙关闭", Toast.LENGTH_SHORT).show();
+                        break;
+                    case BluetoothStatePowerOn:
+                        Toast.makeText(getActivity(), "蓝牙打开", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+
+            @Override
+            public void onRangeBeacons(List<MinewBeacon> beacons) {
+                Log.e("dasd", "dasd: " + beacons.size());
+                Collections.sort(beacons, comp);
+                if (beacons != null && beacons.size() > 0) {
+                    if (beacons.get(0).getDistance()>20) {
+                       //弹游戏
+                        Intent intent=new Intent(getActivity(), PlayWebViewActivity.class);
+                        intent.putExtra("gameId",t_ids);
+                            startActivity(intent);
+                        mMinewBeaconManager.stopScan();
+                        start_view.setVisibility(View.GONE);
+                    }
+                }
+            }
+
+            @Override
+            public void onAppearBeacons(List<MinewBeacon> beacons) {
+
+            }
+
+            @Override
+            public void onDisappearBeacons(List<MinewBeacon> beacons) {
+
+            }
+        });
+    }
+
+    private void showBLEDialog() {
+        Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+        startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case REQUEST_ENABLE_BT:
+                initListener();
+                break;
+        }
+    }
+
 }

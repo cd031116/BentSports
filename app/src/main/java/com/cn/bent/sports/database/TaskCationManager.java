@@ -31,7 +31,6 @@ public class TaskCationManager {
 
 
 
-
     //插入集合数据
     public static void insert(List<TaskCationBean> list) {
        TaskCationDB.getDB().insert(null, list);
@@ -44,8 +43,15 @@ public class TaskCationManager {
     }
 
     //更新数据
-    public static void update(TaskCationBean info) {
-        TaskCationDB.getDB().update(null, info);
+    public static void update(String index,String times) {
+        List<TaskCationBean> mList=TaskCationDB.getDB().select(null, TaskCationBean.class);
+        for(TaskCationBean infos:mList){
+            if (index.endsWith(String.valueOf(infos.gettId()))){
+                infos.setTimes(times);
+            }
+        }
+        TaskCationDB.getDB().deleteAll(null, TaskCationBean.class);
+        TaskCationDB.getDB().insert(null, mList);
     }
 
 
