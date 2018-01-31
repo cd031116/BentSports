@@ -167,12 +167,15 @@ public class MainActivity extends BaseActivity {
                 return;
             }
             List<TaskCationBean> nList = new ArrayList<>();
-            nList.add(new TaskCationBean(1, user.getMember_id(), "", "113.087689", "28.01294", "歌舞广场", false, false));
-            nList.add(new TaskCationBean(2, user.getMember_id(), "", "113.089341", "28.010676", "财神庙", false, false));
-            nList.add(new TaskCationBean(3, user.getMember_id(), "", "113.089148", "28.007219", "月亮岛", false, false));
-            nList.add(new TaskCationBean(4, user.getMember_id(), "", "113.088107", "28.00558", "竹林", false, false));
-            nList.add(new TaskCationBean(5, user.getMember_id(), "", "113.08631", "28.010676", "财神庙", false, false));
-            nList.add(new TaskCationBean(6, user.getMember_id(), "", "113.085055", "28.003998", "沙滩", false, false));
+//            nList.add(new TaskCationBean(1, user.getMember_id(), "", "113.087689", "28.01294", "歌舞广场", false, false));
+//            nList.add(new TaskCationBean(2, user.getMember_id(), "", "113.089341", "28.010676", "财神庙", false, false));
+//            nList.add(new TaskCationBean(3, user.getMember_id(), "", "113.089148", "28.007219", "月亮岛", false, false));
+//            nList.add(new TaskCationBean(4, user.getMember_id(), "", "113.088107", "28.00558", "竹林", false, false));
+//            nList.add(new TaskCationBean(5, user.getMember_id(), "", "113.08631", "28.010676", "财神庙", false, false));
+//            nList.add(new TaskCationBean(6, user.getMember_id(), "", "113.085055", "28.003998", "沙滩", false, false));
+            nList.add(new TaskCationBean(1, user.getMember_id(), "", "112.983733", "28.117083", "歌舞广场", false, false));
+            nList.add(new TaskCationBean(2, user.getMember_id(), "", "112.992531", "28.119808", "财神庙", false, false));
+            nList.add(new TaskCationBean(3, user.getMember_id(), "", "112.996222", "28.115455", "月亮岛", false, false));
         }
     }
 
