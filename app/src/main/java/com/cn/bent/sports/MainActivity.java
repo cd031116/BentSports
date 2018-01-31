@@ -57,7 +57,7 @@ public class MainActivity extends BaseActivity {
     @Override
     public void initData() {
         super.initData();
-        switchContent(1);
+        changeFrament("bFragment", 1);
         setdata();
     }
 

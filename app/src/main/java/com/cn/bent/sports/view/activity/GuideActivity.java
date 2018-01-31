@@ -1,24 +1,11 @@
 package com.cn.bent.sports.view.activity;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.MapView;
-import com.amap.api.navi.AMapHudViewListener;
-import com.amap.api.navi.AMapNavi;
-import com.amap.api.navi.AMapNaviListener;
-import com.amap.api.navi.AMapNaviView;
-import com.amap.api.navi.AMapNaviViewListener;
-import com.amap.api.navi.enums.NaviType;
-import com.amap.api.navi.model.NaviLatLng;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseActivity;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 
 import butterknife.Bind;
 

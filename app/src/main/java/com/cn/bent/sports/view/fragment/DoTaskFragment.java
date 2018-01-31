@@ -33,6 +33,8 @@ import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseFragment;
 import com.cn.bent.sports.database.TaskCationBean;
 import com.cn.bent.sports.database.TaskCationManager;
+import com.cn.bent.sports.overlay.AMapUtil;
+import com.cn.bent.sports.overlay.WalkRouteOverlay;
 import com.cn.bent.sports.utils.ToastUtils;
 import com.cn.bent.sports.view.activity.LoginActivity;
 import com.cn.bent.sports.view.activity.SettingActivity;
@@ -93,7 +95,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                 isLocal = true;
                 if (aMapLocation.getErrorCode() == 0) {
 //可在其中解析amapLocation获取相应内容。
-                    if(isFirstLoc){
+                    if (isFirstLoc) {
                         isFirstLoc = false;
                         latitude = String.valueOf(aMapLocation.getLatitude());
                         longitude = String.valueOf(aMapLocation.getLongitude());
@@ -129,7 +131,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
 
     @Override
     protected void initData() {
-        mLoction.addAll(TaskCationManager.getHistory());
+        mLoction = TaskCationManager.getHistory();
         mLocationClient = new AMapLocationClient(getActivity());
 //设置定位回调监听
         mLocationClient.setLocationListener(mAMapLocationListener);
@@ -151,28 +153,30 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     public boolean onMarkerClick(Marker marker) {
         for (int i = 0; i < mList.size(); i++) {
             if (marker.equals(mList.get(i))) {
-                showDialogMsg("是否前往该地点",i);
+                showDialogMsg("是否前往该地点", i);
             }
         }
         return true;
     }
 
-    private void setcheck(){
-        for(TaskCationBean hs : mLoction){
+    private void setcheck() {
+        for (TaskCationBean hs : mLoction) {
             hs.setCheck(false);
+        }
+        for (Marker marker : mList) {
+            marker.remove();
         }
     }
 
 
-
-
     private void addMarkersToMap() {
         ArrayList<MarkerOptions> markerOptionlst = new ArrayList<MarkerOptions>();
-        aMap.clear();
-        Log.i("tttt","size="+mLoction.size());
+        Log.i("tttt", "size=" + mLoction.size());
         if (mLoction != null) {
+            if(mList!=null){
+                mList.clear();
+            }
             for (TaskCationBean hs : mLoction) {
-                Log.i("tttt","longitude="+longitude);
                 String longitude = hs.getLongitude();
                 String latitude = hs.getLatitude();
                 double dlat = Double.valueOf(latitude).doubleValue();//纬度
@@ -181,23 +185,22 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                 markerOption.position(new LatLng(dlat, dlong));
                 markerOption.title(hs.getName());
                 markerOption.draggable(false);
-                if(hs.isCheck()){
+                if (hs.isCheck()) {
                     markerOption.icon(
                             BitmapDescriptorFactory.fromBitmap(BitmapFactory
                                     .decodeResource(getResources(),
-                                            R.drawable.zuobiao_xuanz)));
-                }else {
+                                            R.drawable.zb_icon)));
+                } else {
                     markerOption.icon(
                             BitmapDescriptorFactory.fromBitmap(BitmapFactory
                                     .decodeResource(getResources(),
                                             R.drawable.zuobiao)));
                 }
 
-                markerOption.setFlat(true);
                 markerOptionlst.add(markerOption);
                 aMap.addMarker(markerOption);
+                mList.add(aMap.addMarker(markerOption));
             }
-            mList = aMap.addMarkers(markerOptionlst, true);
         }
     }
 
@@ -291,6 +294,14 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                     mWalkRouteResult = result;
                     final WalkPath walkPath = mWalkRouteResult.getPaths()
                             .get(0);
+
+                    WalkRouteOverlay walkRouteOverlay = new WalkRouteOverlay(
+                            getActivity(), aMap, walkPath,
+                            mWalkRouteResult.getStartPos(),
+                            mWalkRouteResult.getTargetPos());
+                    walkRouteOverlay.removeFromMap();
+                    walkRouteOverlay.addToMap();
+                    walkRouteOverlay.zoomToSpan();
                     int dis = (int) walkPath.getDistance();
                     setview(dis);
 
@@ -310,25 +321,21 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
 
     }
 
-    private void   setview(int distance){
+    private void setview(int distance) {
         start_view.setVisibility(View.VISIBLE);
-
-        juli.setText(distance+"m");
-
-
-
+        juli.setText(AMapUtil.getFriendlyLength(distance));
     }
 
 
-    private void showDialogMsg(String names,final  int position) {
+    private void showDialogMsg(String names, final int position) {
         new ToastDialog(getActivity(), R.style.dialog, names, new ToastDialog.OnCloseListener() {
             @Override
             public void onClick(Dialog dialog, boolean confirm) {
                 if (confirm) {
                     setcheck();
-                    addMarkersToMap();
                     mLoction.get(position).setCheck(true);
-                    mEndPoint=new LatLonPoint( Double.valueOf(mLoction.get(position).getLatitude()).doubleValue(),
+                    addMarkersToMap();
+                    mEndPoint = new LatLonPoint(Double.valueOf(mLoction.get(position).getLatitude()).doubleValue(),
                             Double.valueOf(mLoction.get(position).getLongitude()).doubleValue());
                     searchRouteResult(ROUTE_TYPE_WALK, RouteSearch.WalkDefault);
                 } else {
