@@ -35,7 +35,7 @@ public class TaskCationManager {
 
     //插入集合数据
     public static void insert(List<TaskCationBean> list) {
-        TaskCationDB.getDB().insert(null, list);
+       TaskCationDB.getDB().insert(null, list);
     }
 
     //删除所有

@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -51,12 +52,12 @@ public class MainActivity extends BaseActivity {
     @Override
     public void initView() {
         super.initView();
-        switchContent(1);
     }
 
     @Override
     public void initData() {
         super.initData();
+        switchContent(1);
         setdata();
     }
 
@@ -161,11 +162,10 @@ public class MainActivity extends BaseActivity {
 
 
     private void setdata() {
+        Log.i("tttt","setdata="+TaskCationManager.getSize() );
         if (TaskCationManager.getSize() <=0) {
+            Log.i("tttt","getSize=");
             LoginBase user = SaveObjectUtils.getInstance(MainActivity.this).getObject(Constants.USER_INFO, null);
-            if (user == null) {
-                return;
-            }
             List<TaskCationBean> nList = new ArrayList<>();
 //            nList.add(new TaskCationBean(1, user.getMember_id(), "", "113.087689", "28.01294", "歌舞广场", false, false));
 //            nList.add(new TaskCationBean(2, user.getMember_id(), "", "113.089341", "28.010676", "财神庙", false, false));
@@ -173,9 +173,11 @@ public class MainActivity extends BaseActivity {
 //            nList.add(new TaskCationBean(4, user.getMember_id(), "", "113.088107", "28.00558", "竹林", false, false));
 //            nList.add(new TaskCationBean(5, user.getMember_id(), "", "113.08631", "28.010676", "财神庙", false, false));
 //            nList.add(new TaskCationBean(6, user.getMember_id(), "", "113.085055", "28.003998", "沙滩", false, false));
-            nList.add(new TaskCationBean(1, user.getMember_id(), "", "112.983733", "28.117083", "歌舞广场", false, false));
-            nList.add(new TaskCationBean(2, user.getMember_id(), "", "112.992531", "28.119808", "财神庙", false, false));
-            nList.add(new TaskCationBean(3, user.getMember_id(), "", "112.996222", "28.115455", "月亮岛", false, false));
+            nList.add(new TaskCationBean(1, "123", "", "112.983733", "28.117083", "歌舞广场", false, false));
+            nList.add(new TaskCationBean(2,"123", "", "112.992531", "28.119808", "财神庙", false, false));
+            nList.add(new TaskCationBean(3, "123", "", "112.996222", "28.115455", "月亮岛", false, false));
+            TaskCationManager.insert(nList);
+            Log.i("tttt","insert=");
         }
     }
 

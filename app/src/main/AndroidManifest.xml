@@ -34,7 +34,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.activity.LoginActivity">
+        <activity android:name=".view.activity.StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -50,16 +50,18 @@
         <activity android:name=".view.activity.GuideActivity" />
         <activity android:name=".ibeacon.ScanActivity" />
 
-        <service android:name="com.minew.beaconset.ConnectService"/>
+        <service android:name="com.minew.beaconset.ConnectService" />
+
         <receiver android:name="com.minew.beaconset.BluetoothChangedReceiver">
             <intent-filter>
-                <action android:name="android.bluetooth.adapter.action.STATE_CHANGED"/>
+                <action android:name="android.bluetooth.adapter.action.STATE_CHANGED" />
             </intent-filter>
         </receiver>
 
         <activity android:name=".view.activity.SettingActivity" />
         <activity android:name=".view.activity.ChangeNameActivity" />
-        <activity android:name=".view.activity.PlayWebViewActivity"></activity>
+        <activity android:name=".view.activity.PlayWebViewActivity" />
+        <activity android:name=".view.activity.LoginActivity"></activity>
     </application>
 
 </manifest>
