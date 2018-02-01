@@ -112,28 +112,57 @@
             android:text="300m"
             android:textColor="#999999" />
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
+
+        <LinearLayout
+            android:id="@+id/line_s"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/name"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="8px"
-            android:padding="43px"
-            android:text="你还没有到达目的地"
-            android:textColor="#999999"
-            android:visibility="visible" />
+            android:gravity="center"
+            android:visibility="visible"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="8px"
+                android:padding="43px"
+                android:text="你还没有到达目的地"
+                android:textColor="#999999"
+                android:visibility="visible" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/title"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="50px"
+                android:layout_marginTop="8px"
+                android:paddingBottom="50px"
+                android:text="到达目的地后,打开蓝牙领取任务"
+                android:textColor="#999999" />
+        </LinearLayout>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/title"
+            android:id="@+id/go_task"
+            android:layout_width="721px"
+            android:layout_height="142px"
+            android:layout_below="@+id/name"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="50px"
-            android:layout_marginTop="8px"
-            android:paddingBottom="50px"
-            android:text="到达目的地后,打开蓝牙领取任务"
-            android:textColor="#999999" />
+            android:gravity="center"
+            android:layout_marginTop="30px"
+            android:paddingTop="20px"
+            android:visibility="gone"
+            android:paddingBottom="20px"
+            android:background="@drawable/go_task_bg"
+            android:text="领取任务"
+            android:textColor="#ffffff" />
+
+
+
 
     </RelativeLayout>
 
