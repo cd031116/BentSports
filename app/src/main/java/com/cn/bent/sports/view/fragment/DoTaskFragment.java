@@ -38,6 +38,7 @@ import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseConfig;
 import com.cn.bent.sports.base.BaseFragment;
 import com.cn.bent.sports.bean.LoginBase;
+import com.cn.bent.sports.bean.ReFreshEvent;
 import com.cn.bent.sports.database.TaskCationBean;
 import com.cn.bent.sports.database.TaskCationManager;
 import com.cn.bent.sports.ibeacon.UserRssi;
@@ -55,6 +56,10 @@ import com.minew.beaconset.BluetoothState;
 import com.minew.beaconset.MinewBeacon;
 import com.minew.beaconset.MinewBeaconManager;
 import com.minew.beaconset.MinewBeaconManagerListener;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -154,6 +159,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
 
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
+        EventBus.getDefault().register(this);
         mapView.onCreate(savedInstanceState);
         mMinewBeaconManager = MinewBeaconManager.getInstance(getActivity());
         if (aMap == null) {
@@ -315,6 +321,11 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ReFreshEvent event) {
+      aMap.clear();
+    }
+
     /**
      * 方法必须重写
      */
@@ -323,7 +334,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
         super.onResume();
         mapView.onResume();
         mLoction = TaskCationManager.getHistory();
-        addMarkersToMap();
+        addLocaToMap();
         LoginBase user=SaveObjectUtils.getInstance(getActivity()).getObject(Constants.USER_INFO, null);
         if(user.getScore()!=null){
             jifen_t.setText(user.getScore());
@@ -371,6 +382,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     public void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     /**

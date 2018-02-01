@@ -24,7 +24,7 @@ public class TaskCationManager {
         mTaskList.clear();
         mTaskList.addAll(TaskCationDB.getDB().select(null, TaskCationBean.class));
         for(TaskCationBean bean:mTaskList){
-            if(DataUtils.getlongs()<Long.parseLong(bean.getTimes())){
+            if(System.currentTimeMillis()<Long.parseLong(bean.getTimes())){
                 bean.setIsshow(true);
             }else {
                 bean.setIsshow(false);
@@ -32,6 +32,22 @@ public class TaskCationManager {
         }
         return mTaskList;
     }
+
+
+    //获得所有
+    public static boolean noMore() {
+        boolean ismore=true;
+        List<TaskCationBean> noMoreLists=  TaskCationDB.getDB().select(null, TaskCationBean.class);
+        for(TaskCationBean bean:noMoreLists){
+            if(System.currentTimeMillis()>Long.parseLong(bean.getTimes())) {
+                ismore=false;
+            }
+        }
+        return ismore;
+    }
+
+
+
 
     public static int getSize(){
         List<TaskCationBean> mTaskLists=  TaskCationDB.getDB().select(null, TaskCationBean.class);
