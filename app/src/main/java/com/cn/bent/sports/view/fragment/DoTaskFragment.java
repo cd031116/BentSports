@@ -52,10 +52,11 @@ import com.cn.bent.sports.view.activity.PlayWebViewActivity;
 import com.cn.bent.sports.view.activity.RuleActivity;
 import com.cn.bent.sports.view.activity.ZoomActivity;
 import com.cn.bent.sports.widget.ToastDialog;
-import com.minew.beaconset.BluetoothState;
-import com.minew.beaconset.MinewBeacon;
-import com.minew.beaconset.MinewBeaconManager;
-import com.minew.beaconset.MinewBeaconManagerListener;
+import com.minew.beacon.BeaconValueIndex;
+import com.minew.beacon.BluetoothState;
+import com.minew.beacon.MinewBeacon;
+import com.minew.beacon.MinewBeaconManager;
+import com.minew.beacon.MinewBeaconManagerListener;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -198,7 +199,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     public boolean onMarkerClick(Marker marker) {
         for (int i = 0; i < mList.size(); i++) {
             if (marker.equals(mList.get(i))) {
-                t_ids = i +1+ "";
+                t_ids = i + 1 + "";
                 showDialogMsg("是否前往该地点", i);
             }
         }
@@ -248,7 +249,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
         }
     }
 
-    private void setmLoctions(){
+    private void setmLoctions() {
         if (noMarker != null) {
             noMarker.remove();
         }
@@ -265,7 +266,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                 .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
                         .decodeResource(getResources(), R.drawable.dangqwz)))
                 .draggable(true));
-        if(!isWark){
+        if (!isWark) {
             aMap.moveCamera(CameraUpdateFactory.changeLatLng(latlng));
             aMap.moveCamera(CameraUpdateFactory.zoomTo(15));
         }
@@ -290,7 +291,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                 .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
                         .decodeResource(getResources(), R.drawable.dangqwz)))
                 .draggable(true));
-        if(!isWark){
+        if (!isWark) {
             aMap.moveCamera(CameraUpdateFactory.changeLatLng(latlng));
             aMap.moveCamera(CameraUpdateFactory.zoomTo(15));
         }
@@ -299,15 +300,15 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     }
 
 
-    @OnClick({R.id.shuoming, R.id.dao_lan,R.id.go_task})
+    @OnClick({R.id.shuoming, R.id.dao_lan, R.id.go_task})
     void onclik(View v) {
         switch (v.getId()) {
             case R.id.shuoming:
                 startActivity(new Intent(getActivity(), RuleActivity.class));
                 break;
-            case  R.id.dao_lan:
+            case R.id.dao_lan:
                 startActivity(new Intent(getActivity(), ZoomActivity.class));
-              break;
+                break;
             case R.id.go_task:
                 Intent intent = new Intent(getActivity(), PlayWebViewActivity.class);
                 intent.putExtra("gameId", t_ids);
@@ -316,14 +317,14 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                 line_s.setVisibility(View.VISIBLE);
                 go_task.setVisibility(View.GONE);
                 start_view.setVisibility(View.GONE);
-                isWark=false;
+                isWark = false;
                 break;
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ReFreshEvent event) {
-      aMap.clear();
+        aMap.clear();
     }
 
     /**
@@ -335,23 +336,23 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
         mapView.onResume();
         mLoction = TaskCationManager.getHistory();
         addLocaToMap();
-        LoginBase user=SaveObjectUtils.getInstance(getActivity()).getObject(Constants.USER_INFO, null);
-        if(user.getScore()!=null){
+        LoginBase user = SaveObjectUtils.getInstance(getActivity()).getObject(Constants.USER_INFO, null);
+        if (user.getScore() != null) {
             jifen_t.setText(user.getScore());
         }
         setTimes();
     }
 
-    private void setTimes(){
-        BaseConfig bf=BaseConfig.getInstance(getActivity());
-       final long times=bf.getLongValue(Constants.IS_TIME,0);
-        if(times>0){
-            if(ji_timer!=null){
+    private void setTimes() {
+        BaseConfig bf = BaseConfig.getInstance(getActivity());
+        final long times = bf.getLongValue(Constants.IS_TIME, 0);
+        if (times > 0) {
+            if (ji_timer != null) {
                 ji_timer.start();
             }
             ji_timer.setBase(times);//计时器清零
-            int hour = (int) ((SystemClock.elapsedRealtime() - ji_timer.getBase()) / 1000 / 60/60);
-            ji_timer.setFormat("0"+String.valueOf(hour)+":%s");
+            int hour = (int) ((SystemClock.elapsedRealtime() - ji_timer.getBase()) / 1000 / 60 / 60);
+            ji_timer.setFormat("0" + String.valueOf(hour) + ":%s");
             ji_timer.start();
         }
     }
@@ -412,7 +413,9 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     public void onDriveRouteSearched(DriveRouteResult driveRouteResult, int i) {
 
     }
-    WalkRouteOverlay   walkRouteOverlay;
+
+    WalkRouteOverlay walkRouteOverlay;
+
     @Override
     public void onWalkRouteSearched(WalkRouteResult result, int errorCode) {
         if (errorCode == AMapException.CODE_AMAP_SUCCESS) {
@@ -450,22 +453,22 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     private void setview(int distance) {
         start_view.setVisibility(View.VISIBLE);
         juli.setText(AMapUtil.getFriendlyLength(distance));
-        if("1".endsWith(t_ids)){
+        if ("1".endsWith(t_ids)) {
             name_game.setText("红包雨");
         }
-        if("2".endsWith(t_ids)){
+        if ("2".endsWith(t_ids)) {
             name_game.setText("财神庙求签");
         }
-        if("3".endsWith(t_ids)){
+        if ("3".endsWith(t_ids)) {
             name_game.setText("猜灯谜");
         }
-        if("4".endsWith(t_ids)){
+        if ("4".endsWith(t_ids)) {
             name_game.setText("拯救小托");
         }
-        if("5".endsWith(t_ids)){
+        if ("5".endsWith(t_ids)) {
             name_game.setText("");
         }
-        if("6".endsWith(t_ids)){
+        if ("6".endsWith(t_ids)) {
             name_game.setText("点亮所有灯笼");
         }
 
@@ -474,8 +477,10 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
             checkBluetooth();
         }
     }
-    BaseConfig bgs=BaseConfig.getInstance(getActivity());
-    long times=bgs.getLongValue(Constants.IS_TIME,0);
+
+    BaseConfig bgs = BaseConfig.getInstance(getActivity());
+    long times = bgs.getLongValue(Constants.IS_TIME, 0);
+
     private void showDialogMsg(String names, final int position) {
         new ToastDialog(getActivity(), R.style.dialog, names, new ToastDialog.OnCloseListener() {
             @Override
@@ -483,18 +488,18 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                 if (confirm) {
                     setcheck();
                     mLoction.get(position).setCheck(true);
-                    mEndPoint=null;
+                    mEndPoint = null;
                     mEndPoint = new LatLonPoint(Double.valueOf(mLoction.get(position).getLatitude()).doubleValue(),
                             Double.valueOf(mLoction.get(position).getLongitude()).doubleValue());
                     aMap.clear();
                     searchRouteResult(ROUTE_TYPE_WALK, RouteSearch.WalkDefault);
                     addLocaToMap();
-                  if(times<=0){
-                      if (mStartPoint !=null) {
-                          bgs.setLongValue(Constants.IS_TIME,SystemClock.elapsedRealtime());
-                          setTimes();
-                      }
-                  }
+                    if (times <= 0) {
+                        if (mStartPoint != null) {
+                            bgs.setLongValue(Constants.IS_TIME, SystemClock.elapsedRealtime());
+                            setTimes();
+                        }
+                    }
                 } else {
 
                 }
@@ -525,39 +530,56 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
 
     private void initListener() {
         mMinewBeaconManager.startScan();
-        mMinewBeaconManager.setMinewbeaconManagerListener(new MinewBeaconManagerListener() {
+        mMinewBeaconManager.setDeviceManagerDelegateListener(new com.minew.beacon.MinewBeaconManagerListener() {
+            /**
+             *   if the manager find some new beacon, it will call back this method.
+             *
+             *  @param minewBeacons  new beacons the manager scanned
+             */
             @Override
-            public void onUpdateBluetoothState(BluetoothState state) {
+            public void onAppearBeacons(List<com.minew.beacon.MinewBeacon> minewBeacons) {
+
+            }
+
+            /**
+             *  if a beacon didn't update data in 10 seconds, we think this beacon is out of rang, the manager will call back this method.
+             *
+             *  @param minewBeacons beacons out of range
+             */
+            @Override
+            public void onDisappearBeacons(List<com.minew.beacon.MinewBeacon> minewBeacons) {
+            }
+
+            /**
+             *  the manager calls back this method every 1 seconds, you can get all scanned beacons.
+             *
+             *  @param minewBeacons all scanned beacons
+             */
+            @Override
+            public void onRangeBeacons(List<com.minew.beacon.MinewBeacon> minewBeacons) {
+                Log.e("dasd", "dasd: " + minewBeacons.size());
+                if (minewBeacons != null && minewBeacons.size() > 0) {
+                    line_s.setVisibility(View.GONE);
+                    go_task.setVisibility(View.VISIBLE);
+                    //弹游戏
+                }
+            }
+
+            /**
+             *  the manager calls back this method when BluetoothStateChanged.
+             *
+             *  @param state BluetoothState
+             */
+            @Override
+            public void onUpdateState(com.minew.beacon.BluetoothState state) {
                 switch (state) {
-                    case BluetoothStatePowerOff:
+                    case BluetoothStatePowerOn:
                         Toast.makeText(getActivity(), "蓝牙关闭", Toast.LENGTH_SHORT).show();
                         break;
-                    case BluetoothStatePowerOn:
+                    case BluetoothStatePowerOff:
                         Toast.makeText(getActivity(), "蓝牙打开", Toast.LENGTH_SHORT).show();
                         break;
                 }
-            }
-
-            @Override
-            public void onRangeBeacons(List<MinewBeacon> beacons) {
-                Collections.sort(beacons, comp);
-                if (beacons != null && beacons.size() > 0) {
-                    if (beacons.get(0).getDistance() > 20) {
-                        line_s.setVisibility(View.GONE);
-                        go_task.setVisibility(View.VISIBLE);
-                        //弹游戏
-                    }
-                }
-            }
-
-            @Override
-            public void onAppearBeacons(List<MinewBeacon> beacons) {
-
-            }
-
-            @Override
-            public void onDisappearBeacons(List<MinewBeacon> beacons) {
-
             }
         });
     }

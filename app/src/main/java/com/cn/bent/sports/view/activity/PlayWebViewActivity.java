@@ -3,14 +3,17 @@ package com.cn.bent.sports.view.activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.Chronometer;
 
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseActivity;
+import com.cn.bent.sports.base.BaseConfig;
 import com.cn.bent.sports.bean.GameEntity;
 import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.utils.Constants;
@@ -25,6 +28,8 @@ public class PlayWebViewActivity extends BaseActivity {
 
     @Bind(R.id.webview)
     WebView mWebView;
+    @Bind(R.id.cut_down)
+    Chronometer timer;
     LoginBase user;
     String gameId;
 
@@ -44,38 +49,40 @@ public class PlayWebViewActivity extends BaseActivity {
         super.initView();
         gameId = getIntent().getStringExtra("gameId");
         user = (LoginBase) SaveObjectUtils.getInstance(this).getObject(Constants.USER_INFO, null);
+        long longValue = BaseConfig.getInstance(this).getLongValue(Constants.IS_TIME, 0);
+        timer.setBase(longValue);//计时器清零
+        int hour = (int) ((SystemClock.elapsedRealtime() - timer.getBase()) / 1000 / 60 / 60);
+        timer.setFormat("0" + String.valueOf(hour) + ":%s");
+        timer.start();
         initWebView();
     }
 
     private void initWebView() {
         WebSettings webSettings = mWebView.getSettings();
 
-        mWebView.getSettings().setJavaScriptEnabled(true);
-        mWebView.getSettings().setUseWideViewPort(true);
-        mWebView.getSettings().setLoadWithOverviewMode(true);
-        mWebView.getSettings().setBuiltInZoomControls(true);
-        mWebView.getSettings().setDisplayZoomControls(false);
-        mWebView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);// 开启 DOM storage API 功能
-        mWebView.getSettings().setDomStorageEnabled(true);
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setUseWideViewPort(true);
+        webSettings.setLoadWithOverviewMode(true);
+        webSettings.setBuiltInZoomControls(true);
+        webSettings.setDisplayZoomControls(false);
+        webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);// 开启 DOM storage API 功能
+        webSettings.setDomStorageEnabled(true);
         //开启 database storage API 功能
-        mWebView.getSettings().setDatabaseEnabled(true);
+        webSettings.setDatabaseEnabled(true);
         //开启 Application Caches 功能
-        mWebView.getSettings().setAppCacheEnabled(true);
+        webSettings.setAppCacheEnabled(true);
 
-        mWebView.getSettings().setSupportZoom(false);
+        webSettings.setSupportZoom(false);
         mWebView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY); //取消滚动条白边效果
-        mWebView.getSettings().setDefaultTextEncodingName("UTF-8");
-        mWebView.getSettings().setBlockNetworkImage(false);
+        webSettings.setDefaultTextEncodingName("UTF-8");
+        webSettings.setBlockNetworkImage(false);
 
         // 设置与Js交互的权限
         webSettings.setJavaScriptEnabled(true);
         // 设置允许JS弹窗
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
-
-
-         gameId = (int) (Math.random() * 5 + 1)+"";
+        gameId = (int) (Math.random() * 5 + 1) + "";
         Log.e("dasa", "initWebView: " + gameId);
-//        mWebView.loadUrl("http://192.168.17.48:8080/?uid=" + user.getMember_id() + "&etype=android");
         switch (Integer.parseInt(gameId)) {
             case 1:
                 mWebView.loadUrl("http://aihw.zhonghuilv.net/hby/index.html?uid=" + user.getMember_id() + "&etype=android");
@@ -93,7 +100,6 @@ public class PlayWebViewActivity extends BaseActivity {
                 mWebView.loadUrl("http://aihw.zhonghuilv.net/cdm/index.html?uid=" + user.getMember_id() + "&etype=android");
                 break;
         }
-
         mWebView.addJavascriptInterface(new JSInterface(), "native");
     }
 
@@ -111,7 +117,6 @@ public class PlayWebViewActivity extends BaseActivity {
             Intent intent = new Intent(PlayWebViewActivity.this, ContinueActivity.class);
             intent.putExtra("game", gameEntity);
             startActivity(intent);
-
         }
     }
 

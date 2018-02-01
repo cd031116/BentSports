@@ -17,10 +17,11 @@ import com.cn.bent.sports.view.activity.LoginActivity;
 import com.cn.bent.sports.view.activity.SettingActivity;
 import com.cn.bent.sports.widget.GameDialog;
 import com.cn.bent.sports.widget.ToastDialog;
-import com.minew.beaconset.BluetoothState;
-import com.minew.beaconset.MinewBeacon;
-import com.minew.beaconset.MinewBeaconManager;
-import com.minew.beaconset.MinewBeaconManagerListener;
+import com.minew.beacon.BeaconValueIndex;
+import com.minew.beacon.BluetoothState;
+import com.minew.beacon.MinewBeacon;
+import com.minew.beacon.MinewBeaconManager;
+import com.minew.beacon.MinewBeaconManagerListener;
 
 import java.util.Collections;
 import java.util.List;
@@ -85,40 +86,57 @@ public class ScanActivity extends BaseActivity {
     private void initListener() {
 
         mMinewBeaconManager.startScan();
-        mMinewBeaconManager.setMinewbeaconManagerListener(new MinewBeaconManagerListener() {
+
+        mMinewBeaconManager.setDeviceManagerDelegateListener(new MinewBeaconManagerListener() {
+            /**
+             *   if the manager find some new beacon, it will call back this method.
+             *
+             *  @param minewBeacons  new beacons the manager scanned
+             */
             @Override
-            public void onUpdateBluetoothState(BluetoothState state) {
+            public void onAppearBeacons(List<MinewBeacon> minewBeacons) {
+
+            }
+            /**
+             *  if a beacon didn't update data in 10 seconds, we think this beacon is out of rang, the manager will call back this method.
+             *
+             *  @param minewBeacons beacons out of range
+             */
+            @Override
+            public void onDisappearBeacons(List<MinewBeacon> minewBeacons) {
+                /*for (MinewBeacon minewBeacon : minewBeacons) {
+                    String deviceName = minewBeacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Name).getStringValue();
+                    Toast.makeText(getApplicationContext(), deviceName + "  out range", Toast.LENGTH_SHORT).show();
+                }*/
+            }
+            /**
+             *  the manager calls back this method every 1 seconds, you can get all scanned beacons.
+             *
+             *  @param minewBeacons all scanned beacons
+             */
+            @Override
+            public void onRangeBeacons(List<MinewBeacon> minewBeacons) {
+                Log.e("dasd", "dasd: " + minewBeacons.size());
+                if (minewBeacons!=null&&minewBeacons.size()>0)
+                Log.e("dasd", "dasd: " + minewBeacons.size()+",MinewBeaconValueIndex_MAC:"+minewBeacons.get(0).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_MAC).getStringValue());
+                Collections.sort(minewBeacons, comp);
+
+            }
+            /**
+             *  the manager calls back this method when BluetoothStateChanged.
+             *
+             *  @param state BluetoothState
+             */
+            @Override
+            public void onUpdateState(BluetoothState state) {
                 switch (state) {
-                    case BluetoothStatePowerOff:
-                        Toast.makeText(getApplicationContext(), "bluetooth off", Toast.LENGTH_SHORT).show();
-                        break;
                     case BluetoothStatePowerOn:
-                        Toast.makeText(getApplicationContext(), "bluetooth on", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "BluetoothStatePowerOn", Toast.LENGTH_SHORT).show();
+                        break;
+                    case BluetoothStatePowerOff:
+                        Toast.makeText(getApplicationContext(), "BluetoothStatePowerOff", Toast.LENGTH_SHORT).show();
                         break;
                 }
-            }
-
-            @Override
-            public void onRangeBeacons(List<MinewBeacon> beacons) {
-                Log.e("dasd", "dasd: " + beacons.size());
-                Collections.sort(beacons, comp);
-                if (beacons != null && beacons.size() > 0) {
-                    Log.e("dasd", "距离:" + beacons.get(0).getDistance() + ",did:" + beacons.get(0).getUuid());
-                    scan.setText("距离:" + beacons.get(0).getDistance() + ",did:" + beacons.get(0).getDeviceId());
-                    if (beacons.get(0).getDistance() > 5) {
-                        showDialogMsg("距离:" + beacons.get(0).getDistance());
-                    }
-                }
-            }
-
-            @Override
-            public void onAppearBeacons(List<MinewBeacon> beacons) {
-
-            }
-
-            @Override
-            public void onDisappearBeacons(List<MinewBeacon> beacons) {
-
             }
         });
     }

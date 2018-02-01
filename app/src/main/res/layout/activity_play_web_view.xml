@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:clipToPadding="true"
     android:fitsSystemWindows="true"
+    android:orientation="vertical"
     tools:context="com.cn.bent.sports.view.activity.PlayWebViewActivity">
 
     <RelativeLayout
@@ -18,8 +18,8 @@
             android:id="@+id/top_left"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_gravity="left|center_vertical"
             android:layout_alignParentLeft="true"
+            android:layout_gravity="left|center_vertical"
             android:clickable="true"
             android:gravity="center"
             android:orientation="horizontal"
@@ -27,54 +27,57 @@
             android:paddingLeft="12dp"
             android:paddingRight="20dp"
             android:paddingTop="5dp"
-            android:visibility="visible" >
+            android:visibility="visible">
 
             <ImageView
                 android:id="@+id/top_image"
                 android:layout_width="wrap_content"
                 android:layout_height="60px"
                 android:clickable="false"
-                android:src="@drawable/fanhui_hong"
-                android:contentDescription="@string/app_name" />
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/fanhui_hong" />
         </LinearLayout>
-
 
 
         <LinearLayout
             android:id="@+id/top_r"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
             android:layout_gravity="right|center_vertical"
             android:clickable="true"
-            android:layout_alignParentRight="true"
             android:gravity="center"
             android:orientation="horizontal"
             android:paddingBottom="5dp"
             android:paddingLeft="20dp"
             android:paddingRight="12dp"
-            android:paddingTop="5dp" >
+            android:paddingTop="5dp">
 
             <TextView
                 android:id="@+id/top_right_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#333333"
                 android:layout_gravity="right|center_vertical"
-                android:text="已使用时间:"
                 android:gravity="center"
+                android:text="已使用时间:"
+                android:textColor="#333333"
                 android:textSize="46px" />
-            <com.cn.bent.sports.widget.CuntDownTimerView
+
+
+            <Chronometer
                 android:id="@+id/cut_down"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20px"/>
+                android:format="00:00:00"
+                android:gravity="center" />
+
         </LinearLayout>
     </RelativeLayout>
 
 
-<WebView
-    android:id="@+id/webview"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"/>
+    <WebView
+        android:id="@+id/webview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>
