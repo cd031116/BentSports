@@ -74,11 +74,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:drawableLeft="@drawable/luxian"
+                android:drawableLeft="@drawable/zhandao"
                 android:drawablePadding="78px"
                 android:gravity="center_vertical"
                 android:paddingLeft="100px"
-                android:text="游览线路"
+                android:text="沿湖栈道"
                 android:textColor="#999999"
                 android:textSize="46px" />
 
@@ -96,11 +96,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:drawableLeft="@drawable/luxian"
+                android:drawableLeft="@drawable/hushui"
                 android:drawablePadding="78px"
                 android:gravity="center_vertical"
                 android:paddingLeft="100px"
-                android:text="游览线路"
+                android:text="湖水"
                 android:textColor="#999999"
                 android:textSize="46px" />
 
@@ -108,11 +108,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:drawableLeft="@drawable/luxian"
+                android:drawableLeft="@drawable/jingdian"
                 android:drawablePadding="78px"
                 android:gravity="center_vertical"
                 android:paddingLeft="100px"
-                android:text="游览线路"
+                android:text="主要景点"
                 android:textColor="#999999"
                 android:textSize="46px" />
 
