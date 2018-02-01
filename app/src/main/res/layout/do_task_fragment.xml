@@ -93,11 +93,10 @@
         android:visibility="gone">
 
         <TextView
-            android:id="@+id/name"
+            android:id="@+id/name_game"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="43px"
-            android:text="头脑风暴"
             android:textColor="#333333"
             android:textSize="53px" />
 
@@ -117,7 +116,7 @@
             android:id="@+id/line_s"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/name"
+            android:layout_below="@+id/name_game"
             android:gravity="center"
             android:visibility="visible"
             android:orientation="vertical">
@@ -149,7 +148,7 @@
             android:id="@+id/go_task"
             android:layout_width="721px"
             android:layout_height="142px"
-            android:layout_below="@+id/name"
+            android:layout_below="@+id/name_game"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="50px"
             android:gravity="center"
