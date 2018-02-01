@@ -1,6 +1,7 @@
 package com.cn.bent.sports.database;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.cn.bent.sports.utils.DataUtils;
 
@@ -24,8 +25,13 @@ public class TaskCationManager {
         mTaskList.clear();
         mTaskList.addAll(TaskCationDB.getDB().select(null, TaskCationBean.class));
         for(TaskCationBean bean:mTaskList){
+            Log.i("test","currentTimeMillis="+System.currentTimeMillis());
+            Log.i("test","parseLong="+Long.parseLong(bean.getTimes()));
             if(System.currentTimeMillis()<Long.parseLong(bean.getTimes())){
                 bean.setIsshow(true);
+                Log.i("test","currentTimeMillis1="+System.currentTimeMillis());
+                Log.i("test","parseLong1="+Long.parseLong(bean.getTimes()));
+                Log.i("test","gettId="+bean.gettId());
             }else {
                 bean.setIsshow(false);
             }
@@ -72,6 +78,7 @@ public class TaskCationManager {
         for(TaskCationBean infos:mList){
             if (id_t.endsWith(String.valueOf(infos.gettId()))){
                 infos.setTimes(times+"");
+                Log.i("test","times="+times);
             }
         }
         TaskCationDB.getDB().deleteAll(null, TaskCationBean.class);

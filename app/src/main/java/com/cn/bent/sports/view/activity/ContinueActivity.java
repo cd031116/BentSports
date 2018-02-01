@@ -14,6 +14,7 @@ import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.AddScoreEntity;
 import com.cn.bent.sports.bean.GameEntity;
 import com.cn.bent.sports.bean.LoginBase;
+import com.cn.bent.sports.bean.ReFreshEvent;
 import com.cn.bent.sports.database.TaskCationManager;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.DataUtils;
@@ -22,6 +23,8 @@ import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.HuiquRxFunction;
 
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -98,6 +101,7 @@ public class ContinueActivity extends BaseActivity {
                             TaskCationManager.update(gameId + "", DataUtils.getlongs());
                             LoginBase user = (LoginBase) SaveObjectUtils.getInstance(ContinueActivity.this).getObject(Constants.USER_INFO, null);
                             setScore(user);
+                            EventBus.getDefault().post(new ReFreshEvent());
                         } else
                             startActivity(new Intent(ContinueActivity.this, MainActivity.class));
                     }
