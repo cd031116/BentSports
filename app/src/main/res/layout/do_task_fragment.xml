@@ -93,11 +93,10 @@
         android:visibility="gone">
 
         <TextView
-            android:id="@+id/name"
+            android:id="@+id/name_game"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="43px"
-            android:text="头脑风暴"
             android:textColor="#333333"
             android:textSize="53px" />
 

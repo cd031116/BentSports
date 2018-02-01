@@ -95,7 +95,6 @@ public class StartActivity extends BaseActivity {
     class  MAsyncTask extends AsyncTask<Void, Integer, String>{
         @Override
         protected void onPreExecute() {
-           showAlert("正在加载..",true);
             super.onPreExecute();
         }
         @Override
@@ -106,11 +105,9 @@ public class StartActivity extends BaseActivity {
         }
         @Override
         protected void onPostExecute(String s) {
-           dismissAlert();
             BaseConfig bg=BaseConfig.getInstance(StartActivity.this);
-           bg.setIntValue(Constants.IS_FIRST,1);
+              bg.setIntValue(Constants.IS_FIRST,1);
             redirectTo();
-
             super.onPostExecute(s);
         }
     }

@@ -78,15 +78,16 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
 
     @Bind(R.id.start_view)
     RelativeLayout start_view;
-    @Bind(R.id.name)
-    TextView name;
+    @Bind(R.id.name_game)
+    TextView name_game;
     @Bind(R.id.juli)
     TextView juli;
     @Bind(R.id.title)
     TextView title;
     @Bind(R.id.line_s)
     LinearLayout line_s;
-
+    @Bind(R.id.go_task)
+    TextView go_task;
 
     AMap aMap;
     private List<TaskCationBean> mLoction = new ArrayList<>();
@@ -251,14 +252,16 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                 .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
                         .decodeResource(getResources(), R.drawable.dangqwz)))
                 .draggable(true));
-        aMap.moveCamera(CameraUpdateFactory.changeLatLng(latlng));
-        aMap.moveCamera(CameraUpdateFactory.zoomTo(15));
+        if(!isWark){
+            aMap.moveCamera(CameraUpdateFactory.changeLatLng(latlng));
+            aMap.moveCamera(CameraUpdateFactory.zoomTo(15));
+        }
         aMap.setMyLocationEnabled(false);
         addMarkersToMap();
     }
 
 
-    @OnClick({R.id.shuoming, R.id.dao_lan})
+    @OnClick({R.id.shuoming, R.id.dao_lan,R.id.go_task})
     void onclik(View v) {
         switch (v.getId()) {
             case R.id.shuoming:
@@ -267,6 +270,16 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
             case  R.id.dao_lan:
 
               break;
+            case R.id.go_task:
+                Intent intent = new Intent(getActivity(), PlayWebViewActivity.class);
+                intent.putExtra("gameId", t_ids);
+                startActivity(intent);
+                mMinewBeaconManager.stopScan();
+                line_s.setVisibility(View.VISIBLE);
+                go_task.setVisibility(View.GONE);
+                start_view.setVisibility(View.GONE);
+                isWark=false;
+                break;
         }
     }
 
@@ -356,7 +369,6 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                     isWark = true;
                     int dis = (int) walkPath.getDistance();
                     setview(dis);
-
                 } else if (result != null && result.getPaths() == null) {
                     ToastUtils.showShortToast(getActivity(), "无结果");
                 }
@@ -376,6 +388,25 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     private void setview(int distance) {
         start_view.setVisibility(View.VISIBLE);
         juli.setText(AMapUtil.getFriendlyLength(distance));
+        if("1".endsWith(t_ids)){
+            name_game.setText("红包雨");
+        }
+        if("2".endsWith(t_ids)){
+            name_game.setText("财神庙求签");
+        }
+        if("3".endsWith(t_ids)){
+            name_game.setText("猜灯谜");
+        }
+        if("4".endsWith(t_ids)){
+            name_game.setText("拯救小托");
+        }
+        if("5".endsWith(t_ids)){
+            name_game.setText("");
+        }
+        if("6".endsWith(t_ids)){
+            name_game.setText("点亮所有灯笼");
+        }
+
         if (distance < 20) {
             //打开蓝牙
             checkBluetooth();
@@ -443,14 +474,9 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                 Collections.sort(beacons, comp);
                 if (beacons != null && beacons.size() > 0) {
                     if (beacons.get(0).getDistance() > 20) {
-
                         line_s.setVisibility(View.GONE);
+                        go_task.setVisibility(View.VISIBLE);
                         //弹游戏
-                        Intent intent = new Intent(getActivity(), PlayWebViewActivity.class);
-                        intent.putExtra("gameId", t_ids);
-                        startActivity(intent);
-                        mMinewBeaconManager.stopScan();
-                        start_view.setVisibility(View.GONE);
                     }
                 }
             }
