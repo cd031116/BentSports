@@ -25,7 +25,7 @@
                 <ImageView
                     android:id="@+id/bg_img"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="1168px"
                     android:background="@drawable/paiming_img" />
 
                 <RelativeLayout

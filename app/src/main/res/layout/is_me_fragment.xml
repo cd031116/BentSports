@@ -18,7 +18,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="315px"
                 android:background="@drawable/bg_person"
                 android:gravity="center_vertical"
                 android:padding="43px">
@@ -43,8 +43,8 @@
 
                 <ImageView
                     android:id="@+id/setting"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="62px"
+                    android:layout_height="62px"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="51px"
@@ -83,8 +83,8 @@
                 </LinearLayout>
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="461px"
+                    android:layout_height="302px"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentRight="true"
                     android:background="@drawable/jifentu" />
