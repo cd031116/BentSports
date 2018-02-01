@@ -182,6 +182,8 @@ public class MainActivity extends BaseActivity {
             nList.add(new TaskCationBean(1, "123", "1", "112.983733", "28.117083", "歌舞广场", false, false));
             nList.add(new TaskCationBean(2,"123", "1", "112.992531", "28.119808", "财神庙", false, false));
             nList.add(new TaskCationBean(3, "123", "1", "112.996222", "28.115455", "月亮岛", false, false));
+            nList.add(new TaskCationBean(4, "123", "1", "112.989624", "28.11189", "财神庙", false, false));
+            nList.add(new TaskCationBean(5, "123", "1", "112.989892", "28.1119", "沙滩", false, false));
             TaskCationManager.insert(nList);
         }
     }

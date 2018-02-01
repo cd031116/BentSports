@@ -47,8 +47,6 @@ public class TaskCationManager {
     }
 
 
-
-
     public static int getSize(){
         List<TaskCationBean> mTaskLists=  TaskCationDB.getDB().select(null, TaskCationBean.class);
         return mTaskLists.size();

@@ -108,7 +108,7 @@ public class GameDialog extends Dialog implements View.OnClickListener {
             submitTxt.setText(positiveName);
         }
 
-        titleTxt.setText(getContent());
+        titleTxt.setText(title);
     }
 
     @Override

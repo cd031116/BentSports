@@ -15,15 +15,23 @@
         android:background="@drawable/bg_round_white"
         android:gravity="center"
         android:orientation="vertical">
-
         <TextView
-            android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="60px"
+            android:layout_marginTop="30px"
             android:gravity="center_horizontal"
-            android:textColor="#333333"
-            android:textSize="70px"
+            android:textColor="#000000"
+            android:text="说明"
+            android:textSize="57px"
+            android:visibility="visible" />
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="734px"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20px"
+            android:gravity="center_horizontal"
+            android:textColor="#999999"
+            android:textSize="43px"
             android:visibility="visible" />
 
 

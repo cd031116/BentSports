@@ -69,4 +69,17 @@ public interface ApiService {
 
     @GET("outdoor/user/ranklist")
     Observable<HuiquResult<RankEntity>> getRankList();
+
+    /*
+            * 新闻评论
+     *
+             * @return
+             */
+    @FormUrlEncoded
+    @POST("outdoor/user/modifyUserMsg")
+    Observable<HuiquTBResult> modifyUserMsg(
+            @Field("cur_user_id") String cur_user_id,
+            @Field("type") String type,
+            @Field("nickname") String nickname);
+
 }

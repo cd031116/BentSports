@@ -99,7 +99,6 @@
             android:id="@+id/name_t"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="钱非常多"
             android:textSize="43px"
             android:textColor="#333333"
             android:layout_centerVertical="true" />
@@ -136,12 +135,12 @@
             android:layout_centerVertical="true" />
 
         <TextView
+            android:id="@+id/phone_t"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="40px"
             android:layout_alignParentRight="true"
-            android:text="13666666666"
             android:textColor="#333333"
             android:textSize="43px" />
 

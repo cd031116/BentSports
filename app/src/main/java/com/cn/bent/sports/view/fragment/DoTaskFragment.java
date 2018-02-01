@@ -328,6 +328,8 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     @Override
     public void onResume() {
         super.onResume();
+        //打开蓝牙
+        checkBluetooth();
         mapView.onResume();
         mLoction = TaskCationManager.getHistory();
         addLocaToMap();
@@ -370,7 +372,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                 }
                 dialog.dismiss();
             }
-        }).setTitle("说明").show();
+        }).setTitle("加油").show();
     }
 
     /**
@@ -487,10 +489,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
             name_game.setText("点亮所有灯笼");
         }
 
-        if (distance < 20) {
-            //打开蓝牙
-            checkBluetooth();
-        }
+
     }
 
     BaseConfig bgs = BaseConfig.getInstance(getActivity());
