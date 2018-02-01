@@ -201,7 +201,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     public boolean onMarkerClick(Marker marker) {
         for (int i = 0; i < mList.size(); i++) {
             if (marker.equals(mList.get(i))) {
-                t_ids = i + 1 + "";
+                t_ids = String.valueOf(mLoction.get(i).gettId());
                 showDialogMsg("是否前往该地点", i);
             }
         }

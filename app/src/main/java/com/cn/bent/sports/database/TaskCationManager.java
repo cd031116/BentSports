@@ -22,14 +22,15 @@ public class TaskCationManager {
 
     //获得所有
     public static List<TaskCationBean> getHistory() {
+        List<TaskCationBean> tTaskList = new ArrayList<>();
         mTaskList.clear();
-        mTaskList.addAll(TaskCationDB.getDB().select(null, TaskCationBean.class));
-        for(TaskCationBean bean:mTaskList){
+        tTaskList.addAll(TaskCationDB.getDB().select(null, TaskCationBean.class));
+        for(TaskCationBean bean:tTaskList){
             if(System.currentTimeMillis()<Long.parseLong(bean.getTimes())){
                 bean.setIsshow(true);
-                mTaskList.remove(bean);
             }else {
                 bean.setIsshow(false);
+                mTaskList.add(bean);
             }
         }
         return mTaskList;
@@ -69,12 +70,10 @@ public class TaskCationManager {
 
     //更新数据
     public static void update(String index,long times) {
-        String id_t=(Integer.parseInt(index)-1)+"";
         List<TaskCationBean> mList=TaskCationDB.getDB().select(null, TaskCationBean.class);
         for(TaskCationBean infos:mList){
-            if (id_t.endsWith(String.valueOf(infos.gettId()))){
+            if (index.endsWith(String.valueOf(infos.gettId()))){
                 infos.setTimes(times+"");
-                Log.i("test","times="+times);
             }
         }
         TaskCationDB.getDB().deleteAll(null, TaskCationBean.class);
