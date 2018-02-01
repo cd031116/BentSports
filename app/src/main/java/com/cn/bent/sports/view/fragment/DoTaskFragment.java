@@ -56,9 +56,13 @@ import com.minew.beaconset.MinewBeacon;
 import com.minew.beaconset.MinewBeaconManager;
 import com.minew.beaconset.MinewBeaconManagerListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -329,13 +333,13 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
 
     private void setTimes(){
         BaseConfig bf=BaseConfig.getInstance(getActivity());
-        long times=bf.getLongValue(Constants.IS_TIME,0);
+       final long times=bf.getLongValue(Constants.IS_TIME,0);
         if(times>0){
             if(ji_timer!=null){
                 ji_timer.start();
             }
             ji_timer.setBase(times);//计时器清零
-            int hour = (int) ((SystemClock.elapsedRealtime() - ji_timer.getBase()) / 1000 / 60);
+            int hour = (int) ((SystemClock.elapsedRealtime() - ji_timer.getBase()) / 1000 / 60/60);
             ji_timer.setFormat("0"+String.valueOf(hour)+":%s");
             ji_timer.start();
         }
@@ -474,8 +478,10 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                     searchRouteResult(ROUTE_TYPE_WALK, RouteSearch.WalkDefault);
                     addLocaToMap();
                   if(times<=0){
-                      bgs.setLongValue(Constants.IS_TIME,SystemClock.elapsedRealtime());
-                      setTimes();
+                      if (mStartPoint !=null) {
+                          bgs.setLongValue(Constants.IS_TIME,SystemClock.elapsedRealtime());
+                          setTimes();
+                      }
                   }
                 } else {
 
