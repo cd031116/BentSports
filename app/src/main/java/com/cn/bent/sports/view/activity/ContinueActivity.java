@@ -13,6 +13,8 @@ import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.AddScoreEntity;
 import com.cn.bent.sports.bean.GameEntity;
+import com.cn.bent.sports.database.TaskCationManager;
+import com.cn.bent.sports.utils.DataUtils;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.HuiquRxFunction;
@@ -67,7 +69,7 @@ public class ContinueActivity extends BaseActivity {
                 card_img.setBackground(getResources().getDrawable(R.drawable.diandenglong));
                 break;
             case 4:
-                card_img.setBackground(getResources().getDrawable(R.drawable.liunianshou));
+                card_img.setBackground(getResources().getDrawable(R.drawable.jixiangqian));
                 break;
             case 5:
                 card_img.setBackground(getResources().getDrawable(R.drawable.caidengmi));
@@ -82,7 +84,7 @@ public class ContinueActivity extends BaseActivity {
 
     @OnClick(R.id.go_ahead)
     void onClick(View view) {
-        BaseApi.getDefaultService(this).addScore(uid, score,gameId)
+        BaseApi.getDefaultService(this).addScore(uid, score, gameId)
                 .map(new HuiquRxFunction<AddScoreEntity>())
                 .compose(RxSchedulers.<AddScoreEntity>io_main())
                 .subscribe(new RxObserver<AddScoreEntity>(this, "addScore", 1, false) {
@@ -90,7 +92,8 @@ public class ContinueActivity extends BaseActivity {
                     public void onSuccess(int whichRequest, AddScoreEntity addScoreEntity) {
                         if (addScoreEntity.getAddStatus() == 1) {
                             startActivity(new Intent(ContinueActivity.this, MainActivity.class));
-                        }else
+                            TaskCationManager.update(gameId+"", DataUtils.getlongs());
+                        } else
                             startActivity(new Intent(ContinueActivity.this, MainActivity.class));
                     }
 

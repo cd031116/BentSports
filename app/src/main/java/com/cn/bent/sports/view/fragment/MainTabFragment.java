@@ -2,6 +2,7 @@ package com.cn.bent.sports.view.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -94,6 +95,7 @@ public class MainTabFragment extends BaseFragment {
             }
         };
         range_list.setAdapter(mAdapter);
+        range_list.addItemDecoration(new DividerItemDecoration(getActivity(),R.drawable.list_divider));
     }
 
     @Override

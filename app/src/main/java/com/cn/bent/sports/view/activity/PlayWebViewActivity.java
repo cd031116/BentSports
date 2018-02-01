@@ -25,7 +25,8 @@ public class PlayWebViewActivity extends BaseActivity {
 
     @Bind(R.id.webview)
     WebView mWebView;
-    LoginBase user ;
+    LoginBase user;
+    String gameId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +42,7 @@ public class PlayWebViewActivity extends BaseActivity {
     @Override
     public void initView() {
         super.initView();
-
+        gameId = getIntent().getStringExtra("gameId");
         user = (LoginBase) SaveObjectUtils.getInstance(this).getObject(Constants.USER_INFO, null);
         initWebView();
     }
@@ -71,10 +72,11 @@ public class PlayWebViewActivity extends BaseActivity {
         // 设置允许JS弹窗
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
 
-        int gameId = (int) (Math.random() * 5 + 1);
+
+         gameId = (int) (Math.random() * 5 + 1)+"";
         Log.e("dasa", "initWebView: " + gameId);
 //        mWebView.loadUrl("http://192.168.17.48:8080/?uid=" + user.getMember_id() + "&etype=android");
-        switch (gameId) {
+        switch (Integer.parseInt(gameId)) {
             case 1:
                 mWebView.loadUrl("http://aihw.zhonghuilv.net/hby/index.html?uid=" + user.getMember_id() + "&etype=android");
                 break;
@@ -103,7 +105,7 @@ public class PlayWebViewActivity extends BaseActivity {
     class JSInterface {
         @JavascriptInterface
         public void h5Result(String ss) {
-            Log.e("dasa", "h5Result: "+ss );
+            Log.e("dasa", "h5Result: " + ss);
             Gson gson = new Gson();
             GameEntity gameEntity = gson.fromJson(ss, GameEntity.class);
             Intent intent = new Intent(PlayWebViewActivity.this, ContinueActivity.class);
@@ -125,7 +127,7 @@ public class PlayWebViewActivity extends BaseActivity {
                 }
                 dialog.dismiss();
             }
-        });
+        }).setTitle("提示").show();
     }
 //    /**
 //     * 清除WebView缓存
