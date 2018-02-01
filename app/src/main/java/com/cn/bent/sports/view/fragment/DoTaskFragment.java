@@ -324,6 +324,10 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
         if(user.getScore()!=null){
             jifen_t.setText(user.getScore());
         }
+        setTimes();
+    }
+
+    private void setTimes(){
         BaseConfig bf=BaseConfig.getInstance(getActivity());
         long times=bf.getLongValue(Constants.IS_TIME,0);
         if(times>0){
@@ -331,11 +335,12 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                 ji_timer.start();
             }
             ji_timer.setBase(times);//计时器清零
-                     int hour = (int) ((SystemClock.elapsedRealtime() - ji_timer.getBase()) / 1000 / 60);
+            int hour = (int) ((SystemClock.elapsedRealtime() - ji_timer.getBase()) / 1000 / 60);
             ji_timer.setFormat("0"+String.valueOf(hour)+":%s");
             ji_timer.start();
         }
     }
+
 
     /**
      * 方法必须重写
@@ -470,6 +475,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                     addLocaToMap();
                   if(times<=0){
                       bgs.setLongValue(Constants.IS_TIME,SystemClock.elapsedRealtime());
+                      setTimes();
                   }
                 } else {
 
