@@ -25,13 +25,9 @@ public class TaskCationManager {
         mTaskList.clear();
         mTaskList.addAll(TaskCationDB.getDB().select(null, TaskCationBean.class));
         for(TaskCationBean bean:mTaskList){
-            Log.i("test","currentTimeMillis="+System.currentTimeMillis());
-            Log.i("test","parseLong="+Long.parseLong(bean.getTimes()));
             if(System.currentTimeMillis()<Long.parseLong(bean.getTimes())){
                 bean.setIsshow(true);
-                Log.i("test","currentTimeMillis1="+System.currentTimeMillis());
-                Log.i("test","parseLong1="+Long.parseLong(bean.getTimes()));
-                Log.i("test","gettId="+bean.gettId());
+                mTaskList.remove(bean);
             }else {
                 bean.setIsshow(false);
             }
