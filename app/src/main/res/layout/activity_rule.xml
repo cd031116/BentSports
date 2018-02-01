@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true"
+    android:background="@drawable/rule_bg"
+    android:padding="43px"
+    tools:context="com.cn.bent.sports.view.activity.RuleActivity">
+
+    <ImageView
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/close"/>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="500px"
+            android:textColor="#521a1e"
+            android:textSize="48px"
+            android:text="爆竹声中一岁除,春风送暖入屠苏"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/title"
+        android:layout_marginTop="50px"
+        android:paddingLeft="80px"
+        android:paddingRight="80px"
+        android:textColor="#521a1e"
+        android:textSize="43px"
+        android:text="从这里,您将开始一段奇妙的寻宝之旅,您只需要按照提示,到达对应景点,完成指定任务,即可进入下一关,同时可以收集卡片并获得积分(各个任务点的通关时间会影响您获得的积分数哦)。通关全部关卡后,将获得惊喜大奖!\n\n\n积分可以直接在景区积分商店兑换实物商品,您准备好了吗?"/>
+
+</RelativeLayout>
