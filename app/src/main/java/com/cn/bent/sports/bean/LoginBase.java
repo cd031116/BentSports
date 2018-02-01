@@ -1,5 +1,9 @@
 package com.cn.bent.sports.bean;
 
+
+
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 /**
@@ -8,7 +12,8 @@ import java.io.Serializable;
  */
 
 public class LoginBase implements Serializable {
-         private String member_id;
+    @SerializedName("id")
+     private String member_id;
     private String mobile;
     private String nickname;
     private String headimg;
