@@ -1,12 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.cn.bent.sports.widget.MyZoomImageView
-        android:id="@+id/img_syh"
+    <ImageView
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="44px"
+        android:layout_marginTop="44px"
+        android:background="@drawable/guanbi_hei" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="186px"
+        android:text="石燕湖旅游区导览图"
+        android:textColor="#333333"
+        android:textSize="69px" />
+
+    <TextView
+        android:id="@+id/miaoshu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title"
+        android:layout_centerHorizontal="true"
+        android:text="可放大缩小查看"
+        android:textColor="#999999"
+        android:textSize="43px" />
+
+
+    <LinearLayout
+        android:id="@+id/tuli_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/syh_map"/>
-</LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="70px"
+            android:text="图例"
+            android:textColor="#000000"
+            android:textSize="51px" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="96px"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/luxian"
+                android:drawablePadding="78px"
+                android:gravity="center_vertical"
+                android:paddingLeft="100px"
+                android:text="游览线路"
+                android:textColor="#999999"
+                android:textSize="46px" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/luxian"
+                android:drawablePadding="78px"
+                android:gravity="center_vertical"
+                android:paddingLeft="100px"
+                android:text="游览线路"
+                android:textColor="#999999"
+                android:textSize="46px" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="96px"
+            android:layout_marginTop="57px"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/luxian"
+                android:drawablePadding="78px"
+                android:gravity="center_vertical"
+                android:paddingLeft="100px"
+                android:text="游览线路"
+                android:textColor="#999999"
+                android:textSize="46px" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/luxian"
+                android:drawablePadding="78px"
+                android:gravity="center_vertical"
+                android:paddingLeft="100px"
+                android:text="游览线路"
+                android:textColor="#999999"
+                android:textSize="46px" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/img_sy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/tuli_layout"
+        android:layout_below="@id/miaoshu"
+        android:background="@mipmap/syh_map"
+        android:layout_marginTop="65px"
+        android:scaleType="matrix" />
+</RelativeLayout>

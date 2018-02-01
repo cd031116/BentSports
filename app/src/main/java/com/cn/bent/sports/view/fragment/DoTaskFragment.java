@@ -42,6 +42,7 @@ import com.cn.bent.sports.overlay.WalkRouteOverlay;
 import com.cn.bent.sports.utils.ToastUtils;
 import com.cn.bent.sports.view.activity.PlayWebViewActivity;
 import com.cn.bent.sports.view.activity.RuleActivity;
+import com.cn.bent.sports.view.activity.ZoomActivity;
 import com.cn.bent.sports.widget.ToastDialog;
 import com.minew.beaconset.BluetoothState;
 import com.minew.beaconset.MinewBeacon;
@@ -262,7 +263,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                 startActivity(new Intent(getActivity(), RuleActivity.class));
                 break;
             case  R.id.dao_lan:
-
+                startActivity(new Intent(getActivity(), ZoomActivity.class));
               break;
             case R.id.go_task:
                 Intent intent = new Intent(getActivity(), PlayWebViewActivity.class);

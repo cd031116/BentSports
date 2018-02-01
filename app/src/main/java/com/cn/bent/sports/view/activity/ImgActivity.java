@@ -1,25 +1,19 @@
 package com.cn.bent.sports.view.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
 
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseActivity;
-import com.cn.bent.sports.widget.BaseDragZoomImageView;
-
-
-import butterknife.Bind;
 import butterknife.OnClick;
 
 /**
- * Created by dawn on 2018/1/31.
+ * Created by dawn on 2018/2/1.
  */
 
-public class ZoomActivity extends BaseActivity {
+public class ImgActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +28,7 @@ public class ZoomActivity extends BaseActivity {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.zoom_layout;
+        return R.layout.img_layout;
     }
 
     @Override
@@ -48,15 +42,8 @@ public class ZoomActivity extends BaseActivity {
         super.initData();
     }
 
-    @OnClick({R.id.img_sy,R.id.back})
+    @OnClick(R.id.back)
     void onClick(View view) {
-        switch (view.getId()){
-            case R.id.img_sy:
-                startActivity(new Intent(this, ImgActivity.class));
-                break;
-            case R.id.back:
-                finish();
-                break;
-        }
+        finish();
     }
 }

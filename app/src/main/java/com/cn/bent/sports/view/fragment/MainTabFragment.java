@@ -73,7 +73,6 @@ public class MainTabFragment extends BaseFragment {
 
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
-        startActivity(new Intent(getActivity(), ZoomActivity.class));
         range_list.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 

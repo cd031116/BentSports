@@ -89,7 +89,6 @@ public class ContinueActivity extends BaseActivity {
                     @Override
                     public void onSuccess(int whichRequest, AddScoreEntity addScoreEntity) {
                         if (addScoreEntity.getAddStatus() == 1) {
-                            Log.e("dasa", "onSuccess: 上传成功" + gameId);
                             startActivity(new Intent(ContinueActivity.this, MainActivity.class));
                         }else
                             startActivity(new Intent(ContinueActivity.this, MainActivity.class));
