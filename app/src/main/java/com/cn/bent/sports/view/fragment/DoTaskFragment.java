@@ -5,7 +5,6 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -40,7 +39,6 @@ import com.cn.bent.sports.database.TaskCationManager;
 import com.cn.bent.sports.ibeacon.UserRssi;
 import com.cn.bent.sports.overlay.AMapUtil;
 import com.cn.bent.sports.overlay.WalkRouteOverlay;
-import com.cn.bent.sports.utils.DataUtils;
 import com.cn.bent.sports.utils.ToastUtils;
 import com.cn.bent.sports.view.activity.PlayWebViewActivity;
 import com.cn.bent.sports.view.activity.RuleActivity;
@@ -50,9 +48,6 @@ import com.minew.beaconset.MinewBeacon;
 import com.minew.beaconset.MinewBeaconManager;
 import com.minew.beaconset.MinewBeaconManagerListener;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -108,7 +103,6 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     private final int ROUTE_TYPE_WALK = 3;
     private Marker noMarker;
     UserRssi comp = new UserRssi();
-    private WalkRouteOverlay walkRouteOverlay;
     private boolean isWark = false;
     private static final int REQUEST_ENABLE_BT = 2;
     private MinewBeaconManager mMinewBeaconManager;
@@ -181,8 +175,8 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     public boolean onMarkerClick(Marker marker) {
         for (int i = 0; i < mList.size(); i++) {
             if (marker.equals(mList.get(i))) {
+                t_ids = i +1+ "";
                 showDialogMsg("是否前往该地点", i);
-                t_ids = i + "";
             }
         }
         return true;
@@ -356,10 +350,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                     mWalkRouteResult = result;
                     final WalkPath walkPath = mWalkRouteResult.getPaths()
                             .get(0);
-                    if (walkRouteOverlay != null) {
-                        walkRouteOverlay.removeFromMap();
-                    }
-                    walkRouteOverlay = new WalkRouteOverlay(
+                    WalkRouteOverlay   walkRouteOverlay = new WalkRouteOverlay(
                             getActivity(), aMap, walkPath,
                             mWalkRouteResult.getStartPos(),
                             mWalkRouteResult.getTargetPos());
@@ -422,8 +413,16 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                     setcheck();
                     mLoction.get(position).setCheck(true);
                     addLocaToMap();
+                    mEndPoint=null;
+                    Log.i("tttt","position="+position);
                     mEndPoint = new LatLonPoint(Double.valueOf(mLoction.get(position).getLatitude()).doubleValue(),
                             Double.valueOf(mLoction.get(position).getLongitude()).doubleValue());
+                    Log.i("tttt","mEndPoint="+mEndPoint);
+                    try {
+                        Thread.sleep(600);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     searchRouteResult(ROUTE_TYPE_WALK, RouteSearch.WalkDefault);
                 } else {
 

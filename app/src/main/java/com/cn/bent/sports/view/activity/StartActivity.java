@@ -29,57 +29,62 @@ public class StartActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
     @Override
-    protected int getLayoutId(){
+    protected int getLayoutId() {
         return R.layout.activity_start;
     }
 
     @Override
-    public void initView(){
+    public void initView() {
         AlphaAnimation aa = new AlphaAnimation(0.5f, 1.0f);
         aa.setDuration(500);
         contentView.startAnimation(aa);
-        aa.setAnimationListener(new Animation.AnimationListener(){
+        aa.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void onAnimationEnd(Animation arg0){
+            public void onAnimationEnd(Animation arg0) {
 
             }
 
             @Override
-            public void onAnimationRepeat(Animation animation){
+            public void onAnimationRepeat(Animation animation) {
 
             }
+
             @Override
-            public void onAnimationStart(Animation animation){
+            public void onAnimationStart(Animation animation) {
 
             }
         });
     }
 
     @Override
-    public void initData()  {
+    public void initData() {
         super.initData();
-        BaseConfig bg=BaseConfig.getInstance(StartActivity.this);
-       final   int isFirst=bg.getIntValue(Constants.IS_FIRST,0);
-        if (this instanceof org.aisen.android.ui.activity.basic.BaseActivity) {
-            org.aisen.android.ui.activity.basic.BaseActivity aisenBaseActivity =
-                    (org.aisen.android.ui.activity.basic.BaseActivity) this;
-            new IAction(aisenBaseActivity, new SdcardPermissionAction(aisenBaseActivity,
-                    null)) {
-                @Override
-                public void doAction() {
-                  if(isFirst==0){
-                      MAsyncTask asyncTask = new MAsyncTask();
-                      asyncTask.execute();//开始执行
-                  }
-                }
-            }.run();
+        BaseConfig bg = BaseConfig.getInstance(StartActivity.this);
+        final int isFirst = bg.getIntValue(Constants.IS_FIRST, 0);
+        if (isFirst == 1) {
+            redirectTo();
+        } else {
+            if (this instanceof org.aisen.android.ui.activity.basic.BaseActivity) {
+                org.aisen.android.ui.activity.basic.BaseActivity aisenBaseActivity =
+                        (org.aisen.android.ui.activity.basic.BaseActivity) this;
+                new IAction(aisenBaseActivity, new SdcardPermissionAction(aisenBaseActivity,
+                        null)) {
+                    @Override
+                    public void doAction() {
+                        if (isFirst == 0) {
+                            MAsyncTask asyncTask = new MAsyncTask();
+                            asyncTask.execute();//开始执行
+                        }
+                    }
+                }.run();
+            }
         }
-
     }
 
     private void redirectTo() {
-        LoginBase user= SaveObjectUtils.getInstance(StartActivity.this).getObject(Constants.USER_INFO, null);
+        LoginBase user = SaveObjectUtils.getInstance(StartActivity.this).getObject(Constants.USER_INFO, null);
 //        if(user==null){
 //            startActivity(new Intent(StartActivity.this,LoginActivity.class));
 //            StartActivity.this.finish();
@@ -87,28 +92,31 @@ public class StartActivity extends BaseActivity {
 //            startActivity(new Intent(StartActivity.this,MainActivity.class));
 //            StartActivity.this.finish();
 //        }
-        startActivity(new Intent(StartActivity.this,MainActivity.class));
+        startActivity(new Intent(StartActivity.this, MainActivity.class));
         StartActivity.this.finish();
     }
 
 
-    class  MAsyncTask extends AsyncTask<Void, Integer, String>{
+    class MAsyncTask extends AsyncTask<Void, Integer, String> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
         }
+
         @Override
         protected String doInBackground(Void... params) {
-            DataUtils.copyAssetsToDst(StartActivity.this,"style.data","bent/sport.data");
-            redirectTo();
+            DataUtils.copyAssetsToDst(StartActivity.this, "style.data", "bent/sport.data");
             return null;
         }
+
         @Override
         protected void onPostExecute(String s) {
-            BaseConfig bg=BaseConfig.getInstance(StartActivity.this);
-              bg.setIntValue(Constants.IS_FIRST,1);
+            BaseConfig bg = BaseConfig.getInstance(StartActivity.this);
+            bg.setIntValue(Constants.IS_FIRST, 1);
             redirectTo();
             super.onPostExecute(s);
         }
+
+
     }
 }
