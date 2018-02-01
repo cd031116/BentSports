@@ -37,13 +37,16 @@ import com.amap.api.services.route.WalkRouteResult;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseConfig;
 import com.cn.bent.sports.base.BaseFragment;
+import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.database.TaskCationBean;
 import com.cn.bent.sports.database.TaskCationManager;
 import com.cn.bent.sports.ibeacon.UserRssi;
 import com.cn.bent.sports.overlay.AMapUtil;
 import com.cn.bent.sports.overlay.WalkRouteOverlay;
 import com.cn.bent.sports.utils.Constants;
+import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.utils.ToastUtils;
+import com.cn.bent.sports.view.activity.LoginActivity;
 import com.cn.bent.sports.view.activity.PlayWebViewActivity;
 import com.cn.bent.sports.view.activity.RuleActivity;
 import com.cn.bent.sports.view.activity.ZoomActivity;
@@ -90,6 +93,8 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     TextView go_task;
     @Bind(R.id.ji_timer)
     Chronometer ji_timer;
+    @Bind(R.id.jifen_t)
+    TextView jifen_t;
 
     AMap aMap;
     private List<TaskCationBean> mLoction = new ArrayList<>();
@@ -315,7 +320,10 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
         mapView.onResume();
         mLoction = TaskCationManager.getHistory();
         addMarkersToMap();
-
+        LoginBase user=SaveObjectUtils.getInstance(getActivity()).getObject(Constants.USER_INFO, null);
+        if(user.getScore()!=null){
+            jifen_t.setText(user.getScore());
+        }
         BaseConfig bf=BaseConfig.getInstance(getActivity());
         long times=bf.getLongValue(Constants.IS_TIME,0);
         if(times>0){
@@ -461,7 +469,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                     searchRouteResult(ROUTE_TYPE_WALK, RouteSearch.WalkDefault);
                     addLocaToMap();
                   if(times<=0){
-                      bgs.setLongValue(Constants.IS_TIME,System.currentTimeMillis());
+                      bgs.setLongValue(Constants.IS_TIME,SystemClock.elapsedRealtime());
                   }
                 } else {
 
