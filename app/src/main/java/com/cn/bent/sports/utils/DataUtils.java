@@ -99,7 +99,6 @@ public class DataUtils {
                 File outFile = new File(context.getFilesDir(), dstPath);
                 outFile.getParentFile().mkdirs();
 
-                Log.d("kkkk", "initView: "+outFile.getPath());
                 InputStream is = context.getAssets().open(srcPath);
                 FileOutputStream fos = new FileOutputStream(outFile);
                 byte[] buffer = new byte[1024];

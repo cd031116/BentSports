@@ -44,8 +44,8 @@
             android:paddingLeft="10px">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="63px"
+                android:layout_height="72px"
                 android:background="@drawable/shijian"
                 android:gravity="center" />
 

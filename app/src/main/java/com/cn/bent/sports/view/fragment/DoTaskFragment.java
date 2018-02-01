@@ -470,7 +470,6 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
 
             @Override
             public void onRangeBeacons(List<MinewBeacon> beacons) {
-                Log.e("dasd", "dasd: " + beacons.size());
                 Collections.sort(beacons, comp);
                 if (beacons != null && beacons.size() > 0) {
                     if (beacons.get(0).getDistance() > 20) {
