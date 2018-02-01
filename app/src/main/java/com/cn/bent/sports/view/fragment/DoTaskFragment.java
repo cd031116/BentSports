@@ -9,6 +9,7 @@ import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -83,6 +84,9 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     TextView juli;
     @Bind(R.id.title)
     TextView title;
+    @Bind(R.id.line_s)
+    LinearLayout line_s;
+
 
     AMap aMap;
     private List<TaskCationBean> mLoction = new ArrayList<>();
