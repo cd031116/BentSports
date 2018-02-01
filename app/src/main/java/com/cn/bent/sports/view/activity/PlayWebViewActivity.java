@@ -117,6 +117,15 @@ public class PlayWebViewActivity extends BaseActivity {
 
     @OnClick(R.id.top_left)
     void onClick(View view) {
+        showDialog();
+    }
+
+    @Override
+    public void onBackPressed() {
+        showDialog();
+    }
+
+    private void showDialog() {
         new ToastDialog(this, R.style.dialog, "是否离开游戏", new ToastDialog.OnCloseListener() {
             @Override
             public void onClick(Dialog dialog, boolean confirm) {
@@ -129,34 +138,4 @@ public class PlayWebViewActivity extends BaseActivity {
             }
         }).setTitle("提示").show();
     }
-//    /**
-//     * 清除WebView缓存
-//     */
-//    public void clearWebViewCache(){
-//
-//        //清理Webview缓存数据库
-//        try {
-//            deleteDatabase("webview.db");
-//            deleteDatabase("webviewCache.db");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        //WebView 缓存文件
-//        File appCacheDir = new File(getFilesDir().getAbsolutePath()+APP_CACAHE_DIRNAME);
-//        Log.e(TAG, "appCacheDir path="+appCacheDir.getAbsolutePath());
-//
-//        File webviewCacheDir = new File(getCacheDir().getAbsolutePath()+"/webviewCache");
-//        Log.e(TAG, "webviewCacheDir path="+webviewCacheDir.getAbsolutePath());
-//
-//        //删除webview 缓存目录
-//        if(webviewCacheDir.exists()){
-//            deleteFile(webviewCacheDir);
-//        }
-//        //删除webview 缓存 缓存目录
-//        if(appCacheDir.exists()){
-//            deleteFile(appCacheDir);
-//        }
-//    }
-
 }

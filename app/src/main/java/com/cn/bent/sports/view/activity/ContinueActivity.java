@@ -13,8 +13,11 @@ import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.AddScoreEntity;
 import com.cn.bent.sports.bean.GameEntity;
+import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.database.TaskCationManager;
+import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.DataUtils;
+import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.HuiquRxFunction;
@@ -92,7 +95,9 @@ public class ContinueActivity extends BaseActivity {
                     public void onSuccess(int whichRequest, AddScoreEntity addScoreEntity) {
                         if (addScoreEntity.getAddStatus() == 1) {
                             startActivity(new Intent(ContinueActivity.this, MainActivity.class));
-                            TaskCationManager.update(gameId+"", DataUtils.getlongs());
+                            TaskCationManager.update(gameId + "", DataUtils.getlongs());
+                            LoginBase user = (LoginBase) SaveObjectUtils.getInstance(ContinueActivity.this).getObject(Constants.USER_INFO, null);
+                            setScore(user);
                         } else
                             startActivity(new Intent(ContinueActivity.this, MainActivity.class));
                     }
@@ -102,6 +107,14 @@ public class ContinueActivity extends BaseActivity {
                         startActivity(new Intent(ContinueActivity.this, MainActivity.class));
                     }
                 });
+    }
+
+    private void setScore(LoginBase user) {
+        if (user.getScore() != null)
+            user.setScore(Integer.parseInt(user.getScore()) + score + "");
+        else
+            user.setScore(score + "");
+        SaveObjectUtils.getInstance(ContinueActivity.this).setObject(Constants.USER_INFO, user);
     }
 
     @Override
