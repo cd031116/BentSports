@@ -97,6 +97,7 @@ public class ScanActivity extends BaseActivity {
             public void onAppearBeacons(List<MinewBeacon> minewBeacons) {
 
             }
+
             /**
              *  if a beacon didn't update data in 10 seconds, we think this beacon is out of rang, the manager will call back this method.
              *
@@ -109,6 +110,7 @@ public class ScanActivity extends BaseActivity {
                     Toast.makeText(getApplicationContext(), deviceName + "  out range", Toast.LENGTH_SHORT).show();
                 }*/
             }
+
             /**
              *  the manager calls back this method every 1 seconds, you can get all scanned beacons.
              *
@@ -117,11 +119,16 @@ public class ScanActivity extends BaseActivity {
             @Override
             public void onRangeBeacons(List<MinewBeacon> minewBeacons) {
                 Log.e("dasd", "dasd: " + minewBeacons.size());
-                if (minewBeacons!=null&&minewBeacons.size()>0)
-                Log.e("dasd", "dasd: " + minewBeacons.size()+",MinewBeaconValueIndex_MAC:"+minewBeacons.get(0).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_MAC).getStringValue());
+                if (minewBeacons != null && minewBeacons.size() > 0) {
+                    Log.e("dasd", "dasd: " + minewBeacons.size() + ",MinewBeaconValueIndex_MAC:" + minewBeacons.get(0).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_MAC).getStringValue());
+                    if ("C6:6B:36:63:D2:8E".equals(minewBeacons.get(0).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_MAC).getStringValue()))
+                        showDialogMsg("开始游戏");
+                }
+
                 Collections.sort(minewBeacons, comp);
 
             }
+
             /**
              *  the manager calls back this method when BluetoothStateChanged.
              *
@@ -145,7 +152,7 @@ public class ScanActivity extends BaseActivity {
     boolean is = true;
 
     private void showDialogMsg(String names) {
-        gameDialog = new GameDialog(this, R.style.dialog, new GameDialog.OnCloseListener() {
+        new GameDialog(this, R.style.dialog, new GameDialog.OnCloseListener() {
             @Override
             public void onClick(Dialog dialog, boolean confirm) {
                 if (confirm) {
@@ -155,12 +162,7 @@ public class ScanActivity extends BaseActivity {
                 }
                 dialog.dismiss();
             }
-        });
-        gameDialog.setContent(names);
-        if (is) {
-            is = false;
-            gameDialog.setTitle("提示").show();
-        }
+        }).setTitle("说明").show();
     }
 
     @Override

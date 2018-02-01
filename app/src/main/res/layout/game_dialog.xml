@@ -46,7 +46,7 @@
                 android:paddingLeft="70px"
                 android:paddingRight="70px"
                 android:paddingTop="20px"
-                android:text="取消"
+                android:text="待会开始"
                 android:textColor="#ffffff"
                 android:textSize="46px" />
 

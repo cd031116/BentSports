@@ -41,6 +41,7 @@ import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.bean.ReFreshEvent;
 import com.cn.bent.sports.database.TaskCationBean;
 import com.cn.bent.sports.database.TaskCationManager;
+import com.cn.bent.sports.ibeacon.ScanActivity;
 import com.cn.bent.sports.ibeacon.UserRssi;
 import com.cn.bent.sports.overlay.AMapUtil;
 import com.cn.bent.sports.overlay.WalkRouteOverlay;
@@ -51,6 +52,7 @@ import com.cn.bent.sports.view.activity.LoginActivity;
 import com.cn.bent.sports.view.activity.PlayWebViewActivity;
 import com.cn.bent.sports.view.activity.RuleActivity;
 import com.cn.bent.sports.view.activity.ZoomActivity;
+import com.cn.bent.sports.widget.GameDialog;
 import com.cn.bent.sports.widget.ToastDialog;
 import com.minew.beacon.BeaconValueIndex;
 import com.minew.beacon.BluetoothState;
@@ -310,14 +312,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                 startActivity(new Intent(getActivity(), ZoomActivity.class));
                 break;
             case R.id.go_task:
-                Intent intent = new Intent(getActivity(), PlayWebViewActivity.class);
-                intent.putExtra("gameId", t_ids);
-                startActivity(intent);
-                mMinewBeaconManager.stopScan();
-                line_s.setVisibility(View.VISIBLE);
-                go_task.setVisibility(View.GONE);
-                start_view.setVisibility(View.GONE);
-                isWark = false;
+                showDialogMsg("开始游戏");
                 break;
         }
     }
@@ -357,6 +352,26 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
         }
     }
 
+    private void showDialogMsg(String names) {
+        new GameDialog(getActivity(), R.style.dialog, new GameDialog.OnCloseListener() {
+            @Override
+            public void onClick(Dialog dialog, boolean confirm) {
+                if (confirm) {
+                    Intent intent = new Intent(getActivity(), PlayWebViewActivity.class);
+                    intent.putExtra("gameId", t_ids);
+                    startActivity(intent);
+                    mMinewBeaconManager.stopScan();
+                    line_s.setVisibility(View.VISIBLE);
+                    go_task.setVisibility(View.GONE);
+                    start_view.setVisibility(View.GONE);
+                    isWark = false;
+                } else {
+
+                }
+                dialog.dismiss();
+            }
+        }).setTitle("说明").show();
+    }
 
     /**
      * 方法必须重写
