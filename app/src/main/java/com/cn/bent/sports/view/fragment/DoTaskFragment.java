@@ -443,6 +443,8 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                 Collections.sort(beacons, comp);
                 if (beacons != null && beacons.size() > 0) {
                     if (beacons.get(0).getDistance() > 20) {
+
+                        line_s.setVisibility(View.GONE);
                         //弹游戏
                         Intent intent = new Intent(getActivity(), PlayWebViewActivity.class);
                         intent.putExtra("gameId", t_ids);
