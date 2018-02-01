@@ -53,9 +53,10 @@ public class TaskCationManager {
 
     //更新数据
     public static void update(String index,long times) {
+        String id_t=(Integer.parseInt(index)-1)+"";
         List<TaskCationBean> mList=TaskCationDB.getDB().select(null, TaskCationBean.class);
         for(TaskCationBean infos:mList){
-            if (index.endsWith(String.valueOf(infos.gettId()))){
+            if (id_t.endsWith(String.valueOf(infos.gettId()))){
                 infos.setTimes(times+"");
             }
         }

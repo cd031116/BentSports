@@ -5,9 +5,11 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.Chronometer;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -33,12 +35,14 @@ import com.amap.api.services.route.RouteSearch;
 import com.amap.api.services.route.WalkPath;
 import com.amap.api.services.route.WalkRouteResult;
 import com.cn.bent.sports.R;
+import com.cn.bent.sports.base.BaseConfig;
 import com.cn.bent.sports.base.BaseFragment;
 import com.cn.bent.sports.database.TaskCationBean;
 import com.cn.bent.sports.database.TaskCationManager;
 import com.cn.bent.sports.ibeacon.UserRssi;
 import com.cn.bent.sports.overlay.AMapUtil;
 import com.cn.bent.sports.overlay.WalkRouteOverlay;
+import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.ToastUtils;
 import com.cn.bent.sports.view.activity.PlayWebViewActivity;
 import com.cn.bent.sports.view.activity.RuleActivity;
@@ -84,6 +88,8 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     LinearLayout line_s;
     @Bind(R.id.go_task)
     TextView go_task;
+    @Bind(R.id.ji_timer)
+    Chronometer ji_timer;
 
     AMap aMap;
     private List<TaskCationBean> mLoction = new ArrayList<>();
@@ -96,9 +102,9 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     private String latitude, longitude;
     private boolean isLocal = false;
     private boolean isFirstLoc = true;
+    private WalkRouteResult mWalkRouteResult;
     //----------------
     private RouteSearch mRouteSearch;
-    private WalkRouteResult mWalkRouteResult;
     private LatLonPoint mStartPoint;//起点，116.335891,39.942295
     private LatLonPoint mEndPoint;//终点，116.481288,39.995576
     private final int ROUTE_TYPE_WALK = 3;
@@ -108,6 +114,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     private static final int REQUEST_ENABLE_BT = 2;
     private MinewBeaconManager mMinewBeaconManager;
     private String t_ids;
+
     //---------------------
     AMapLocationListener mAMapLocationListener = new AMapLocationListener() {
         @Override
@@ -120,7 +127,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                     latitude = String.valueOf(aMapLocation.getLatitude());
                     longitude = String.valueOf(aMapLocation.getLongitude());
                     mStartPoint = new LatLonPoint(aMapLocation.getLatitude(), aMapLocation.getLongitude());
-                    addLocaToMap();
+                    setmLoctions();
                 } else {
                     isLocal = false;
                     //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
@@ -226,6 +233,30 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
         }
     }
 
+    private void setmLoctions(){
+        if (noMarker != null) {
+            noMarker.remove();
+        }
+        if (TextUtils.isEmpty(latitude)) {
+            return;
+        }
+        if (isWark) {
+            aMap.clear();
+            searchRouteResult(ROUTE_TYPE_WALK, RouteSearch.WalkDefault);
+        }
+        LatLng latlng = new LatLng(Double.valueOf(latitude), Double.valueOf(longitude));
+        noMarker = aMap.addMarker(new MarkerOptions()
+                .position(latlng)
+                .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
+                        .decodeResource(getResources(), R.drawable.dangqwz)))
+                .draggable(true));
+        if(!isWark){
+            aMap.moveCamera(CameraUpdateFactory.changeLatLng(latlng));
+            aMap.moveCamera(CameraUpdateFactory.zoomTo(15));
+        }
+        aMap.setMyLocationEnabled(false);
+        addMarkersToMap();
+    }
 
     /**
      * 在地图上添加marker
@@ -237,10 +268,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
         if (TextUtils.isEmpty(latitude)) {
             return;
         }
-        if (isWark) {
-            aMap.clear();
-            searchRouteResult(ROUTE_TYPE_WALK, RouteSearch.WalkDefault);
-        }
+//
         LatLng latlng = new LatLng(Double.valueOf(latitude), Double.valueOf(longitude));
         noMarker = aMap.addMarker(new MarkerOptions()
                 .position(latlng)
@@ -287,6 +315,18 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
         mapView.onResume();
         mLoction = TaskCationManager.getHistory();
         addMarkersToMap();
+
+        BaseConfig bf=BaseConfig.getInstance(getActivity());
+        long times=bf.getLongValue(Constants.IS_TIME,0);
+        if(times>0){
+            if(ji_timer!=null){
+                ji_timer.start();
+            }
+            ji_timer.setBase(times);//计时器清零
+                     int hour = (int) ((SystemClock.elapsedRealtime() - ji_timer.getBase()) / 1000 / 60);
+            ji_timer.setFormat("0"+String.valueOf(hour)+":%s");
+            ji_timer.start();
+        }
     }
 
     /**
@@ -327,6 +367,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
         final RouteSearch.FromAndTo fromAndTo = new RouteSearch.FromAndTo(
                 mStartPoint, mEndPoint);
         if (routeType == ROUTE_TYPE_WALK) {// 步行路径规划
+            aMap.removecache();
             RouteSearch.WalkRouteQuery query = new RouteSearch.WalkRouteQuery(fromAndTo, mode);
             mRouteSearch.calculateWalkRouteAsyn(query);// 异步路径规划步行模式查询
         }
@@ -342,16 +383,16 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     public void onDriveRouteSearched(DriveRouteResult driveRouteResult, int i) {
 
     }
-
+    WalkRouteOverlay   walkRouteOverlay;
     @Override
     public void onWalkRouteSearched(WalkRouteResult result, int errorCode) {
         if (errorCode == AMapException.CODE_AMAP_SUCCESS) {
             if (result != null && result.getPaths() != null) {
                 if (result.getPaths().size() > 0) {
                     mWalkRouteResult = result;
-                    final WalkPath walkPath = mWalkRouteResult.getPaths()
+                    final WalkPath walkPath = result.getPaths()
                             .get(0);
-                    WalkRouteOverlay   walkRouteOverlay = new WalkRouteOverlay(
+                    WalkRouteOverlay walkRouteOverlay = new WalkRouteOverlay(
                             getActivity(), aMap, walkPath,
                             mWalkRouteResult.getStartPos(),
                             mWalkRouteResult.getTargetPos());
@@ -404,8 +445,8 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
             checkBluetooth();
         }
     }
-
-
+    BaseConfig bgs=BaseConfig.getInstance(getActivity());
+    long times=bgs.getLongValue(Constants.IS_TIME,0);
     private void showDialogMsg(String names, final int position) {
         new ToastDialog(getActivity(), R.style.dialog, names, new ToastDialog.OnCloseListener() {
             @Override
@@ -413,18 +454,15 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                 if (confirm) {
                     setcheck();
                     mLoction.get(position).setCheck(true);
-                    addLocaToMap();
                     mEndPoint=null;
-                    Log.i("tttt","position="+position);
                     mEndPoint = new LatLonPoint(Double.valueOf(mLoction.get(position).getLatitude()).doubleValue(),
                             Double.valueOf(mLoction.get(position).getLongitude()).doubleValue());
-                    Log.i("tttt","mEndPoint="+mEndPoint);
-                    try {
-                        Thread.sleep(600);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                    aMap.clear();
                     searchRouteResult(ROUTE_TYPE_WALK, RouteSearch.WalkDefault);
+                    addLocaToMap();
+                  if(times<=0){
+                      bgs.setLongValue(Constants.IS_TIME,System.currentTimeMillis());
+                  }
                 } else {
 
                 }
