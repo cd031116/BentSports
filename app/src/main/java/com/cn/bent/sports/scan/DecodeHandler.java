@@ -4,8 +4,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
+import com.cn.bent.sports.R;
 import com.zbar.lib.ZbarManager;
-import com.zhl.huiqu.R;
 
 
 /**

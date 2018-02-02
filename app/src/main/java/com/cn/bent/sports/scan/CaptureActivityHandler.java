@@ -3,8 +3,8 @@ package com.cn.bent.sports.scan;
 import android.os.Handler;
 import android.os.Message;
 
-import com.zhl.huiqu.R;
-import com.zhl.huiqu.scan.camera.CameraManager;
+import com.cn.bent.sports.R;
+import com.cn.bent.sports.scan.camera.CameraManager;
 
 
 /**
