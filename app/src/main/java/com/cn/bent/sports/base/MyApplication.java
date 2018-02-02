@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.support.multidex.MultiDex;
 
 import com.cn.bent.sports.database.TaskCationManager;
+import com.uuzuche.lib_zxing.activity.ZXingLibrary;
 
 import org.aisen.android.common.context.GlobalContext;
 
@@ -25,6 +26,7 @@ public class MyApplication extends GlobalContext{
         instance = this;
         activityManager = ActivityManagerd.getScreenManager();
         TaskCationManager.setup(this);
+        ZXingLibrary.initDisplayOpinion(this);
     }
 
     public ActivityManagerd getActivityManager() {

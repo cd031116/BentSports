@@ -40,11 +40,6 @@ android {
             dirs 'libs'
         }
     }
-    sourceSets {
-        main {
-            jniLibs.srcDirs = ['libs']
-        }
-    }
 }
 
 dependencies {
@@ -67,6 +62,7 @@ dependencies {
     compile 'com.amap.api:search:latest.integration'
     compile 'com.android.support:multidex:1.0.1'
     compile 'org.greenrobot:eventbus:3.0.0'
+    compile 'cn.yipianfengye.android:zxing-library:2.2'
     testCompile 'junit:junit:4.12'
     compile files('libs/minewBeaconScan.jar')
 }
