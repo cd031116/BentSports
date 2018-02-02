@@ -8,17 +8,54 @@ import java.io.Serializable;
 
 public class AddScoreEntity implements Serializable{
 
+
     /**
-     * addStatus : 1
+     * code : 1
+     * msg : 操作成功
+     * body : {"addStatus":1}
      */
 
-    private int addStatus;
+    private int code;
+    private String msg;
+    private BodyBean body;
 
-    public int getAddStatus() {
-        return addStatus;
+    public int getCode() {
+        return code;
     }
 
-    public void setAddStatus(int addStatus) {
-        this.addStatus = addStatus;
+    public void setCode(int code) {
+        this.code = code;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public BodyBean getBody() {
+        return body;
+    }
+
+    public void setBody(BodyBean body) {
+        this.body = body;
+    }
+
+    public static class BodyBean implements Serializable{
+        /**
+         * addStatus : 1
+         */
+
+        private int addStatus;
+
+        public int getAddStatus() {
+            return addStatus;
+        }
+
+        public void setAddStatus(int addStatus) {
+            this.addStatus = addStatus;
+        }
     }
 }

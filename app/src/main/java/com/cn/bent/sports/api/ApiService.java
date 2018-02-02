@@ -52,7 +52,7 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST("outdoor/user/addscore")
-    Observable<HuiquResult<AddScoreEntity>> addScore(
+    Observable<AddScoreEntity> addScore(
             @Field("cur_user_id") String mobile,
             @Field("score") int code,
             @Field("game_id") int game_id);

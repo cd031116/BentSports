@@ -81,7 +81,7 @@ public class PlayWebViewActivity extends BaseActivity {
         webSettings.setJavaScriptEnabled(true);
         // 设置允许JS弹窗
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
-        gameId = (int) (Math.random() * 5 + 1) + "";
+//        gameId = (int) (Math.random() * 5 + 1) + "";
         Log.e("dasa", "initWebView: " + gameId);
         switch (Integer.parseInt(gameId)) {
             case 1:
@@ -97,7 +97,7 @@ public class PlayWebViewActivity extends BaseActivity {
                 mWebView.loadUrl("http://aihw.zhonghuilv.net/caishenmiao/index.html?uid=" + user.getMember_id() + "&etype=android");
                 break;
             case 5:
-                mWebView.loadUrl("http://aihw.zhonghuilv.net/cdm/index.html?uid=" + user.getMember_id() + "&etype=android");
+                mWebView.loadUrl("https://aihw.zhonghuilv.net/cdm/index.html?uid=" + user.getMember_id() + "&etype=android");
                 break;
         }
         mWebView.addJavascriptInterface(new JSInterface(), "native");
