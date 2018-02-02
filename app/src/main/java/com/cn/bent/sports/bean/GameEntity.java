@@ -11,12 +11,12 @@ public class GameEntity implements Serializable {
     /**
      * uid : 1
      * scord : 6
-     * gameId : 2
+     * gameid : 2
      */
 
     private String uid;
     private int scord;
-    private int gameId;
+    private int gameid;
 
     public String getUid() {
         return uid;
@@ -34,11 +34,11 @@ public class GameEntity implements Serializable {
         this.scord = scord;
     }
 
-    public int getGameId() {
-        return gameId;
+    public int getGameid() {
+        return gameid;
     }
 
-    public void setGameId(int gameId) {
-        this.gameId = gameId;
+    public void setGameid(int gameid) {
+        this.gameid = gameid;
     }
 }

@@ -98,22 +98,22 @@ public class PlayWebViewActivity extends BaseActivity {
         Log.e("dasa", "initWebView: " + gameId);
         switch (Integer.parseInt(gameId)) {
             case 1:
-                mWebView.loadUrl("http://aihw.zhonghuilv.net/hby/index.html?uid=" + user.getMember_id() + "&etype=android");
+                mWebView.loadUrl("http://aihw.zhonghuilv.net/hby/index.html?uid=" + user.getMember_id() + "&etype=android&gameid="+gameId);
                 break;
             case 2:
-                mWebView.loadUrl("http://aihw.zhonghuilv.net/aihuwai/index.html?uid=" + user.getMember_id() + "&etype=android");
+                mWebView.loadUrl("http://aihw.zhonghuilv.net/aihuwai/index.html?uid=" + user.getMember_id() + "&etype=android&gameid="+gameId);
                 break;
             case 3:
-                mWebView.loadUrl("http://aihw.zhonghuilv.net/denglong/index.html?uid=" + user.getMember_id() + "&etype=android");
+                mWebView.loadUrl("http://aihw.zhonghuilv.net/denglong/index.html?uid=" + user.getMember_id() + "&etype=android&gameid="+gameId);
                 break;
             case 4:
-                mWebView.loadUrl("http://aihw.zhonghuilv.net/caishenmiao/index.html?uid=" + user.getMember_id() + "&etype=android");
+                mWebView.loadUrl("http://aihw.zhonghuilv.net/caishenmiao/index.html?uid=" + user.getMember_id() + "&etype=android&gameid="+gameId);
                 break;
             case 5:
-                mWebView.loadUrl("http://aihw.zhonghuilv.net/cdm/index.html?uid=" + user.getMember_id() + "&etype=android");
+                mWebView.loadUrl("http://aihw.zhonghuilv.net/cdm/index.html?uid=" + user.getMember_id() + "&etype=android&gameid="+gameId);
                 break;
             case 6:
-                mWebView.loadUrl("http://aihw.zhonghuilv.net/xcm/index.html?uid=" + user.getMember_id() + "&etype=android");
+                mWebView.loadUrl("http://aihw.zhonghuilv.net/xcm/index.html?uid=" + user.getMember_id() + "&etype=android&gameid="+gameId);
                 break;
         }
         mWebView.addJavascriptInterface(new JSInterface(), "native");
@@ -135,7 +135,7 @@ public class PlayWebViewActivity extends BaseActivity {
 
     private void addScroe(final GameEntity gameEntity) {
         showAlert("正在上传积分。。", true);
-        BaseApi.getDefaultService(this).addScore(gameEntity.getUid(), gameEntity.getScord(), gameEntity.getGameId())
+        BaseApi.getDefaultService(this).addScore(gameEntity.getUid(), gameEntity.getScord(), gameEntity.getGameid())
                 .map(new HuiquRxTBFunction<AddScoreEntity>())
                 .compose(RxSchedulers.<AddScoreEntity>io_main())
                 .subscribe(new RxObserver<AddScoreEntity>(this, "addScore", 1, false) {

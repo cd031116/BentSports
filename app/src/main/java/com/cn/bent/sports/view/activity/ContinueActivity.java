@@ -46,7 +46,7 @@ public class ContinueActivity extends BaseActivity {
 
     private void setView(GameEntity game) {
         scord.setText(game.getScord() + "");
-        switch (game.getGameId()) {
+        switch (game.getGameid()) {
             case 1:
                 card_img.setBackground(getResources().getDrawable(R.drawable.hongbaoyu));
                 break;

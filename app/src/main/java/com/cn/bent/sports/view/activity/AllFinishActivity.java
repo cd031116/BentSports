@@ -42,7 +42,7 @@ public class AllFinishActivity extends BaseActivity {
 
     @Override
     protected int getLayoutId() {
-        return 0;
+        return R.layout.all_finished_layout;
     }
 
     @Override

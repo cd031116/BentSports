@@ -104,31 +104,37 @@ public class IsMeFragment extends BaseFragment {
     private void setView(UserMsgEntity userMsgEntity) {
 
         nick_name.setText(userMsgEntity.getUserMsg().getNickname());
-        score.setText(userMsgEntity.getUserMsg().getScore()+"");
+        score.setText(userMsgEntity.getUserMsg().getScore() + "");
         RequestOptions requestOptions = RequestOptions.circleCropTransform();
         Glide.with(user_photo.getContext()).load(userMsgEntity.getUserMsg().getHeadimg())
                 .apply(requestOptions)
                 .into(user_photo);
-        if (userMsgEntity.getUserMsg().getCard_num() != null && userMsgEntity.getUserMsg().getCard_num().size() > 0) {
-            for (UserMsgEntity.UserMsgBean.CardNumBean cardBean : userMsgEntity.getUserMsg().getCard_num()) {
+        if (userMsgEntity.getCard_num() != null && userMsgEntity.getCard_num().size() > 0) {
+            for (UserMsgEntity.CardNumBean cardBean : userMsgEntity.getCard_num()) {
                 switch (cardBean.getGame_id()) {
                     case 1:
-                        hongbaoyu.setBackground(getResources().getDrawable(R.drawable.hongbaoyu));
+                        if (cardBean.getStatus() == 1)
+                            hongbaoyu.setBackground(getResources().getDrawable(R.drawable.hongbaoyu));
                         break;
                     case 2:
-                        liunianshou.setBackground(getResources().getDrawable(R.drawable.liunianshou));
+                        if (cardBean.getStatus() == 1)
+                            liunianshou.setBackground(getResources().getDrawable(R.drawable.liunianshou));
                         break;
                     case 3:
-                        diandenglong.setBackground(getResources().getDrawable(R.drawable.diandenglong));
+                        if (cardBean.getStatus() == 1)
+                            diandenglong.setBackground(getResources().getDrawable(R.drawable.diandenglong));
                         break;
                     case 4:
-                        jixiangqian.setBackground(getResources().getDrawable(R.drawable.jixiangqian));
+                        if (cardBean.getStatus() == 1)
+                            jixiangqian.setBackground(getResources().getDrawable(R.drawable.jixiangqian));
                         break;
                     case 5:
-                        caidengmi.setBackground(getResources().getDrawable(R.drawable.caidengmi));
+                        if (cardBean.getStatus() == 1)
+                            caidengmi.setBackground(getResources().getDrawable(R.drawable.caidengmi));
                         break;
                     case 6:
-                        fangbianpao.setBackground(getResources().getDrawable(R.drawable.fangbianpao));
+                        if (cardBean.getStatus() == 1)
+                            fangbianpao.setBackground(getResources().getDrawable(R.drawable.fangbianpao));
                         break;
                 }
             }
