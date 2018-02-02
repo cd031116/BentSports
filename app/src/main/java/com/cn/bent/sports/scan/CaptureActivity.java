@@ -281,7 +281,7 @@ public class CaptureActivity extends BaseActivity implements Callback {
     void onclick(View v) {
         switch (v.getId()) {
             case R.id.top_left:
-                CaptureActivity.this.finish();
+                finish();
                 break;
         }
     }
