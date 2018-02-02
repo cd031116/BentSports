@@ -67,7 +67,8 @@
 
         <activity android:name=".view.activity.SettingActivity" />
         <activity android:name=".view.activity.ChangeNameActivity" />
-        <activity android:name=".view.activity.PlayWebViewActivity" />
+        <activity android:name=".view.activity.PlayWebViewActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden"/>
         <activity android:name=".view.activity.LoginActivity" />
         <activity android:name=".view.activity.ContinueActivity" />
         <activity android:name=".view.activity.RuleActivity"></activity>
