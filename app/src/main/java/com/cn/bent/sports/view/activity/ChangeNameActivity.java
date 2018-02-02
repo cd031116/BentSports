@@ -45,6 +45,7 @@ public class ChangeNameActivity extends BaseActivity {
     @Override
     public void initData() {
         super.initData();
+        name_t.setText(user.getNickname());
     }
 
 

@@ -75,8 +75,13 @@ public class CaptureActivity extends BaseActivity {
     CodeUtils.AnalyzeCallback analyzeCallback = new CodeUtils.AnalyzeCallback() {
         @Override
         public void onAnalyzeSuccess(Bitmap mBitmap, String result) {
-           setResult(RESULT_OK);
-            finish();
+            Intent resultIntent = new Intent();
+            Bundle bundle = new Bundle();
+            bundle.putInt(CodeUtils.RESULT_TYPE, CodeUtils.RESULT_SUCCESS);
+            bundle.putString(CodeUtils.RESULT_STRING, result);
+            resultIntent.putExtras(bundle);
+           setResult(RESULT_OK, resultIntent);
+           finish();
         }
 
         @Override

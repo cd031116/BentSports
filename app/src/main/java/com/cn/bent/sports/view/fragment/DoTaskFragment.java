@@ -55,6 +55,7 @@ import com.cn.bent.sports.widget.GameDialog;
 import com.cn.bent.sports.widget.ToastDialog;
 import com.minew.beacon.BluetoothState;
 import com.minew.beacon.MinewBeaconManager;
+import com.uuzuche.lib_zxing.activity.CodeUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -470,13 +471,13 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                     int dis = (int) walkPath.getDistance();
                     setview(dis);
                 } else if (result != null && result.getPaths() == null) {
-                    ToastUtils.showShortToast(getActivity(), "无结果");
+                    ToastUtils.showShortToast(getActivity(), "路线规划失败");
                 }
             } else {
-                ToastUtils.showShortToast(getActivity(), "无结果");
+                ToastUtils.showShortToast(getActivity(), "路线规划失败");
             }
         } else {
-            ToastUtils.showShortToast(getActivity(), "无结果");
+            ToastUtils.showShortToast(getActivity(), "路线规划失败");
         }
     }
 
@@ -492,7 +493,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
             name_game.setText("红包雨");
         }
         if ("2".endsWith(t_ids)) {
-            name_game.setText("拯救小托");
+            name_game.setText("拯救小拓");
         }
         if ("3".endsWith(t_ids)) {
             name_game.setText("点亮所有灯笼");
@@ -632,12 +633,28 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                 initListener();
                 break;
             case REQUEST_Scan:
-                if(resultCode==-1){
-                    Intent intent = new Intent(getActivity(), PlayWebViewActivity.class);
-                    intent.putExtra("gameId", t_ids);
-                    startActivity(intent);
-                    mMinewBeaconManager.stopScan();
-                }
+                    if (null != data) {
+                        Bundle bundle = data.getExtras();
+                        if (bundle == null) {
+                            return;
+                        }
+                        if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
+                            String result = bundle.getString(CodeUtils.RESULT_STRING);
+                            if("B33832EF5EFF3EFF30B1B646B6F2410F".endsWith(result)){
+                                Intent intent = new Intent(getActivity(), PlayWebViewActivity.class);
+                                intent.putExtra("gameId", t_ids);
+                                startActivity(intent);
+                                mMinewBeaconManager.stopScan();
+                            }else {
+                                ToastUtils.showShortToast(getActivity(),"二维码不匹配");
+                            }
+
+                        } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
+                            ToastUtils.showShortToast(getActivity(),"二维码不匹配");
+                        }
+                    }else {
+                        ToastUtils.showShortToast(getActivity(),"无结果");
+                    }
                 break;
         }
     }
