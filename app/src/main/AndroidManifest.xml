@@ -67,6 +67,8 @@
         <activity android:name=".view.activity.ZoomActivity"></activity>
         <activity android:name=".view.activity.ImgActivity"
             android:screenOrientation="landscape"></activity>
+        <activity android:name=".scan.CaptureActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
