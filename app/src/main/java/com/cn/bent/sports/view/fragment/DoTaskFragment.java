@@ -356,7 +356,9 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
         }
         setTimes();
     }
+
     Timer timerd = new Timer();
+
     private void setTimes() {
         BaseConfig bf = BaseConfig.getInstance(getActivity());
         final long times = bf.getLongValue(Constants.IS_TIME, 0);
@@ -384,8 +386,8 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
             }, 0, 1000L);
 
         } else {
-            if(timerd!=null){
-                timerd.cancel();
+            if (timerd != null) {
+
             }
 
         }
@@ -441,7 +443,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(timerd!=null){
+        if (timerd != null) {
             timerd.cancel();
         }
         mapView.onDestroy();
@@ -590,6 +592,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     }
 
     private void initListener() {
+
         mMinewBeaconManager.startScan();
         mMinewBeaconManager.setDeviceManagerDelegateListener(new com.minew.beacon.MinewBeaconManagerListener() {
             /**
@@ -635,10 +638,10 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
             public void onUpdateState(com.minew.beacon.BluetoothState state) {
                 switch (state) {
                     case BluetoothStatePowerOn:
-                        Toast.makeText(getActivity(), "蓝牙关闭", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "蓝牙打开", Toast.LENGTH_SHORT).show();
                         break;
                     case BluetoothStatePowerOff:
-                        Toast.makeText(getActivity(), "蓝牙打开", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "蓝牙关闭", Toast.LENGTH_SHORT).show();
                         break;
                 }
             }
@@ -656,7 +659,9 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case REQUEST_ENABLE_BT:
-                initListener();
+                Log.e("dasa", "onActivityResult: " + mMinewBeaconManager.checkBluetoothState());
+                if (mMinewBeaconManager.checkBluetoothState().equals(BluetoothState.BluetoothStatePowerOn))
+                    initListener();
                 break;
             case REQUEST_Scan:
                 if (null != data) {

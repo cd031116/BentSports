@@ -88,8 +88,7 @@ public class SettingActivity extends BaseActivity {
                 SettingActivity.this.finish();
                 break;
             case R.id.login:
-//                obtainLoc();
-                startActivity(new Intent(this,AllFinishActivity.class));
+                obtainLoc();
 //                showDialogMsg("确定退出当前账号？");
                 break;
             case R.id.user_photo:

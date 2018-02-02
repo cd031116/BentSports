@@ -138,7 +138,7 @@ public class PlayWebViewActivity extends BaseActivity {
     class JSInterface {
         @JavascriptInterface
         public void h5Result(String ss) {
-            Log.e("dasa", "h5Result: "+ss );
+            Log.e("dasa", "h5Result: " + ss);
             Gson gson = new Gson();
             GameEntity gameEntity = gson.fromJson(ss, GameEntity.class);
             addScroe(gameEntity);
@@ -207,8 +207,10 @@ public class PlayWebViewActivity extends BaseActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mWebView != null)
+        if (mWebView != null) {
+            mWebView.clearCache(true);
             mWebView.destroy();
+        }
     }
 
     @OnClick(R.id.top_left)
