@@ -31,7 +31,7 @@
             android:layout_marginTop="20px"
             android:gravity="center_horizontal"
             android:textColor="#999999"
-            android:textSize="43px"
+            android:textSize="33px"
             android:visibility="visible" />
 
 

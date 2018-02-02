@@ -44,6 +44,7 @@ import com.cn.bent.sports.database.TaskCationManager;
 import com.cn.bent.sports.ibeacon.UserRssi;
 import com.cn.bent.sports.overlay.AMapUtil;
 import com.cn.bent.sports.overlay.WalkRouteOverlay;
+import com.cn.bent.sports.scan.CaptureActivity;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.utils.ToastUtils;
@@ -119,6 +120,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     UserRssi comp = new UserRssi();
     private boolean isWark = false;
     private static final int REQUEST_ENABLE_BT = 2;
+    private static final int REQUEST_Scan = 12;
     private MinewBeaconManager mMinewBeaconManager;
     private String t_ids;
 
@@ -303,22 +305,22 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                 break;
             case R.id.go_task:
                 if ("1".endsWith(t_ids)) {
-                    showDialogMsg("开始游戏");
+                    showDialogMsg(getResources().getString(R.string.hong_bao));
                 }
                 if ("2".endsWith(t_ids)) {
-                    showDialogMsg("开始游戏");
+                    showDialogMsg(getResources().getString(R.string.chou_qian));
                 }
                 if ("3".endsWith(t_ids)) {
-                    showDialogMsg("开始游戏");
+                    showDialogMsg(getResources().getString(R.string.cai_deng_mi));
                 }
                 if ("4".endsWith(t_ids)) {
-                    showDialogMsg("开始游戏");
+                    showDialogMsg(getResources().getString(R.string.no_die));
                 }
                 if ("5".endsWith(t_ids)) {
-                    showDialogMsg("开始游戏");
+                    showDialogMsg(getResources().getString(R.string.xiong_chumo));
                 }
                 if ("6".endsWith(t_ids)) {
-                    showDialogMsg("开始游戏");
+                    showDialogMsg(getResources().getString(R.string.deng_long));
                 }
                 break;
         }
@@ -372,9 +374,14 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
             @Override
             public void onClick(Dialog dialog, boolean confirm) {
                 if (confirm) {
-                    Intent intent = new Intent(getActivity(), PlayWebViewActivity.class);
-                    intent.putExtra("gameId", t_ids);
-                    startActivity(intent);
+                    if("3".endsWith(t_ids)){
+                        Intent intent = new Intent(getActivity(), CaptureActivity.class);
+                         startActivityForResult(intent,REQUEST_Scan);
+                    }else {
+                        Intent intent = new Intent(getActivity(), PlayWebViewActivity.class);
+                        intent.putExtra("gameId", t_ids);
+                        startActivity(intent);
+                    }
                     mMinewBeaconManager.stopScan();
                     line_s.setVisibility(View.VISIBLE);
                     go_task.setVisibility(View.GONE);
@@ -623,6 +630,11 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
         switch (requestCode) {
             case REQUEST_ENABLE_BT:
                 initListener();
+                break;
+            case REQUEST_Scan:
+                Intent intent = new Intent(getActivity(), PlayWebViewActivity.class);
+                intent.putExtra("gameId", t_ids);
+                startActivity(intent);
                 break;
         }
     }
