@@ -632,9 +632,11 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                 initListener();
                 break;
             case REQUEST_Scan:
-                Intent intent = new Intent(getActivity(), PlayWebViewActivity.class);
-                intent.putExtra("gameId", t_ids);
-                startActivity(intent);
+                if(resultCode==-1){
+                    Intent intent = new Intent(getActivity(), PlayWebViewActivity.class);
+                    intent.putExtra("gameId", t_ids);
+                    startActivity(intent);
+                }
                 break;
         }
     }
