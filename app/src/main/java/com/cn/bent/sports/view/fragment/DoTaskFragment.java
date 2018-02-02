@@ -637,6 +637,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                     Intent intent = new Intent(getActivity(), PlayWebViewActivity.class);
                     intent.putExtra("gameId", t_ids);
                     startActivity(intent);
+                    mMinewBeaconManager.stopScan();
                 }
                 break;
         }
