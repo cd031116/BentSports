@@ -60,6 +60,7 @@ public class WalkRouteOverlay extends RouteOverlay {
                 addWalkPolyLines(walkStep);
                
             }
+			setNodeIconVisibility(false);
             mPolylineOptions.add(endPoint);
             addStartAndEndMarker();
 

@@ -183,7 +183,7 @@ public class RouteOverlay {
 		if(options == null) {
 			return;
 		}
-		Polyline polyline = mAMap.addPolyline(options);
+		Polyline polyline = mAMap.addPolyline(options.color(getWalkColor()));
 		if(polyline != null) {
 			allPolyLines.add(polyline);
 		}
@@ -194,7 +194,8 @@ public class RouteOverlay {
 	}
 
 	protected int getWalkColor() {
-		return Color.parseColor("#6db74d");
+		return Color.parseColor("#EF2505");
+//		#EF2505
 	}
 
 	/**
