@@ -308,19 +308,19 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                     showDialogMsg(getResources().getString(R.string.hong_bao));
                 }
                 if ("2".endsWith(t_ids)) {
-                    showDialogMsg(getResources().getString(R.string.chou_qian));
-                }
-                if ("3".endsWith(t_ids)) {
-                    showDialogMsg(getResources().getString(R.string.cai_deng_mi));
-                }
-                if ("4".endsWith(t_ids)) {
                     showDialogMsg(getResources().getString(R.string.no_die));
                 }
+                if ("3".endsWith(t_ids)) {
+                    showDialogMsg(getResources().getString(R.string.deng_long));
+                }
+                if ("4".endsWith(t_ids)) {
+                    showDialogMsg(getResources().getString(R.string.chou_qian));
+                }
                 if ("5".endsWith(t_ids)) {
-                    showDialogMsg(getResources().getString(R.string.xiong_chumo));
+                    showDialogMsg(getResources().getString(R.string.cai_deng_mi));
                 }
                 if ("6".endsWith(t_ids)) {
-                    showDialogMsg(getResources().getString(R.string.deng_long));
+                    showDialogMsg(getResources().getString(R.string.xiong_chumo));
                 }
                 break;
         }
@@ -372,7 +372,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
             @Override
             public void onClick(Dialog dialog, boolean confirm) {
                 if (confirm) {
-                    if("3".endsWith(t_ids)){
+                    if("5".endsWith(t_ids)){
                         Intent intent = new Intent(getActivity(), CaptureActivity.class);
                          startActivityForResult(intent,REQUEST_Scan);
                     }else {
@@ -492,19 +492,19 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
             name_game.setText("红包雨");
         }
         if ("2".endsWith(t_ids)) {
-            name_game.setText("财神庙求签");
-        }
-        if ("3".endsWith(t_ids)) {
-            name_game.setText("猜灯谜");
-        }
-        if ("4".endsWith(t_ids)) {
             name_game.setText("拯救小托");
         }
+        if ("3".endsWith(t_ids)) {
+            name_game.setText("点亮所有灯笼");
+        }
+        if ("4".endsWith(t_ids)) {
+            name_game.setText("财神庙求签");
+        }
         if ("5".endsWith(t_ids)) {
-            name_game.setText("");
+            name_game.setText("猜灯谜");
         }
         if ("6".endsWith(t_ids)) {
-            name_game.setText("点亮所有灯笼");
+            name_game.setText("熊出没");
         }
         if(distance<20){
             //打开蓝牙

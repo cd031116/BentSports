@@ -76,6 +76,7 @@ public class CaptureActivity extends BaseActivity {
         @Override
         public void onAnalyzeSuccess(Bitmap mBitmap, String result) {
            setResult(RESULT_OK);
+            finish();
         }
 
         @Override
