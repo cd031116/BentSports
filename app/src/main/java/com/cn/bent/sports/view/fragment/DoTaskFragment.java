@@ -488,9 +488,6 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     private void setview(int distance) {
         start_view.setVisibility(View.VISIBLE);
         juli.setText(AMapUtil.getFriendlyLength(distance));
-        if(distance<20){
-            //打开蓝牙
-         checkBluetooth();
         if ("1".endsWith(t_ids)) {
             name_game.setText("红包雨");
         }
@@ -509,8 +506,10 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
         if ("6".endsWith(t_ids)) {
             name_game.setText("点亮所有灯笼");
         }
+        if(distance<20){
+            //打开蓝牙
+            checkBluetooth();
         }
-
     }
 
     BaseConfig bgs = BaseConfig.getInstance(getActivity());
