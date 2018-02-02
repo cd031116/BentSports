@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseActivity;
+import com.cn.bent.sports.utils.ToastUtils;
 import com.uuzuche.lib_zxing.activity.CaptureFragment;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 
@@ -57,16 +58,19 @@ public class CaptureActivity extends BaseActivity {
     @Override
     public void onResume() {
         super.onResume();
+        CodeUtils.isLightEnable(true);
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        CodeUtils.isLightEnable(false);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        CodeUtils.isLightEnable(false);
     }
 
     /**
@@ -75,13 +79,20 @@ public class CaptureActivity extends BaseActivity {
     CodeUtils.AnalyzeCallback analyzeCallback = new CodeUtils.AnalyzeCallback() {
         @Override
         public void onAnalyzeSuccess(Bitmap mBitmap, String result) {
-            Intent resultIntent = new Intent();
-            Bundle bundle = new Bundle();
-            bundle.putInt(CodeUtils.RESULT_TYPE, CodeUtils.RESULT_SUCCESS);
-            bundle.putString(CodeUtils.RESULT_STRING, result);
-            resultIntent.putExtras(bundle);
-           setResult(RESULT_OK, resultIntent);
-           finish();
+
+            if("B33832EF5EFF3EFF30B1B646B6F2410F".endsWith(result)){
+                Intent resultIntent = new Intent();
+                Bundle bundle = new Bundle();
+                bundle.putInt(CodeUtils.RESULT_TYPE, CodeUtils.RESULT_SUCCESS);
+                bundle.putString(CodeUtils.RESULT_STRING, result);
+                resultIntent.putExtras(bundle);
+                setResult(RESULT_OK, resultIntent);
+                finish();
+            } else {
+                ToastUtils.showShortToast(CaptureActivity.this,"二维码不匹配");
+
+            }
+
         }
 
         @Override
