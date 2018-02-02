@@ -39,7 +39,7 @@
                 android:layout_width="48px"
                 android:layout_height="48px"
                 android:clickable="false"
-                android:background="@drawable/fanhui_hong"
+                android:background="@drawable/guanbi_hei"
                 android:contentDescription="@string/app_name" />
 
             <TextView

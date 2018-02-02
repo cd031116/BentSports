@@ -9,6 +9,7 @@ import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Chronometer;
 
 import com.cn.bent.sports.R;
@@ -87,6 +88,14 @@ public class PlayWebViewActivity extends BaseActivity {
 
         webSettings.setSupportZoom(false);
         mWebView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY); //取消滚动条白边效果
+        mWebView.setWebViewClient(new WebViewClient() {
+            //覆盖shouldOverrideUrlLoading 方法
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+                return true;
+            }
+        });
         webSettings.setDefaultTextEncodingName("UTF-8");
         webSettings.setBlockNetworkImage(false);
 
