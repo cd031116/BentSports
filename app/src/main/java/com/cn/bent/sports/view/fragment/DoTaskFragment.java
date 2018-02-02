@@ -447,6 +447,11 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
             timerd.cancel();
         }
         mapView.onDestroy();
+        if(mLocationClient!=null){
+            mLocationClient.stopLocation();
+            mLocationClient.onDestroy();
+        }
+
         EventBus.getDefault().unregister(this);
     }
 
