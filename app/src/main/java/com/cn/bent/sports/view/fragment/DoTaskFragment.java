@@ -152,6 +152,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
         }
     };
 
+
     @Override
     protected int getLayoutId() {
         return R.layout.do_task_fragment;

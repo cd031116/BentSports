@@ -73,7 +73,7 @@ public class PlayWebViewActivity extends BaseActivity {
 
     private void initWebView() {
         WebSettings webSettings = mWebView.getSettings();
-
+        mWebView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         webSettings.setJavaScriptEnabled(true);
         webSettings.setUseWideViewPort(true);
         webSettings.setLoadWithOverviewMode(true);
@@ -87,6 +87,7 @@ public class PlayWebViewActivity extends BaseActivity {
         webSettings.setAppCacheEnabled(true);
 
         webSettings.setSupportZoom(false);
+        webSettings.setBlockNetworkImage(true);
         mWebView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY); //取消滚动条白边效果
         mWebView.setWebViewClient(new WebViewClient() {
             //覆盖shouldOverrideUrlLoading 方法
@@ -107,22 +108,23 @@ public class PlayWebViewActivity extends BaseActivity {
         Log.e("dasa", "initWebView: " + gameId);
         switch (Integer.parseInt(gameId)) {
             case 1:
-                mWebView.loadUrl("http://aihw.zhonghuilv.net/hby/index.html?uid=" + user.getMember_id() + "&etype=android&gameid="+gameId);
+                mWebView.loadUrl("http://aihw.zhonghuilv.net/hby/index.html?uid=" + user.getMember_id() + "&etype=android&gameid=" + gameId);
                 break;
             case 2:
-                mWebView.loadUrl("http://aihw.zhonghuilv.net/aihuwai/index.html?uid=" + user.getMember_id() + "&etype=android&gameid="+gameId);
+                mWebView.loadUrl("http://aihw.zhonghuilv.net/aihuwai/index.html?uid=" + user.getMember_id() + "&etype=android&gameid=" + gameId);
                 break;
             case 3:
-                mWebView.loadUrl("http://aihw.zhonghuilv.net/denglong/index.html?uid=" + user.getMember_id() + "&etype=android&gameid="+gameId);
+                mWebView.loadUrl("http://aihw.zhonghuilv.net/denglong/index.html?uid=" + user.getMember_id() + "&etype=android&gameid=" + gameId);
                 break;
             case 4:
-                mWebView.loadUrl("http://aihw.zhonghuilv.net/caishenmiao/index.html?uid=" + user.getMember_id() + "&etype=android&gameid="+gameId);
+//                mWebView.loadUrl("http://192.168.16.217:8080?uid=" + user.getMember_id() + "&etype=android&gameid="+gameId);
+                mWebView.loadUrl("http://aihw.zhonghuilv.net/caishenmiao/index.html?uid=" + user.getMember_id() + "&etype=android&gameid=" + gameId);
                 break;
             case 5:
-                mWebView.loadUrl("http://aihw.zhonghuilv.net/cdm/index.html?uid=" + user.getMember_id() + "&etype=android&gameid="+gameId);
+                mWebView.loadUrl("http://aihw.zhonghuilv.net/cdm/index.html?uid=" + user.getMember_id() + "&etype=android&gameid=" + gameId);
                 break;
             case 6:
-                mWebView.loadUrl("http://aihw.zhonghuilv.net/xcm/index.html?uid=" + user.getMember_id() + "&etype=android&gameid="+gameId);
+                mWebView.loadUrl("http://aihw.zhonghuilv.net/xcm/index.html?uid=" + user.getMember_id() + "&etype=android&gameid=" + gameId);
                 break;
         }
         mWebView.addJavascriptInterface(new JSInterface(), "native");
@@ -136,9 +138,11 @@ public class PlayWebViewActivity extends BaseActivity {
     class JSInterface {
         @JavascriptInterface
         public void h5Result(String ss) {
+            Log.e("dasa", "h5Result: "+ss );
             Gson gson = new Gson();
             GameEntity gameEntity = gson.fromJson(ss, GameEntity.class);
             addScroe(gameEntity);
+            Log.d("dasa", "h5Result: " + gameEntity.getGameid() + ",getScord:" + gameEntity.getScord() + ",getUid:" + gameEntity.getUid());
         }
     }
 

@@ -62,6 +62,9 @@ public class ContinueActivity extends BaseActivity {
             case 5:
                 card_img.setBackground(getResources().getDrawable(R.drawable.caidengmi));
                 break;
+            case 6:
+                card_img.setBackground(getResources().getDrawable(R.drawable.duichunlian));
+                break;
         }
     }
 

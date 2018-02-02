@@ -92,6 +92,7 @@ public class MainTabFragment extends BaseFragment {
 
             }
         };
+        range_list.setNestedScrollingEnabled(false);
         range_list.setAdapter(mAdapter);
         range_list.addItemDecoration(new DividerItemDecoration(getActivity(),R.drawable.list_divider));
     }
