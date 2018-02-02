@@ -2,6 +2,7 @@ package com.cn.bent.sports.api;
 
 
 import com.cn.bent.sports.bean.AddScoreEntity;
+import com.cn.bent.sports.bean.AllFinishEntity;
 import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.bean.RankEntity;
 import com.cn.bent.sports.bean.UserMsgEntity;
@@ -65,6 +66,16 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("outdoor/user/getUserMsg")
     Observable<HuiquResult<UserMsgEntity>> getUserMsg(
+            @Field("cur_user_id") String cur_user_id);
+
+    /**
+     * 全部任务完成界面
+     *
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("outdoor/user/getGameRecord")
+    Observable<HuiquResult<AllFinishEntity>> getGameRecord(
             @Field("cur_user_id") String cur_user_id);
 
     @GET("outdoor/user/ranklist")

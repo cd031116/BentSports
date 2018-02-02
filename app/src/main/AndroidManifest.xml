@@ -65,6 +65,7 @@
         <activity android:name=".view.activity.ContinueActivity" />
         <activity android:name=".view.activity.RuleActivity"></activity>
         <activity android:name=".view.activity.ZoomActivity"></activity>
+        <activity android:name=".view.activity.AllFinishActivity"></activity>
         <activity android:name=".view.activity.ImgActivity"
             android:screenOrientation="landscape"></activity>
         <activity android:name=".scan.CaptureActivity"
