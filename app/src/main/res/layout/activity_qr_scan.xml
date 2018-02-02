@@ -6,7 +6,6 @@
     android:clipToPadding="true"
     android:fitsSystemWindows="true">
 
-
     <SurfaceView
         android:id="@+id/capture_preview"
         android:layout_width="match_parent"

@@ -3,11 +3,11 @@
     <item name="is_scale_size_tag" type="id" />
     <item name="is_scale_font_tag" type="id" />
     <string name="scan_tips">将二维码图片对准扫描框即可自动扫描</string>
-    <string name="cai_deng_mi">每猜对一个灯谜将获得3积分。最多可以累积10道题30分，提交可进入下一任务</string>
-    <string name="hong_bao">本关游戏过程中获取的所有红包积分总和为本关最终成绩，获取10个红包以内奖励1积分，20个红包以内奖励5积分，40个红包以内奖励10积分，60个红包以内奖励15积分，80个红包以内奖励20积分，100个红包以内奖励25积分,100个红包以上奖励30积分</string>
-    <string name="chou_qian">本轮总共拥有30积分，抽签解签后将随机获取25或30积分</string>
-    <string name="no_die">游戏分为上下两条线，均可独立操作每条线上的人物躲避障碍，根据游戏时间的长短进行积分奖励，每一秒钟奖励1积分，最多可获取30积分</string>
-    <string name="deng_long">点灯笼游戏是以全部灯笼点亮所用的步数来给予积分奖励，3步以内30积分、6步以内20积分、10步以内奖励15积分，超过10步奖励</string>
-    <string name="xiong_chumo">本轮游戏积分奖励将根据人物所跑距离为依据，每跑一百米奖励1积分，最高可获得30积分。本轮游戏可以无限次挑战，最终成绩以提交成绩为准</string>
+    <string name="cai_deng_mi">手机扫描周边二维码获取灯谜，每猜对一个灯谜将获得3积分，最高可得30分！</string>
+    <string name="hong_bao">猛戳红包，戳地越多，积分越多。可玩多次，取最好成绩提交，最高30分！</string>
+    <string name="chou_qian">测你今年的运势，解签，还可获得积分哦！</string>
+    <string name="no_die">点击屏幕跳跃，帮助两个小拓躲避障碍，看看你能坚持多久，可玩多次，取最好成绩提交，最高30分！</string>
+    <string name="deng_long">想办法让所有灯笼点亮，步数越少，积分越高哦！可玩多次，取最好成绩提交，最高30分！</string>
+    <string name="xiong_chumo">躲避熊的追捕，上滑跳跃，左右滑水平移动，小心障碍物哦！跑得越远，得分越高，取最好成绩提交，最高30分！</string>
 
 </resources>
