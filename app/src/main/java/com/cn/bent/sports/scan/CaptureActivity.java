@@ -25,6 +25,7 @@ import butterknife.OnClick;
 public class CaptureActivity extends BaseActivity {
     @Bind(R.id.top_left)
     LinearLayout top_left;
+    private  CaptureFragment captureFragment;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_qr_scan;
@@ -36,7 +37,7 @@ public class CaptureActivity extends BaseActivity {
         /**
          * 执行扫面Fragment的初始化操作
          */
-        CaptureFragment captureFragment = new CaptureFragment();
+         captureFragment = new CaptureFragment();
         // 为二维码扫描界面设置定制化界面
 //        CodeUtils.setFragmentArgs(captureFragment, R.layout.my_camera);
 
@@ -90,7 +91,7 @@ public class CaptureActivity extends BaseActivity {
                 finish();
             } else {
                 ToastUtils.showShortToast(CaptureActivity.this,"二维码不匹配");
-
+                captureFragment.drawViewfinder();
             }
 
         }

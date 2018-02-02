@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/capture_containter"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipToPadding="true"
     android:fitsSystemWindows="true">
 
+    <FrameLayout
+        android:id="@+id/fl_my_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        ></FrameLayout>
 
     <RelativeLayout
         android:id="@+id/top_layout"
@@ -34,7 +39,7 @@
                 android:layout_width="48px"
                 android:layout_height="48px"
                 android:clickable="false"
-                android:background="@drawable/scan_return"
+                android:background="@drawable/fanhui_hong"
                 android:contentDescription="@string/app_name" />
 
             <TextView
@@ -87,9 +92,4 @@
 
     </RelativeLayout>
 
-    <FrameLayout
-        android:id="@+id/fl_my_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        ></FrameLayout>
-</FrameLayout>
+</RelativeLayout>
