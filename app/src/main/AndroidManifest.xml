@@ -21,8 +21,11 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
+
     <uses-permission android:name="android.permission.CAMERA" />
 
     <uses-feature
@@ -44,8 +47,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"
-            android:launchMode="singleTask"/>
+        <activity
+            android:name=".MainActivity"
+            android:launchMode="singleTask" />
 
         <meta-data
             android:name="com.amap.api.v2.apikey"
@@ -54,10 +58,10 @@
         <activity android:name=".view.activity.GuideActivity" />
         <activity android:name=".ibeacon.ScanActivity" />
 
-        <service android:name="com.minew.beacon.ScanService"/>
+        <service android:name="com.minew.beacon.ScanService" />
         <receiver android:name="com.minew.beacon.BluetoothChangedReceiver">
             <intent-filter>
-                <action android:name="android.bluetooth.adapter.action.STATE_CHANGED"/>
+                <action android:name="android.bluetooth.adapter.action.STATE_CHANGED" />
             </intent-filter>
         </receiver>
 
@@ -69,10 +73,12 @@
         <activity android:name=".view.activity.RuleActivity"></activity>
         <activity android:name=".view.activity.ZoomActivity"></activity>
         <activity android:name=".view.activity.AllFinishActivity"></activity>
-        <activity android:name=".view.activity.ImgActivity"
+        <activity
+            android:name=".view.activity.ImgActivity"
             android:screenOrientation="landscape"></activity>
-        <activity android:name=".scan.CaptureActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".scan.CaptureActivity"
+            android:screenOrientation="portrait" />
 
     </application>
 

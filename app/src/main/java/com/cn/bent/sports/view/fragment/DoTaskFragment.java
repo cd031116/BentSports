@@ -506,7 +506,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
         if ("6".endsWith(t_ids)) {
             name_game.setText("熊出没");
         }
-        if(distance<20){
+        if(distance<3000){
             //打开蓝牙
             checkBluetooth();
         }

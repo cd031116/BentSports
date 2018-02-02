@@ -2,9 +2,6 @@ package com.cn.bent.sports.view.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -138,17 +135,11 @@ public class IsMeFragment extends BaseFragment {
         }
     }
 
-    @OnClick({R.id.setting, R.id.scan, R.id.user_photo})
+    @OnClick({R.id.setting})
     void conlick(View view) {
         switch (view.getId()) {
             case R.id.setting:
                 startActivity(new Intent(getActivity(), SettingActivity.class));
-                break;
-            case R.id.scan:
-                startActivity(new Intent(getActivity(), ScanActivity.class));
-                break;
-            case R.id.user_photo:
-                startActivity(new Intent(getActivity(), PlayWebViewActivity.class));
                 break;
         }
     }

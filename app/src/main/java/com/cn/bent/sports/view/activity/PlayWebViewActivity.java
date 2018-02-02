@@ -110,7 +110,10 @@ public class PlayWebViewActivity extends BaseActivity {
                 mWebView.loadUrl("http://aihw.zhonghuilv.net/caishenmiao/index.html?uid=" + user.getMember_id() + "&etype=android");
                 break;
             case 5:
-                mWebView.loadUrl("https://aihw.zhonghuilv.net/cdm/index.html?uid=" + user.getMember_id() + "&etype=android");
+                mWebView.loadUrl("http://aihw.zhonghuilv.net/cdm/index.html?uid=" + user.getMember_id() + "&etype=android");
+                break;
+            case 6:
+                mWebView.loadUrl("http://aihw.zhonghuilv.net/xcm/index.html?uid=" + user.getMember_id() + "&etype=android");
                 break;
         }
         mWebView.addJavascriptInterface(new JSInterface(), "native");
@@ -186,6 +189,13 @@ public class PlayWebViewActivity extends BaseActivity {
         else
             user.setScore(gameEntity.getScord() + "");
         SaveObjectUtils.getInstance(PlayWebViewActivity.this).setObject(Constants.USER_INFO, user);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mWebView != null)
+            mWebView.destroy();
     }
 
     @OnClick(R.id.top_left)
