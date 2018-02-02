@@ -50,7 +50,7 @@
                 android:background="@drawable/shijian"
                 android:gravity="center" />
 
-            <Chronometer
+            <TextView
                 android:id="@+id/ji_timer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

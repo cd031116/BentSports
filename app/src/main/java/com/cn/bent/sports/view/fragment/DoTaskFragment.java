@@ -5,6 +5,8 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Log;
@@ -61,8 +63,11 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -96,7 +101,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     @Bind(R.id.go_task)
     TextView go_task;
     @Bind(R.id.ji_timer)
-    Chronometer ji_timer;
+    TextView ji_timer;
     @Bind(R.id.jifen_t)
     TextView jifen_t;
 
@@ -146,7 +151,6 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
             }
         }
     };
-
 
     @Override
     protected int getLayoutId() {
@@ -339,7 +343,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     public void onResume() {
         super.onResume();
         mLoction = TaskCationManager.getHistory();
-        if(mLoction.size()<=0){
+        if (mLoction.size() <= 0) {
             BaseConfig bf = BaseConfig.getInstance(getActivity());
             bf.setLongValue(Constants.IS_TIME, 0);
         }
@@ -351,20 +355,38 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
         }
         setTimes();
     }
-
+    Timer timerd = new Timer();
     private void setTimes() {
         BaseConfig bf = BaseConfig.getInstance(getActivity());
         final long times = bf.getLongValue(Constants.IS_TIME, 0);
         if (times > 0) {
-            if (ji_timer != null) {
-                ji_timer.start();
+            final Handler startTimehandler = new Handler() {
+                public void handleMessage(android.os.Message msg) {
+                    if (null != ji_timer) {
+                        ji_timer.setText((String) msg.obj);
+                    }
+                }
+            };
+            timerd.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    int time = (int) ((SystemClock.elapsedRealtime() - times) / 1000);
+                    String hh = new DecimalFormat("00").format(time / 3600);
+                    String mm = new DecimalFormat("00").format(time % 3600 / 60);
+                    String ss = new DecimalFormat("00").format(time % 60);
+                    String timeFormat = new String(hh + ":" + mm + ":" + ss);
+                    Message msg = new Message();
+                    msg.obj = timeFormat;
+                    startTimehandler.sendMessage(msg);
+                }
+
+            }, 0, 1000L);
+
+        } else {
+            if(timerd!=null){
+                timerd.cancel();
             }
-            ji_timer.setBase(times);//计时器清零
-            int hour = (int) ((SystemClock.elapsedRealtime() - ji_timer.getBase()) / 1000 / 60 / 60);
-            ji_timer.setFormat("0" + String.valueOf(hour) + ":%s");
-            ji_timer.start();
-        }else {
-            ji_timer.setBase(SystemClock.elapsedRealtime());
+
         }
     }
 
@@ -373,10 +395,10 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
             @Override
             public void onClick(Dialog dialog, boolean confirm) {
                 if (confirm) {
-                    if("5".endsWith(t_ids)){
+                    if ("5".endsWith(t_ids)) {
                         Intent intent = new Intent(getActivity(), CaptureActivity.class);
-                         startActivityForResult(intent,REQUEST_Scan);
-                    }else {
+                        startActivityForResult(intent, REQUEST_Scan);
+                    } else {
                         Intent intent = new Intent(getActivity(), PlayWebViewActivity.class);
                         intent.putExtra("gameId", t_ids);
                         startActivity(intent);
@@ -418,6 +440,9 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if(timerd!=null){
+            timerd.cancel();
+        }
         mapView.onDestroy();
         EventBus.getDefault().unregister(this);
     }
@@ -507,7 +532,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
         if ("6".endsWith(t_ids)) {
             name_game.setText("熊出没");
         }
-        if(distance<3000){
+        if (distance < 3000) {
             //打开蓝牙
             checkBluetooth();
         }
@@ -633,28 +658,28 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                 initListener();
                 break;
             case REQUEST_Scan:
-                    if (null != data) {
-                        Bundle bundle = data.getExtras();
-                        if (bundle == null) {
-                            return;
-                        }
-                        if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
-                            String result = bundle.getString(CodeUtils.RESULT_STRING);
-                            if("B33832EF5EFF3EFF30B1B646B6F2410F".endsWith(result)){
-                                Intent intent = new Intent(getActivity(), PlayWebViewActivity.class);
-                                intent.putExtra("gameId", t_ids);
-                                startActivity(intent);
-                                mMinewBeaconManager.stopScan();
-                            }else {
-                                ToastUtils.showShortToast(getActivity(),"二维码不匹配");
-                            }
-
-                        } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
-                            ToastUtils.showShortToast(getActivity(),"二维码不匹配");
-                        }
-                    }else {
-                        ToastUtils.showShortToast(getActivity(),"无结果");
+                if (null != data) {
+                    Bundle bundle = data.getExtras();
+                    if (bundle == null) {
+                        return;
                     }
+                    if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
+                        String result = bundle.getString(CodeUtils.RESULT_STRING);
+                        if ("B33832EF5EFF3EFF30B1B646B6F2410F".endsWith(result)) {
+                            Intent intent = new Intent(getActivity(), PlayWebViewActivity.class);
+                            intent.putExtra("gameId", t_ids);
+                            startActivity(intent);
+                            mMinewBeaconManager.stopScan();
+                        } else {
+                            ToastUtils.showShortToast(getActivity(), "二维码不匹配");
+                        }
+
+                    } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
+                        ToastUtils.showShortToast(getActivity(), "二维码不匹配");
+                    }
+                } else {
+                    ToastUtils.showShortToast(getActivity(), "无结果");
+                }
                 break;
         }
     }
