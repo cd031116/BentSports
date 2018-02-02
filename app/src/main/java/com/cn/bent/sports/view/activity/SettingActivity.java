@@ -34,7 +34,6 @@ public class SettingActivity extends BaseActivity {
     private LoginBase user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        user = SaveObjectUtils.getInstance(SettingActivity.this).getObject(Constants.USER_INFO, null);
         super.onCreate(savedInstanceState);
     }
 
@@ -52,6 +51,7 @@ public class SettingActivity extends BaseActivity {
     @Override
     public void onResume() {
         super.onResume();
+        user = SaveObjectUtils.getInstance(SettingActivity.this).getObject(Constants.USER_INFO, null);
         if(TextUtils.isEmpty(user.getNickname())){
             name_t.setText("未设置");
             name_t.setTextColor(Color.parseColor("#999999"));

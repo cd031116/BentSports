@@ -41,36 +41,26 @@ import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.bean.ReFreshEvent;
 import com.cn.bent.sports.database.TaskCationBean;
 import com.cn.bent.sports.database.TaskCationManager;
-import com.cn.bent.sports.ibeacon.ScanActivity;
 import com.cn.bent.sports.ibeacon.UserRssi;
 import com.cn.bent.sports.overlay.AMapUtil;
 import com.cn.bent.sports.overlay.WalkRouteOverlay;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.utils.ToastUtils;
-import com.cn.bent.sports.view.activity.LoginActivity;
 import com.cn.bent.sports.view.activity.PlayWebViewActivity;
 import com.cn.bent.sports.view.activity.RuleActivity;
 import com.cn.bent.sports.view.activity.ZoomActivity;
 import com.cn.bent.sports.widget.GameDialog;
 import com.cn.bent.sports.widget.ToastDialog;
-import com.minew.beacon.BeaconValueIndex;
 import com.minew.beacon.BluetoothState;
-import com.minew.beacon.MinewBeacon;
 import com.minew.beacon.MinewBeaconManager;
-import com.minew.beacon.MinewBeaconManagerListener;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -312,7 +302,24 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                 startActivity(new Intent(getActivity(), ZoomActivity.class));
                 break;
             case R.id.go_task:
-                showDialogMsg("开始游戏");
+                if ("1".endsWith(t_ids)) {
+                    showDialogMsg("开始游戏");
+                }
+                if ("2".endsWith(t_ids)) {
+                    showDialogMsg("开始游戏");
+                }
+                if ("3".endsWith(t_ids)) {
+                    showDialogMsg("开始游戏");
+                }
+                if ("4".endsWith(t_ids)) {
+                    showDialogMsg("开始游戏");
+                }
+                if ("5".endsWith(t_ids)) {
+                    showDialogMsg("开始游戏");
+                }
+                if ("6".endsWith(t_ids)) {
+                    showDialogMsg("开始游戏");
+                }
                 break;
         }
     }
@@ -328,10 +335,14 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     @Override
     public void onResume() {
         super.onResume();
+        mLoction = TaskCationManager.getHistory();
+        if(mLoction.size()<=0){
+            BaseConfig bf = BaseConfig.getInstance(getActivity());
+            bf.setLongValue(Constants.IS_TIME, 0);
+        }
         //打开蓝牙
         checkBluetooth();
         mapView.onResume();
-        mLoction = TaskCationManager.getHistory();
         addLocaToMap();
         LoginBase user = SaveObjectUtils.getInstance(getActivity()).getObject(Constants.USER_INFO, null);
         if (user.getScore() != null) {
@@ -351,6 +362,8 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
             int hour = (int) ((SystemClock.elapsedRealtime() - ji_timer.getBase()) / 1000 / 60 / 60);
             ji_timer.setFormat("0" + String.valueOf(hour) + ":%s");
             ji_timer.start();
+        }else {
+            ji_timer.setBase(SystemClock.elapsedRealtime());
         }
     }
 
@@ -372,7 +385,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                 }
                 dialog.dismiss();
             }
-        }).setTitle("加油").show();
+        }).setTitle(names).show();
     }
 
     /**
