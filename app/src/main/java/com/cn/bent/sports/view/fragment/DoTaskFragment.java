@@ -186,7 +186,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
         mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Device_Sensors);
         mLocationOption.setInterval(1000 * 10);
         //启动定位
-        mLocationOption.setOnceLocation(true);
+        mLocationOption.setOnceLocation(false);
         mLocationClient.startLocation();
     }
 

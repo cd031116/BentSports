@@ -59,6 +59,7 @@
         <activity android:name=".ibeacon.ScanActivity" />
 
         <service android:name="com.minew.beacon.ScanService" />
+
         <receiver android:name="com.minew.beacon.BluetoothChangedReceiver">
             <intent-filter>
                 <action android:name="android.bluetooth.adapter.action.STATE_CHANGED" />
@@ -67,20 +68,21 @@
 
         <activity android:name=".view.activity.SettingActivity" />
         <activity android:name=".view.activity.ChangeNameActivity" />
-        <activity android:name=".view.activity.PlayWebViewActivity"
-            android:windowSoftInputMode="adjustResize|stateHidden"/>
+        <activity
+            android:name=".view.activity.PlayWebViewActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity android:name=".view.activity.LoginActivity" />
         <activity android:name=".view.activity.ContinueActivity" />
-        <activity android:name=".view.activity.RuleActivity"></activity>
-        <activity android:name=".view.activity.ZoomActivity"></activity>
-        <activity android:name=".view.activity.AllFinishActivity"></activity>
+        <activity android:name=".view.activity.RuleActivity" />
+        <activity android:name=".view.activity.ZoomActivity" />
+        <activity android:name=".view.activity.AllFinishActivity" />
         <activity
             android:name=".view.activity.ImgActivity"
-            android:screenOrientation="landscape"></activity>
+            android:screenOrientation="landscape" />
         <activity
             android:name=".scan.CaptureActivity"
             android:screenOrientation="portrait" />
-
+        <activity android:name=".view.activity.GetLocationActivity"></activity>
     </application>
 
 </manifest>

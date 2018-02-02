@@ -71,7 +71,7 @@ public class SettingActivity extends BaseActivity {
         super.initData();
     }
 
-    @OnClick({R.id.top_left, R.id.top_image, R.id.ni_ceng, R.id.login})
+    @OnClick({R.id.top_left, R.id.top_image, R.id.ni_ceng, R.id.login,R.id.user_photo})
     void conlick(View view) {
         switch (view.getId()) {
             case R.id.ni_ceng:
@@ -83,6 +83,9 @@ public class SettingActivity extends BaseActivity {
                 break;
             case R.id.login:
                 showDialogMsg("确定退出当前账号？");
+                break;
+            case R.id.user_photo:
+                startActivity(new Intent(SettingActivity.this, GetLocationActivity.class));
                 break;
         }
     }

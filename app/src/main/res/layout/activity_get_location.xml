@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context="com.cn.bent.sports.view.activity.GetLocationActivity">
+
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#333333"
+        android:padding="30px"
+        android:layout_marginBottom="50px"
+        android:gravity="center"
+        android:textSize="56px"/>
+
+    <TextView
+        android:id="@+id/huoqu"
+        android:layout_width="600px"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="45px"
+        android:textColor="#ffffff"
+        android:background="@drawable/go_task_bg"
+        android:text="获取"/>
+
+
+</LinearLayout>
