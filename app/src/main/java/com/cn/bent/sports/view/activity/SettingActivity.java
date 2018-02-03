@@ -140,8 +140,8 @@ public class SettingActivity extends BaseActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mlocationClient.stopLocation();
-        mlocationClient.onDestroy();
+//        mlocationClient.stopLocation();
+//        mlocationClient.onDestroy();
     }
 
     AMapLocationListener mAMapLocationListener = new AMapLocationListener() {

@@ -185,11 +185,11 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
         mLocationOption = new AMapLocationClientOption();
         //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。
         mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+        //设置定位模式为AMapLocationMode.Device_Sensors，仅设备模式。
+//        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Device_Sensors);
+        mLocationOption.setInterval(1000 * 20);
         //给定位客户端对象设置定位参数
         mLocationClient.setLocationOption(mLocationOption);
-        //设置定位模式为AMapLocationMode.Device_Sensors，仅设备模式。
-        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Device_Sensors);
-        mLocationOption.setInterval(1000 * 20);
         //启动定位
         mLocationOption.setOnceLocation(false);
         mLocationClient.startLocation();
