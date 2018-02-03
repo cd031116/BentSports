@@ -82,7 +82,7 @@ public interface ApiService {
     Observable<HuiquResult<RankEntity>> getRankList();
 
     /*
-            * 新闻评论
+            *
      *
              * @return
              */
@@ -92,5 +92,15 @@ public interface ApiService {
             @Field("cur_user_id") String cur_user_id,
             @Field("type") String type,
             @Field("nickname") String nickname);
-
+    /*
+                *
+         *
+                 * @return
+                 */
+    @FormUrlEncoded
+    @POST("outdoor/user/modifyUserMsg")
+    Observable<HuiquTBResult> modifyUserPhoto(
+            @Field("cur_user_id") String cur_user_id,
+            @Field("type") String type,
+            @Field("img") String img);
 }
