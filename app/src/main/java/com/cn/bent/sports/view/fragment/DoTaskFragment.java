@@ -499,7 +499,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                             mWalkRouteResult.getTargetPos());
                     walkRouteOverlay.removeFromMap();
                     walkRouteOverlay.addToMap();
-//                    walkRouteOverlay.zoomToSpan();
+                    walkRouteOverlay.zoomToSpan();
                     isWark = true;
                     int dis = (int) walkPath.getDistance();
                     setview(dis);
@@ -540,7 +540,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
         if ("6".endsWith(t_ids)) {
             name_game.setText("熊出没");
         }
-        if (distance < 3000) {
+        if (distance < 20) {
             //打开蓝牙
             checkBluetooth();
         }
