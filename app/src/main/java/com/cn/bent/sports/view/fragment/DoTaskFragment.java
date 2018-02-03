@@ -189,7 +189,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
         mLocationClient.setLocationOption(mLocationOption);
         //设置定位模式为AMapLocationMode.Device_Sensors，仅设备模式。
         mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Device_Sensors);
-        mLocationOption.setInterval(1000 * 10);
+        mLocationOption.setInterval(1000 * 20);
         //启动定位
         mLocationOption.setOnceLocation(false);
         mLocationClient.startLocation();
@@ -266,10 +266,10 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                 .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
                         .decodeResource(getResources(), R.drawable.dangqwz)))
                 .draggable(true));
-        if (!isWark) {
+//        if (!isWark) {
             aMap.moveCamera(CameraUpdateFactory.changeLatLng(latlng));
             aMap.moveCamera(CameraUpdateFactory.zoomTo(15));
-        }
+//        }
         aMap.setMyLocationEnabled(false);
         addMarkersToMap();
     }
@@ -499,7 +499,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                             mWalkRouteResult.getTargetPos());
                     walkRouteOverlay.removeFromMap();
                     walkRouteOverlay.addToMap();
-                    walkRouteOverlay.zoomToSpan();
+//                    walkRouteOverlay.zoomToSpan();
                     isWark = true;
                     int dis = (int) walkPath.getDistance();
                     setview(dis);

@@ -50,12 +50,11 @@ public class GetLocationActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_get_location);
     }
 
     @Override
     protected int getLayoutId() {
-        return super.getLayoutId();
+        return R.layout.activity_get_location;
     }
 
     @Override
