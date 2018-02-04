@@ -28,6 +28,9 @@ import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
+import com.amap.api.services.core.LatLonPoint;
+import com.amap.api.services.geocoder.GeocodeSearch;
+import com.amap.api.services.geocoder.RegeocodeQuery;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseConfig;
 import com.cn.bent.sports.base.BaseFragment;
@@ -97,7 +100,6 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
     AMap aMap;
     private List<TaskCationBean> mLoction = new ArrayList<>();
     private List<Marker> mList = new ArrayList<Marker>();
-
     //声明AMapLocationClient类对象
     public AMapLocationClient mLocationClient = null;
     //声明AMapLocationClientOption对象
@@ -157,12 +159,7 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
         if(mGeoFenceClient==null){
             mGeoFenceClient = new GeoFenceClient(getActivity());
         }
-        DPoint centerPoint = new DPoint();
-        //设置中心点纬度
-        centerPoint.setLatitude(28.0075);
-        //设置中心点经度
-        centerPoint.setLongitude(113.086525);
-        mGeoFenceClient.addGeoFence (centerPoint,300F,"88888888");
+        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom( new LatLng(28.0075,113.086525), 3000));
         String path = getActivity().getFilesDir() + "/bent/sport.data";
         Log.d("kkkk", "initView: " + path);
         aMap.setCustomMapStylePath(path);
@@ -258,7 +255,7 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
                 .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
                         .decodeResource(getResources(), R.drawable.dangqwz)))
                 .draggable(true));
-        aMap.moveCamera(CameraUpdateFactory.changeLatLng(latlng));
+//        aMap.moveCamera(CameraUpdateFactory.changeLatLng(latlng));
 //        aMap.moveCamera(CameraUpdateFactory.zoomTo(15));
         aMap.setMyLocationEnabled(false);
         addMarkersToMap();
