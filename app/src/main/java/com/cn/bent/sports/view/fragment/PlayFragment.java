@@ -154,8 +154,6 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
     protected void initView(View view, Bundle savedInstanceState) {
          handler2 = new Handler();
         EventBus.getDefault().register(this);
-        BaseConfig bf = BaseConfig.getInstance(getActivity());
-        bf.setLongValue(Constants.IS_TIME, System.currentTimeMillis());
         mapView.onCreate(savedInstanceState);
         mMinewBeaconManager = MinewBeaconManager.getInstance(getActivity());
         if (aMap == null) {
