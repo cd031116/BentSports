@@ -127,11 +127,14 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
                 isLocal = true;
                 if (aMapLocation.getErrorCode() == 0) {
                     //可在其中解析amapLocation获取相应内容。
-                    isFirstLoc = false;
                     latitude = String.valueOf(aMapLocation.getLatitude());
                     longitude = String.valueOf(aMapLocation.getLongitude());
                     mStartPoint = new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude());
-                    addLocaToMap();
+                    if(isFirstLoc){
+                        addLocaToMap();
+                    }else
+                    addLocaismap();
+                    isFirstLoc = false;
                 } else {
                     isLocal = false;
                     //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
@@ -242,7 +245,25 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
             }
         }
     }
+    /**
+     * 在地图上添加marker
+     */
+    private void addLocaismap() {
+        if (TextUtils.isEmpty(latitude)) {
+            return;
+        }
 
+        if(noMarker!=null){
+            noMarker.remove();
+        }
+        LatLng latlng = new LatLng(Double.valueOf(latitude), Double.valueOf(longitude));
+        noMarker = aMap.addMarker(new MarkerOptions()
+                .position(latlng)
+                .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
+                        .decodeResource(getResources(), R.drawable.dangqwz)))
+                .draggable(true));
+        aMap.setMyLocationEnabled(false);
+    }
     /**
      * 在地图上添加marker
      */
@@ -446,7 +467,6 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
 
     }
 
-    BaseConfig bgs = BaseConfig.getInstance(getActivity());
 
     private void showDialogMsg(String names, final int position) {
         new ToastDialog(getActivity(), R.style.dialog, names, new ToastDialog.OnCloseListener() {
@@ -458,13 +478,14 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
                     mEndPoint = null;
                     mEndPoint = new LatLng(Double.valueOf(mLoction.get(position).getLatitude()).doubleValue(),
                             Double.valueOf(mLoction.get(position).getLongitude()).doubleValue());
-                    aMap.clear();
                     addLocaToMap();
                     setview();
+                    Log.i("ffff","times_s="+times_s);
                     if (times_s <= 0) {
                         if (mStartPoint != null) {
+                            BaseConfig bgs = BaseConfig.getInstance(getActivity());
                             bgs.setLongValue(Constants.IS_TIME, System.currentTimeMillis());
-                            Log.i("ffff","setLongValue");
+                            Log.i("ffff","mStartPoint="+mStartPoint);
                             setTimes();
                         }
                     }
