@@ -329,6 +329,9 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
         mLoction = TaskCationManager.getHistory();
         BaseConfig bf = BaseConfig.getInstance(getActivity());
         times_s = bf.getLongValue(Constants.IS_TIME, 0);
+        if(times_s>0){
+            setTimes();
+        }
         if (mLoction.size() <= 0) {
             bf.setLongValue(Constants.IS_TIME, 0);
         }
@@ -350,7 +353,8 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
         @Override
         public void run() {
             handler2.postDelayed(this, 1000);
-            if((System.currentTimeMillis() - times_s)/1000>=2*60*60){
+            Log.i("tttt","currentTimeMillis="+(System.currentTimeMillis() - times_s)/1000);
+            if(((System.currentTimeMillis() - times_s)/1000)>=2*60*60){
                 handler2.removeCallbacks(runnable2);
                 ji_timer.setText("02.00.00");
             }else {
