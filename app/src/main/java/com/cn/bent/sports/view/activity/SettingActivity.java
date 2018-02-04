@@ -15,6 +15,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
+import com.cn.bent.sports.bean.InfoEvent;
 import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.ImageUtils;
@@ -28,6 +29,8 @@ import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.HuiquRxTBFunction;
 import com.zhl.network.huiqu.HuiquTBResult;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -185,6 +188,7 @@ public class SettingActivity extends BaseActivity {
                     public void onSuccess(int whichRequest, HuiquTBResult info) {
                         dismissAlert();
                         SaveObjectUtils.getInstance(SettingActivity.this).setObject(Constants.USER_INFO, user);
+                        EventBus.getDefault().post(new InfoEvent());
                         finish();
                     }
 

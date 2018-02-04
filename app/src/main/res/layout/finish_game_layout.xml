@@ -7,8 +7,8 @@
 
     <ImageView
         android:id="@+id/card_img"
-        android:layout_width="217px"
-        android:layout_height="217px"
+        android:layout_width="417px"
+        android:layout_height="450px"
         android:background="@drawable/default_head"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="500px" />
@@ -61,7 +61,7 @@
         android:layout_height="142px"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="150px"
-        android:background="@drawable/commit_bg"
+        android:background="@drawable/continue_bg"
         android:gravity="center"
         android:text="继续"
         android:textColor="#ffffff"

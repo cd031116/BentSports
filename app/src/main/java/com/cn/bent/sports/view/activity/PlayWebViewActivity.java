@@ -18,6 +18,7 @@ import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.base.BaseConfig;
 import com.cn.bent.sports.bean.AddScoreEntity;
 import com.cn.bent.sports.bean.GameEntity;
+import com.cn.bent.sports.bean.InfoEvent;
 import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.bean.ReFreshEvent;
 import com.cn.bent.sports.database.TaskCationManager;
@@ -160,6 +161,7 @@ public class PlayWebViewActivity extends BaseActivity {
                             LoginBase user = (LoginBase) SaveObjectUtils.getInstance(PlayWebViewActivity.this).getObject(Constants.USER_INFO, null);
                             setScore(user, gameEntity);
                             EventBus.getDefault().post(new ReFreshEvent());
+                            EventBus.getDefault().post(new InfoEvent());
                             if (TaskCationManager.noMore()) {
                                 timer.setBase(SystemClock.elapsedRealtime());//计时器清零
                                 timer.stop();

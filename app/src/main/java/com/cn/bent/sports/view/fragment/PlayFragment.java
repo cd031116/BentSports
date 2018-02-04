@@ -439,8 +439,8 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
         } else {
             start_view.setVisibility(View.VISIBLE);
             String distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
-            juli.setText(AMapUtil.getFriendlyLength(Integer.parseInt(distance)));
-            if (Integer.parseInt(distance) < 30) {
+            juli.setText(AMapUtil.getFriendlyLength((int) (Double.parseDouble(distance))));
+            if ((int) (Double.parseDouble(distance)) < 30000) {
                 //打开蓝牙
                 checkBluetooth();
             }

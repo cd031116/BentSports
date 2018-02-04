@@ -48,22 +48,22 @@ public class ContinueActivity extends BaseActivity {
         scord.setText(game.getScord() + "");
         switch (game.getGameid()) {
             case 1:
-                card_img.setBackground(getResources().getDrawable(R.drawable.hongbaoyu));
+                card_img.setBackground(getResources().getDrawable(R.drawable.hongby));
                 break;
             case 2:
-                card_img.setBackground(getResources().getDrawable(R.drawable.liunianshou));
+                card_img.setBackground(getResources().getDrawable(R.drawable.liuns));
                 break;
             case 3:
-                card_img.setBackground(getResources().getDrawable(R.drawable.diandenglong));
+                card_img.setBackground(getResources().getDrawable(R.drawable.diandl));
                 break;
             case 4:
-                card_img.setBackground(getResources().getDrawable(R.drawable.jixiangqian));
+                card_img.setBackground(getResources().getDrawable(R.drawable.jixq));
                 break;
             case 5:
-                card_img.setBackground(getResources().getDrawable(R.drawable.caidengmi));
+                card_img.setBackground(getResources().getDrawable(R.drawable.caidm));
                 break;
             case 6:
-                card_img.setBackground(getResources().getDrawable(R.drawable.duichunlian));
+                card_img.setBackground(getResources().getDrawable(R.drawable.duicl));
                 break;
         }
     }

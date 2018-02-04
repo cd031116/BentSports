@@ -11,7 +11,9 @@ import com.cn.bent.sports.MainActivity;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
+import com.cn.bent.sports.bean.InfoEvent;
 import com.cn.bent.sports.bean.LoginBase;
+import com.cn.bent.sports.bean.ReFreshEvent;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.utils.ToastUtils;
@@ -20,6 +22,8 @@ import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.HuiquRxFunction;
 import com.zhl.network.huiqu.HuiquRxTBFunction;
 import com.zhl.network.huiqu.HuiquTBResult;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -79,6 +83,7 @@ public class ChangeNameActivity extends BaseActivity {
                         user.setNickname(nickname);
                         SaveObjectUtils.getInstance(ChangeNameActivity.this).setObject(Constants.USER_INFO, user);
                         ToastUtils.showLongToast(ChangeNameActivity.this, info.getMsg());
+                        EventBus.getDefault().post(new InfoEvent());
                         finish();
                     }
 

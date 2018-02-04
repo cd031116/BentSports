@@ -14,6 +14,7 @@ import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseFragment;
 import com.cn.bent.sports.bean.RangeEntity;
 import com.cn.bent.sports.bean.RankEntity;
+import com.cn.bent.sports.bean.ReFreshEvent;
 import com.cn.bent.sports.recyclebase.CommonAdapter;
 import com.cn.bent.sports.recyclebase.ViewHolder;
 import com.cn.bent.sports.view.activity.ZoomActivity;
@@ -21,6 +22,10 @@ import com.cn.bent.sports.widget.DividerItemDecoration;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.HuiquRxFunction;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -72,7 +77,13 @@ public class MainTabFragment extends BaseFragment {
 
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
+        EventBus.getDefault().register(this);
         range_list.setLayoutManager(new LinearLayoutManager(getActivity()));
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ReFreshEvent event) {
+        getRankData();
     }
 
     private void setRecyclerView(List<RankEntity.RankListBean> rankListBeen) {
@@ -94,12 +105,20 @@ public class MainTabFragment extends BaseFragment {
         };
         range_list.setNestedScrollingEnabled(false);
         range_list.setAdapter(mAdapter);
-        range_list.addItemDecoration(new DividerItemDecoration(getActivity(),R.drawable.list_divider));
+        range_list.addItemDecoration(new DividerItemDecoration(getActivity(), R.drawable.list_divider));
     }
 
     @Override
     protected void initData() {
+        getRankData();
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    private void getRankData() {
         BaseApi.getDefaultService(getActivity()).getRankList()
                 .map(new HuiquRxFunction<RankEntity>())
                 .compose(RxSchedulers.<RankEntity>io_main())
@@ -130,7 +149,7 @@ public class MainTabFragment extends BaseFragment {
 
     private void setThreeView(RankEntity.RankListBean rankListBean) {
         name_3.setText(rankListBean.getNickname());
-        jifen_3.setText(rankListBean.getScore()+"");
+        jifen_3.setText(rankListBean.getScore() + "");
         RequestOptions requestOptions = RequestOptions.circleCropTransform();
         Glide.with(head_3.getContext()).load(rankListBean.getHeadimg())
                 .apply(requestOptions)
@@ -139,7 +158,7 @@ public class MainTabFragment extends BaseFragment {
 
     private void setTwoView(RankEntity.RankListBean rankListBean) {
         name_2.setText(rankListBean.getNickname());
-        jifen_2.setText(rankListBean.getScore()+"");
+        jifen_2.setText(rankListBean.getScore() + "");
         RequestOptions requestOptions = RequestOptions.circleCropTransform();
         Glide.with(head_2.getContext()).load(rankListBean.getHeadimg())
                 .apply(requestOptions)
@@ -148,11 +167,16 @@ public class MainTabFragment extends BaseFragment {
 
     private void setOneView(RankEntity.RankListBean rankListBean) {
         name_1.setText(rankListBean.getNickname());
-        jifen_1.setText(rankListBean.getScore()+"");
+        jifen_1.setText(rankListBean.getScore() + "");
         RequestOptions requestOptions = RequestOptions.circleCropTransform();
         Glide.with(head_1.getContext()).load(rankListBean.getHeadimg())
                 .apply(requestOptions)
                 .into(head_1);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 }
