@@ -15,6 +15,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
+import com.cn.bent.sports.base.MyApplication;
 import com.cn.bent.sports.bean.InfoEvent;
 import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.utils.Constants;
@@ -146,8 +147,8 @@ public class SettingActivity extends BaseActivity {
             public void onClick(Dialog dialog, boolean confirm) {
                 if (confirm) {
                     SaveObjectUtils.getInstance(SettingActivity.this).setObject(Constants.USER_INFO, null);
+                    MyApplication.instance.getActivityManager().popAllActivity();
                     startActivity(new Intent(SettingActivity.this, LoginActivity.class));
-                    SettingActivity.this.finish();
                 } else {
 
                 }
