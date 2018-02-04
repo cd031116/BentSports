@@ -45,6 +45,7 @@
         android:layout_height="157px"
         android:layout_gravity="center_horizontal"
         android:background="@drawable/edit_bg"
+        android:inputType="number"
         android:hint="请输入手机号"
         android:paddingLeft="57px"
         android:textColor="#333333"

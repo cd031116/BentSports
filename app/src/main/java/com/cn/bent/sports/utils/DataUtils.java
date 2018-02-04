@@ -53,6 +53,20 @@ public class DataUtils {
         return format.format(date);
     }
 
+
+    public static String getDateToTime(long milSecond) {
+        long secoond=milSecond/1000;
+        long hour = (secoond % (24 * 60 * 60)) / (60 * 60);
+        long min = ((secoond % (24 * 60 * 60)) % (60 * 60)) / 60;
+        long sec = ((secoond % (24 * 60 * 60)) % (60 * 60)) % 60;
+        Log.i("hhhh","sec="+sec);
+        Log.i("hhhh","min="+min);
+        Log.i("hhhh","hour="+hour);
+        return  (hour>=10?(hour+""):("0"+hour))+":"+(min>=10?(min+""):("0"+min))+":"+(sec>=10?(sec+""):("0"+sec));
+    }
+
+
+
     public static void copyFilesFassets(Context context,String oldPath,String newPath) {
         try {
             String fileNames[] = context.getAssets().list(oldPath);//获取assets目录下的所有文件及目录名
