@@ -23,6 +23,7 @@ import com.cn.bent.sports.view.activity.LoginActivity;
 import com.cn.bent.sports.view.fragment.DoTaskFragment;
 import com.cn.bent.sports.view.fragment.IsMeFragment;
 import com.cn.bent.sports.view.fragment.MainTabFragment;
+import com.cn.bent.sports.view.fragment.PlayFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,7 +92,7 @@ public class MainActivity extends BaseActivity {
                         mCurrentFragment = MainTabFragment.newInstance(0);
                         break;
                     case 1:
-                        mCurrentFragment = DoTaskFragment.newInstance();//子Fragment实例
+                        mCurrentFragment = PlayFragment.newInstance();//子Fragment实例
                         break;
                     case 2:
                         mCurrentFragment = IsMeFragment.newInstance();

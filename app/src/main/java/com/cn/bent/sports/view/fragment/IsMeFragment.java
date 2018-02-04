@@ -142,10 +142,11 @@ public class IsMeFragment extends BaseFragment {
         }
     }
 
-    @OnClick({R.id.setting})
+    @OnClick({R.id.setting,R.id.user_photo})
     void conlick(View view) {
         switch (view.getId()) {
             case R.id.setting:
+            case R.id.user_photo:
                 startActivity(new Intent(getActivity(), SettingActivity.class));
                 break;
         }

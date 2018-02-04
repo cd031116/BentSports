@@ -48,6 +48,8 @@
         android:inputType="number"
         android:hint="请输入手机号"
         android:paddingLeft="57px"
+        android:paddingTop="10px"
+        android:paddingBottom="10px"
         android:textColor="#333333"
         android:textColorHint="#dbdbdb"
         android:textSize="43px" />
@@ -68,6 +70,8 @@
             android:hint="验证码"
             android:inputType="number"
             android:maxLength="11"
+            android:paddingTop="10px"
+            android:paddingBottom="10px"
             android:paddingLeft="57px"
             android:textColor="#333333"
             android:textColorHint="#dbdbdb"
