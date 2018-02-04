@@ -14,6 +14,7 @@ import com.cn.bent.sports.MainActivity;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
+import com.cn.bent.sports.bean.InfoEvent;
 import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.SaveObjectUtils;
@@ -23,6 +24,8 @@ import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.HuiquRxFunction;
 import com.zhl.network.huiqu.HuiquRxTBFunction;
 import com.zhl.network.huiqu.HuiquTBResult;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -37,7 +40,8 @@ public class LoginActivity extends BaseActivity {
     @Bind(R.id.tcode)
     TextView t_code;
     TimerCount timerCount;
-    boolean isPhone=false,isCode=false;
+    boolean isPhone = false, isCode = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,17 +69,17 @@ public class LoginActivity extends BaseActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() == 11) {
                     t_code.setSelected(true);
-                }else {
+                } else {
                     t_code.setSelected(false);
                 }
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(s.toString().length()>0){
-                    isPhone=true;
-                }else {
-                    isPhone=false;
+                if (s.toString().length() > 0) {
+                    isPhone = true;
+                } else {
+                    isPhone = false;
                 }
                 changeview();
             }
@@ -93,10 +97,10 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(s.toString().length()>0){
-                    isCode=true;
-                }else {
-                    isCode=false;
+                if (s.toString().length() > 0) {
+                    isCode = true;
+                } else {
+                    isCode = false;
                 }
                 changeview();
             }
@@ -144,7 +148,7 @@ public class LoginActivity extends BaseActivity {
                     public void onSuccess(int whichRequest, HuiquTBResult result) {
                         if (!"1".equals(result.getCode())) {
                             ToastUtils.showShortToast(LoginActivity.this, "" + result.getMsg());
-                        }else{
+                        } else {
 
                         }
                         timerCount.start();
@@ -158,28 +162,29 @@ public class LoginActivity extends BaseActivity {
 
     }
 
-    private void changeview(){
-        if(isCode&&isPhone){
+    private void changeview() {
+        if (isCode && isPhone) {
             commit_btn.setSelected(true);
             commit_btn.setEnabled(true);
-        }else {
+        } else {
             commit_btn.setSelected(false);
             commit_btn.setEnabled(false);
         }
     }
-    @OnClick({R.id.tcode,R.id.commit_btn})
-    void conlick(View view){
-        switch (view.getId()){
+
+    @OnClick({R.id.tcode, R.id.commit_btn})
+    void conlick(View view) {
+        switch (view.getId()) {
             case R.id.tcode:
-                String sd=edit_photo.getText().toString();
-                if(TextUtils.isEmpty(sd)){
-                    ToastUtils.showShortToast(LoginActivity.this,"请输入手机号");
+                String sd = edit_photo.getText().toString();
+                if (TextUtils.isEmpty(sd)) {
+                    ToastUtils.showShortToast(LoginActivity.this, "请输入手机号");
                     break;
                 }
                 getcode();
                 break;
             case R.id.commit_btn:
-                login(edit_photo.getText().toString(),code_photo.getText().toString());
+                login(edit_photo.getText().toString(), code_photo.getText().toString());
                 break;
         }
     }

@@ -3,6 +3,7 @@ package com.cn.bent.sports.view.activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
@@ -10,7 +11,7 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Chronometer;
+import android.widget.TextView;
 
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
@@ -42,11 +43,12 @@ public class PlayWebViewActivity extends BaseActivity {
     @Bind(R.id.webview)
     WebView mWebView;
     @Bind(R.id.cut_down)
-    Chronometer timer;
+    TextView timer;
     LoginBase user;
     String gameId;
     private int MAX_REQUEST = 2;
     private int isRequestNum = 1;
+    private Handler handler2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,13 +66,31 @@ public class PlayWebViewActivity extends BaseActivity {
         super.initView();
         gameId = getIntent().getStringExtra("gameId");
         user = (LoginBase) SaveObjectUtils.getInstance(this).getObject(Constants.USER_INFO, null);
-        long longValue = BaseConfig.getInstance(this).getLongValue(Constants.IS_TIME, 0);
-        timer.setBase(longValue);//计时器清零
-        int hour = (int) ((SystemClock.elapsedRealtime() - timer.getBase()) / 1000 / 60 / 60);
-        timer.setFormat("0" + String.valueOf(hour) + ":%s");
-        timer.start();
+
+        setTimes();
         initWebView();
     }
+
+    private void setTimes() {
+        handler2.postDelayed(runnable2, 1000);
+    }
+
+    Runnable runnable2 = new Runnable() {
+        long longValue = BaseConfig.getInstance(PlayWebViewActivity.this).getLongValue(Constants.IS_TIME, 0);
+        @Override
+        public void run() {
+            handler2.postDelayed(this, 1000);
+            Log.i("tttt","currentTimeMillis="+(System.currentTimeMillis() - longValue)/1000);
+            if(((System.currentTimeMillis() - longValue)/1000)>=2*60*60){
+                handler2.removeCallbacks(runnable2);
+                timer.setText("02.00.00");
+            }else {
+                timer.setText(DataUtils.getDateToTime(System.currentTimeMillis() - longValue));
+            }
+
+        }
+    };
+
 
     private void initWebView() {
         WebSettings webSettings = mWebView.getSettings();
@@ -163,8 +183,6 @@ public class PlayWebViewActivity extends BaseActivity {
                             EventBus.getDefault().post(new ReFreshEvent());
                             EventBus.getDefault().post(new InfoEvent());
                             if (TaskCationManager.noMore()) {
-                                timer.setBase(SystemClock.elapsedRealtime());//计时器清零
-                                timer.stop();
                                 Intent intent = new Intent(PlayWebViewActivity.this, AllFinishActivity.class);
                                 intent.putExtra("time", SystemClock.elapsedRealtime());
                                 startActivity(intent);
@@ -213,6 +231,8 @@ public class PlayWebViewActivity extends BaseActivity {
             mWebView.clearCache(true);
             mWebView.destroy();
         }
+        if (handler2!=null)
+            handler2.removeCallbacks(runnable2);
     }
 
     @OnClick(R.id.top_left)

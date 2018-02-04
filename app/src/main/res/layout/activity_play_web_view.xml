@@ -64,7 +64,7 @@
                 android:textSize="46px" />
 
 
-            <Chronometer
+            <TextView
                 android:id="@+id/cut_down"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
