@@ -118,6 +118,7 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
     private MinewBeaconManager mMinewBeaconManager;
     private String t_ids;
     private long times_s = 0;
+    private  Handler handler2;
     //---------------------
     AMapLocationListener mAMapLocationListener = new AMapLocationListener() {
         @Override
@@ -148,6 +149,7 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
 
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
+         handler2 = new Handler();
         EventBus.getDefault().register(this);
         BaseConfig bf = BaseConfig.getInstance(getActivity());
         bf.setLongValue(Constants.IS_TIME, System.currentTimeMillis());
@@ -325,7 +327,6 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
     }
 
 
-    Handler handler2 = new Handler();
     Runnable runnable2 = new Runnable() {
         @Override
         public void run() {
@@ -463,6 +464,7 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
                     if (times_s <= 0) {
                         if (mStartPoint != null) {
                             bgs.setLongValue(Constants.IS_TIME, System.currentTimeMillis());
+                            Log.i("ffff","setLongValue");
                             setTimes();
                         }
                     }
