@@ -162,7 +162,7 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
         centerPoint.setLatitude(28.0075);
         //设置中心点经度
         centerPoint.setLongitude(113.086525);
-        mGeoFenceClient.addGeoFence (centerPoint,3000F,"88888888");
+        mGeoFenceClient.addGeoFence (centerPoint,300F,"88888888");
         String path = getActivity().getFilesDir() + "/bent/sport.data";
         Log.d("kkkk", "initView: " + path);
         aMap.setCustomMapStylePath(path);

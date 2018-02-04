@@ -64,6 +64,6 @@ dependencies {
     compile 'com.android.support:multidex:1.0.1'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'cn.yipianfengye.android:zxing-library:2.2'
-    compile 'com.zzti.fengyongge:imagepicker:1.2.0'
+    compile 'com.yuyh.imgsel:library:2.0.2'
     testCompile 'junit:junit:4.12'
 }

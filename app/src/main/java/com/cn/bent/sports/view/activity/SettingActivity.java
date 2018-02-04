@@ -1,6 +1,7 @@
 package com.cn.bent.sports.view.activity;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,7 +12,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.cn.bent.sports.MainActivity;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
@@ -21,11 +21,13 @@ import com.cn.bent.sports.utils.ImageUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.utils.ToastUtils;
 import com.cn.bent.sports.widget.ToastDialog;
+import com.yuyh.library.imgsel.ISNav;
+import com.yuyh.library.imgsel.common.ImageLoader;
+import com.yuyh.library.imgsel.config.ISListConfig;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.HuiquRxTBFunction;
 import com.zhl.network.huiqu.HuiquTBResult;
-import com.zzti.fengyongge.imagepicker.PhotoSelectorActivity;
 
 import java.util.List;
 
@@ -41,7 +43,7 @@ public class SettingActivity extends BaseActivity {
     ImageView user_photo;
 
     private LoginBase user;
-
+    private int REQUEST_CAMERA_CODE=102;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +63,13 @@ public class SettingActivity extends BaseActivity {
     @Override
     public void onResume() {
         super.onResume();
+        // 自定义图片加载器
+        ISNav.getInstance().init(new ImageLoader() {
+            @Override
+            public void displayImage(Context context, String path, ImageView imageView) {
+                Glide.with(context).load(path).into(imageView);
+            }
+        });
         user = SaveObjectUtils.getInstance(SettingActivity.this).getObject(Constants.USER_INFO, null);
         if (TextUtils.isEmpty(user.getNickname())) {
             name_t.setText("未设置");
@@ -95,11 +104,34 @@ public class SettingActivity extends BaseActivity {
                 showDialogMsg("确定退出当前账号？");
                 break;
             case R.id.user_photo:
-                Intent intent = new Intent(SettingActivity.this, PhotoSelectorActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                intent.putExtra("limit", 1 );//number是选择图片的数量
-                startActivityForResult(intent, 0);
-
+                ISListConfig config = new ISListConfig.Builder()
+                        // 是否多选, 默认true
+                        .multiSelect(false)
+                        // 是否记住上次选中记录, 仅当multiSelect为true的时候配置，默认为true
+                        .rememberSelected(false)
+                        // “确定”按钮背景色
+                        .btnBgColor(Color.GRAY)
+                        // “确定”按钮文字颜色
+                        .btnTextColor(Color.BLUE)
+                        // 使用沉浸式状态栏
+                        .statusBarColor(Color.parseColor("#3F51B5"))
+                        // 返回图标ResId
+                        .backResId(R.drawable.guanbi_hei)
+                        // 标题
+                        .title("图片")
+                        // 标题文字颜色
+                        .titleColor(Color.WHITE)
+                        // TitleBar背景色
+                        .titleBgColor(Color.parseColor("#3F51B5"))
+                        // 裁剪大小。needCrop为true的时候配置
+                        .cropSize(1, 1, 200, 200)
+                        .needCrop(true)
+                        // 第一个是否显示相机，默认true
+                        .needCamera(false)
+                        // 最大选择图片数量，默认9
+                        .maxNum(9)
+                        .build();
+                ISNav.getInstance().toListActivity(this, config, REQUEST_CAMERA_CODE);
                 break;
         }
     }
@@ -129,21 +161,18 @@ public class SettingActivity extends BaseActivity {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case 0:
-                if (data != null) {
-                    List<String> paths = (List<String>) data.getExtras().getSerializable("photos");//path是选择拍照或者图片的地址数组
-                    //处理代码
-                    String image= ImageUtils.bitmapToBase64(ImageUtils.Str2BitmapByFilePath(paths.get(0)));
-                    login(image);
-                }
-                break;
-            default:
-                break;
-        }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        // 图片选择结果回调
+        if (requestCode == REQUEST_CAMERA_CODE && resultCode == RESULT_OK && data != null) {
+            List<String> pathList = data.getStringArrayListExtra("result");
+            String image = ImageUtils.bitmapToBase64(ImageUtils.Str2BitmapByFilePath(pathList.get(0)));
+            login(image);
+        }
     }
+
+
+
 
 
     private void login(final String imag) {
