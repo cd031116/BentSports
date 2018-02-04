@@ -156,10 +156,11 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
         if (aMap == null) {
             aMap = mapView.getMap();
         }
-        LatLng southwestLatLng = new LatLng(28.021758,113.089136);
-        LatLng northeastLatLng = new LatLng(27.997737, 113.087505);
+        LatLng southwestLatLng = new LatLng(27.999593,113.075961);
+        LatLng northeastLatLng = new LatLng(28.018613, 113.099564);
         LatLngBounds latLngBounds = new LatLngBounds(southwestLatLng, northeastLatLng);
         aMap.setMapStatusLimits(latLngBounds);
+        aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds,50));
         String path = getActivity().getFilesDir() + "/bent/sport.data";
         Log.d("kkkk", "initView: " + path);
         aMap.setCustomMapStylePath(path);
