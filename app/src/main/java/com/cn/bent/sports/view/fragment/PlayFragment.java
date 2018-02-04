@@ -14,12 +14,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amap.api.fence.GeoFenceClient;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
-import com.amap.api.location.DPoint;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.AMapUtils;
 import com.amap.api.maps.CameraUpdateFactory;
@@ -29,9 +27,6 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
-import com.amap.api.services.core.LatLonPoint;
-import com.amap.api.services.geocoder.GeocodeSearch;
-import com.amap.api.services.geocoder.RegeocodeQuery;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseConfig;
 import com.cn.bent.sports.base.BaseFragment;
@@ -39,7 +34,6 @@ import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.bean.ReFreshEvent;
 import com.cn.bent.sports.database.TaskCationBean;
 import com.cn.bent.sports.database.TaskCationManager;
-import com.cn.bent.sports.ibeacon.UserRssi;
 import com.cn.bent.sports.overlay.AMapUtil;
 import com.cn.bent.sports.scan.CaptureActivity;
 import com.cn.bent.sports.utils.Constants;
@@ -353,7 +347,6 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
         @Override
         public void run() {
             handler2.postDelayed(this, 1000);
-            Log.i("tttt","currentTimeMillis="+(System.currentTimeMillis() - times_s)/1000);
             if(((System.currentTimeMillis() - times_s)/1000)>=2*60*60){
                 handler2.removeCallbacks(runnable2);
                 ji_timer.setText("02.00.00");
@@ -482,12 +475,11 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
                             Double.valueOf(mLoction.get(position).getLongitude()).doubleValue());
                     addLocaToMap();
                     setview();
-                    Log.i("ffff","times_s="+times_s);
                     if (times_s <= 0) {
                         if (mStartPoint != null) {
                             BaseConfig bgs = BaseConfig.getInstance(getActivity());
                             bgs.setLongValue(Constants.IS_TIME, System.currentTimeMillis());
-                            Log.i("ffff","mStartPoint="+mStartPoint);
+                            times_s = bgs.getLongValue(Constants.IS_TIME, 0);
                             setTimes();
                         }
                     }
@@ -587,7 +579,6 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case REQUEST_ENABLE_BT:
-                Log.e("dasa", "onActivityResult: " + mMinewBeaconManager.checkBluetoothState());
                 if (mMinewBeaconManager.checkBluetoothState().equals(BluetoothState.BluetoothStatePowerOn))
                     initListener();
                 break;

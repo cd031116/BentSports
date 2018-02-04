@@ -62,9 +62,6 @@ public class DataUtils {
             long hour = (secoond % (24 * 60 * 60)) / (60 * 60);
             long min = ((secoond % (24 * 60 * 60)) % (60 * 60)) / 60;
             long sec = ((secoond % (24 * 60 * 60)) % (60 * 60)) % 60;
-            Log.i("hhhh","sec="+sec);
-            Log.i("hhhh","min="+min);
-            Log.i("hhhh","hour="+hour);
             return  (hour>=10?(hour+""):("0"+hour))+":"+(min>=10?(min+""):("0"+min))+":"+(sec>=10?(sec+""):("0"+sec));
         }
     }
