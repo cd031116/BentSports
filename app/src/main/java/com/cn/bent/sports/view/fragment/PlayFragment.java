@@ -156,15 +156,14 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
         if (aMap == null) {
             aMap = mapView.getMap();
         }
+        String path = getActivity().getFilesDir() + "/bent/sport.data";
+        aMap.setCustomMapStylePath(path);
+        aMap.setMapCustomEnable(true);//true 开启; false 关闭
         LatLng southwestLatLng = new LatLng(27.999593,113.075961);
         LatLng northeastLatLng = new LatLng(28.018613, 113.099564);
         LatLngBounds latLngBounds = new LatLngBounds(southwestLatLng, northeastLatLng);
         aMap.setMapStatusLimits(latLngBounds);
         aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds,50));
-        String path = getActivity().getFilesDir() + "/bent/sport.data";
-        Log.d("kkkk", "initView: " + path);
-        aMap.setCustomMapStylePath(path);
-        aMap.setMapCustomEnable(true);//true 开启; false 关闭
         // 绑定 Marker 被点击事件
         aMap.setOnMarkerClickListener(this);
     }
