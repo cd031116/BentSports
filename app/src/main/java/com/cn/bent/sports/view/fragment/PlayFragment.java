@@ -26,6 +26,7 @@ import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.services.core.LatLonPoint;
@@ -117,7 +118,6 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
     private MinewBeaconManager mMinewBeaconManager;
     private String t_ids;
     private long times_s = 0;
-    private  GeoFenceClient mGeoFenceClient;
     //---------------------
     AMapLocationListener mAMapLocationListener = new AMapLocationListener() {
         @Override
@@ -156,10 +156,10 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
         if (aMap == null) {
             aMap = mapView.getMap();
         }
-        if(mGeoFenceClient==null){
-            mGeoFenceClient = new GeoFenceClient(getActivity());
-        }
-        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom( new LatLng(28.0075,113.086525), 3000));
+        LatLng southwestLatLng = new LatLng(28.021758,113.089136);
+        LatLng northeastLatLng = new LatLng(27.997737, 113.087505);
+        LatLngBounds latLngBounds = new LatLngBounds(southwestLatLng, northeastLatLng);
+        aMap.setMapStatusLimits(latLngBounds);
         String path = getActivity().getFilesDir() + "/bent/sport.data";
         Log.d("kkkk", "initView: " + path);
         aMap.setCustomMapStylePath(path);
@@ -330,7 +330,13 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
         @Override
         public void run() {
             handler2.postDelayed(this, 1000);
-            ji_timer.setText(DataUtils.getDateToTime(System.currentTimeMillis() - times_s));
+            if((System.currentTimeMillis() - times_s)/1000>=2*60*60){
+                handler2.removeCallbacks(runnable2);
+                ji_timer.setText("02.00.00");
+            }else {
+                ji_timer.setText(DataUtils.getDateToTime(System.currentTimeMillis() - times_s));
+            }
+
         }
     };
 
