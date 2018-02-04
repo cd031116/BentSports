@@ -85,7 +85,7 @@
             android:screenOrientation="portrait" />
         <activity android:name=".view.activity.GetLocationActivity"></activity>
         <activity android:name="com.zzti.fengyongge.imagepicker.PhotoSelectorActivity"></activity>
-        <activity android:name="com.zzti.fengyongge.imagepicker.PhotoPreviewActivity"></activity>
+        <!--<activity android:name="com.zzti.fengyongge.imagepicker.PhotoPreviewActivity"></activity>-->
     </application>
 
 </manifest>
