@@ -49,8 +49,8 @@
                         android:layout_below="@id/head_1"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="40px"
-                        android:singleLine="true"
                         android:ellipsize="end"
+                        android:singleLine="true"
                         android:textColor="#ffffff"
                         android:textSize="34px" />
 
@@ -81,13 +81,13 @@
                     <TextView
                         android:id="@+id/name_3"
                         android:layout_width="224px"
-                        android:singleLine="true"
-                        android:ellipsize="end"
                         android:layout_height="wrap_content"
                         android:layout_alignLeft="@id/head_3"
                         android:layout_below="@id/head_3"
                         android:layout_marginTop="40px"
+                        android:ellipsize="end"
                         android:gravity="center_horizontal"
+                        android:singleLine="true"
                         android:textColor="#ffffff"
                         android:textSize="34px" />
 
@@ -98,8 +98,8 @@
                         android:layout_below="@id/name_3"
                         android:layout_marginLeft="48px"
                         android:layout_marginTop="100px"
-                        android:textColor="#de4852"
                         android:text="dasads"
+                        android:textColor="#de4852"
                         android:textSize="37px" />
                 </RelativeLayout>
 
@@ -118,13 +118,13 @@
                     <TextView
                         android:id="@+id/name_2"
                         android:layout_width="224px"
-                        android:singleLine="true"
-                        android:ellipsize="end"
                         android:layout_height="wrap_content"
                         android:layout_alignLeft="@id/head_2"
                         android:layout_below="@id/head_2"
                         android:layout_marginTop="15px"
+                        android:ellipsize="end"
                         android:gravity="center_horizontal"
+                        android:singleLine="true"
                         android:textColor="#ffffff"
                         android:textSize="34px" />
 
@@ -133,12 +133,66 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/name_2"
-                        android:layout_marginTop="152px"
-                        android:textColor="#de4852"
                         android:layout_centerHorizontal="true"
+                        android:layout_marginTop="152px"
                         android:text="dasads"
+                        android:textColor="#de4852"
                         android:textSize="37px" />
                 </RelativeLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/user">
+
+                <TextView
+                    android:id="@+id/range_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:paddingLeft="60px"
+                    android:textColor="#aaaaaa"
+                    android:textSize="46px" />
+
+                <ImageView
+                    android:id="@+id/img_head"
+                    android:layout_width="114px"
+                    android:layout_height="114px"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="28px"
+                    android:layout_marginTop="30px"
+                    android:layout_toRightOf="@id/range_num" />
+
+                <TextView
+                    android:id="@+id/range_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="28px"
+                    android:layout_toRightOf="@id/img_head"
+                    android:textColor="#333333"
+                    android:textSize="43px" />
+
+                <TextView
+                    android:id="@+id/range_jifen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:paddingRight="42px"
+                    android:textColor="#000000"
+                    android:textSize="43px" />
+
+                <ImageView
+                    android:id="@+id/img_jifen"
+                    android:layout_width="63px"
+                    android:layout_height="63px"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/jifen_huang"
+                    android:layout_marginRight="32px"
+                    android:layout_toLeftOf="@id/range_jifen" />
 
             </RelativeLayout>
 

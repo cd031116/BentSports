@@ -66,7 +66,7 @@ public class PlayWebViewActivity extends BaseActivity {
         super.initView();
         gameId = getIntent().getStringExtra("gameId");
         user = (LoginBase) SaveObjectUtils.getInstance(this).getObject(Constants.USER_INFO, null);
-
+        handler2 = new Handler();
         setTimes();
         initWebView();
     }
@@ -77,14 +77,15 @@ public class PlayWebViewActivity extends BaseActivity {
 
     Runnable runnable2 = new Runnable() {
         long longValue = BaseConfig.getInstance(PlayWebViewActivity.this).getLongValue(Constants.IS_TIME, 0);
+
         @Override
         public void run() {
             handler2.postDelayed(this, 1000);
-            Log.i("tttt","currentTimeMillis="+(System.currentTimeMillis() - longValue)/1000);
-            if(((System.currentTimeMillis() - longValue)/1000)>=2*60*60){
+            Log.i("tttt", "currentTimeMillis=" + (System.currentTimeMillis() - longValue) / 1000);
+            if (((System.currentTimeMillis() - longValue) / 1000) >= 2 * 60 * 60) {
                 handler2.removeCallbacks(runnable2);
                 timer.setText("02.00.00");
-            }else {
+            } else {
                 timer.setText(DataUtils.getDateToTime(System.currentTimeMillis() - longValue));
             }
 
@@ -125,29 +126,29 @@ public class PlayWebViewActivity extends BaseActivity {
         webSettings.setJavaScriptEnabled(true);
         // 设置允许JS弹窗
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
-//        gameId = (int) (Math.random() * 5 + 1) + "";
         Log.e("dasa", "initWebView: " + gameId);
+        String index = "hby";
         switch (Integer.parseInt(gameId)) {
             case 1:
-                mWebView.loadUrl("http://aihw.zhonghuilv.net/hby/index.html?uid=" + user.getMember_id() + "&etype=android&gameid=" + gameId);
+                index = "hby";
                 break;
             case 2:
-                mWebView.loadUrl("http://aihw.zhonghuilv.net/aihuwai/index.html?uid=" + user.getMember_id() + "&etype=android&gameid=" + gameId);
+                index = "aihuwai";
                 break;
             case 3:
-                mWebView.loadUrl("http://aihw.zhonghuilv.net/denglong/index.html?uid=" + user.getMember_id() + "&etype=android&gameid=" + gameId);
+                index = "denglong";
                 break;
             case 4:
-//                mWebView.loadUrl("http://192.168.16.217:8080?uid=" + user.getMember_id() + "&etype=android&gameid="+gameId);
-                mWebView.loadUrl("http://aihw.zhonghuilv.net/caishenmiao/index.html?uid=" + user.getMember_id() + "&etype=android&gameid=" + gameId);
+                index = "caishenmiao";
                 break;
             case 5:
-                mWebView.loadUrl("http://aihw.zhonghuilv.net/cdm/index.html?uid=" + user.getMember_id() + "&etype=android&gameid=" + gameId);
+                index = "cdm";
                 break;
             case 6:
-                mWebView.loadUrl("http://aihw.zhonghuilv.net/xcm/index.html?uid=" + user.getMember_id() + "&etype=android&gameid=" + gameId);
+                index = "xcm";
                 break;
         }
+        mWebView.loadUrl(Constants.TEST_URL + index + "/index.html?uid=" + user.getMember_id() + "&etype=android&gameid=" + gameId);
         mWebView.addJavascriptInterface(new JSInterface(), "native");
     }
 
@@ -184,7 +185,6 @@ public class PlayWebViewActivity extends BaseActivity {
                             EventBus.getDefault().post(new InfoEvent());
                             if (TaskCationManager.noMore()) {
                                 Intent intent = new Intent(PlayWebViewActivity.this, AllFinishActivity.class);
-                                intent.putExtra("time", SystemClock.elapsedRealtime());
                                 startActivity(intent);
                             } else
                                 toContinue();
@@ -231,7 +231,7 @@ public class PlayWebViewActivity extends BaseActivity {
             mWebView.clearCache(true);
             mWebView.destroy();
         }
-        if (handler2!=null)
+        if (handler2 != null)
             handler2.removeCallbacks(runnable2);
     }
 

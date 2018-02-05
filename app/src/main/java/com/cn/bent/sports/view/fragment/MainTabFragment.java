@@ -12,11 +12,14 @@ import com.bumptech.glide.request.RequestOptions;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseFragment;
+import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.bean.RangeEntity;
 import com.cn.bent.sports.bean.RankEntity;
 import com.cn.bent.sports.bean.ReFreshEvent;
 import com.cn.bent.sports.recyclebase.CommonAdapter;
 import com.cn.bent.sports.recyclebase.ViewHolder;
+import com.cn.bent.sports.utils.Constants;
+import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.view.activity.ZoomActivity;
 import com.cn.bent.sports.widget.DividerItemDecoration;
 import com.zhl.network.RxObserver;
@@ -34,6 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
  * Created by lyj on 2018/1/29 0029.
@@ -62,6 +66,16 @@ public class MainTabFragment extends BaseFragment {
     @Bind(R.id.jifen_3)
     TextView jifen_3;
 
+    @Bind(R.id.range_num)
+    TextView range_num;
+    @Bind(R.id.range_name)
+    TextView range_name;
+    @Bind(R.id.img_head)
+    ImageView img_head;
+    @Bind(R.id.range_jifen)
+    TextView range_jifen;
+    private LoginBase user;
+
     public static MainTabFragment newInstance(int type) {
         MainTabFragment fragment = new MainTabFragment();
         Bundle bundle = new Bundle();
@@ -79,6 +93,7 @@ public class MainTabFragment extends BaseFragment {
     protected void initView(View view, Bundle savedInstanceState) {
         EventBus.getDefault().register(this);
         range_list.setLayoutManager(new LinearLayoutManager(getActivity()));
+        user = (LoginBase) SaveObjectUtils.getInstance(getActivity()).getObject(Constants.USER_INFO, null);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -110,12 +125,12 @@ public class MainTabFragment extends BaseFragment {
 
     @Override
     protected void initData() {
-        getRankData();
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        getRankData();
     }
 
     private void getRankData() {
@@ -126,6 +141,18 @@ public class MainTabFragment extends BaseFragment {
                     @Override
                     public void onSuccess(int whichRequest, RankEntity rankEntity) {
                         if (rankEntity != null && rankEntity.getRankList() != null && rankEntity.getRankList().size() > 0) {
+                            for (int i = 0; i < rankEntity.getRankList().size(); i++) {
+                                if (user.getMember_id().equals(rankEntity.getRankList().get(i).getUser_id())) {
+                                    range_num.setText(String.valueOf(i));
+                                    range_jifen.setText(String.valueOf(rankEntity.getRankList().get(i).getScore()));
+                                    range_name.setText(rankEntity.getRankList().get(i).getNickname());
+                                    RequestOptions requestOptions = RequestOptions.circleCropTransform();
+                                    Glide.with(img_head.getContext()).load(rankEntity.getRankList().get(i).getHeadimg())
+                                            .apply(requestOptions)
+                                            .into(img_head);
+                                    break;
+                                }
+                            }
                             if (rankEntity.getRankList().size() > 0)
                                 setOneView(rankEntity.getRankList().get(0));
                             if (rankEntity.getRankList().size() > 1)

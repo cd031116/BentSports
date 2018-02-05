@@ -1,24 +1,33 @@
 package com.cn.bent.sports.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
+import com.cn.bent.sports.MainActivity;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
+import com.cn.bent.sports.base.BaseConfig;
 import com.cn.bent.sports.bean.AllFinishEntity;
+import com.cn.bent.sports.bean.InfoEvent;
 import com.cn.bent.sports.bean.LoginBase;
+import com.cn.bent.sports.bean.LookRankEvent;
 import com.cn.bent.sports.recyclebase.CommonAdapter;
 import com.cn.bent.sports.recyclebase.ViewHolder;
 import com.cn.bent.sports.utils.Constants;
+import com.cn.bent.sports.utils.DataUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.HuiquRxFunction;
 
+import org.greenrobot.eventbus.EventBus;
+
 import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
  * Created by dawn on 2018/2/2.
@@ -50,7 +59,7 @@ public class AllFinishActivity extends BaseActivity {
         super.initView();
         user = (LoginBase) SaveObjectUtils.getInstance(this).getObject(Constants.USER_INFO, null);
         game_list.setLayoutManager(new LinearLayoutManager(this));
-        all_time.setText("通关时间：" + getIntent().getLongExtra("time", 0));
+        all_time.setText("通关时间：" + DataUtils.getDateToTime(System.currentTimeMillis() - BaseConfig.getInstance(AllFinishActivity.this).getLongValue(Constants.IS_TIME, 0)));
     }
 
     @Override
@@ -82,5 +91,11 @@ public class AllFinishActivity extends BaseActivity {
             }
         };
         game_list.setAdapter(mAdapter);
+    }
+
+    @OnClick(R.id.look_range)
+    void onClick() {
+        EventBus.getDefault().post(new LookRankEvent());
+        startActivity(new Intent(this, MainActivity.class));
     }
 }

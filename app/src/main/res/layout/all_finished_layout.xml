@@ -86,7 +86,7 @@
         android:layout_below="@id/all_layout"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="150px"
-        android:background="@drawable/commit_bg"
+        android:background="@drawable/go_task_bg"
         android:gravity="center"
         android:text="去看排行"
         android:textColor="#ffffff"

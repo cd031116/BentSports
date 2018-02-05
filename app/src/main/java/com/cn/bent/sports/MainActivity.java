@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.LoginBase;
+import com.cn.bent.sports.bean.LookRankEvent;
+import com.cn.bent.sports.bean.ReFreshEvent;
 import com.cn.bent.sports.database.TaskCationBean;
 import com.cn.bent.sports.database.TaskCationManager;
 import com.cn.bent.sports.utils.Constants;
@@ -24,6 +26,10 @@ import com.cn.bent.sports.view.fragment.DoTaskFragment;
 import com.cn.bent.sports.view.fragment.IsMeFragment;
 import com.cn.bent.sports.view.fragment.MainTabFragment;
 import com.cn.bent.sports.view.fragment.PlayFragment;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,12 +61,18 @@ public class MainActivity extends BaseActivity {
     @Override
     public void initView() {
         super.initView();
+        EventBus.getDefault().register(this);
     }
 
     @Override
     public void onResume() {
         super.onResume();
         switchContent(selected);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(LookRankEvent event) {
+        switchContent(0);
     }
 
     @Override
@@ -171,7 +183,7 @@ public class MainActivity extends BaseActivity {
 
 
     private void setdata() {
-        if (TaskCationManager.getSize() <=0) {
+        if (TaskCationManager.getSize() <= 0) {
             LoginBase user = SaveObjectUtils.getInstance(MainActivity.this).getObject(Constants.USER_INFO, null);
             List<TaskCationBean> nList = new ArrayList<>();
             nList.add(new TaskCationBean(1, user.getMember_id(), "1", "113.087645", "28.012992", "歌舞广场", false, false));
