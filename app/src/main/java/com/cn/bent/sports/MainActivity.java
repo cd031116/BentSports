@@ -2,6 +2,7 @@ package com.cn.bent.sports;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -67,17 +68,22 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onResume() {
         super.onResume();
+        switchContent(1);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(LookRankEvent event) {
-        switchContent(0);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                switchContent(0);
+            }
+        }, 600);
     }
 
     @Override
     public void initData() {
         super.initData();
-        mTabs.get(1).performClick();
         setdata();
     }
 
@@ -125,9 +131,10 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.text1, R.id.iamage1, R.id.iamage2, R.id.image_me, R.id.is_me})
+    @OnClick({R.id.text1, R.id.iamage1,R.id.line1,R.id.line2,R.id.iamage2, R.id.image_me, R.id.is_me})
     void onclick(View v) {
         switch (v.getId()) {
+            case R.id.line1:
             case R.id.iamage1:
             case R.id.text1:
                 if (selected == 0) {
@@ -143,6 +150,7 @@ public class MainActivity extends BaseActivity {
                 selected = 1;
                 switchContent(selected);
                 break;
+            case R.id.line2:
             case R.id.image_me:
             case R.id.is_me:
                 if (selected == 2) {
