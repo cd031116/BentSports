@@ -41,6 +41,6 @@
         android:paddingRight="80px"
         android:textColor="#521a1e"
         android:textSize="43px"
-        android:text="从这里,您将开始一段奇妙的寻宝之旅,您只需要按照提示,到达对应景点,完成指定任务,即可进入下一关,同时可以收集卡片并获得积分(各个任务点的通关时间会影响您获得的积分数哦)。通关全部关卡后,将获得惊喜大奖!\n\n\n积分可以直接在景区积分商店兑换实物商品,您准备好了吗?"/>
+        android:text="@string/play_rule"/>
 
 </RelativeLayout>
