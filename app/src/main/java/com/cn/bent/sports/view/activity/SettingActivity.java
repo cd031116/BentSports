@@ -96,7 +96,7 @@ public class SettingActivity extends BaseActivity {
         super.initData();
     }
 
-    @OnClick({R.id.top_left, R.id.top_image, R.id.ni_ceng, R.id.login,R.id.user_photo})
+    @OnClick({R.id.top_left, R.id.top_image, R.id.ni_ceng, R.id.login,R.id.user_photo,R.id.gai_photo})
     void conlick(View view) {
         switch (view.getId()) {
             case R.id.ni_ceng:
@@ -110,6 +110,7 @@ public class SettingActivity extends BaseActivity {
                 showDialogMsg("确定退出当前账号？");
                 break;
             case R.id.user_photo:
+            case R.id.gai_photo:
                 ISListConfig config = new ISListConfig.Builder()
                         // 是否多选, 默认true
                         .multiSelect(false)

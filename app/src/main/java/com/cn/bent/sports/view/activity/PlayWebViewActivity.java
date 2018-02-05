@@ -181,11 +181,11 @@ public class PlayWebViewActivity extends BaseActivity {
                             TaskCationManager.update(gameId + "", DataUtils.getlongs());
                             LoginBase user = (LoginBase) SaveObjectUtils.getInstance(PlayWebViewActivity.this).getObject(Constants.USER_INFO, null);
                             setScore(user, gameEntity);
-                            EventBus.getDefault().post(new ReFreshEvent());
                             EventBus.getDefault().post(new InfoEvent());
                             if (TaskCationManager.noMore()) {
                                 Intent intent = new Intent(PlayWebViewActivity.this, AllFinishActivity.class);
                                 startActivity(intent);
+                                EventBus.getDefault().post(new ReFreshEvent());
                             } else
                                 toContinue();
                         } else {

@@ -67,7 +67,6 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onResume() {
         super.onResume();
-        switchContent(selected);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -78,7 +77,7 @@ public class MainActivity extends BaseActivity {
     @Override
     public void initData() {
         super.initData();
-        switchContent(selected);
+        mTabs.get(1).performClick();
         setdata();
     }
 

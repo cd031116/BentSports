@@ -31,7 +31,6 @@ import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseConfig;
 import com.cn.bent.sports.base.BaseFragment;
-import com.cn.bent.sports.bean.InfoEvent;
 import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.bean.ReFreshEvent;
 import com.cn.bent.sports.database.TaskCationBean;
@@ -44,7 +43,6 @@ import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.utils.ToastUtils;
 import com.cn.bent.sports.view.activity.PlayWebViewActivity;
 import com.cn.bent.sports.view.activity.RuleActivity;
-import com.cn.bent.sports.view.activity.SettingActivity;
 import com.cn.bent.sports.view.activity.ZoomActivity;
 import com.cn.bent.sports.widget.GameDialog;
 import com.cn.bent.sports.widget.ToastDialog;
@@ -67,13 +65,14 @@ import butterknife.Bind;
 import butterknife.OnClick;
 
 /**
- * Created by lyj on 2018/2/4 0004.
+ * Created by lyj on 2018/2/5 0005.
  * description
  */
 
-public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickListener {
-    public static PlayFragment newInstance() {
-        PlayFragment fragment = new PlayFragment();
+public class JinMaoFragment extends BaseFragment implements AMap.OnMarkerClickListener {
+
+    public static JinMaoFragment newInstance() {
+        JinMaoFragment fragment = new JinMaoFragment();
 //        Bundle bundle = new Bundle();
 //        fragment.setArguments(bundle);
         return fragment;
@@ -119,7 +118,7 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
     private MinewBeaconManager mMinewBeaconManager;
     private String t_ids;
     private long times_s = 0;
-    private  Handler handler2;
+    private Handler handler2;
     private LoginBase user;
     //---------------------
     AMapLocationListener mAMapLocationListener = new AMapLocationListener() {
@@ -135,7 +134,7 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
                     if(isFirstLoc){
                         addLocaToMap();
                     }else
-                    addLocaismap();
+                        addLocaismap();
                     isFirstLoc = false;
                 } else {
                     isLocal = false;
@@ -155,7 +154,7 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
         user = SaveObjectUtils.getInstance(getActivity()).getObject(Constants.USER_INFO, null);
-         handler2 = new Handler();
+        handler2 = new Handler();
         EventBus.getDefault().register(this);
         mapView.onCreate(savedInstanceState);
         mMinewBeaconManager = MinewBeaconManager.getInstance(getActivity());
@@ -165,8 +164,8 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
         String path = getActivity().getFilesDir() + "/bent/sport.data";
         aMap.setCustomMapStylePath(path);
         aMap.setMapCustomEnable(true);//true 开启; false 关闭
-        LatLng southwestLatLng = new LatLng(27.994895,113.069781);
-        LatLng northeastLatLng = new LatLng(28.022822,113.100036);
+        LatLng southwestLatLng = new LatLng(28.014501,113.093844);
+        LatLng northeastLatLng = new LatLng(28.01675,113.096928);
         LatLngBounds latLngBounds = new LatLngBounds(southwestLatLng, northeastLatLng);
         aMap.setMapStatusLimits(latLngBounds);
         aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds,50));
@@ -320,14 +319,7 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ReFreshEvent event) {
-        mLoction = TaskCationManager.getHistory();
-        BaseConfig bf = BaseConfig.getInstance(getActivity());
-        times_s = bf.getLongValue(Constants.IS_TIME, 0);
-        if (mLoction.size() <= 0) {
-            handler2.removeCallbacks(runnable2);
-            bf.setLongValue(Constants.IS_TIME, 0);
-            ji_timer.setText("已通关");
-        }
+        aMap.clear();
     }
 
     /**
@@ -344,7 +336,7 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
         }
         if (mLoction.size() <= 0) {
             bf.setLongValue(Constants.IS_TIME, 0);
-            ji_timer.setText("已通关");
+            ji_timer.setText("已完成");
         }
         mapView.onResume();
         addLocaToMap();
@@ -508,7 +500,7 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
             }
         }).setTitle("提示").show();
     }
-//-------------------------------通知后台
+    //-------------------------------通知后台
     private void login() {
         BaseApi.getDefaultService(getActivity()).startGame(user.getMember_id())
                 .map(new HuiquRxTBFunction<HuiquTBResult>())
@@ -518,7 +510,7 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
                     public void onSuccess(int whichRequest, HuiquTBResult info) {
                     }
 
-                   @Override
+                    @Override
                     public void onError(int whichRequest, Throwable e) {
                         dismissAlert();
 
@@ -643,6 +635,8 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
                 break;
         }
     }
+
+
 
 
 }
