@@ -202,6 +202,4 @@ public class MainActivity extends BaseActivity {
             TaskCationManager.insert(nList);
         }
     }
-
-
 }
