@@ -131,9 +131,9 @@ public class SettingActivity extends BaseActivity {
                         .cropSize(1, 1, 200, 200)
                         .needCrop(true)
                         // 第一个是否显示相机，默认true
-                        .needCamera(false)
+                        .needCamera(true)
                         // 最大选择图片数量，默认9
-                        .maxNum(9)
+                        .maxNum(1)
                         .build();
                 ISNav.getInstance().toListActivity(this, config, REQUEST_CAMERA_CODE);
                 break;

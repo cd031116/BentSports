@@ -28,8 +28,10 @@ import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.cn.bent.sports.R;
+import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseConfig;
 import com.cn.bent.sports.base.BaseFragment;
+import com.cn.bent.sports.bean.InfoEvent;
 import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.bean.ReFreshEvent;
 import com.cn.bent.sports.database.TaskCationBean;
@@ -42,12 +44,17 @@ import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.utils.ToastUtils;
 import com.cn.bent.sports.view.activity.PlayWebViewActivity;
 import com.cn.bent.sports.view.activity.RuleActivity;
+import com.cn.bent.sports.view.activity.SettingActivity;
 import com.cn.bent.sports.view.activity.ZoomActivity;
 import com.cn.bent.sports.widget.GameDialog;
 import com.cn.bent.sports.widget.ToastDialog;
 import com.minew.beacon.BluetoothState;
 import com.minew.beacon.MinewBeaconManager;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
+import com.zhl.network.RxObserver;
+import com.zhl.network.RxSchedulers;
+import com.zhl.network.huiqu.HuiquRxTBFunction;
+import com.zhl.network.huiqu.HuiquTBResult;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -113,6 +120,7 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
     private String t_ids;
     private long times_s = 0;
     private  Handler handler2;
+    private LoginBase user;
     //---------------------
     AMapLocationListener mAMapLocationListener = new AMapLocationListener() {
         @Override
@@ -146,6 +154,7 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
 
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
+        user = SaveObjectUtils.getInstance(getActivity()).getObject(Constants.USER_INFO, null);
          handler2 = new Handler();
         EventBus.getDefault().register(this);
         mapView.onCreate(savedInstanceState);
@@ -328,6 +337,7 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
         }
         if (mLoction.size() <= 0) {
             bf.setLongValue(Constants.IS_TIME, 0);
+            ji_timer.setText("已完成");
         }
         mapView.onResume();
         addLocaToMap();
@@ -477,6 +487,7 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
                     setview();
                     if (times_s <= 0) {
                         if (mStartPoint != null) {
+                            login();
                             BaseConfig bgs = BaseConfig.getInstance(getActivity());
                             bgs.setLongValue(Constants.IS_TIME, System.currentTimeMillis());
                             times_s = bgs.getLongValue(Constants.IS_TIME, 0);
@@ -489,6 +500,23 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
                 dialog.dismiss();
             }
         }).setTitle("提示").show();
+    }
+//-------------------------------通知后台
+    private void login() {
+        BaseApi.getDefaultService(getActivity()).startGame(user.getMember_id())
+                .map(new HuiquRxTBFunction<HuiquTBResult>())
+                .compose(RxSchedulers.<HuiquTBResult>io_main())
+                .subscribe(new RxObserver<HuiquTBResult>(getActivity(), "changeName", 1, false) {
+                    @Override
+                    public void onSuccess(int whichRequest, HuiquTBResult info) {
+                    }
+
+                   @Override
+                    public void onError(int whichRequest, Throwable e) {
+                        dismissAlert();
+
+                    }
+                });
     }
 
     //-------------------------------------------蓝牙

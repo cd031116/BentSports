@@ -103,4 +103,16 @@ public interface ApiService {
             @Field("cur_user_id") String cur_user_id,
             @Field("type") String type,
             @Field("img") String img);
+
+
+    /*
+      *
+       *
+        * @return
+      */
+    @FormUrlEncoded
+    @POST("outdoor/user/startGame")
+    Observable<HuiquTBResult> startGame(
+            @Field("cur_user_id") String cur_user_id);
+
 }
