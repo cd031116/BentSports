@@ -143,7 +143,7 @@ public class MainTabFragment extends BaseFragment {
                         if (rankEntity != null && rankEntity.getRankList() != null && rankEntity.getRankList().size() > 0) {
                             for (int i = 0; i < rankEntity.getRankList().size(); i++) {
                                 if (user.getMember_id().equals(rankEntity.getRankList().get(i).getUser_id())) {
-                                    range_num.setText(String.valueOf(i));
+                                    range_num.setText(String.valueOf(i + 1));
                                     range_jifen.setText(String.valueOf(rankEntity.getRankList().get(i).getScore()));
                                     range_name.setText(rankEntity.getRankList().get(i).getNickname());
                                     RequestOptions requestOptions = RequestOptions.circleCropTransform();

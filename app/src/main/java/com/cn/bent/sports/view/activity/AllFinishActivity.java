@@ -95,7 +95,7 @@ public class AllFinishActivity extends BaseActivity {
 
     @OnClick(R.id.look_range)
     void onClick() {
-        EventBus.getDefault().post(new LookRankEvent());
         startActivity(new Intent(this, MainActivity.class));
+        EventBus.getDefault().post(new LookRankEvent());
     }
 }

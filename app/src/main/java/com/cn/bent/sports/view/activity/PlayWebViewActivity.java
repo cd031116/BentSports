@@ -148,7 +148,7 @@ public class PlayWebViewActivity extends BaseActivity {
                 index = "xcm";
                 break;
         }
-        mWebView.loadUrl(Constants.TEST_URL + index + "/index.html?uid=" + user.getMember_id() + "&etype=android&gameid=" + gameId);
+        mWebView.loadUrl(Constants.BASE_URL + index + "/index.html?uid=" + user.getMember_id() + "&etype=android&gameid=" + gameId);
         mWebView.addJavascriptInterface(new JSInterface(), "native");
     }
 

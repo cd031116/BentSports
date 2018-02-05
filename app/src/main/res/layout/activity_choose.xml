@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="324px"
+        android:text="选择你想玩的路线"
+        android:textColor="#de4852"
+        android:textSize="60px" />
+
+    <TextView
+        android:id="@+id/shiyanhu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="230px"
+        android:drawablePadding="42px"
+        android:drawableTop="@drawable/shiyanhu"
+        android:gravity="center_horizontal"
+        android:text="石燕湖路线"
+        android:textColor="#666666"
+        android:textSize="43px" />
+
+    <TextView
+        android:id="@+id/jinmao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="148px"
+        android:drawablePadding="42px"
+        android:drawableTop="@drawable/jinmao"
+        android:gravity="center_horizontal"
+        android:text="金茂路线"
+        android:textColor="#666666"
+        android:textSize="43px" />
+</LinearLayout>
