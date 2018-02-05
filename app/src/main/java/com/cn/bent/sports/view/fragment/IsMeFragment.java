@@ -102,7 +102,7 @@ public class IsMeFragment extends BaseFragment {
     }
 
     private void setView(UserMsgEntity userMsgEntity) {
-        if(getActivity().isFinishing())
+        if(getActivity()==null)
         return;
         nick_name.setText(userMsgEntity.getUserMsg().getNickname());
         score.setText(userMsgEntity.getUserMsg().getScore() + "");

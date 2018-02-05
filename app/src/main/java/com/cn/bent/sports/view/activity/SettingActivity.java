@@ -18,6 +18,7 @@ import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.base.MyApplication;
 import com.cn.bent.sports.bean.InfoEvent;
 import com.cn.bent.sports.bean.LoginBase;
+import com.cn.bent.sports.bean.PhotoPath;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.ImageUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
@@ -28,6 +29,7 @@ import com.yuyh.library.imgsel.common.ImageLoader;
 import com.yuyh.library.imgsel.config.ISListConfig;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
+import com.zhl.network.huiqu.HuiquRxFunction;
 import com.zhl.network.huiqu.HuiquRxTBFunction;
 import com.zhl.network.huiqu.HuiquTBResult;
 
@@ -182,15 +184,22 @@ public class SettingActivity extends BaseActivity {
     private void login(final String imag) {
         showAlert("正在提交...", true);
         BaseApi.getDefaultService(this).modifyUserPhoto(user.getMember_id(), "2", imag)
-                .map(new HuiquRxTBFunction<HuiquTBResult>())
-                .compose(RxSchedulers.<HuiquTBResult>io_main())
-                .subscribe(new RxObserver<HuiquTBResult>(SettingActivity.this, "changeName", 1, false) {
+                .map(new HuiquRxFunction<PhotoPath>())
+                .compose(RxSchedulers.<PhotoPath>io_main())
+                .subscribe(new RxObserver<PhotoPath>(SettingActivity.this, "changeName", 1, false) {
                     @Override
-                    public void onSuccess(int whichRequest, HuiquTBResult info) {
+                    public void onSuccess(int whichRequest, PhotoPath info) {
                         dismissAlert();
-                        SaveObjectUtils.getInstance(SettingActivity.this).setObject(Constants.USER_INFO, user);
+                        LoginBase users=SaveObjectUtils.getInstance(SettingActivity.this).getObject(Constants.USER_INFO, null);
+                        users.setHeadimg(info.getHeadimgurl());
+                        SaveObjectUtils.getInstance(SettingActivity.this).setObject(Constants.USER_INFO, users);
+
+                        RequestOptions requestOptions = RequestOptions.circleCropTransform();
+                        Glide.with(SettingActivity.this).load(info.getHeadimgurl())
+                                .apply(requestOptions)
+                                .into(user_photo);
+                        ToastUtils.showShortToast(SettingActivity.this,"图像更改成功");
                         EventBus.getDefault().post(new InfoEvent());
-                        finish();
                     }
 
                     @Override

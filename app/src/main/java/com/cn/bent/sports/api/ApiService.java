@@ -4,6 +4,7 @@ package com.cn.bent.sports.api;
 import com.cn.bent.sports.bean.AddScoreEntity;
 import com.cn.bent.sports.bean.AllFinishEntity;
 import com.cn.bent.sports.bean.LoginBase;
+import com.cn.bent.sports.bean.PhotoPath;
 import com.cn.bent.sports.bean.RankEntity;
 import com.cn.bent.sports.bean.UserMsgEntity;
 import com.zhl.network.huiqu.HuiquResult;
@@ -99,7 +100,7 @@ public interface ApiService {
                  */
     @FormUrlEncoded
     @POST("outdoor/user/modifyUserMsg")
-    Observable<HuiquTBResult> modifyUserPhoto(
+    Observable<HuiquResult<PhotoPath>> modifyUserPhoto(
             @Field("cur_user_id") String cur_user_id,
             @Field("type") String type,
             @Field("img") String img);
