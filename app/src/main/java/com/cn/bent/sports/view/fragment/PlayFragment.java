@@ -482,7 +482,7 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
                 name_game.setText("猜灯谜");
             }
             if ("6".endsWith(t_ids)) {
-                name_game.setText("熊出没");
+                name_game.setText("愤怒的小鸟");
             }
             String distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
             juli.setText(AMapUtil.getFriendlyLength((int) (Double.parseDouble(distance))));
