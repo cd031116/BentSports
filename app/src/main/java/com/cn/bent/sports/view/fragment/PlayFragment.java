@@ -386,7 +386,6 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
                     start_view.setVisibility(View.GONE);
                     go_task.setVisibility(View.GONE);
                     start_view.setVisibility(View.GONE);
-                    mMinewBeaconManager.stopScan();
                     if ("5".endsWith(t_ids)) {
                         Intent intent = new Intent(getActivity(), CaptureActivity.class);
                         startActivityForResult(intent, REQUEST_Scan);
@@ -584,6 +583,7 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
                     line_s.setVisibility(View.GONE);
                     go_task.setVisibility(View.VISIBLE);
                     //弹游戏
+                    mMinewBeaconManager.stopScan();
                 }
             }
 
