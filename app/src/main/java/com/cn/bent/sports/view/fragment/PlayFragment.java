@@ -453,7 +453,7 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
         } else {
             String distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
             juli.setText(AMapUtil.getFriendlyLength((int) (Double.parseDouble(distance))));
-            if ((int) (Double.parseDouble(distance)) < 20) {
+            if ((int) (Double.parseDouble(distance)) < 30*1000) {
                 //打开蓝牙
                 checkBluetooth();
             }
@@ -597,7 +597,8 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
                     line_s.setVisibility(View.GONE);
                     go_task.setVisibility(View.VISIBLE);
                     //弹游戏
-                    mMinewBeaconManager.stopScan();
+                    if (mMinewBeaconManager != null)
+                        mMinewBeaconManager.stopScan();
                 }
             }
 
