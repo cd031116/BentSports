@@ -383,6 +383,11 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
             @Override
             public void onClick(Dialog dialog, boolean confirm) {
                 if (confirm) {
+                    mEndPoint=null;
+                    start_view.setVisibility(View.GONE);
+                    go_task.setVisibility(View.GONE);
+                    start_view.setVisibility(View.GONE);
+                    mMinewBeaconManager.stopScan();
                     if ("5".endsWith(t_ids)) {
                         Intent intent = new Intent(getActivity(), CaptureActivity.class);
                         startActivityForResult(intent, REQUEST_Scan);
@@ -391,10 +396,6 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
                         intent.putExtra("gameId", t_ids);
                         startActivity(intent);
                     }
-                    line_s.setVisibility(View.VISIBLE);
-                    go_task.setVisibility(View.GONE);
-                    start_view.setVisibility(View.GONE);
-                    mMinewBeaconManager.stopScan();
                 } else {
 
                 }
@@ -449,15 +450,6 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
 
 
 
-    private void setviews() {
-        if (mStartPoint == null || mEndPoint == null) {
-
-        } else {
-            start_view.setVisibility(View.VISIBLE);
-            String distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
-            juli.setText(AMapUtil.getFriendlyLength((int) (Double.parseDouble(distance))));
-        }
-    }
 
 
     private void setview() {
@@ -595,6 +587,7 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
                 if (minewBeacons != null && minewBeacons.size() > 0) {
                     line_s.setVisibility(View.GONE);
                     go_task.setVisibility(View.VISIBLE);
+                    Log.i("aaaa","go_task=VISIBLE");
                     //弹游戏
                 }
             }
