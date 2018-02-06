@@ -19,6 +19,7 @@ import com.cn.bent.sports.database.TaskCationManager;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.view.activity.ChooseLuxianActivity;
+import com.cn.bent.sports.view.fragment.DoTaskFragment;
 import com.cn.bent.sports.view.fragment.IsMeFragment;
 import com.cn.bent.sports.view.fragment.JinMaoFragment;
 import com.cn.bent.sports.view.fragment.MainTabFragment;
@@ -80,7 +81,8 @@ public class MainActivity extends BaseActivity {
     @Override
     public void initData() {
         super.initData();
-        setdata();
+//        setdata();
+        setJinmaodata();
     }
 
 
@@ -202,6 +204,18 @@ public class MainActivity extends BaseActivity {
             nList.add(new TaskCationBean(4, user.getMember_id(), "1", "113.089565", "28.010653", "财神庙", false, false));
             nList.add(new TaskCationBean(5, user.getMember_id(), "1", "113.089232", "28.007276", "月亮岛", false, false));
             nList.add(new TaskCationBean(6, user.getMember_id(), "1", "113.086443", "28.005701", "竹林", false, false));
+            TaskCationManager.insert(nList);
+        }
+    }
+    private void setJinmaodata() {
+        if (TaskCationManager.getSize() <= 0) {
+            LoginBase user = SaveObjectUtils.getInstance(MainActivity.this).getObject(Constants.USER_INFO, null);
+            List<TaskCationBean> nList = new ArrayList<>();
+            nList.add(new TaskCationBean(1, user.getMember_id(), "1", "113.095731", "28.016436", "金茂入口", false, false));
+            nList.add(new TaskCationBean(2, user.getMember_id(), "1", "113.094396", "28.015356", "大门", false, false));
+            nList.add(new TaskCationBean(3, user.getMember_id(), "1", "113.095013", "28.015432", "玻璃门", false, false));
+            nList.add(new TaskCationBean(4, user.getMember_id(), "1", "113.096193", "28.015891", "旗杆", false, false));
+            nList.add(new TaskCationBean(6, user.getMember_id(), "1", "113.096686", "28.015669", "三岔路口", false, false));
             TaskCationManager.insert(nList);
         }
     }

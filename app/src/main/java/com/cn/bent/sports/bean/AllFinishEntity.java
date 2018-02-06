@@ -15,8 +15,17 @@ public class AllFinishEntity implements Serializable{
      * total_score : 120
      */
 
+    private int is_reward;
     private int total_score;
     private List<GameRecordBean> game_record;
+
+    public int getIs_reward() {
+        return is_reward;
+    }
+
+    public void setIs_reward(int is_reward) {
+        this.is_reward = is_reward;
+    }
 
     public int getTotal_score() {
         return total_score;

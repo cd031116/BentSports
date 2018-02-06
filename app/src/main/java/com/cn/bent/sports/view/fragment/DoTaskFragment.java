@@ -346,6 +346,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     @Override
     public void onResume() {
         super.onResume();
+        Log.d("aaaa", "onResume: aa");
         BaseConfig bf = BaseConfig.getInstance(getActivity());
         times_s = bf.getLongValue(Constants.IS_TIME, 0);
         mLoction = TaskCationManager.getHistory();
@@ -537,7 +538,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
         if ("6".endsWith(t_ids)) {
             name_game.setText("熊出没");
         }
-        if (distance < 20) {
+        if (distance < 20*1000) {
             //打开蓝牙
             checkBluetooth();
         }

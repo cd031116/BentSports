@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cn.bent.sports.MainActivity;
@@ -39,6 +41,12 @@ public class AllFinishActivity extends BaseActivity {
     TextView all_time;
     @Bind(R.id.all_jifen)
     TextView all_jifen;
+    @Bind(R.id.shensu_name)
+    TextView shensu_name;
+    @Bind(R.id.shensu_jifen)
+    TextView shensu_jifen;
+    @Bind(R.id.shensu)
+    RelativeLayout shensu;
     @Bind(R.id.game_list)
     RecyclerView game_list;
 
@@ -72,6 +80,12 @@ public class AllFinishActivity extends BaseActivity {
                     public void onSuccess(int whichRequest, AllFinishEntity allFinishEntity) {
                         if (allFinishEntity.getGame_record() != null && allFinishEntity.getGame_record().size() > 0)
                             setRecView(allFinishEntity);
+                        if (allFinishEntity.getIs_reward() == 1) {
+                            shensu.setVisibility(View.VISIBLE);
+                            shensu_name.setText("神速奖");
+                            shensu_jifen.setText("30");
+                        } else
+                            shensu.setVisibility(View.GONE);
                     }
 
                     @Override

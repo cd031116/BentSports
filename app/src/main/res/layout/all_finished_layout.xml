@@ -43,12 +43,47 @@
         android:layout_marginLeft="282px"
         android:layout_marginRight="282px"
         android:layout_marginTop="670px" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/game_list"
+        android:layout_marginLeft="282px"
+        android:layout_marginRight="282px"
+        android:id="@+id/shensu">
+
+        <TextView
+            android:id="@+id/shensu_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:textColor="#de4852"
+            android:textSize="43px" />
+
+        <TextView
+            android:id="@+id/shensu_jifen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="#de4852"
+            android:textSize="43px" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20px"
+            android:layout_toLeftOf="@id/shensu_jifen"
+            android:text="+"
+            android:textColor="#de4852"
+            android:textSize="43px" />
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/all_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/game_list"
+        android:layout_below="@id/shensu"
         android:layout_marginLeft="254px"
         android:layout_marginTop="90px">
 
