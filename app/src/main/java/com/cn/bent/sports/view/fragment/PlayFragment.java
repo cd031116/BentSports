@@ -185,7 +185,7 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
         mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
         //设置定位模式为AMapLocationMode.Device_Sensors，仅设备模式。
 //        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Device_Sensors);
-        mLocationOption.setInterval(1000 * 20);
+        mLocationOption.setInterval(1000 * 3);
         //给定位客户端对象设置定位参数
         mLocationClient.setLocationOption(mLocationOption);
         //启动定位
@@ -264,6 +264,7 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
                         .decodeResource(getResources(), R.drawable.dangqwz)))
                 .draggable(true));
         aMap.setMyLocationEnabled(false);
+        setview();
     }
     /**
      * 在地图上添加marker
@@ -336,6 +337,8 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
     @Override
     public void onResume() {
         super.onResume();
+        start_view.setVisibility(View.GONE);
+        go_task.setVisibility(View.GONE);
         mLoction = TaskCationManager.getHistory();
         BaseConfig bf = BaseConfig.getInstance(getActivity());
         times_s = bf.getLongValue(Constants.IS_TIME, 0);
@@ -388,10 +391,10 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
                         intent.putExtra("gameId", t_ids);
                         startActivity(intent);
                     }
-                    mMinewBeaconManager.stopScan();
                     line_s.setVisibility(View.VISIBLE);
                     go_task.setVisibility(View.GONE);
                     start_view.setVisibility(View.GONE);
+                    mMinewBeaconManager.stopScan();
                 } else {
 
                 }
@@ -445,6 +448,18 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
     }
 
 
+
+    private void setviews() {
+        if (mStartPoint == null || mEndPoint == null) {
+
+        } else {
+            start_view.setVisibility(View.VISIBLE);
+            String distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
+            juli.setText(AMapUtil.getFriendlyLength((int) (Double.parseDouble(distance))));
+        }
+    }
+
+
     private void setview() {
         if (mStartPoint == null || mEndPoint == null) {
 
@@ -452,9 +467,9 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
             start_view.setVisibility(View.VISIBLE);
             String distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
             juli.setText(AMapUtil.getFriendlyLength((int) (Double.parseDouble(distance))));
-            if ((int) (Double.parseDouble(distance)) < 30000) {
+            if ((int) (Double.parseDouble(distance)) < 20) {
                 //打开蓝牙
-                checkBluetooth();
+                    checkBluetooth();
             }
         }
 
@@ -604,7 +619,6 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
     }
 
     private void showBLEDialog() {
-        ToastUtils.showShortToast(getActivity(), "已到达目的地附近,请打开蓝牙");
         Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
         startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
     }

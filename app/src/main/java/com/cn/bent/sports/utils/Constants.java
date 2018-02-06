@@ -14,4 +14,6 @@ public class Constants {
     public static final String IS_TIME="is_time";
     public static final String TEST_URL="http://aihw.zhonghuilv.net/";
     public static final String BASE_URL="https://wxxcx.zhonghuilv.net/game/";
+
+    public static final String LU_XIAN="lu_xian";
 }

@@ -11,13 +11,16 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import com.cn.bent.sports.base.BaseActivity;
+import com.cn.bent.sports.base.BaseConfig;
 import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.bean.LookRankEvent;
 import com.cn.bent.sports.database.TaskCationBean;
 import com.cn.bent.sports.database.TaskCationManager;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.SaveObjectUtils;
+import com.cn.bent.sports.view.activity.ChooseLuxianActivity;
 import com.cn.bent.sports.view.fragment.IsMeFragment;
+import com.cn.bent.sports.view.fragment.JinMaoFragment;
 import com.cn.bent.sports.view.fragment.MainTabFragment;
 import com.cn.bent.sports.view.fragment.PlayFragment;
 
@@ -85,6 +88,7 @@ public class MainActivity extends BaseActivity {
     private String lastFragmentTag = null;
 
     private void changeFrament(String tag, int index) {
+        BaseConfig bg = BaseConfig.getInstance(MainActivity.this);
         if (mFragmentMan != null) {
             // Add default fragments to view. Try to reuse old fragments or create new ones
             FragmentTransaction transaction = mFragmentMan.beginTransaction();
@@ -102,7 +106,13 @@ public class MainActivity extends BaseActivity {
                         mCurrentFragment = MainTabFragment.newInstance(0);
                         break;
                     case 1:
+                      int ab=  bg.getIntValue(Constants.LU_XIAN, -1);
                         mCurrentFragment = PlayFragment.newInstance();//子Fragment实例
+//                        if(ab==1){
+//
+//                        }else {
+//                            mCurrentFragment = JinMaoFragment.newInstance();//子Fragment实例
+//                        }
                         break;
                     case 2:
                         mCurrentFragment = IsMeFragment.newInstance();

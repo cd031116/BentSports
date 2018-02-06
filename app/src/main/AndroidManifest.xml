@@ -84,6 +84,7 @@
             android:name=".scan.CaptureActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".view.activity.GetLocationActivity"></activity>
+        <activity android:name=".view.activity.ChooseLuxianActivity"/>
     </application>
 
 </manifest>
