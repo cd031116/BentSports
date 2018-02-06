@@ -133,9 +133,9 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
                     mStartPoint = new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude());
                     if(isFirstLoc){
                         addLocaToMap();
+                        isFirstLoc = false;
                     }else
                     addLocaismap();
-                    isFirstLoc = false;
                 } else {
                     isLocal = false;
                     //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
@@ -153,6 +153,7 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
 
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
+        mLoction = TaskCationManager.getHistory();
         user = SaveObjectUtils.getInstance(getActivity()).getObject(Constants.USER_INFO, null);
          handler2 = new Handler();
         EventBus.getDefault().register(this);
@@ -322,7 +323,6 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
     public void onEvent(ReFreshEvent event) {
         mLoction = TaskCationManager.getHistory();
         BaseConfig bf = BaseConfig.getInstance(getActivity());
-        times_s = bf.getLongValue(Constants.IS_TIME, 0);
         if (mLoction.size() <= 0) {
             handler2.removeCallbacks(runnable2);
             bf.setLongValue(Constants.IS_TIME, 0);
@@ -336,9 +336,6 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
     @Override
     public void onResume() {
         super.onResume();
-        start_view.setVisibility(View.GONE);
-        go_task.setVisibility(View.GONE);
-        mLoction = TaskCationManager.getHistory();
         BaseConfig bf = BaseConfig.getInstance(getActivity());
         times_s = bf.getLongValue(Constants.IS_TIME, 0);
         if(times_s>0){
@@ -489,7 +486,7 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
             }
             String distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
             juli.setText(AMapUtil.getFriendlyLength((int) (Double.parseDouble(distance))));
-            if ((int) (Double.parseDouble(distance)) < 20) {
+            if ((int) (Double.parseDouble(distance)) <30*1000) {
                 //打开蓝牙
                     checkBluetooth();
             }
@@ -597,8 +594,8 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
                     line_s.setVisibility(View.GONE);
                     go_task.setVisibility(View.VISIBLE);
                     //弹游戏
-                    if (mMinewBeaconManager != null)
-                        mMinewBeaconManager.stopScan();
+//                    mMinewBeaconManager.stopScan();
+                    mEndPoint=null;
                 }
             }
 
