@@ -210,11 +210,15 @@ public class MainActivity extends BaseActivity {
         if (TaskCationManager.getSize() <= 0) {
             LoginBase user = SaveObjectUtils.getInstance(MainActivity.this).getObject(Constants.USER_INFO, null);
             List<TaskCationBean> nList = new ArrayList<>();
-            nList.add(new TaskCationBean(1, user.getMember_id(), "1", "113.095731", "28.016436", "金茂入口", false, false));
-            nList.add(new TaskCationBean(2, user.getMember_id(), "1", "113.094396", "28.015356", "大门", false, false));
-            nList.add(new TaskCationBean(3, user.getMember_id(), "1", "113.095013", "28.015432", "玻璃门", false, false));
-            nList.add(new TaskCationBean(4, user.getMember_id(), "1", "113.096193", "28.015891", "旗杆", false, false));
-            nList.add(new TaskCationBean(6, user.getMember_id(), "1", "113.096686", "28.015669", "三岔路口", false, false));
+//            nList.add(new TaskCationBean(1, user.getMember_id(), "1", "113.095731", "28.016436", "金茂入口", false, false));
+//            nList.add(new TaskCationBean(2, user.getMember_id(), "1", "113.094396", "28.015356", "大门", false, false));
+//            nList.add(new TaskCationBean(3, user.getMember_id(), "1", "113.095013", "28.015432", "玻璃门", false, false));
+//            nList.add(new TaskCationBean(4, user.getMember_id(), "1", "113.096193", "28.015891", "旗杆", false, false));
+//            nList.add(new TaskCationBean(6, user.getMember_id(), "1", "113.096686", "28.015669", "三岔路口", false, false));
+            nList.add(new TaskCationBean(1, user.getMember_id(), "1", "112.984188", "28.110286", "金茂入口", false, false));
+            nList.add(new TaskCationBean(2, user.getMember_id(), "1", "112.989424", "28.111137", "大门", false, false));
+            nList.add(new TaskCationBean(3, user.getMember_id(), "1", "112.991677", "28.111648", "玻璃门", false, false));
+            nList.add(new TaskCationBean(4, user.getMember_id(), "1", "112.990733", "28.114506", "旗杆", false, false));
             TaskCationManager.insert(nList);
         }
     }

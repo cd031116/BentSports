@@ -166,8 +166,10 @@ public class JinMaoFragment extends BaseFragment implements AMap.OnMarkerClickLi
         String path = getActivity().getFilesDir() + "/bent/sport.data";
         aMap.setCustomMapStylePath(path);
         aMap.setMapCustomEnable(true);//true 开启; false 关闭
-        LatLng southwestLatLng = new LatLng(28.014501,113.093844);
-        LatLng northeastLatLng = new LatLng(28.01675,113.096928);
+//        LatLng southwestLatLng = new LatLng(28.014501,113.093844);
+//        LatLng northeastLatLng = new LatLng(28.01675,113.096928);
+        LatLng southwestLatLng = new LatLng(28.10226,112.977386);
+        LatLng northeastLatLng = new LatLng(28.122171,113.004337);
         LatLngBounds latLngBounds = new LatLngBounds(southwestLatLng, northeastLatLng);
         aMap.setMapStatusLimits(latLngBounds);
         aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds,50));
@@ -451,7 +453,7 @@ public class JinMaoFragment extends BaseFragment implements AMap.OnMarkerClickLi
         } else {
             String distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
             juli.setText(AMapUtil.getFriendlyLength((int) (Double.parseDouble(distance))));
-            if ((int) (Double.parseDouble(distance)) <= 20) {
+            if ((int) (Double.parseDouble(distance)) <= 50) {
                 //打开蓝牙
                 checkBluetooth();
             }
@@ -488,7 +490,7 @@ public class JinMaoFragment extends BaseFragment implements AMap.OnMarkerClickLi
             }
             String distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
             juli.setText(AMapUtil.getFriendlyLength((int) (Double.parseDouble(distance))));
-            if ((int) (Double.parseDouble(distance)) <=20) {
+            if ((int) (Double.parseDouble(distance)) <=50) {
                 //打开蓝牙
                 checkBluetooth();
             }
