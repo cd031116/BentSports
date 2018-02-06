@@ -118,8 +118,9 @@ public class JinMaoFragment extends BaseFragment implements AMap.OnMarkerClickLi
     private MinewBeaconManager mMinewBeaconManager;
     private String t_ids;
     private long times_s = 0;
-    private Handler handler2;
+    private  Handler handler2;
     private LoginBase user;
+    private boolean isBlue=false;
     //---------------------
     AMapLocationListener mAMapLocationListener = new AMapLocationListener() {
         @Override
@@ -133,9 +134,9 @@ public class JinMaoFragment extends BaseFragment implements AMap.OnMarkerClickLi
                     mStartPoint = new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude());
                     if(isFirstLoc){
                         addLocaToMap();
+                        isFirstLoc = false;
                     }else
                         addLocaismap();
-                    isFirstLoc = false;
                 } else {
                     isLocal = false;
                     //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
@@ -153,6 +154,7 @@ public class JinMaoFragment extends BaseFragment implements AMap.OnMarkerClickLi
 
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
+        mLoction = TaskCationManager.getHistory();
         user = SaveObjectUtils.getInstance(getActivity()).getObject(Constants.USER_INFO, null);
         handler2 = new Handler();
         EventBus.getDefault().register(this);
@@ -184,7 +186,7 @@ public class JinMaoFragment extends BaseFragment implements AMap.OnMarkerClickLi
         mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
         //设置定位模式为AMapLocationMode.Device_Sensors，仅设备模式。
 //        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Device_Sensors);
-        mLocationOption.setInterval(1000 * 20);
+        mLocationOption.setInterval(1000 * 3);
         //给定位客户端对象设置定位参数
         mLocationClient.setLocationOption(mLocationOption);
         //启动定位
@@ -263,6 +265,7 @@ public class JinMaoFragment extends BaseFragment implements AMap.OnMarkerClickLi
                         .decodeResource(getResources(), R.drawable.dangqwz)))
                 .draggable(true));
         aMap.setMyLocationEnabled(false);
+        setviewS();
     }
     /**
      * 在地图上添加marker
@@ -319,7 +322,13 @@ public class JinMaoFragment extends BaseFragment implements AMap.OnMarkerClickLi
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ReFreshEvent event) {
-        aMap.clear();
+        mLoction = TaskCationManager.getHistory();
+        BaseConfig bf = BaseConfig.getInstance(getActivity());
+        if (mLoction.size() <= 0) {
+            handler2.removeCallbacks(runnable2);
+            bf.setLongValue(Constants.IS_TIME, 0);
+            ji_timer.setText("已通关");
+        }
     }
 
     /**
@@ -328,7 +337,6 @@ public class JinMaoFragment extends BaseFragment implements AMap.OnMarkerClickLi
     @Override
     public void onResume() {
         super.onResume();
-        mLoction = TaskCationManager.getHistory();
         BaseConfig bf = BaseConfig.getInstance(getActivity());
         times_s = bf.getLongValue(Constants.IS_TIME, 0);
         if(times_s>0){
@@ -336,7 +344,7 @@ public class JinMaoFragment extends BaseFragment implements AMap.OnMarkerClickLi
         }
         if (mLoction.size() <= 0) {
             bf.setLongValue(Constants.IS_TIME, 0);
-            ji_timer.setText("已完成");
+            ji_timer.setText("已通关");
         }
         mapView.onResume();
         addLocaToMap();
@@ -372,6 +380,10 @@ public class JinMaoFragment extends BaseFragment implements AMap.OnMarkerClickLi
             @Override
             public void onClick(Dialog dialog, boolean confirm) {
                 if (confirm) {
+                    mEndPoint=null;
+                    start_view.setVisibility(View.GONE);
+                    go_task.setVisibility(View.GONE);
+                    start_view.setVisibility(View.GONE);
                     if ("5".endsWith(t_ids)) {
                         Intent intent = new Intent(getActivity(), CaptureActivity.class);
                         startActivityForResult(intent, REQUEST_Scan);
@@ -380,10 +392,6 @@ public class JinMaoFragment extends BaseFragment implements AMap.OnMarkerClickLi
                         intent.putExtra("gameId", t_ids);
                         startActivity(intent);
                     }
-                    mMinewBeaconManager.stopScan();
-                    line_s.setVisibility(View.VISIBLE);
-                    go_task.setVisibility(View.GONE);
-                    start_view.setVisibility(View.GONE);
                 } else {
 
                 }
@@ -437,38 +445,53 @@ public class JinMaoFragment extends BaseFragment implements AMap.OnMarkerClickLi
     }
 
 
-    private void setview() {
+    private void setviewS() {
         if (mStartPoint == null || mEndPoint == null) {
 
         } else {
-            start_view.setVisibility(View.VISIBLE);
             String distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
             juli.setText(AMapUtil.getFriendlyLength((int) (Double.parseDouble(distance))));
-            if ((int) (Double.parseDouble(distance)) < 30000) {
+            if ((int) (Double.parseDouble(distance)) <= 20) {
                 //打开蓝牙
                 checkBluetooth();
             }
         }
+    }
 
-        if ("1".endsWith(t_ids)) {
-            name_game.setText("红包雨");
-        }
-        if ("2".endsWith(t_ids)) {
-            name_game.setText("拯救小拓");
-        }
-        if ("3".endsWith(t_ids)) {
-            name_game.setText("点亮所有灯笼");
-        }
-        if ("4".endsWith(t_ids)) {
-            name_game.setText("财神庙求签");
-        }
-        if ("5".endsWith(t_ids)) {
-            name_game.setText("猜灯谜");
-        }
-        if ("6".endsWith(t_ids)) {
-            name_game.setText("熊出没");
-        }
 
+
+    private void setview() {
+
+        if (mStartPoint == null || mEndPoint == null) {
+
+        } else {
+            start_view.setVisibility(View.VISIBLE);
+            line_s.setVisibility(View.VISIBLE);
+            if ("1".endsWith(t_ids)) {
+                name_game.setText("红包雨");
+            }
+            if ("2".endsWith(t_ids)) {
+                name_game.setText("拯救小拓");
+            }
+            if ("3".endsWith(t_ids)) {
+                name_game.setText("点亮所有灯笼");
+            }
+            if ("4".endsWith(t_ids)) {
+                name_game.setText("财神庙求签");
+            }
+            if ("5".endsWith(t_ids)) {
+                name_game.setText("猜灯谜");
+            }
+            if ("6".endsWith(t_ids)) {
+                name_game.setText("愤怒的小鸟");
+            }
+            String distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
+            juli.setText(AMapUtil.getFriendlyLength((int) (Double.parseDouble(distance))));
+            if ((int) (Double.parseDouble(distance)) <=20) {
+                //打开蓝牙
+                checkBluetooth();
+            }
+        }
     }
 
 
@@ -568,11 +591,12 @@ public class JinMaoFragment extends BaseFragment implements AMap.OnMarkerClickLi
              */
             @Override
             public void onRangeBeacons(List<com.minew.beacon.MinewBeacon> minewBeacons) {
-                Log.e("dasd", "dasd: " + minewBeacons.size());
                 if (minewBeacons != null && minewBeacons.size() > 0) {
                     line_s.setVisibility(View.GONE);
                     go_task.setVisibility(View.VISIBLE);
                     //弹游戏
+//                    mMinewBeaconManager.stopScan();
+                    mEndPoint=null;
                 }
             }
 
@@ -596,9 +620,11 @@ public class JinMaoFragment extends BaseFragment implements AMap.OnMarkerClickLi
     }
 
     private void showBLEDialog() {
-        ToastUtils.showShortToast(getActivity(), "已到达目的地附近,请打开蓝牙");
-        Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-        startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
+        if(!isBlue){
+            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
+            isBlue=true;
+        }
     }
 
     @Override
@@ -607,7 +633,8 @@ public class JinMaoFragment extends BaseFragment implements AMap.OnMarkerClickLi
         switch (requestCode) {
             case REQUEST_ENABLE_BT:
                 if (mMinewBeaconManager.checkBluetoothState().equals(BluetoothState.BluetoothStatePowerOn))
-                    initListener();
+                    isBlue=false;
+                initListener();
                 break;
             case REQUEST_Scan:
                 if (null != data) {
@@ -635,7 +662,6 @@ public class JinMaoFragment extends BaseFragment implements AMap.OnMarkerClickLi
                 break;
         }
     }
-
 
 
 
