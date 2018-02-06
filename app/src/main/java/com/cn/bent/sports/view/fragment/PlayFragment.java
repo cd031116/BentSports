@@ -263,7 +263,7 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
                         .decodeResource(getResources(), R.drawable.dangqwz)))
                 .draggable(true));
         aMap.setMyLocationEnabled(false);
-        setview();
+        setviewS();
     }
     /**
      * 在地图上添加marker
@@ -444,6 +444,20 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
             mLocationClient.onDestroy();
         }
         EventBus.getDefault().unregister(this);
+    }
+
+
+    private void setviewS() {
+        if (mStartPoint == null || mEndPoint == null) {
+
+        } else {
+            String distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
+            juli.setText(AMapUtil.getFriendlyLength((int) (Double.parseDouble(distance))));
+            if ((int) (Double.parseDouble(distance)) < 20) {
+                //打开蓝牙
+                checkBluetooth();
+            }
+        }
     }
 
 
