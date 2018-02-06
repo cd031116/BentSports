@@ -31,7 +31,6 @@ import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseConfig;
 import com.cn.bent.sports.base.BaseFragment;
-import com.cn.bent.sports.bean.InfoEvent;
 import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.bean.ReFreshEvent;
 import com.cn.bent.sports.database.TaskCationBean;
@@ -44,7 +43,6 @@ import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.utils.ToastUtils;
 import com.cn.bent.sports.view.activity.PlayWebViewActivity;
 import com.cn.bent.sports.view.activity.RuleActivity;
-import com.cn.bent.sports.view.activity.SettingActivity;
 import com.cn.bent.sports.view.activity.ZoomActivity;
 import com.cn.bent.sports.widget.GameDialog;
 import com.cn.bent.sports.widget.ToastDialog;
@@ -121,6 +119,7 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
     private long times_s = 0;
     private  Handler handler2;
     private LoginBase user;
+    private boolean isBlue=false;
     //---------------------
     AMapLocationListener mAMapLocationListener = new AMapLocationListener() {
         @Override
@@ -450,13 +449,31 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
 
 
 
-
-
     private void setview() {
+
         if (mStartPoint == null || mEndPoint == null) {
 
         } else {
             start_view.setVisibility(View.VISIBLE);
+            line_s.setVisibility(View.VISIBLE);
+            if ("1".endsWith(t_ids)) {
+                name_game.setText("红包雨");
+            }
+            if ("2".endsWith(t_ids)) {
+                name_game.setText("拯救小拓");
+            }
+            if ("3".endsWith(t_ids)) {
+                name_game.setText("点亮所有灯笼");
+            }
+            if ("4".endsWith(t_ids)) {
+                name_game.setText("财神庙求签");
+            }
+            if ("5".endsWith(t_ids)) {
+                name_game.setText("猜灯谜");
+            }
+            if ("6".endsWith(t_ids)) {
+                name_game.setText("熊出没");
+            }
             String distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
             juli.setText(AMapUtil.getFriendlyLength((int) (Double.parseDouble(distance))));
             if ((int) (Double.parseDouble(distance)) < 20) {
@@ -464,26 +481,6 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
                     checkBluetooth();
             }
         }
-
-        if ("1".endsWith(t_ids)) {
-            name_game.setText("红包雨");
-        }
-        if ("2".endsWith(t_ids)) {
-            name_game.setText("拯救小拓");
-        }
-        if ("3".endsWith(t_ids)) {
-            name_game.setText("点亮所有灯笼");
-        }
-        if ("4".endsWith(t_ids)) {
-            name_game.setText("财神庙求签");
-        }
-        if ("5".endsWith(t_ids)) {
-            name_game.setText("猜灯谜");
-        }
-        if ("6".endsWith(t_ids)) {
-            name_game.setText("熊出没");
-        }
-
     }
 
 
@@ -583,11 +580,9 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
              */
             @Override
             public void onRangeBeacons(List<com.minew.beacon.MinewBeacon> minewBeacons) {
-                Log.e("dasd", "dasd: " + minewBeacons.size());
                 if (minewBeacons != null && minewBeacons.size() > 0) {
                     line_s.setVisibility(View.GONE);
                     go_task.setVisibility(View.VISIBLE);
-                    Log.i("aaaa","go_task=VISIBLE");
                     //弹游戏
                 }
             }
@@ -612,8 +607,11 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
     }
 
     private void showBLEDialog() {
-        Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-        startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
+        if(!isBlue){
+            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
+            isBlue=true;
+        }
     }
 
     @Override
@@ -622,6 +620,7 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
         switch (requestCode) {
             case REQUEST_ENABLE_BT:
                 if (mMinewBeaconManager.checkBluetoothState().equals(BluetoothState.BluetoothStatePowerOn))
+                    isBlue=false;
                     initListener();
                 break;
             case REQUEST_Scan:
