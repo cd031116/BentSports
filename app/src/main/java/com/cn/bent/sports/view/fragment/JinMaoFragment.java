@@ -467,6 +467,7 @@ public class JinMaoFragment extends BaseFragment implements AMap.OnMarkerClickLi
         } else {
             start_view.setVisibility(View.VISIBLE);
             line_s.setVisibility(View.VISIBLE);
+            go_task.setVisibility(View.GONE);
             if ("1".endsWith(t_ids)) {
                 name_game.setText("红包雨");
             }
