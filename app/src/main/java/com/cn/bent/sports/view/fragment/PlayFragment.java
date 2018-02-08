@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -117,9 +116,9 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
     private MinewBeaconManager mMinewBeaconManager;
     private String t_ids;
     private long times_s = 0;
-    private  Handler handler2;
+    private Handler handler2;
     private LoginBase user;
-    private boolean isBlue=false;
+    private boolean isBlue = false;
     //---------------------
     AMapLocationListener mAMapLocationListener = new AMapLocationListener() {
         @Override
@@ -131,11 +130,11 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
                     latitude = String.valueOf(aMapLocation.getLatitude());
                     longitude = String.valueOf(aMapLocation.getLongitude());
                     mStartPoint = new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude());
-                    if(isFirstLoc){
+                    if (isFirstLoc) {
                         addLocaToMap();
                         isFirstLoc = false;
-                    }else
-                    addLocaismap();
+                    } else
+                        addLocaismap();
                 } else {
                     isLocal = false;
                     //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
@@ -155,7 +154,7 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
     protected void initView(View view, Bundle savedInstanceState) {
         mLoction = TaskCationManager.getHistory();
         user = SaveObjectUtils.getInstance(getActivity()).getObject(Constants.USER_INFO, null);
-         handler2 = new Handler();
+        handler2 = new Handler();
         EventBus.getDefault().register(this);
         mapView.onCreate(savedInstanceState);
         mMinewBeaconManager = MinewBeaconManager.getInstance(getActivity());
@@ -165,11 +164,11 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
         String path = getActivity().getFilesDir() + "/bent/sport.data";
         aMap.setCustomMapStylePath(path);
         aMap.setMapCustomEnable(true);//true 开启; false 关闭
-        LatLng southwestLatLng = new LatLng(27.994181,113.071487);
-        LatLng northeastLatLng = new LatLng(28.022822,113.100036);
+        LatLng southwestLatLng = new LatLng(27.994181, 113.071487);
+        LatLng northeastLatLng = new LatLng(28.022822, 113.100036);
         LatLngBounds latLngBounds = new LatLngBounds(southwestLatLng, northeastLatLng);
         aMap.setMapStatusLimits(latLngBounds);
-        aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds,50));
+        aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds, 50));
         // 绑定 Marker 被点击事件
         aMap.setOnMarkerClickListener(this);
     }
@@ -246,6 +245,7 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
             }
         }
     }
+
     /**
      * 在地图上添加marker
      */
@@ -254,7 +254,7 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
             return;
         }
 
-        if(noMarker!=null){
+        if (noMarker != null) {
             noMarker.remove();
         }
         LatLng latlng = new LatLng(Double.valueOf(latitude), Double.valueOf(longitude));
@@ -266,6 +266,7 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
         aMap.setMyLocationEnabled(false);
         setviewS();
     }
+
     /**
      * 在地图上添加marker
      */
@@ -338,7 +339,7 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
         super.onResume();
         BaseConfig bf = BaseConfig.getInstance(getActivity());
         times_s = bf.getLongValue(Constants.IS_TIME, 0);
-        if(times_s>0){
+        if (times_s > 0) {
             setTimes();
         }
         if (mLoction.size() <= 0) {
@@ -363,10 +364,10 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
         @Override
         public void run() {
             handler2.postDelayed(this, 1000);
-            if(((System.currentTimeMillis() - times_s)/1000)>=2*60*60){
+            if (((System.currentTimeMillis() - times_s) / 1000) >= 2 * 60 * 60) {
                 handler2.removeCallbacks(runnable2);
                 ji_timer.setText("02.00.00");
-            }else {
+            } else {
                 ji_timer.setText(DataUtils.getDateToTime(System.currentTimeMillis() - times_s));
             }
 
@@ -379,7 +380,7 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
             @Override
             public void onClick(Dialog dialog, boolean confirm) {
                 if (confirm) {
-                    mEndPoint=null;
+                    mEndPoint = null;
                     start_view.setVisibility(View.GONE);
                     go_task.setVisibility(View.GONE);
                     start_view.setVisibility(View.GONE);
@@ -458,7 +459,6 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
     }
 
 
-
     private void setview() {
 
         if (mStartPoint == null || mEndPoint == null) {
@@ -487,9 +487,9 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
             }
             String distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
             juli.setText(AMapUtil.getFriendlyLength((int) (Double.parseDouble(distance))));
-            if ((int) (Double.parseDouble(distance)) <=20) {
+            if ((int) (Double.parseDouble(distance)) <= 20) {
                 //打开蓝牙
-                    checkBluetooth();
+                checkBluetooth();
             }
         }
     }
@@ -523,7 +523,8 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
             }
         }).setTitle("提示").show();
     }
-//-------------------------------通知后台
+
+    //-------------------------------通知后台
     private void login() {
         BaseApi.getDefaultService(getActivity()).startGame(user.getMember_id())
                 .map(new HuiquRxTBFunction<HuiquTBResult>())
@@ -533,7 +534,7 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
                     public void onSuccess(int whichRequest, HuiquTBResult info) {
                     }
 
-                   @Override
+                    @Override
                     public void onError(int whichRequest, Throwable e) {
                         dismissAlert();
 
@@ -592,11 +593,17 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
             @Override
             public void onRangeBeacons(List<com.minew.beacon.MinewBeacon> minewBeacons) {
                 if (minewBeacons != null && minewBeacons.size() > 0) {
-                    line_s.setVisibility(View.GONE);
-                    go_task.setVisibility(View.VISIBLE);
-                    //弹游戏
-//                    mMinewBeaconManager.stopScan();
-                    mEndPoint=null;
+                    String distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
+                    if (mEndPoint != null) {
+                        if ((int) (Double.parseDouble(distance)) <= 20) {
+                            line_s.setVisibility(View.GONE);
+                            go_task.setVisibility(View.VISIBLE);
+                            mEndPoint = null;
+                        }
+                    } else {
+                        go_task.setVisibility(View.GONE);
+                        start_view.setVisibility(View.GONE);
+                    }
                 }
             }
 
@@ -620,10 +627,10 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
     }
 
     private void showBLEDialog() {
-        if(!isBlue){
+        if (!isBlue) {
             Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
-            isBlue=true;
+            isBlue = true;
         }
     }
 
@@ -633,8 +640,8 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
         switch (requestCode) {
             case REQUEST_ENABLE_BT:
                 if (mMinewBeaconManager.checkBluetoothState().equals(BluetoothState.BluetoothStatePowerOn))
-                    isBlue=false;
-                    initListener();
+                    isBlue = false;
+                initListener();
                 break;
             case REQUEST_Scan:
                 if (null != data) {
@@ -648,7 +655,6 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
                             Intent intent = new Intent(getActivity(), PlayWebViewActivity.class);
                             intent.putExtra("gameId", t_ids);
                             startActivity(intent);
-                            mMinewBeaconManager.stopScan();
                         } else {
                             ToastUtils.showShortToast(getActivity(), "二维码不匹配");
                         }

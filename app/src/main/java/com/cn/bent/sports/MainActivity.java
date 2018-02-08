@@ -82,7 +82,7 @@ public class MainActivity extends BaseActivity {
     public void initData() {
         super.initData();
 //        setdata();
-        setJinmaodata();
+        setdata();
     }
 
 
@@ -109,7 +109,7 @@ public class MainActivity extends BaseActivity {
                         break;
                     case 1:
                       int ab=  bg.getIntValue(Constants.LU_XIAN, -1);
-                        mCurrentFragment = JinMaoFragment.newInstance();//子Fragment实例
+                        mCurrentFragment = PlayFragment.newInstance();//子Fragment实例
 //                        if(ab==1){
 //                        }else {
 //                            mCurrentFragment = PlayFragment.newInstance();//子Fragment实例
