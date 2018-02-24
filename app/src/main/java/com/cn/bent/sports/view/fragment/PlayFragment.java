@@ -4,9 +4,12 @@ import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -57,6 +60,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -287,6 +291,7 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
         addMarkersToMap();
     }
 
+    MediaPlayer mPlayer;
 
     @OnClick({R.id.shuoming, R.id.dao_lan, R.id.go_task})
     void onclik(View v) {
@@ -298,6 +303,22 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
                 startActivity(new Intent(getActivity(), ZoomActivity.class));
                 break;
             case R.id.go_task:
+                mPlayer = new MediaPlayer();
+                mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mPlayer.reset();
+                        try {
+                            mPlayer.setDataSource("https://yjly.oss-cn-beijing.aliyuncs.com/yjly/power/144533422789324.mp3");
+                            mPlayer.prepare();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        mPlayer.start();
+                    }
+                }).start();
+
                 if ("1".endsWith(t_ids)) {
                     showDialogMsg(getResources().getString(R.string.hong_bao));
                 }
@@ -380,6 +401,10 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
             @Override
             public void onClick(Dialog dialog, boolean confirm) {
                 if (confirm) {
+                    if (mPlayer != null) {
+                        mPlayer.stop();
+                        mPlayer.release();
+                    }
                     mEndPoint = null;
                     start_view.setVisibility(View.GONE);
                     go_task.setVisibility(View.GONE);
@@ -393,7 +418,8 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
                         startActivity(intent);
                     }
                 } else {
-
+                    if (mPlayer != null)
+                        mPlayer.stop();
                 }
                 dialog.dismiss();
             }
@@ -451,7 +477,7 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
         } else {
             String distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
             juli.setText(AMapUtil.getFriendlyLength((int) (Double.parseDouble(distance))));
-            if ((int) (Double.parseDouble(distance)) <= 20) {
+            if ((int) (Double.parseDouble(distance)) <= 20000) {
                 //打开蓝牙
                 checkBluetooth();
             }
@@ -487,7 +513,7 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
             }
             String distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
             juli.setText(AMapUtil.getFriendlyLength((int) (Double.parseDouble(distance))));
-            if ((int) (Double.parseDouble(distance)) <= 20) {
+            if ((int) (Double.parseDouble(distance)) <= 20000) {
                 //打开蓝牙
                 checkBluetooth();
             }
@@ -595,10 +621,10 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
                 if (minewBeacons != null && minewBeacons.size() > 0) {
                     String distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
                     if (mEndPoint != null) {
-                        if ((int) (Double.parseDouble(distance)) <= 20) {
+                        if ((int) (Double.parseDouble(distance)) <= 20000) {
                             line_s.setVisibility(View.GONE);
                             go_task.setVisibility(View.VISIBLE);
-                            mEndPoint = null;
+//                            mEndPoint = null;
                         }
                     } else {
                         go_task.setVisibility(View.GONE);
@@ -639,9 +665,13 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case REQUEST_ENABLE_BT:
-                if (mMinewBeaconManager.checkBluetoothState().equals(BluetoothState.BluetoothStatePowerOn))
+                Log.d("dddd", "onActivityResult: " + mMinewBeaconManager.checkBluetoothState());
+                if (mMinewBeaconManager.checkBluetoothState().equals(BluetoothState.BluetoothStatePowerOn)) {
                     isBlue = false;
-                initListener();
+                    initListener();
+                }
+                if (mMinewBeaconManager.checkBluetoothState().equals(BluetoothState.BluetoothStatePowerOff))
+                    isBlue = false;
                 break;
             case REQUEST_Scan:
                 if (null != data) {

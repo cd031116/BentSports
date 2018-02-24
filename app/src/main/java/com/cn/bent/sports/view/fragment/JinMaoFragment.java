@@ -118,9 +118,9 @@ public class JinMaoFragment extends BaseFragment implements AMap.OnMarkerClickLi
     private MinewBeaconManager mMinewBeaconManager;
     private String t_ids;
     private long times_s = 0;
-    private  Handler handler2;
+    private Handler handler2;
     private LoginBase user;
-    private boolean isBlue=false;
+    private boolean isBlue = false;
     //---------------------
     AMapLocationListener mAMapLocationListener = new AMapLocationListener() {
         @Override
@@ -132,10 +132,10 @@ public class JinMaoFragment extends BaseFragment implements AMap.OnMarkerClickLi
                     latitude = String.valueOf(aMapLocation.getLatitude());
                     longitude = String.valueOf(aMapLocation.getLongitude());
                     mStartPoint = new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude());
-                    if(isFirstLoc){
+                    if (isFirstLoc) {
                         addLocaToMap();
                         isFirstLoc = false;
-                    }else
+                    } else
                         addLocaismap();
                 } else {
                     isLocal = false;
@@ -166,13 +166,13 @@ public class JinMaoFragment extends BaseFragment implements AMap.OnMarkerClickLi
         String path = getActivity().getFilesDir() + "/bent/sport.data";
         aMap.setCustomMapStylePath(path);
         aMap.setMapCustomEnable(true);//true 开启; false 关闭
-//        LatLng southwestLatLng = new LatLng(28.014501,113.093844);
-//        LatLng northeastLatLng = new LatLng(28.01675,113.096928);
-        LatLng southwestLatLng = new LatLng(28.10226,112.977386);
-        LatLng northeastLatLng = new LatLng(28.122171,113.004337);
+        LatLng southwestLatLng = new LatLng(28.014501, 113.093844);
+        LatLng northeastLatLng = new LatLng(28.01675, 113.096928);
+//        LatLng southwestLatLng = new LatLng(28.10226, 112.977386);
+//        LatLng northeastLatLng = new LatLng(28.122171, 113.004337);
         LatLngBounds latLngBounds = new LatLngBounds(southwestLatLng, northeastLatLng);
         aMap.setMapStatusLimits(latLngBounds);
-        aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds,50));
+        aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds, 50));
         // 绑定 Marker 被点击事件
         aMap.setOnMarkerClickListener(this);
     }
@@ -249,6 +249,7 @@ public class JinMaoFragment extends BaseFragment implements AMap.OnMarkerClickLi
             }
         }
     }
+
     /**
      * 在地图上添加marker
      */
@@ -257,7 +258,7 @@ public class JinMaoFragment extends BaseFragment implements AMap.OnMarkerClickLi
             return;
         }
 
-        if(noMarker!=null){
+        if (noMarker != null) {
             noMarker.remove();
         }
         LatLng latlng = new LatLng(Double.valueOf(latitude), Double.valueOf(longitude));
@@ -269,6 +270,7 @@ public class JinMaoFragment extends BaseFragment implements AMap.OnMarkerClickLi
         aMap.setMyLocationEnabled(false);
         setviewS();
     }
+
     /**
      * 在地图上添加marker
      */
@@ -341,7 +343,7 @@ public class JinMaoFragment extends BaseFragment implements AMap.OnMarkerClickLi
         super.onResume();
         BaseConfig bf = BaseConfig.getInstance(getActivity());
         times_s = bf.getLongValue(Constants.IS_TIME, 0);
-        if(times_s>0){
+        if (times_s > 0) {
             setTimes();
         }
         if (mLoction.size() <= 0) {
@@ -366,10 +368,10 @@ public class JinMaoFragment extends BaseFragment implements AMap.OnMarkerClickLi
         @Override
         public void run() {
             handler2.postDelayed(this, 1000);
-            if(((System.currentTimeMillis() - times_s)/1000)>=2*60*60){
+            if (((System.currentTimeMillis() - times_s) / 1000) >= 2 * 60 * 60) {
                 handler2.removeCallbacks(runnable2);
                 ji_timer.setText("02.00.00");
-            }else {
+            } else {
                 ji_timer.setText(DataUtils.getDateToTime(System.currentTimeMillis() - times_s));
             }
 
@@ -382,7 +384,7 @@ public class JinMaoFragment extends BaseFragment implements AMap.OnMarkerClickLi
             @Override
             public void onClick(Dialog dialog, boolean confirm) {
                 if (confirm) {
-                    mEndPoint=null;
+                    mEndPoint = null;
                     start_view.setVisibility(View.GONE);
                     go_task.setVisibility(View.GONE);
                     start_view.setVisibility(View.GONE);
@@ -453,13 +455,12 @@ public class JinMaoFragment extends BaseFragment implements AMap.OnMarkerClickLi
         } else {
             String distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
             juli.setText(AMapUtil.getFriendlyLength((int) (Double.parseDouble(distance))));
-            if ((int) (Double.parseDouble(distance)) <= 50) {
+            if ((int) (Double.parseDouble(distance)) <= 20) {
                 //打开蓝牙
                 checkBluetooth();
             }
         }
     }
-
 
 
     private void setview() {
@@ -490,7 +491,7 @@ public class JinMaoFragment extends BaseFragment implements AMap.OnMarkerClickLi
             }
             String distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
             juli.setText(AMapUtil.getFriendlyLength((int) (Double.parseDouble(distance))));
-            if ((int) (Double.parseDouble(distance)) <=50) {
+            if ((int) (Double.parseDouble(distance)) <= 20) {
                 //打开蓝牙
                 checkBluetooth();
             }
@@ -504,6 +505,7 @@ public class JinMaoFragment extends BaseFragment implements AMap.OnMarkerClickLi
             public void onClick(Dialog dialog, boolean confirm) {
                 if (confirm) {
                     setcheck();
+                    isBlue=false;
                     mLoction.get(position).setCheck(true);
                     mEndPoint = null;
                     mEndPoint = new LatLng(Double.valueOf(mLoction.get(position).getLatitude()).doubleValue(),
@@ -526,6 +528,7 @@ public class JinMaoFragment extends BaseFragment implements AMap.OnMarkerClickLi
             }
         }).setTitle("提示").show();
     }
+
     //-------------------------------通知后台
     private void login() {
         BaseApi.getDefaultService(getActivity()).startGame(user.getMember_id())
@@ -550,7 +553,9 @@ public class JinMaoFragment extends BaseFragment implements AMap.OnMarkerClickLi
      * check Bluetooth state
      */
     private void checkBluetooth() {
+        Log.d("aaaa", "checkBluetooth: 1");
         BluetoothState bluetoothState = mMinewBeaconManager.checkBluetoothState();
+        Log.d("aaaa", "checkBluetooth: 2" + bluetoothState);
         switch (bluetoothState) {
             case BluetoothStateNotSupported:
                 ToastUtils.showShortToast(getActivity(), "手机不支持蓝牙");
@@ -598,8 +603,11 @@ public class JinMaoFragment extends BaseFragment implements AMap.OnMarkerClickLi
                     line_s.setVisibility(View.GONE);
                     go_task.setVisibility(View.VISIBLE);
                     //弹游戏
-//                    mMinewBeaconManager.stopScan();
-                    mEndPoint=null;
+                    try {
+                        BluetoothAdapter.getDefaultAdapter().disable();
+                    } catch (Exception e) {
+                    }
+                    mEndPoint = null;
                 }
             }
 
@@ -623,10 +631,10 @@ public class JinMaoFragment extends BaseFragment implements AMap.OnMarkerClickLi
     }
 
     private void showBLEDialog() {
-        if(!isBlue){
+        if (!isBlue) {
             Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
-            isBlue=true;
+            isBlue = true;
         }
     }
 
@@ -635,9 +643,10 @@ public class JinMaoFragment extends BaseFragment implements AMap.OnMarkerClickLi
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case REQUEST_ENABLE_BT:
-                if (mMinewBeaconManager.checkBluetoothState().equals(BluetoothState.BluetoothStatePowerOn))
-                    isBlue=false;
-                initListener();
+                if (mMinewBeaconManager.checkBluetoothState().equals(BluetoothState.BluetoothStatePowerOn)) {
+                    isBlue = false;
+                    initListener();
+                }
                 break;
             case REQUEST_Scan:
                 if (null != data) {
@@ -665,7 +674,6 @@ public class JinMaoFragment extends BaseFragment implements AMap.OnMarkerClickLi
                 break;
         }
     }
-
 
 
 }
