@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -24,6 +25,7 @@ import com.cn.bent.sports.view.fragment.IsMeFragment;
 import com.cn.bent.sports.view.fragment.JinMaoFragment;
 import com.cn.bent.sports.view.fragment.MainTabFragment;
 import com.cn.bent.sports.view.fragment.PlayFragment;
+import com.cn.bent.sports.view.poupwindow.MainPoupWindow;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -42,12 +44,15 @@ public class MainActivity extends BaseActivity {
     List<TextView> mText;
     int selected = 1;
     FragmentManager mFragmentMan;
-
+    private MainPoupWindow mopupWindow;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mFragmentMan = getSupportFragmentManager();
-
+        mopupWindow = new MainPoupWindow(MainActivity.this,null);
+        mopupWindow.showAtLocation(MainActivity.this.findViewById(R.id.main_top),
+                Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
+        mopupWindow.setClippingEnabled(false);
     }
 
 
