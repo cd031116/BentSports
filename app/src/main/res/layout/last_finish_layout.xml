@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffd266"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="240px"
+        android:layout_marginTop="412px"
+        android:background="@drawable/last_task" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="100px"
+        android:text="恭喜你，成功帮助仙鹤恢复神力"
+        android:textColor="@color/md_white"
+        android:textSize="52px" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_marginTop="70px">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+"
+            android:textColor="#de4852"
+            android:textSize="43px" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="34px"
+            android:background="@drawable/jifen" />
+
+        <TextView
+            android:id="@+id/all_jifen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="20px"
+            android:text="100"
+            android:textColor="#de4852"
+            android:textSize="51px" />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/go_ahead"
+        android:layout_width="720px"
+        android:layout_height="142px"
+        android:layout_marginTop="180px"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/go_task_bg"
+        android:gravity="center"
+        android:text="继续"
+        android:textColor="#ffffff"
+        android:textSize="51px" />
+</LinearLayout>

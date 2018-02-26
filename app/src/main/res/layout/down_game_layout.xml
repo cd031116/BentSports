@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:id="@+id/time_layout"
+        android:layout_width="match_parent"
+        android:layout_height="120px"
+        android:background="#ffffff">
+
+        <LinearLayout
+            android:id="@+id/top_left"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_gravity="left|center_vertical"
+            android:clickable="true"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="20dp"
+            android:paddingTop="5dp"
+            android:visibility="visible">
+
+            <ImageView
+                android:id="@+id/top_image"
+                android:layout_width="wrap_content"
+                android:layout_height="60px"
+                android:clickable="false"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/fanhui_hong" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/top_r"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="right|center_vertical"
+            android:clickable="true"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="12dp"
+            android:paddingTop="5dp">
+
+            <TextView
+                android:id="@+id/top_right_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"
+                android:gravity="center"
+                android:text="已使用时间:"
+                android:textColor="#333333"
+                android:textSize="46px" />
+
+
+            <TextView
+                android:id="@+id/cut_down"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:format="00:00:00"
+                android:gravity="center" />
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/commit"
+        android:layout_width="match_parent"
+        android:layout_height="144px"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center"
+        android:background="#df4d4d"
+        android:gravity="center"
+        android:text="提交答案"
+        android:textColor="@color/md_white"
+        android:textSize="51px" />
+
+    <RelativeLayout
+        android:id="@+id/ms_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="76px"
+        android:background="@color/comm_white"
+        android:layout_above="@id/commit"
+        android:paddingTop="50px">
+
+        <TextView
+            android:id="@+id/ms_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="40px"
+            android:textColor="#aaaaaa"
+            android:textSize="37px"
+            android:text="完成任务后，请工作人员输入通关密码"/>
+        
+    <EditText
+        android:id="@+id/commit_edit"
+        android:layout_width="866px"
+        android:layout_height="142px"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/put_anwser"
+        android:layout_below="@id/ms_text"
+        android:gravity="center"
+        android:hint="输入答案"
+        android:textColorHint="#aaaaaa" />
+
+
+    </RelativeLayout>
+    
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/time_layout"
+        android:layout_above="@id/ms_layout"
+        android:background="#f5f5f5"
+        android:gravity="center"
+        android:text="线下任务描述："
+        android:textColor="#333333"/>
+</RelativeLayout>

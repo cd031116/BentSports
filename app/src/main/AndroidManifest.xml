@@ -39,7 +39,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.activity.ArActivity">
+        <activity android:name=".view.activity.StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -84,6 +84,9 @@
             android:screenOrientation="portrait" />
         <activity android:name=".view.activity.GetLocationActivity"></activity>
         <activity android:name=".view.activity.ChooseLuxianActivity" />
+        <activity android:name=".view.activity.ArActivity" />
+        <activity android:name=".view.activity.OfflineActivity" />
+        <activity android:name=".view.activity.LastActivity" />
     </application>
 
 </manifest>
