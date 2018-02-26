@@ -49,10 +49,6 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mFragmentMan = getSupportFragmentManager();
-        mopupWindow = new MainPoupWindow(MainActivity.this,null);
-        mopupWindow.showAtLocation(MainActivity.this.findViewById(R.id.main_top),
-                Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
-        mopupWindow.setClippingEnabled(false);
     }
 
 

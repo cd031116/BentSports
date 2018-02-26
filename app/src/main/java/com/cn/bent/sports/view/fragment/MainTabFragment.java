@@ -3,12 +3,14 @@ package com.cn.bent.sports.view.fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.cn.bent.sports.MainActivity;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseFragment;
@@ -21,6 +23,7 @@ import com.cn.bent.sports.recyclebase.ViewHolder;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.view.activity.ZoomActivity;
+import com.cn.bent.sports.view.poupwindow.MainPoupWindow;
 import com.cn.bent.sports.widget.DividerItemDecoration;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
@@ -75,6 +78,7 @@ public class MainTabFragment extends BaseFragment {
     @Bind(R.id.range_jifen)
     TextView range_jifen;
     private LoginBase user;
+    private MainPoupWindow mopupWindow;
 
     public static MainTabFragment newInstance(int type) {
         MainTabFragment fragment = new MainTabFragment();
@@ -92,6 +96,10 @@ public class MainTabFragment extends BaseFragment {
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
         EventBus.getDefault().register(this);
+        mopupWindow = new MainPoupWindow(getActivity(),null);
+        mopupWindow.showAtLocation(range_num,
+                Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
+//        mopupWindow.setClippingEnabled(false);
         range_list.setLayoutManager(new LinearLayoutManager(getActivity()));
         user = (LoginBase) SaveObjectUtils.getInstance(getActivity()).getObject(Constants.USER_INFO, null);
     }
