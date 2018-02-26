@@ -10,7 +10,6 @@ package com.cn.bent.sports.ar;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
-import android.util.Log;
 
 import javax.microedition.khronos.egl.EGL10;
 import javax.microedition.khronos.egl.EGLConfig;
@@ -18,7 +17,7 @@ import javax.microedition.khronos.egl.EGLContext;
 import javax.microedition.khronos.egl.EGLDisplay;
 import javax.microedition.khronos.opengles.GL10;
 
-import cn.easyar.engine.EasyAR;
+import cn.easyar.Engine;
 
 public class GLView extends GLSurfaceView
 {
@@ -35,35 +34,22 @@ public class GLView extends GLSurfaceView
         this.setRenderer(new GLSurfaceView.Renderer() {
             @Override
             public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-                try {
-                    synchronized (helloAR) {
-                        helloAR.initGL();
-                    }
-                } catch (Throwable ex) {
-                    Log.e("HelloAR", ex.getMessage());
-                    Log.e("HelloAR", Log.getStackTraceString(ex));
+                synchronized (helloAR) {
+                    helloAR.initGL();
                 }
             }
 
             @Override
             public void onSurfaceChanged(GL10 gl, int w, int h) {
-                try {
-                    synchronized (helloAR) {
-                        helloAR.resizeGL(w, h);
-                    }
-                } catch (Throwable ex) {
-                    Log.e("HelloAR", ex.getMessage());
-                    Log.e("HelloAR", Log.getStackTraceString(ex));
+                synchronized (helloAR) {
+                    helloAR.resizeGL(w, h);
                 }
             }
 
             @Override
             public void onDrawFrame(GL10 gl) {
-                try {
-                    synchronized (helloAR) {
-                        helloAR.render();
-                    }
-                } catch (Throwable ex) {
+                synchronized (helloAR) {
+                    helloAR.render();
                 }
             }
         });
@@ -73,38 +59,20 @@ public class GLView extends GLSurfaceView
     @Override
     protected void onAttachedToWindow()
     {
-        Log.d("HelloAR", "onAttachedToWindow: ");
         super.onAttachedToWindow();
-        try {
-            synchronized (helloAR) {
-                if (helloAR.initialize()) {
-                    helloAR.start();
-                }
+        synchronized (helloAR) {
+            if (helloAR.initialize()) {
+                helloAR.start();
             }
-        } catch (Throwable ex) {
-            Log.e("HelloAR", ex.getMessage());
-            Log.e("HelloAR", Log.getStackTraceString(ex));
         }
     }
 
     @Override
     protected void onDetachedFromWindow()
     {
-        try {
-            synchronized (helloAR) {
-                helloAR.stop();
-            }
-        } catch (Throwable ex) {
-            Log.e("HelloAR", ex.getMessage());
-            Log.e("HelloAR", Log.getStackTraceString(ex));
-        }
-        try {
-            synchronized (helloAR) {
-                helloAR.dispose();
-            }
-        } catch (Throwable ex) {
-            Log.e("HelloAR", ex.getMessage());
-            Log.e("HelloAR", Log.getStackTraceString(ex));
+        synchronized (helloAR) {
+            helloAR.stop();
+            helloAR.dispose();
         }
         super.onDetachedFromWindow();
     }
@@ -112,15 +80,14 @@ public class GLView extends GLSurfaceView
     @Override
     public void onResume()
     {
-        Log.d("HelloAR", "onResume: ");
         super.onResume();
-        EasyAR.onResume();
+        Engine.onResume();
     }
 
     @Override
     public void onPause()
     {
-        EasyAR.onPause();
+        Engine.onPause();
         super.onPause();
     }
 

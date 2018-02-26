@@ -46,7 +46,7 @@ public class ArActivity extends BaseActivity {
         //设置屏幕常亮
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        if (!EasyAR.initialize(this, key)) {
+        if (!EasyAR.initialize(this, Constants.AR_KEY)) {
             Log.e("HelloAR", "Initialization Failed.");
         }
 

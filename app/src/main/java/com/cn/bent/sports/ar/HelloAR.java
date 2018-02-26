@@ -254,22 +254,16 @@ public class HelloAR
                             String target_name = target.name();
                             if (target_name.equals("argame") && video_renderers.get(0).texId() != 0) {
                                 video = new ARVideo();
-//                                video.openVideoFile("video.mp4", video_renderers.get(0).texId());
-                                video.openVideoFile("xiaotuo.mp4", video_renderers.get(0).texId());
+                                video.openVideoFile("video.mp4", video_renderers.get(0).texId());
                                 current_video_renderer = video_renderers.get(0);
                             } else if (target_name.equals("namecard") && video_renderers.get(1).texId() != 0) {
                                 video = new ARVideo();
-                                video.openTransparentVideoFile("xt.mp4", video_renderers.get(1).texId());
+                                video.openTransparentVideoFile("transparentvideo.mp4", video_renderers.get(1).texId());
                                 current_video_renderer = video_renderers.get(1);
-                            } else if (target_name.equals("flower") && video_renderers.get(2).texId() != 0) {
+                            } else if (target_name.equals("idback") && video_renderers.get(2).texId() != 0) {
                                 video = new ARVideo();
-                                video.openTransparentVideoFile("xt.mp4", video_renderers.get(2).texId());
+                                video.openStreamingVideo("https://sightpvideo-cdn.sightp.com/sdkvideo/EasyARSDKShow201520.mp4", video_renderers.get(2).texId());
                                 current_video_renderer = video_renderers.get(2);
-//                                video = new ARVideo();
-//                                video.openTransparentVideoFile("flower.mp4", video_renderers.get(2).texId());
-//                                current_video_renderer = video_renderers.get(2);
-//                                video.openStreamingVideo("https://sightpvideo-cdn.sightp.com/sdkvideo/EasyARSDKShow201520.mp4", video_renderers.get(2).texId());
-//                                current_video_renderer = video_renderers.get(2);
                             }
                         }
                         if (video != null) {
