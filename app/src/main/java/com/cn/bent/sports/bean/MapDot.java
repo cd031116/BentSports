@@ -10,7 +10,7 @@ import java.util.List;
 
 public class MapDot implements Serializable {
     private String place_id;
-    private List<String> mac;
+    private List<String> iBeacons;
     private String longitude;
     private String latitude;
     private String game_id;
@@ -41,12 +41,12 @@ public class MapDot implements Serializable {
         this.place_id = place_id;
     }
 
-    public List<String> getMac() {
-        return mac;
+    public List<String> getiBeacons() {
+        return iBeacons;
     }
 
-    public void setMac(List<String> mac) {
-        this.mac = mac;
+    public void setiBeacons(List<String> iBeacons) {
+        this.iBeacons = iBeacons;
     }
 
     public String getLongitude() {

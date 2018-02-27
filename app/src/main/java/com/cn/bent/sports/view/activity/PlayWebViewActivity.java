@@ -128,7 +128,7 @@ public class PlayWebViewActivity extends BaseActivity {
         webSettings.setJavaScriptEnabled(true);
         // 设置允许JS弹窗
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
-        mWebView.loadUrl(gameUrl);
+        mWebView.loadUrl(gameUrl+"?uid=" + user.getMember_id() + "&etype=android&gameid=" + gameId);
         mWebView.addJavascriptInterface(new JSInterface(), "native");
     }
 

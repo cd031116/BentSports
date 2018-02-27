@@ -539,9 +539,12 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
 //                    String distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
                     if (place_list != null&&place_list.size()>0&&t_ids>=0) {
                        for(MinewBeacon beacon:minewBeacons){
-                           Log.i("tttt","beacon"+beacon.toString());
-                           String majer=beacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Major).getStringValue();
-                            if(majer!=null&&place_list.get(t_ids).getMac().contains(majer)){
+                           String majer=beacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_MAC).getStringValue();
+                           Log.i("tttt","beacon majer"+majer.replace(":",""));
+                           Log.i("tttt","beacon t_ids"+t_ids);
+                           Log.i("tttt","beacon getMac"+place_list.get(t_ids).getiBeacons());
+
+                            if(majer!=null&&place_list.get(t_ids).getiBeacons().contains(majer.replace(":",""))){
                                 shouPoup(true,place_list.get(t_ids).getGame_id());
                                 break;
                             }
