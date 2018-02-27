@@ -113,7 +113,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
     private List<MapDot> place_list = new ArrayList<>();
     private DoTaskPoupWindow mopupWindow;
     private TalkPoupWindow soundWindow;
-    private boolean isGame=false;
+    private boolean isGame = false;
     //---------------------
     AMapLocationListener mAMapLocationListener = new AMapLocationListener() {
         @Override
@@ -191,11 +191,11 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                     if (place_list.get(i).getIs_play().endsWith("0")) {
                         showDialogMsg("是否前往该地点", i);
                     } else {
-                        isGame=false;
+                        isGame = false;
                     }
                 } else {
-                    isGame=false;
-                    shousoundPoup(place_list.get(i).getMp3(), "",i);
+                    isGame = false;
+                    shousoundPoup(place_list.get(i).getMp3(), "", i);
                 }
             }
         }
@@ -412,7 +412,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
             public void onClick(Dialog dialog, boolean confirm) {
                 if (confirm) {
                     t_ids = position;
-                    isGame=true;
+                    isGame = true;
                     setcheck();
                     place_list.get(t_ids).setCheck(true);
                     mEndPoint = null;
@@ -431,18 +431,19 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
             }
         }).setTitle("提示").show();
     }
-//    boolean isFirst=false;
+
+    //    boolean isFirst=false;
     private void shouPoup(String ganme_name, boolean isShow, String photo) {
-        if (mopupWindow != null&&mopupWindow.isShowing()) {
+        if (mopupWindow != null && mopupWindow.isShowing()) {
             mopupWindow.setvisib(isShow);
-        }else {
+        } else {
             mopupWindow = new DoTaskPoupWindow(getActivity(), ganme_name, isShow, photo, itemsOnClick);
             mopupWindow.showAtLocation(getActivity().findViewById(R.id.map_view),
                     Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
         }
     }
 
-    private void shousoundPoup(String paths, String shuom,int position) {
+    private void shousoundPoup(String paths, String shuom, int position) {
         if (soundWindow != null) {
             soundWindow.dismiss();
         }
@@ -455,25 +456,27 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
 
     private DoTaskPoupWindow.ItemInclick itemsOnClick = new DoTaskPoupWindow.ItemInclick() {
         @Override
-        public void ItemClick() {
-            if ("14".endsWith(place_list.get(t_ids).getGame_id())) {
-                Intent intent = new Intent(getActivity(), CaptureActivity.class);
-                startActivityForResult(intent, REQUEST_Scan);
-            } else if ("15".endsWith(place_list.get(t_ids).getGame_id())) {
-                Intent intent = new Intent(getActivity(), ArActivity.class);
-                intent.putExtra("gameId", place_list.get(t_ids).getGame_id());
-                startActivity(intent);
-            } else if ("18".endsWith(place_list.get(t_ids).getGame_id())) {
-                Intent intent = new Intent(getActivity(), OfflineActivity.class);
-                intent.putExtra("gameId", place_list.get(t_ids).getGame_id());
-                startActivity(intent);
-            } else {
-                Intent intent = new Intent(getActivity(), PlayWebViewActivity.class);
-                intent.putExtra("gameId", place_list.get(t_ids).getGame_id());
-                intent.putExtra("gameUrl", place_list.get(t_ids).getGame_url());
-                startActivity(intent);
+        public void ItemClick(int index) {
+            if (index == 1) {
+                if ("14".endsWith(place_list.get(t_ids).getGame_id())) {
+                    Intent intent = new Intent(getActivity(), CaptureActivity.class);
+                    startActivityForResult(intent, REQUEST_Scan);
+                } else if ("15".endsWith(place_list.get(t_ids).getGame_id())) {
+                    Intent intent = new Intent(getActivity(), ArActivity.class);
+                    intent.putExtra("gameId", place_list.get(t_ids).getGame_id());
+                    startActivity(intent);
+                } else if ("18".endsWith(place_list.get(t_ids).getGame_id())) {
+                    Intent intent = new Intent(getActivity(), OfflineActivity.class);
+                    intent.putExtra("gameId", place_list.get(t_ids).getGame_id());
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(getActivity(), PlayWebViewActivity.class);
+                    intent.putExtra("gameId", place_list.get(t_ids).getGame_id());
+                    intent.putExtra("gameUrl", place_list.get(t_ids).getGame_url());
+                    startActivity(intent);
+                }
             }
-            t_ids=-1;
+            t_ids = -1;
             mopupWindow.dismiss();
         }
     };
@@ -552,7 +555,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
             public void onRangeBeacons(List<MinewBeacon> minewBeacons) {
                 if (minewBeacons != null && minewBeacons.size() > 0) {
 //                    String distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
-                    if (place_list != null && place_list.size() > 0 && t_ids >= 0&&isGame) {
+                    if (place_list != null && place_list.size() > 0 && t_ids >= 0 && isGame) {
                         for (MinewBeacon beacon : minewBeacons) {
                             String majer = beacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_MAC).getStringValue();
                             Log.i("tttt", "beacon majer" + majer.replace(":", ""));

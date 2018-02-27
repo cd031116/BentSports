@@ -55,13 +55,13 @@ public class DoTaskPoupWindow extends PopupWindow {
         close_ima.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dismiss();
+                itemsOnClick.ItemClick(0);
             }
         });
         go_task.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                itemsOnClick.ItemClick();
+                itemsOnClick.ItemClick(1);
             }
         });
 
@@ -116,6 +116,6 @@ public class DoTaskPoupWindow extends PopupWindow {
     }
 
     public interface ItemInclick {
-        void ItemClick();
+        void ItemClick(int position);
     }
 }
