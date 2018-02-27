@@ -39,8 +39,8 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingBottom="20px"
-            android:paddingTop="20px">
+            android:paddingBottom="50px"
+            android:paddingTop="50px">
 
             <ImageView
                 android:layout_width="wrap_content"
