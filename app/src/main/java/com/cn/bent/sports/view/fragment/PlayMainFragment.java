@@ -271,7 +271,11 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                     daodan.setSelected(false);
                     aMap.clear();
                     RailBean railBean=  SaveObjectUtils.getInstance(getActivity()).getObject(Constants.DOT_INFO, null);
-                    place_list.removeAll(railBean.getMp3_tag());
+                    List<MapDot> mapDots=railBean.getMp3_tag();
+                        place_list.removeAll(mapDots);
+//                    for (MapDot inso:mapDots){
+//                        place_list.remove(inso);
+//                    }
                     Log.i("tttt","place_list-"+place_list.size());
                     addMarkersToMap();
                 }else {
