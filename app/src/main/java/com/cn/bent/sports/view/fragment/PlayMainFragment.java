@@ -272,6 +272,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                     daodan.setSelected(false);
                     aMap.clear();
                     PlayMapBean beans=  SaveObjectUtils.getInstance(getActivity()).getObject(Constants.DOT_LIST, null);
+                    Log.i("tttt","beans+"+beans.getPlace_list());
                     if(place_list.size()>0){
                         place_list.clear();
                     }
@@ -539,7 +540,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                     if (place_list != null&&place_list.size()>0&&t_ids>=0) {
                        for(MinewBeacon beacon:minewBeacons){
                            String majer=beacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Major).getStringValue();
-                            if(place_list.get(t_ids).getMac().contains(majer)){
+                            if(majer!=null&&place_list.get(t_ids).getMac().contains(majer)){
                                 shouPoup(true,place_list.get(t_ids).getGame_id());
                                 break;
                             }
