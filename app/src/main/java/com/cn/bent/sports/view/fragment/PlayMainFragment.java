@@ -26,6 +26,7 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
+import com.amap.api.maps.model.MyLocationStyle;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseConfig;
@@ -157,8 +158,10 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
         aMap.setCustomMapStylePath(path);
         aMap.setMapCustomEnable(true);//true 开启; false 关闭
         RailBean railBean = SaveObjectUtils.getInstance(getActivity()).getObject(Constants.DOT_INFO, null);
-        LatLng southwestLatLng = new LatLng(Double.valueOf(railBean.getFence().getDot_lat()).doubleValue(), Double.valueOf(railBean.getFence().getDot_long()).doubleValue());
-        LatLng northeastLatLng = new LatLng(Double.valueOf(railBean.getFence().getOther_dot_lat()).doubleValue(), Double.valueOf(railBean.getFence().getOther_dot_long()).doubleValue());
+//        LatLng southwestLatLng = new LatLng(Double.valueOf(railBean.getFence().getDot_lat()).doubleValue(), Double.valueOf(railBean.getFence().getDot_long()).doubleValue());
+//        LatLng northeastLatLng = new LatLng(Double.valueOf(railBean.getFence().getOther_dot_lat()).doubleValue(), Double.valueOf(railBean.getFence().getOther_dot_long()).doubleValue());
+        LatLng southwestLatLng = new LatLng(28.084042,112.956461);
+        LatLng northeastLatLng = new LatLng(28.157773,113.019118);
         LatLngBounds latLngBounds = new LatLngBounds(southwestLatLng, northeastLatLng);
         aMap.setMapStatusLimits(latLngBounds);
         aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds, 50));
@@ -168,21 +171,22 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
 
     @Override
     protected void initData() {
-        mLocationClient = new AMapLocationClient(getActivity());
-//设置定位回调监听
-        mLocationClient.setLocationListener(mAMapLocationListener);
-//初始化AMapLocationClientOption对象
-        mLocationOption = new AMapLocationClientOption();
-        //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。
-        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-        //设置定位模式为AMapLocationMode.Device_Sensors，仅设备模式。
-//        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Device_Sensors);
-        mLocationOption.setInterval(1000 * 3);
-        //给定位客户端对象设置定位参数
-        mLocationClient.setLocationOption(mLocationOption);
-        //启动定位
-        mLocationOption.setOnceLocation(false);
-        mLocationClient.startLocation();
+        addLocaToMap();
+//        mLocationClient = new AMapLocationClient(getActivity());
+////设置定位回调监听
+//        mLocationClient.setLocationListener(mAMapLocationListener);
+////初始化AMapLocationClientOption对象
+//        mLocationOption = new AMapLocationClientOption();
+//        //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。
+//        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+//        //设置定位模式为AMapLocationMode.Device_Sensors，仅设备模式。
+////        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Device_Sensors);
+//        mLocationOption.setInterval(1000 * 3);
+//        //给定位客户端对象设置定位参数
+//        mLocationClient.setLocationOption(mLocationOption);
+//        //启动定位
+//        mLocationOption.setOnceLocation(false);
+//        mLocationClient.startLocation();
     }
 
     @Override
@@ -261,9 +265,14 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
      * 显示定位蓝点
      */
     private void addLocaToMap() {
-        aMap.setMyLocationEnabled(false);
+        aMap.setMyLocationEnabled(true);
         // 设置定位的类型为定位模式，有定位、跟随或地图根据面向方向旋转几种
-        aMap.setMyLocationType(AMap.LOCATION_TYPE_LOCATE);
+        MyLocationStyle myLocationStyle=new MyLocationStyle();
+        myLocationStyle.interval(3*1000);
+        myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE_NO_CENTER);
+        aMap.setMyLocationStyle(myLocationStyle);
+//        aMap.setMyLocationType(MyLocationStyle.LOCATION_TYPE_MAP_ROTATE_NO_CENTER);
+//        aMap.setMyLocationType(MyLocationStyle.LOCATION_TYPE_FOLLOW_NO_CENTER);
     }
 
 
@@ -417,8 +426,8 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                     t_ids = position;
                     isGame = true;
                     setcheck();
-                    addMarkersToMap();
                     place_list.get(t_ids).setCheck(true);
+                    addMarkersToMap();
                     mEndPoint = null;
                     mEndPoint = new LatLng(Double.valueOf(place_list.get(position).getLatitude()).doubleValue(),
                             Double.valueOf(place_list.get(position).getLongitude()).doubleValue());
