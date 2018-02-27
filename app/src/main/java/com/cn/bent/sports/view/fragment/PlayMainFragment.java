@@ -104,7 +104,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
     private static final int REQUEST_ENABLE_BT = 2;
     private static final int REQUEST_Scan = 12;
     private MinewBeaconManager mMinewBeaconManager;
-    private int t_ids;
+    private int t_ids=-1;
     private long times_s = 0;
     private Handler handler2;
     private LoginBase user;
@@ -142,10 +142,10 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
         EventBus.getDefault().register(this);
         user = SaveObjectUtils.getInstance(getActivity()).getObject(Constants.USER_INFO, null);
         getMapMsg();
-        checkBluetooth();
         handler2 = new Handler();
         mapView.onCreate(savedInstanceState);
         mMinewBeaconManager = MinewBeaconManager.getInstance(getActivity());
+        checkBluetooth();
         if (aMap == null) {
             aMap = mapView.getMap();
         }
@@ -531,7 +531,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
             public void onRangeBeacons(List<MinewBeacon> minewBeacons) {
                 if (minewBeacons != null && minewBeacons.size() > 0) {
 //                    String distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
-                    if (place_list != null) {
+                    if (place_list != null&&place_list.size()>0&&t_ids>=0) {
                        for(MinewBeacon beacon:minewBeacons){
                            String majer=beacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Major).getStringValue();
                             if(place_list.get(t_ids).getMac().contains(majer)){
@@ -566,7 +566,6 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
         if (!isBlue) {
             Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
-            isBlue = true;
         }
     }
 
@@ -577,11 +576,12 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
             case REQUEST_ENABLE_BT:
                 Log.d("dddd", "onActivityResult: " + mMinewBeaconManager.checkBluetoothState());
                 if (mMinewBeaconManager.checkBluetoothState().equals(BluetoothState.BluetoothStatePowerOn)) {
-                    isBlue = false;
+                    isBlue = true;
                     initListener();
                 }
                 if (mMinewBeaconManager.checkBluetoothState().equals(BluetoothState.BluetoothStatePowerOff))
                     isBlue = false;
+                checkBluetooth();
                 break;
             case REQUEST_Scan:
                 if (null != data) {
