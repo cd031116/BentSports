@@ -316,16 +316,20 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ReFreshEvent event) {
-        BaseConfig bf = BaseConfig.getInstance(getActivity());
         getMapMsg();
-        boolean iswanc = true;
+
+    }
+
+    private void settimesd(){
+        BaseConfig bf = BaseConfig.getInstance(getActivity());
+        boolean iswanc = false;
         for (MapDot dot : place_list) {
-            if (dot.getIs_play().endsWith("0")) {
-                iswanc = false;
+            if (!dot.getType().endsWith("2")&&dot.getIs_play().endsWith("0")) {
+                iswanc = true;
                 break;
             }
         }
-        if (iswanc) {
+        if (!iswanc) {
             handler2.removeCallbacks(runnable2);
             bf.setLongValue(Constants.IS_TIME, 0);
             ji_timer.setText("已通关");
@@ -680,6 +684,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                                 place_list.clear();
                             }
                             place_list.addAll(info.getPlace_list());
+                            settimesd();
                             SaveObjectUtils.getInstance(getActivity()).setObject(Constants.DOT_LIST, info);
                             if (daodan.isSelected()) {
                                 RailBean railBean = SaveObjectUtils.getInstance(getActivity()).getObject(Constants.DOT_INFO, null);
