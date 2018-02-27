@@ -194,7 +194,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
     public boolean onMarkerClick(Marker marker) {
         for (int i = 0; i < mList.size(); i++) {
             if (marker.equals(mList.get(i))) {
-                if (place_list.get(i).getType().endsWith("1")||place_list.get(i).getType().endsWith("3")) {
+                if (!place_list.get(i).getType().endsWith("2")) {
                     if (place_list.get(i).getIs_play().endsWith("0")) {
                         showDialogMsg("是否前往该地点", i);
                     } else {
