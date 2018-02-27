@@ -66,5 +66,4 @@ dependencies {
     compile 'cn.yipianfengye.android:zxing-library:2.2'
     compile 'com.yuyh.imgsel:library:2.0.2'
     testCompile 'junit:junit:4.12'
-    compile files('libs/EasyAR.jar')
 }

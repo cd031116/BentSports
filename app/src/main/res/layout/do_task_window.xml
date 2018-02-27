@@ -21,7 +21,7 @@
         android:layout_height="560px"
         android:layout_alignParentBottom="true"
         android:padding="20px"
-        android:background="@drawable/bg_round_white"
+        android:background="#ffffff"
         android:orientation="vertical">
 
         <TextView

@@ -186,7 +186,6 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
     public boolean onMarkerClick(Marker marker) {
         for (int i = 0; i < mList.size(); i++) {
             if (marker.equals(mList.get(i))) {
-                t_ids = i;
                 if (!TextUtils.isEmpty(place_list.get(i).getGame_url())) {
                     if (place_list.get(i).getIs_play().endsWith("0")) {
                         showDialogMsg("是否前往该地点", i);
@@ -194,7 +193,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
 //                    已经玩了的
                     }
                 } else {
-                    shousoundPoup(place_list.get(i).getMp3(), "");
+                    shousoundPoup(place_list.get(i).getMp3(), "",i);
                 }
             }
         }
@@ -410,6 +409,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
             @Override
             public void onClick(Dialog dialog, boolean confirm) {
                 if (confirm) {
+                    t_ids = position;
                     setcheck();
                     place_list.get(t_ids).setCheck(true);
                     mEndPoint = null;
@@ -439,10 +439,11 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
 
     }
 
-    private void shousoundPoup(String paths, String shuom) {
+    private void shousoundPoup(String paths, String shuom,int position) {
         if (soundWindow != null) {
             soundWindow.dismiss();
         }
+        t_ids = position;
         soundWindow = new TalkPoupWindow(getActivity(), paths, shuom, null);
         soundWindow.showAtLocation(getActivity().findViewById(R.id.map_view),
                 Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
@@ -452,7 +453,6 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
     private DoTaskPoupWindow.ItemInclick itemsOnClick = new DoTaskPoupWindow.ItemInclick() {
         @Override
         public void ItemClick() {
-            t_ids=-1;
             if ("14".endsWith(place_list.get(t_ids).getGame_id())) {
                 Intent intent = new Intent(getActivity(), CaptureActivity.class);
                 startActivityForResult(intent, REQUEST_Scan);
@@ -470,6 +470,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                 intent.putExtra("gameUrl", place_list.get(t_ids).getGame_url());
                 startActivity(intent);
             }
+            t_ids=-1;
             mopupWindow.dismiss();
         }
     };
