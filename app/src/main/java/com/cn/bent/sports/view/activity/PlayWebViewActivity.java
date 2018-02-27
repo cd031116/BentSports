@@ -49,6 +49,7 @@ public class PlayWebViewActivity extends BaseActivity {
     private int MAX_REQUEST = 2;
     private int isRequestNum = 1;
     private Handler handler2;
+    private String gameUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +66,7 @@ public class PlayWebViewActivity extends BaseActivity {
     public void initView() {
         super.initView();
         gameId = getIntent().getStringExtra("gameId");
+        gameUrl = getIntent().getStringExtra("gameUrl");
         user = (LoginBase) SaveObjectUtils.getInstance(this).getObject(Constants.USER_INFO, null);
         handler2 = new Handler();
         setTimes();
@@ -126,29 +128,7 @@ public class PlayWebViewActivity extends BaseActivity {
         webSettings.setJavaScriptEnabled(true);
         // 设置允许JS弹窗
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
-        Log.e("dasa", "initWebView: " + gameId);
-        String index = "hby";
-        switch (Integer.parseInt(gameId)) {
-            case 1:
-                index = "hby";
-                break;
-            case 2:
-                index = "aihuwai";
-                break;
-            case 3:
-                index = "denglong";
-                break;
-            case 4:
-                index = "caishenmiao";
-                break;
-            case 5:
-                index = "cdm";
-                break;
-            case 6:
-                index = "xcm";
-                break;
-        }
-        mWebView.loadUrl(Constants.BASE_URL + index + "/index.html?uid=" + user.getMember_id() + "&etype=android&gameid=" + gameId);
+        mWebView.loadUrl(gameUrl);
         mWebView.addJavascriptInterface(new JSInterface(), "native");
     }
 
@@ -183,11 +163,7 @@ public class PlayWebViewActivity extends BaseActivity {
                             setScore(user, gameEntity);
                             EventBus.getDefault().post(new InfoEvent());
                             EventBus.getDefault().post(new ReFreshEvent());
-                            if (TaskCationManager.noMore()) {
-                                Intent intent = new Intent(PlayWebViewActivity.this, AllFinishActivity.class);
-                                startActivity(intent);
-                            } else
-                                toContinue();
+                            toContinue();
                         } else {
                             ToastUtils.showShortToast(PlayWebViewActivity.this, addScoreEntity.getMsg());
                             dismissAlert();
