@@ -14,15 +14,15 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.cn.bent.sports.R;
-import com.cn.bent.sports.ar.GLView;
+//import com.cn.bent.sports.ar.GLView;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.utils.Constants;
 
 import java.util.HashMap;
 
 import butterknife.OnClick;
-import cn.easyar.Engine;
-import cn.easyar.engine.EasyAR;
+//import cn.easyar.Engine;
+//import cn.easyar.engine.EasyAR;
 
 /**
  * Created by dawn on 2018/2/26.
@@ -30,7 +30,7 @@ import cn.easyar.engine.EasyAR;
 
 public class ArActivity extends AppCompatActivity {
     private static String key = "uHF95ree4fY6nj6NrhAFZ3HwZvpQfexUpb0DQoy9vM0733bZ3kczl95yxtZ0sTNgTZE6idFXRx0Ej5UtJ0FEUGFUZLxdKpsH8UOg0J2spZUdLTOUlwtjimxW8yer0GReXJJgUvF1n8yiK7TkkX7hEDliysPlF4CYQaolaOsE4LufSDcBqPU83rPtbsFohb6FNX4iSA4b";
-    private GLView glView;
+//    private GLView glView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,16 +38,16 @@ public class ArActivity extends AppCompatActivity {
         setContentView(R.layout.ar_layout);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        if (!EasyAR.initialize(this, key)) {
-            Log.e("HelloAR", "Initialization Failed.");
-        }
-
-        glView = new GLView(this);
+//        if (!EasyAR.initialize(this, key)) {
+//            Log.e("HelloAR", "Initialization Failed.");
+//        }
+//
+//        glView = new GLView(this);
 
         requestCameraPermission(new PermissionCallback() {
             @Override
             public void onSuccess() {
-                ((ViewGroup) findViewById(R.id.preview)).addView(glView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+//                ((ViewGroup) findViewById(R.id.preview)).addView(glView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             }
 
             @Override
@@ -109,13 +109,13 @@ public class ArActivity extends AppCompatActivity {
     protected void onResume()
     {
         super.onResume();
-        if (glView != null) { glView.onResume(); }
+//        if (glView != null) { glView.onResume(); }
     }
 
     @Override
     protected void onPause()
     {
-        if (glView != null) { glView.onPause(); }
+//        if (glView != null) { glView.onPause(); }
         super.onPause();
     }
 }

@@ -7,11 +7,22 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.cn.bent.sports.R;
+import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.base.BaseConfig;
+import com.cn.bent.sports.bean.AddScoreEntity;
+import com.cn.bent.sports.bean.InfoEvent;
+import com.cn.bent.sports.bean.LoginBase;
+import com.cn.bent.sports.bean.ReFreshEvent;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.DataUtils;
+import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.utils.ToastUtils;
+import com.zhl.network.RxObserver;
+import com.zhl.network.RxSchedulers;
+import com.zhl.network.huiqu.HuiquRxTBFunction;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -29,6 +40,10 @@ public class OfflineActivity extends BaseActivity {
     @Bind(R.id.cut_down)
     TextView timer;
     private Handler handler2;
+    private int MAX_REQUEST = 2;
+    private int isRequestNum = 1;
+    private LoginBase user;
+    private String gameId;
 
     @Override
     protected int getLayoutId() {
@@ -38,7 +53,9 @@ public class OfflineActivity extends BaseActivity {
     @Override
     public void initView() {
         super.initView();
+        user = (LoginBase) SaveObjectUtils.getInstance(this).getObject(Constants.USER_INFO, null);
         handler2 = new Handler();
+        gameId = getIntent().getStringExtra("gameId");
         setTimes();
     }
 
@@ -56,7 +73,7 @@ public class OfflineActivity extends BaseActivity {
                 break;
             case R.id.commit:
                 if ("123".equals(commit_edit.getText().toString().trim())) {
-                    startActivity(new Intent(this, LastActivity.class));
+                    commitScore();
                 } else {
                     ToastUtils.showShortToast(this,"游戏失败，再玩一次");
                 }
@@ -84,4 +101,48 @@ public class OfflineActivity extends BaseActivity {
 
         }
     };
+
+    private void commitScore() {
+        BaseApi.getDefaultService(this).addScore(user.getMember_id(), 100, Integer.parseInt(gameId))
+                .map(new HuiquRxTBFunction<AddScoreEntity>())
+                .compose(RxSchedulers.<AddScoreEntity>io_main())
+                .subscribe(new RxObserver<AddScoreEntity>(this, "addScore", 1, false) {
+                    @Override
+                    public void onSuccess(int whichRequest, AddScoreEntity addScoreEntity) {
+                        if (addScoreEntity.getBody().getAddStatus() == 1) {
+                            dismissAlert();
+                            LoginBase user = (LoginBase) SaveObjectUtils.getInstance(OfflineActivity.this).getObject(Constants.USER_INFO, null);
+                            setScore(user);
+                            EventBus.getDefault().post(new InfoEvent());
+                            EventBus.getDefault().post(new ReFreshEvent());
+                            startActivity(new Intent(OfflineActivity.this, LastActivity.class));
+                        } else {
+                            ToastUtils.showShortToast(OfflineActivity.this, addScoreEntity.getMsg());
+                            dismissAlert();
+                        }
+                        isRequestNum = 1;
+                    }
+
+                    @Override
+                    public void onError(int whichRequest, Throwable e) {
+                        dismissAlert();
+                        if (isRequestNum < MAX_REQUEST) {
+                            isRequestNum++;
+                            ToastUtils.showShortToast(OfflineActivity.this, "积分上传失败,正在重新上传积分");
+                            commitScore();
+                        } else {
+                            ToastUtils.showShortToast(OfflineActivity.this, "网络异常，积分上传失败，请重新玩此游戏");
+                            startActivity(new Intent(OfflineActivity.this, LastActivity.class));
+                        }
+                    }
+                });
+    }
+
+    private void setScore(LoginBase user) {
+        if (user.getScore() != null)
+            user.setScore(String.valueOf(Integer.parseInt(user.getScore()) + 100));
+        else
+            user.setScore(String.valueOf(100));
+        SaveObjectUtils.getInstance(OfflineActivity.this).setObject(Constants.USER_INFO, user);
+    }
 }
