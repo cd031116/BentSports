@@ -272,7 +272,13 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                     aMap.clear();
                     RailBean railBean=  SaveObjectUtils.getInstance(getActivity()).getObject(Constants.DOT_INFO, null);
                     List<MapDot> mapDots=railBean.getMp3_tag();
-                        place_list.removeAll(mapDots);
+                    for(int i=0;i<mapDots.size();i++) {
+                        if (place_list.contains(mapDots.get(i))) {
+                            place_list.remove(i);
+                            Log.i("tttt","contains-");
+                            i--;
+                        }
+                    }
 //                    for (MapDot inso:mapDots){
 //                        place_list.remove(inso);
 //                    }
