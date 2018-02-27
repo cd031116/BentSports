@@ -406,10 +406,6 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                     if (times_s <= 0) {
                         if (mStartPoint != null) {
                             login();
-                            BaseConfig bgs = BaseConfig.getInstance(getActivity());
-                            bgs.setLongValue(Constants.IS_TIME, System.currentTimeMillis());
-                            times_s = bgs.getLongValue(Constants.IS_TIME, 0);
-                            setTimes();
                         }
                     }
                 } else {
@@ -446,10 +442,6 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
             if ("5".endsWith(place_list.get(t_ids).getGame_id())) {
                 Intent intent = new Intent(getActivity(), CaptureActivity.class);
                 startActivityForResult(intent, REQUEST_Scan);
-            }else if("8".endsWith(place_list.get(t_ids).getGame_id())){
-                Intent intent = new Intent(getActivity(), OfflineActivity.class);
-                intent.putExtra("gameId", place_list.get(t_ids).getGame_id());
-                startActivity(intent);
             }else {
                 Intent intent = new Intent(getActivity(), PlayWebViewActivity.class);
                 intent.putExtra("gameId", place_list.get(t_ids).getGame_id());
@@ -468,7 +460,10 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                 .subscribe(new RxObserver<HuiquTBResult>(getActivity(), "changeName", 1, false) {
                     @Override
                     public void onSuccess(int whichRequest, HuiquTBResult info) {
-
+                        BaseConfig bgs = BaseConfig.getInstance(getActivity());
+                        bgs.setLongValue(Constants.IS_TIME, System.currentTimeMillis());
+                        times_s = bgs.getLongValue(Constants.IS_TIME, 0);
+                        setTimes();
                     }
 
                     @Override
@@ -630,6 +625,11 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                                 place_list.addAll(railBean.getMp3_tag());
                             }
                             addMarkersToMap();
+                            if(info.getIs_end().endsWith("1")){
+                                Intent intent = new Intent(getActivity(), OfflineActivity.class);
+                                intent.putExtra("gameId", place_list.get(t_ids).getGame_id());
+                                startActivity(intent);
+                            }
                         }
                     }
 
