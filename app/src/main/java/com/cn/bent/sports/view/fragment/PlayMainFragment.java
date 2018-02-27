@@ -431,18 +431,17 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
             }
         }).setTitle("提示").show();
     }
-
+    boolean isFirst=false;
     private void shouPoup(String ganme_name, boolean isShow, String photo) {
-        if (mopupWindow != null&&mopupWindow.isShowing()&&isShow) {
+        if (mopupWindow != null&&mopupWindow.isShowing()&&isFirst) {
            return;
-        }
-        if(mopupWindow != null){
-            mopupWindow.dismiss();
         }
         mopupWindow = new DoTaskPoupWindow(getActivity(), ganme_name, isShow, photo, itemsOnClick);
         mopupWindow.showAtLocation(getActivity().findViewById(R.id.map_view),
                 Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
-
+        if(isShow){
+            isFirst=true;
+        }
     }
 
     private void shousoundPoup(String paths, String shuom,int position) {
