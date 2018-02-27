@@ -5,6 +5,8 @@ import com.cn.bent.sports.bean.AddScoreEntity;
 import com.cn.bent.sports.bean.AllFinishEntity;
 import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.bean.PhotoPath;
+import com.cn.bent.sports.bean.PlayMapBean;
+import com.cn.bent.sports.bean.RailBean;
 import com.cn.bent.sports.bean.RankEntity;
 import com.cn.bent.sports.bean.UserMsgEntity;
 import com.zhl.network.huiqu.HuiquResult;
@@ -48,6 +50,10 @@ public interface ApiService {
     Observable<HuiquResult<LoginBase>> Loging(
             @Field("mobile") String mobile,
             @Field("code") String code);
+
+
+    @GET("outdoor/map/getFenceAndDot")
+    Observable<HuiquResult<RailBean>> getFenceAndDot();
 
     /**
      * @return
@@ -116,4 +122,12 @@ public interface ApiService {
     Observable<HuiquTBResult> startGame(
             @Field("cur_user_id") String cur_user_id);
 
+
+    /**
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("outdoor/map/getMapMsg")
+    Observable<HuiquResult<PlayMapBean>> getMapMsg(
+            @Field("cur_user_id") String cur_user_id);
 }

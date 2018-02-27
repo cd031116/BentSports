@@ -25,6 +25,7 @@ import com.cn.bent.sports.view.fragment.IsMeFragment;
 import com.cn.bent.sports.view.fragment.JinMaoFragment;
 import com.cn.bent.sports.view.fragment.MainTabFragment;
 import com.cn.bent.sports.view.fragment.PlayFragment;
+import com.cn.bent.sports.view.fragment.PlayMainFragment;
 import com.cn.bent.sports.view.poupwindow.MainPoupWindow;
 
 import org.greenrobot.eventbus.EventBus;
@@ -44,7 +45,6 @@ public class MainActivity extends BaseActivity {
     List<TextView> mText;
     int selected = 1;
     FragmentManager mFragmentMan;
-    private MainPoupWindow mopupWindow;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,8 +82,6 @@ public class MainActivity extends BaseActivity {
     @Override
     public void initData() {
         super.initData();
-//        setdata();
-        setdata();
     }
 
 
@@ -109,12 +107,7 @@ public class MainActivity extends BaseActivity {
                         mCurrentFragment = MainTabFragment.newInstance(0);
                         break;
                     case 1:
-                      int ab=  bg.getIntValue(Constants.LU_XIAN, -1);
-                        mCurrentFragment = PlayFragment.newInstance();//子Fragment实例
-//                        if(ab==1){
-//                        }else {
-//                            mCurrentFragment = PlayFragment.newInstance();//子Fragment实例
-//                        }
+                        mCurrentFragment = PlayMainFragment.newInstance();//子Fragment实例
                         break;
                     case 2:
                         mCurrentFragment = IsMeFragment.newInstance();
@@ -194,33 +187,4 @@ public class MainActivity extends BaseActivity {
     }
 
 
-    private void setdata() {
-        if (TaskCationManager.getSize() <= 0) {
-            LoginBase user = SaveObjectUtils.getInstance(MainActivity.this).getObject(Constants.USER_INFO, null);
-            List<TaskCationBean> nList = new ArrayList<>();
-            nList.add(new TaskCationBean(1, user.getMember_id(), "1", "113.087645", "28.012992", "歌舞广场", false, false));
-            nList.add(new TaskCationBean(2, user.getMember_id(), "1", "113.087843", "28.007034", "丛林穿越 ", false, false));
-            nList.add(new TaskCationBean(3, user.getMember_id(), "1", "113.085139", "28.003593", "沙滩", false, false));
-            nList.add(new TaskCationBean(4, user.getMember_id(), "1", "113.089565", "28.010653", "财神庙", false, false));
-            nList.add(new TaskCationBean(5, user.getMember_id(), "1", "113.089232", "28.007276", "月亮岛", false, false));
-            nList.add(new TaskCationBean(6, user.getMember_id(), "1", "113.086443", "28.005701", "竹林", false, false));
-            TaskCationManager.insert(nList);
-        }
-    }
-    private void setJinmaodata() {
-        if (TaskCationManager.getSize() <= 0) {
-            LoginBase user = SaveObjectUtils.getInstance(MainActivity.this).getObject(Constants.USER_INFO, null);
-            List<TaskCationBean> nList = new ArrayList<>();
-//            nList.add(new TaskCationBean(1, user.getMember_id(), "1", "113.095731", "28.016436", "金茂入口", false, false));
-//            nList.add(new TaskCationBean(2, user.getMember_id(), "1", "113.094396", "28.015356", "大门", false, false));
-//            nList.add(new TaskCationBean(3, user.getMember_id(), "1", "113.095013", "28.015432", "玻璃门", false, false));
-//            nList.add(new TaskCationBean(4, user.getMember_id(), "1", "113.096193", "28.015891", "旗杆", false, false));
-//            nList.add(new TaskCationBean(6, user.getMember_id(), "1", "113.096686", "28.015669", "三岔路口", false, false));
-            nList.add(new TaskCationBean(1, user.getMember_id(), "1", "112.984188", "28.110286", "金茂入口", false, false));
-            nList.add(new TaskCationBean(2, user.getMember_id(), "1", "112.989424", "28.111137", "大门", false, false));
-            nList.add(new TaskCationBean(3, user.getMember_id(), "1", "112.991677", "28.111648", "玻璃门", false, false));
-            nList.add(new TaskCationBean(4, user.getMember_id(), "1", "112.990733", "28.114506", "旗杆", false, false));
-            TaskCationManager.insert(nList);
-        }
-    }
 }

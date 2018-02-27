@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/start_view">
+            <ImageView
+                android:id="@+id/image_bg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+    </android.support.v4.widget.NestedScrollView>
+
+    <RelativeLayout
+        android:id="@+id/start_view"
+        android:layout_width="match_parent"
+        android:layout_height="520px"
+        android:layout_alignParentBottom="true"
+        android:padding="20px"
+        android:background="@drawable/bg_round_white"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/name_game"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="43px"
+            android:textColor="#333333"
+            android:textSize="53px" />
+
+        <TextView
+            android:id="@+id/juli"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:drawableLeft="@drawable/ju_li"
+            android:drawablePadding="20px"
+            android:visibility="gone"
+            android:padding="43px"
+            android:text="300m"
+            android:textColor="#999999" />
+
+
+        <LinearLayout
+            android:id="@+id/line_s"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/name_game"
+            android:gravity="center"
+            android:visibility="visible"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="8px"
+                android:padding="43px"
+                android:text="你还没有到达目的地"
+                android:layout_marginBottom="10px"
+                android:textColor="#999999"
+                android:visibility="visible" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/go_task"
+            android:layout_width="721px"
+            android:layout_height="142px"
+            android:layout_below="@+id/name_game"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10px"
+            android:gravity="center"
+            android:layout_marginTop="30px"
+            android:paddingTop="20px"
+            android:visibility="gone"
+            android:paddingBottom="20px"
+            android:background="@drawable/go_task_bg"
+            android:text="领取任务"
+            android:textColor="#ffffff" />
+
+            <ImageView
+                android:id="@+id/close_ima"
+                android:layout_width="216px"
+                android:layout_height="193px"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/close_task"/>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

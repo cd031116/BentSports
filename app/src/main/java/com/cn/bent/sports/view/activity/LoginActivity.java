@@ -17,6 +17,7 @@ import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.base.BaseConfig;
 import com.cn.bent.sports.bean.InfoEvent;
 import com.cn.bent.sports.bean.LoginBase;
+import com.cn.bent.sports.bean.RailBean;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.utils.ToastUtils;
@@ -116,6 +117,29 @@ public class LoginActivity extends BaseActivity {
 
     }
 
+    private void getdot() {
+        showAlert("......", true);
+        BaseApi.getDefaultService(this).getFenceAndDot()
+                .map(new HuiquRxFunction<RailBean>())
+                .compose(RxSchedulers.<RailBean>io_main())
+                .subscribe(new RxObserver<RailBean>(LoginActivity.this, "login", 1, false) {
+                    @Override
+                    public void onSuccess(int whichRequest, RailBean info) {
+                        dismissAlert();
+                        SaveObjectUtils.getInstance(LoginActivity.this).setObject(Constants.DOT_INFO, info);
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        finish();
+                    }
+
+                    @Override
+                    public void onError(int whichRequest, Throwable e) {
+                        dismissAlert();
+                        ToastUtils.showLongToast(LoginActivity.this, e.getMessage());
+                    }
+                });
+    }
+
+
     private void login(String account, String code) {
         showAlert("正在登录...", true);
         BaseApi.getDefaultService(this).Loging(account, code)
@@ -129,8 +153,8 @@ public class LoginActivity extends BaseActivity {
 
                         BaseConfig bg = BaseConfig.getInstance(LoginActivity.this);
 //                        int luxian = bg.getIntValue(Constants.LU_XIAN, -1);
-
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        getdot();
+//                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
 //                        if (luxian > 0) {
 //                        } else {
 //                            startActivity(new Intent(LoginActivity.this, ChooseLuxianActivity.class));
@@ -145,6 +169,8 @@ public class LoginActivity extends BaseActivity {
                     }
                 });
     }
+
+
 
 
     private void getcode() {

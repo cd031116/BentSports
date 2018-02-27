@@ -80,6 +80,14 @@
             android:layout_marginTop="22px"
             android:background="@drawable/quanjintu" />
 
+        <ImageView
+            android:id="@+id/qiehuan"
+            android:layout_width="184px"
+            android:layout_height="291px"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/dao_lan"
+            android:layout_marginTop="22px"
+            android:background="@drawable/off_on_bg" />
 
     </RelativeLayout>
 
@@ -160,8 +168,6 @@
             android:background="@drawable/go_task_bg"
             android:text="领取任务"
             android:textColor="#ffffff" />
-
-
 
 
     </RelativeLayout>
