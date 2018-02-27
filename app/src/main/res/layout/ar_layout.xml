@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <RelativeLayout
+        android:id="@+id/top_layout"
         android:layout_width="match_parent"
         android:layout_height="120px"
         android:background="#ffffff">
@@ -12,8 +14,8 @@
             android:id="@+id/top_left"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_gravity="left|center_vertical"
             android:layout_alignParentLeft="true"
+            android:layout_gravity="left|center_vertical"
             android:clickable="true"
             android:gravity="center"
             android:orientation="horizontal"
@@ -21,34 +23,49 @@
             android:paddingLeft="12dp"
             android:paddingRight="20dp"
             android:paddingTop="5dp"
-            android:visibility="visible" >
+            android:visibility="visible">
 
             <ImageView
                 android:id="@+id/top_image"
                 android:layout_width="wrap_content"
                 android:layout_height="60px"
                 android:clickable="false"
-                android:src="@drawable/fanhui_hong"
-                android:contentDescription="@string/app_name" />
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/fanhui_hong" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/top_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
             android:layout_gravity="center"
             android:layout_weight="1.0"
             android:gravity="center"
-            android:textColor="#df4d4d"
-            android:textSize="51px"
             android:text="AR"
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:textColor="#df4d4d"
+            android:textSize="51px" />
     </RelativeLayout>
+
     <FrameLayout
         android:id="@+id/preview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_below="@id/top_layout" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/go_ahead"
+        android:layout_width="600px"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:padding="45px"
+        android:visibility="gone"
+        android:layout_marginBottom="43px"
+        android:textColor="#ffffff"
+        android:background="@drawable/go_task_bg"
+        android:text="获取"/>
+</RelativeLayout>

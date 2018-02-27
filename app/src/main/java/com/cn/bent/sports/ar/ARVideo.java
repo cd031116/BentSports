@@ -10,6 +10,11 @@ package com.cn.bent.sports.ar;
 
 import android.util.Log;
 
+import com.cn.bent.sports.bean.InfoEvent;
+import com.cn.bent.sports.bean.VideoEvent;
+
+import org.greenrobot.eventbus.EventBus;
+
 import cn.easyar.FunctorOfVoidFromVideoStatus;
 import cn.easyar.StorageType;
 import cn.easyar.VideoPlayer;
@@ -45,6 +50,7 @@ public class ARVideo
                 setVideoStatus(status);
             }
         });
+        EventBus.getDefault().post(new VideoEvent());
     }
     public void openTransparentVideoFile(String path, int texid)
     {

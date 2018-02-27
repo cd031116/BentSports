@@ -54,8 +54,8 @@ public class OfflineActivity extends BaseActivity {
     public void initView() {
         super.initView();
         user = (LoginBase) SaveObjectUtils.getInstance(this).getObject(Constants.USER_INFO, null);
-        handler2 = new Handler();
         gameId = getIntent().getStringExtra("gameId");
+        handler2 = new Handler();
         setTimes();
     }
 

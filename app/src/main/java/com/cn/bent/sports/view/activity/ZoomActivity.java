@@ -52,8 +52,8 @@ public class ZoomActivity extends BaseActivity {
     void onClick(View view) {
         switch (view.getId()){
             case R.id.img_sy:
-//                startActivity(new Intent(this, ImgActivity.class));
-                startActivity(new Intent(this, ArActivity.class));
+                startActivity(new Intent(this, ImgActivity.class));
+//                startActivity(new Intent(this, ArActivity.class));
 //                startActivity(new Intent(this, OfflineActivity.class));
                 break;
             case R.id.back:
