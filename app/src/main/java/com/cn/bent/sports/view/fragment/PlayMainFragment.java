@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -270,6 +271,9 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
         MyLocationStyle myLocationStyle=new MyLocationStyle();
         myLocationStyle.interval(3*1000);
         myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE_NO_CENTER);
+        myLocationStyle.strokeWidth(1.0f);
+        myLocationStyle.strokeColor(Color.parseColor("#F9DEDE"));// 设置圆形的边框颜色
+        myLocationStyle.radiusFillColor(Color.argb(100, 249,222,222));//
         aMap.setMyLocationStyle(myLocationStyle);
 //        aMap.setMyLocationType(MyLocationStyle.LOCATION_TYPE_MAP_ROTATE_NO_CENTER);
 //        aMap.setMyLocationType(MyLocationStyle.LOCATION_TYPE_FOLLOW_NO_CENTER);
