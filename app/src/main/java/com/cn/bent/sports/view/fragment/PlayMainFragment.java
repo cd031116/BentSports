@@ -113,6 +113,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
     private List<MapDot> place_list = new ArrayList<>();
     private DoTaskPoupWindow mopupWindow;
     private TalkPoupWindow soundWindow;
+    private boolean isGame=false;
     //---------------------
     AMapLocationListener mAMapLocationListener = new AMapLocationListener() {
         @Override
@@ -190,9 +191,10 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                     if (place_list.get(i).getIs_play().endsWith("0")) {
                         showDialogMsg("是否前往该地点", i);
                     } else {
-//                    已经玩了的
+                        isGame=false;
                     }
                 } else {
+                    isGame=false;
                     shousoundPoup(place_list.get(i).getMp3(), "",i);
                 }
             }
@@ -410,6 +412,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
             public void onClick(Dialog dialog, boolean confirm) {
                 if (confirm) {
                     t_ids = position;
+                    isGame=true;
                     setcheck();
                     place_list.get(t_ids).setCheck(true);
                     mEndPoint = null;
@@ -552,7 +555,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
             public void onRangeBeacons(List<MinewBeacon> minewBeacons) {
                 if (minewBeacons != null && minewBeacons.size() > 0) {
 //                    String distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
-                    if (place_list != null && place_list.size() > 0 && t_ids >= 0) {
+                    if (place_list != null && place_list.size() > 0 && t_ids >= 0&&isGame) {
                         for (MinewBeacon beacon : minewBeacons) {
                             String majer = beacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_MAC).getStringValue();
                             Log.i("tttt", "beacon majer" + majer.replace(":", ""));
