@@ -45,6 +45,7 @@ public class MainActivity extends BaseActivity {
     List<TextView> mText;
     int selected = 1;
     FragmentManager mFragmentMan;
+    private MainPoupWindow ropupWindow;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +62,14 @@ public class MainActivity extends BaseActivity {
     public void initView() {
         super.initView();
         EventBus.getDefault().register(this);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ropupWindow = new MainPoupWindow(MainActivity.this,null);
+                ropupWindow.showAtLocation(MainActivity.this.findViewById(R.id.id_content),
+                        Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
+            }
+        },1000);
     }
 
     @Override
@@ -185,6 +194,18 @@ public class MainActivity extends BaseActivity {
         mText.get(1).setTextColor(Color.parseColor("#333333"));
         mText.get(2).setTextColor(Color.parseColor("#333333"));
     }
+
+
+    @Override
+
+    public
+    void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus){
+
+        }
+    }
+
 
 
 }

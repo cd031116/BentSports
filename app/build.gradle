@@ -11,6 +11,9 @@ android {
         versionName rootProject.ext.android.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
+        ndk{
+            abiFilters "armeabi-v7a";
+        }
     }
     lintOptions {
         checkReleaseBuilds false
@@ -34,7 +37,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
     repositories {
         flatDir {
             dirs 'libs'
@@ -64,6 +71,7 @@ dependencies {
     compile 'com.android.support:multidex:1.0.1'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'cn.yipianfengye.android:zxing-library:2.2'
+    compile files('libs/EasyAR.jar')
     compile 'com.yuyh.imgsel:library:2.0.2'
     testCompile 'junit:junit:4.12'
 }

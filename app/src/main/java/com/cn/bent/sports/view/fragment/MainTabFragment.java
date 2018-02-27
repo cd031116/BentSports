@@ -78,7 +78,7 @@ public class MainTabFragment extends BaseFragment {
     @Bind(R.id.range_jifen)
     TextView range_jifen;
     private LoginBase user;
-    private MainPoupWindow mopupWindow;
+
 
     public static MainTabFragment newInstance(int type) {
         MainTabFragment fragment = new MainTabFragment();
@@ -96,10 +96,6 @@ public class MainTabFragment extends BaseFragment {
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
         EventBus.getDefault().register(this);
-        mopupWindow = new MainPoupWindow(getActivity(),null);
-        mopupWindow.showAtLocation(range_num,
-                Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
-//        mopupWindow.setClippingEnabled(false);
         range_list.setLayoutManager(new LinearLayoutManager(getActivity()));
         user = (LoginBase) SaveObjectUtils.getInstance(getActivity()).getObject(Constants.USER_INFO, null);
     }

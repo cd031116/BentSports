@@ -31,6 +31,7 @@ import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseConfig;
 import com.cn.bent.sports.base.BaseFragment;
 import com.cn.bent.sports.bean.LoginBase;
+import com.cn.bent.sports.bean.MajorBean;
 import com.cn.bent.sports.bean.MapDot;
 import com.cn.bent.sports.bean.PlayMapBean;
 import com.cn.bent.sports.bean.RailBean;
@@ -46,6 +47,7 @@ import com.cn.bent.sports.view.activity.PlayWebViewActivity;
 import com.cn.bent.sports.view.activity.RuleActivity;
 import com.cn.bent.sports.view.activity.ZoomActivity;
 import com.cn.bent.sports.view.poupwindow.DoTaskPoupWindow;
+import com.cn.bent.sports.view.poupwindow.MainPoupWindow;
 import com.cn.bent.sports.view.poupwindow.TalkPoupWindow;
 import com.cn.bent.sports.widget.ToastDialog;
 import com.minew.beacon.BeaconValueIndex;
@@ -155,10 +157,8 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
         aMap.setCustomMapStylePath(path);
         aMap.setMapCustomEnable(true);//true 开启; false 关闭
         RailBean railBean = SaveObjectUtils.getInstance(getActivity()).getObject(Constants.DOT_INFO, null);
-//        LatLng southwestLatLng = new LatLng(Double.valueOf(railBean.getFence().getDot_lat()).doubleValue(), Double.valueOf(railBean.getFence().getDot_long()).doubleValue());
-//        LatLng northeastLatLng = new LatLng(Double.valueOf(railBean.getFence().getOther_dot_lat()).doubleValue(), Double.valueOf(railBean.getFence().getOther_dot_long()).doubleValue());
-        LatLng southwestLatLng = new LatLng(28.109785,112.977275);
-        LatLng northeastLatLng = new LatLng(28.122617,112.989807);
+        LatLng southwestLatLng = new LatLng(Double.valueOf(railBean.getFence().getDot_lat()).doubleValue(), Double.valueOf(railBean.getFence().getDot_long()).doubleValue());
+        LatLng northeastLatLng = new LatLng(Double.valueOf(railBean.getFence().getOther_dot_lat()).doubleValue(), Double.valueOf(railBean.getFence().getOther_dot_long()).doubleValue());
         LatLngBounds latLngBounds = new LatLngBounds(southwestLatLng, northeastLatLng);
         aMap.setMapStatusLimits(latLngBounds);
         aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds, 50));
@@ -326,6 +326,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
     @Override
     public void onResume() {
         super.onResume();
+
         BaseConfig bf = BaseConfig.getInstance(getActivity());
         times_s = bf.getLongValue(Constants.IS_TIME, 0);
         if (times_s > 0) {
@@ -416,6 +417,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                     t_ids = position;
                     isGame = true;
                     setcheck();
+                    addMarkersToMap();
                     place_list.get(t_ids).setCheck(true);
                     mEndPoint = null;
                     mEndPoint = new LatLng(Double.valueOf(place_list.get(position).getLatitude()).doubleValue(),
@@ -564,14 +566,18 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
 //                    String distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
                     if (place_list != null && place_list.size() > 0 && t_ids >= 0 && isGame) {
                         for (MinewBeacon beacon : minewBeacons) {
-                            String majer = beacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_MAC).getStringValue();
+                            String majer = beacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Major).getStringValue()+beacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
                             Log.i("tttt", "beacon majer" + majer.replace(":", ""));
                             Log.i("tttt", "beacon t_ids" + t_ids);
                             Log.i("tttt", "beacon getMac" + place_list.get(t_ids).getiBeacons());
-
-                            if (majer != null && place_list.get(t_ids).getiBeacons().contains(majer.replace(":", ""))) {
-                                shouPoup(place_list.get(t_ids).getName(), true, place_list.get(t_ids).getGame_id());
-                                break;
+                            if (majer != null) {
+                                for (MajorBean cheeck:place_list.get(t_ids).getiBeacons()){
+                                 String jieguo= cheeck.getMajor()+cheeck.getMinor();
+                                    if(jieguo.endsWith(majer.replace(":", ""))){
+                                        shouPoup(place_list.get(t_ids).getName(), true, place_list.get(t_ids).getGame_id());
+                                        break;
+                                    }
+                                }
                             }
                         }
                     }
