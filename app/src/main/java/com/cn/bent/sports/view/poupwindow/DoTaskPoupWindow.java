@@ -28,36 +28,37 @@ import java.io.InputStream;
 public class DoTaskPoupWindow extends PopupWindow {
     private Activity mContext;
     private View view;
-    private ImageView image_bg,close_ima;
-    private TextView name_game,go_task;
+    private ImageView image_bg, close_ima;
+    private TextView name_game, go_task;
     private LinearLayout line_s;
     private ItemInclick itemsOnClick;
-    public DoTaskPoupWindow(Activity mContext,String names,boolean isDo,String path,ItemInclick itemsOnClickd) {
-        this.mContext=mContext;
+
+    public DoTaskPoupWindow(Activity mContext, String names, boolean isDo, String path, ItemInclick itemsOnClickd) {
+        this.mContext = mContext;
         this.itemsOnClick = itemsOnClickd;
         this.view = LayoutInflater.from(mContext).inflate(R.layout.do_task_window, null);
         SupportMultipleScreensUtil.scale(view);
-        image_bg= (ImageView) view.findViewById(R.id.image_bg);
-        name_game= (TextView) view.findViewById(R.id.name_game);
-        line_s= (LinearLayout) view.findViewById(R.id.line_s);
-        go_task= (TextView) view.findViewById(R.id.go_task);
-        close_ima= (ImageView) view.findViewById(R.id.close_ima);
+        image_bg = (ImageView) view.findViewById(R.id.image_bg);
+        name_game = (TextView) view.findViewById(R.id.name_game);
+        line_s = (LinearLayout) view.findViewById(R.id.line_s);
+        go_task = (TextView) view.findViewById(R.id.go_task);
+        close_ima = (ImageView) view.findViewById(R.id.close_ima);
 
-        if(isDo){
+        if (isDo) {
             go_task.setVisibility(View.VISIBLE);
             line_s.setVisibility(View.GONE);
-        }else {
+        } else {
             go_task.setVisibility(View.GONE);
             line_s.setVisibility(View.VISIBLE);
         }
         name_game.setText(names);
-        close_ima.setOnClickListener(new View.OnClickListener(){
+        close_ima.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dismiss();
             }
         });
-        go_task.setOnClickListener(new View.OnClickListener(){
+        go_task.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 itemsOnClick.ItemClick();
@@ -65,7 +66,7 @@ public class DoTaskPoupWindow extends PopupWindow {
         });
 
         try {
-            InputStream inputStreamF = mContext.getAssets().open(path+".jpg");
+            InputStream inputStreamF = mContext.getAssets().open(path + ".jpg");
             //获得图片的宽、高
             BitmapFactory.Options tmpOptions = new BitmapFactory.Options();
             tmpOptions.inJustDecodeBounds = true;
@@ -73,7 +74,7 @@ public class DoTaskPoupWindow extends PopupWindow {
             int width = tmpOptions.outWidth;
             int height = tmpOptions.outHeight;
 
-            InputStream inputStreamS = mContext.getAssets().open(path+".jpg");
+            InputStream inputStreamS = mContext.getAssets().open(path + ".jpg");
             //设置显示图片的中心区域
             BitmapRegionDecoder bitmapRegionDecoder = BitmapRegionDecoder.newInstance(inputStreamS, false);
             BitmapFactory.Options options = new BitmapFactory.Options();
@@ -102,6 +103,16 @@ public class DoTaskPoupWindow extends PopupWindow {
         // 设置弹出窗体显示时的动画，从底部向上弹出
         this.setAnimationStyle(R.style.select_anim);
         this.getContentView().measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+    }
+
+    public void setvisib(boolean istrue) {
+        if (istrue) {
+            go_task.setVisibility(View.VISIBLE);
+            line_s.setVisibility(View.GONE);
+        } else {
+            go_task.setVisibility(View.GONE);
+            line_s.setVisibility(View.VISIBLE);
+        }
     }
 
     public interface ItemInclick {
