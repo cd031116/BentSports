@@ -10,6 +10,7 @@ public class Constants {
 
     public static final String USER_INFO="user_info";
     public static final String DOT_INFO="dot_info";
+    public static final String DOT_LIST="dot_list";
     public static final String IS_FIRST="is_first";
     public static final String IS_TIME="is_time";
     public static final String TEST_URL="http://aihw.zhonghuilv.net/";

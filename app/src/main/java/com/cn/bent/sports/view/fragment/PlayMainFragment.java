@@ -268,23 +268,17 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
         switch (v.getId()) {
             case R.id.qiehuan:
                 if(daodan.isSelected()){
+                    ToastUtils.showShortToast(getActivity(),"语音导览关闭");
                     daodan.setSelected(false);
                     aMap.clear();
-                    RailBean railBean=  SaveObjectUtils.getInstance(getActivity()).getObject(Constants.DOT_INFO, null);
-                    List<MapDot> mapDots=railBean.getMp3_tag();
-                    for(int i=0;i<mapDots.size();i++) {
-                        if (place_list.contains(mapDots.get(i))) {
-                            place_list.remove(i);
-                            Log.i("tttt","contains-");
-                            i--;
-                        }
+                    PlayMapBean beans=  SaveObjectUtils.getInstance(getActivity()).getObject(Constants.DOT_LIST, null);
+                    if(place_list.size()>0){
+                        place_list.clear();
                     }
-//                    for (MapDot inso:mapDots){
-//                        place_list.remove(inso);
-//                    }
-                    Log.i("tttt","place_list-"+place_list.size());
+                    place_list.addAll(beans.getPlace_list());
                     addMarkersToMap();
                 }else {
+                    ToastUtils.showShortToast(getActivity(),"语音导览打开");
                     daodan.setSelected(true);
                     aMap.clear();
                     RailBean railBean=  SaveObjectUtils.getInstance(getActivity()).getObject(Constants.DOT_INFO, null);
@@ -636,6 +630,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                                 place_list.clear();
                             }
                             place_list.addAll(info.getPlace_list());
+                            SaveObjectUtils.getInstance(getActivity()).setObject(Constants.DOT_LIST, info);
                             if(daodan.isSelected()){
                                 RailBean railBean=  SaveObjectUtils.getInstance(getActivity()).getObject(Constants.DOT_INFO, null);
                                 place_list.addAll(railBean.getMp3_tag());
