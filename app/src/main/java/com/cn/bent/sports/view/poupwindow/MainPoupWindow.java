@@ -27,7 +27,7 @@ public class MainPoupWindow extends PopupWindow {
         this.mContext=mContext;
         this.itemsOnClick = itemsOnClickd;
         this.view = LayoutInflater.from(mContext).inflate(R.layout.detail_window, null);
-
+        SupportMultipleScreensUtil.scale(view);
         go_to= (ImageView) view.findViewById(R.id.go_to);
         go_to.setOnClickListener(new View.OnClickListener() {
             @Override

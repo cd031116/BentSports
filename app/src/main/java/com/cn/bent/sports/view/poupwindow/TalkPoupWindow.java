@@ -39,6 +39,7 @@ public class TalkPoupWindow extends PopupWindow {
         this.mContext = mContext;
         this.itemsOnClick = itemsOnClickd;
         this.view = LayoutInflater.from(mContext).inflate(R.layout.talk_window, null);
+        SupportMultipleScreensUtil.scale(view);
         context_t = (TextView) view.findViewById(R.id.context_t);
         travel_name = (TextView) view.findViewById(R.id.travel_name);
         close_ima = (ImageView) view.findViewById(R.id.close_ima);

@@ -32,10 +32,11 @@ public class DoTaskPoupWindow extends PopupWindow {
     private TextView name_game,go_task;
     private LinearLayout line_s;
     private ItemInclick itemsOnClick;
-    public DoTaskPoupWindow(Activity mContext,boolean isDo,String path,ItemInclick itemsOnClickd) {
+    public DoTaskPoupWindow(Activity mContext,String names,boolean isDo,String path,ItemInclick itemsOnClickd) {
         this.mContext=mContext;
         this.itemsOnClick = itemsOnClickd;
         this.view = LayoutInflater.from(mContext).inflate(R.layout.do_task_window, null);
+        SupportMultipleScreensUtil.scale(view);
         image_bg= (ImageView) view.findViewById(R.id.image_bg);
         name_game= (TextView) view.findViewById(R.id.name_game);
         line_s= (LinearLayout) view.findViewById(R.id.line_s);
@@ -49,7 +50,7 @@ public class DoTaskPoupWindow extends PopupWindow {
             go_task.setVisibility(View.GONE);
             line_s.setVisibility(View.VISIBLE);
         }
-
+        name_game.setText(names);
         close_ima.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {

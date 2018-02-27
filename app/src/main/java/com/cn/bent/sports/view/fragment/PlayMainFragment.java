@@ -40,6 +40,7 @@ import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.DataUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.utils.ToastUtils;
+import com.cn.bent.sports.view.activity.ArActivity;
 import com.cn.bent.sports.view.activity.OfflineActivity;
 import com.cn.bent.sports.view.activity.PlayWebViewActivity;
 import com.cn.bent.sports.view.activity.RuleActivity;
@@ -104,12 +105,12 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
     private static final int REQUEST_ENABLE_BT = 2;
     private static final int REQUEST_Scan = 12;
     private MinewBeaconManager mMinewBeaconManager;
-    private int t_ids=-1;
+    private int t_ids = -1;
     private long times_s = 0;
     private Handler handler2;
     private LoginBase user;
     private boolean isBlue = false;
-    private List<MapDot> place_list=new ArrayList<>();
+    private List<MapDot> place_list = new ArrayList<>();
     private DoTaskPoupWindow mopupWindow;
     private TalkPoupWindow soundWindow;
     //---------------------
@@ -152,8 +153,8 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
         String path = getActivity().getFilesDir() + "/bent/sport.data";
         aMap.setCustomMapStylePath(path);
         aMap.setMapCustomEnable(true);//true 开启; false 关闭
-        RailBean railBean=  SaveObjectUtils.getInstance(getActivity()).getObject(Constants.DOT_INFO, null);
-        LatLng southwestLatLng = new LatLng( Double.valueOf(railBean.getFence().getDot_lat()).doubleValue(),  Double.valueOf(railBean.getFence().getDot_long()).doubleValue());
+        RailBean railBean = SaveObjectUtils.getInstance(getActivity()).getObject(Constants.DOT_INFO, null);
+        LatLng southwestLatLng = new LatLng(Double.valueOf(railBean.getFence().getDot_lat()).doubleValue(), Double.valueOf(railBean.getFence().getDot_long()).doubleValue());
         LatLng northeastLatLng = new LatLng(Double.valueOf(railBean.getFence().getOther_dot_lat()).doubleValue(), Double.valueOf(railBean.getFence().getOther_dot_long()).doubleValue());
         LatLngBounds latLngBounds = new LatLngBounds(southwestLatLng, northeastLatLng);
         aMap.setMapStatusLimits(latLngBounds);
@@ -184,16 +185,16 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
     @Override
     public boolean onMarkerClick(Marker marker) {
         for (int i = 0; i < mList.size(); i++) {
-            if (marker.equals(mList.get(i))){
-                t_ids =i;
-                if(!TextUtils.isEmpty(place_list.get(i).getGame_url())){
-                    if(place_list.get(i).getIs_play().endsWith("0")){
+            if (marker.equals(mList.get(i))) {
+                t_ids = i;
+                if (!TextUtils.isEmpty(place_list.get(i).getGame_url())) {
+                    if (place_list.get(i).getIs_play().endsWith("0")) {
                         showDialogMsg("是否前往该地点", i);
-                    }else {
+                    } else {
 //                    已经玩了的
                     }
-                }else {
-                    shousoundPoup(place_list.get(i).getMp3(),"");
+                } else {
+                    shousoundPoup(place_list.get(i).getMp3(), "");
                 }
             }
         }
@@ -215,39 +216,39 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                 mList.clear();
             }
             for (MapDot hs : place_list) {
-                    String longitude = hs.getLongitude();
-                    String latitude = hs.getLatitude();
-                    double dlat = Double.valueOf(latitude).doubleValue();//纬度
-                    double dlong = Double.valueOf(longitude).doubleValue();//经度
-                    MarkerOptions markerOption = new MarkerOptions();
-                    markerOption.position(new LatLng(dlat, dlong));
-                    markerOption.title(hs.getName());
-                    markerOption.draggable(false);
-                    if (hs.isCheck()&&hs.getIs_play().endsWith("0")) {
-                        markerOption.icon(
-                                BitmapDescriptorFactory.fromBitmap(BitmapFactory
-                                        .decodeResource(getResources(),
-                                                R.drawable.zb_icon)));
-                    } else if (hs.getIs_play().endsWith("0")&&!hs.isCheck()){
-                        markerOption.icon(
-                                BitmapDescriptorFactory.fromBitmap(BitmapFactory
-                                        .decodeResource(getResources(),
-                                                R.drawable.zuobiao)));
-                    }else if(hs.getIs_play().endsWith("1")){
-                        markerOption.icon(
-                                BitmapDescriptorFactory.fromBitmap(BitmapFactory
-                                        .decodeResource(getResources(),
-                                                R.drawable.completed)));
+                String longitude = hs.getLongitude();
+                String latitude = hs.getLatitude();
+                double dlat = Double.valueOf(latitude).doubleValue();//纬度
+                double dlong = Double.valueOf(longitude).doubleValue();//经度
+                MarkerOptions markerOption = new MarkerOptions();
+                markerOption.position(new LatLng(dlat, dlong));
+                markerOption.title(hs.getName());
+                markerOption.draggable(false);
+                if (hs.isCheck() && hs.getIs_play().endsWith("0")) {
+                    markerOption.icon(
+                            BitmapDescriptorFactory.fromBitmap(BitmapFactory
+                                    .decodeResource(getResources(),
+                                            R.drawable.zb_icon)));
+                } else if (hs.getIs_play().endsWith("0") && !hs.isCheck()) {
+                    markerOption.icon(
+                            BitmapDescriptorFactory.fromBitmap(BitmapFactory
+                                    .decodeResource(getResources(),
+                                            R.drawable.zuobiao)));
+                } else if (hs.getIs_play().endsWith("1")) {
+                    markerOption.icon(
+                            BitmapDescriptorFactory.fromBitmap(BitmapFactory
+                                    .decodeResource(getResources(),
+                                            R.drawable.completed)));
 
-                    }else {
-                        markerOption.icon(
-                                BitmapDescriptorFactory.fromBitmap(BitmapFactory
-                                        .decodeResource(getResources(),
-                                                R.drawable.radio_icon)));
-                    }
-                    markerOptionlst.add(markerOption);
-                    aMap.addMarker(markerOption);
-                    mList.add(aMap.addMarker(markerOption));
+                } else {
+                    markerOption.icon(
+                            BitmapDescriptorFactory.fromBitmap(BitmapFactory
+                                    .decodeResource(getResources(),
+                                            R.drawable.radio_icon)));
+                }
+                markerOptionlst.add(markerOption);
+                aMap.addMarker(markerOption);
+                mList.add(aMap.addMarker(markerOption));
             }
         }
     }
@@ -258,33 +259,34 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
      */
     private void addLocaToMap() {
         aMap.setMyLocationEnabled(false);
-    // 设置定位的类型为定位模式，有定位、跟随或地图根据面向方向旋转几种
+        // 设置定位的类型为定位模式，有定位、跟随或地图根据面向方向旋转几种
         aMap.setMyLocationType(AMap.LOCATION_TYPE_LOCATE);
     }
 
 
-    @OnClick({R.id.shuoming, R.id.dao_lan, R.id.go_task,R.id.qiehuan})
+    @OnClick({R.id.shuoming, R.id.dao_lan, R.id.go_task, R.id.qiehuan})
     void onclik(View v) {
         switch (v.getId()) {
             case R.id.qiehuan:
-                if(daodan.isSelected()){
-                    ToastUtils.showShortToast(getActivity(),"语音导览关闭");
+                if (daodan.isSelected()) {
+                    ToastUtils.showShortToast(getActivity(), "语音导览关闭");
                     daodan.setSelected(false);
                     aMap.clear();
-                    PlayMapBean beans=  SaveObjectUtils.getInstance(getActivity()).getObject(Constants.DOT_LIST, null);
-                    Log.i("tttt","beans+"+beans.getPlace_list());
-                    if(place_list.size()>0){
+                    PlayMapBean beans = SaveObjectUtils.getInstance(getActivity()).getObject(Constants.DOT_LIST, null);
+                    if (place_list.size() > 0) {
                         place_list.clear();
                     }
-                    place_list.addAll(beans.getPlace_list());
+                    if (beans != null) {
+                        place_list.addAll(beans.getPlace_list());
+                    }
                     addMarkersToMap();
-                }else {
-                    ToastUtils.showShortToast(getActivity(),"语音导览打开");
+                } else {
+                    ToastUtils.showShortToast(getActivity(), "语音导览打开");
                     daodan.setSelected(true);
                     aMap.clear();
-                    RailBean railBean=  SaveObjectUtils.getInstance(getActivity()).getObject(Constants.DOT_INFO, null);
+                    RailBean railBean = SaveObjectUtils.getInstance(getActivity()).getObject(Constants.DOT_INFO, null);
                     place_list.addAll(railBean.getMp3_tag());
-                    Log.i("tttt","place_list+"+place_list.size());
+                    Log.i("tttt", "place_list+" + place_list.size());
                     addMarkersToMap();
                 }
                 break;
@@ -301,14 +303,14 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
     public void onEvent(ReFreshEvent event) {
         BaseConfig bf = BaseConfig.getInstance(getActivity());
         getMapMsg();
-        boolean iswanc=true;
-        for(MapDot dot:place_list){
-            if(dot.getIs_play().endsWith("0")){
-                iswanc=false;
+        boolean iswanc = true;
+        for (MapDot dot : place_list) {
+            if (dot.getIs_play().endsWith("0")) {
+                iswanc = false;
                 break;
             }
         }
-        if(iswanc){
+        if (iswanc) {
             handler2.removeCallbacks(runnable2);
             bf.setLongValue(Constants.IS_TIME, 0);
             ji_timer.setText("已通关");
@@ -347,7 +349,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
             if (((System.currentTimeMillis() - times_s) / 1000) >= 2 * 60 * 60) {
                 handler2.removeCallbacks(runnable2);
                 for (MapDot hs : place_list) {
-                    if(hs.getIs_play().endsWith("0")){
+                    if (hs.getIs_play().endsWith("0")) {
                         hs.setIs_play("1");
                     }
                 }
@@ -413,7 +415,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                     mEndPoint = null;
                     mEndPoint = new LatLng(Double.valueOf(place_list.get(position).getLatitude()).doubleValue(),
                             Double.valueOf(place_list.get(position).getLongitude()).doubleValue());
-                    shouPoup(false,place_list.get(t_ids).getGame_id());
+                    shouPoup(place_list.get(t_ids).getName(), false, place_list.get(t_ids).getGame_id());
                     if (times_s <= 0) {
                         if (mStartPoint != null) {
                             login();
@@ -427,21 +429,21 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
         }).setTitle("提示").show();
     }
 
-    private void  shouPoup(boolean isShow,String photo){
-        if(mopupWindow!=null){
-            mopupWindow.dismiss();
+    private void shouPoup(String ganme_name, boolean isShow, String photo) {
+        if (mopupWindow != null&&mopupWindow.isShowing()) {
+           return;
         }
-        mopupWindow = new DoTaskPoupWindow(getActivity(), isShow,photo, itemsOnClick);
+        mopupWindow = new DoTaskPoupWindow(getActivity(), ganme_name, isShow, photo, itemsOnClick);
         mopupWindow.showAtLocation(getActivity().findViewById(R.id.map_view),
                 Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
 
     }
 
-    private void  shousoundPoup(String paths,String shuom){
-        if(soundWindow!=null){
+    private void shousoundPoup(String paths, String shuom) {
+        if (soundWindow != null) {
             soundWindow.dismiss();
         }
-        soundWindow = new TalkPoupWindow(getActivity(),paths, shuom,null);
+        soundWindow = new TalkPoupWindow(getActivity(), paths, shuom, null);
         soundWindow.showAtLocation(getActivity().findViewById(R.id.map_view),
                 Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
 
@@ -450,10 +452,19 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
     private DoTaskPoupWindow.ItemInclick itemsOnClick = new DoTaskPoupWindow.ItemInclick() {
         @Override
         public void ItemClick() {
-            if ("5".endsWith(place_list.get(t_ids).getGame_id())) {
+            t_ids=-1;
+            if ("14".endsWith(place_list.get(t_ids).getGame_id())) {
                 Intent intent = new Intent(getActivity(), CaptureActivity.class);
                 startActivityForResult(intent, REQUEST_Scan);
-            }else {
+            } else if ("15".endsWith(place_list.get(t_ids).getGame_id())) {
+                Intent intent = new Intent(getActivity(), ArActivity.class);
+                intent.putExtra("gameId", place_list.get(t_ids).getGame_id());
+                startActivity(intent);
+            } else if ("18".endsWith(place_list.get(t_ids).getGame_id())) {
+                Intent intent = new Intent(getActivity(), OfflineActivity.class);
+                intent.putExtra("gameId", place_list.get(t_ids).getGame_id());
+                startActivity(intent);
+            } else {
                 Intent intent = new Intent(getActivity(), PlayWebViewActivity.class);
                 intent.putExtra("gameId", place_list.get(t_ids).getGame_id());
                 intent.putExtra("gameUrl", place_list.get(t_ids).getGame_url());
@@ -537,18 +548,18 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
             public void onRangeBeacons(List<MinewBeacon> minewBeacons) {
                 if (minewBeacons != null && minewBeacons.size() > 0) {
 //                    String distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
-                    if (place_list != null&&place_list.size()>0&&t_ids>=0) {
-                       for(MinewBeacon beacon:minewBeacons){
-                           String majer=beacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_MAC).getStringValue();
-                           Log.i("tttt","beacon majer"+majer.replace(":",""));
-                           Log.i("tttt","beacon t_ids"+t_ids);
-                           Log.i("tttt","beacon getMac"+place_list.get(t_ids).getiBeacons());
+                    if (place_list != null && place_list.size() > 0 && t_ids >= 0) {
+                        for (MinewBeacon beacon : minewBeacons) {
+                            String majer = beacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_MAC).getStringValue();
+                            Log.i("tttt", "beacon majer" + majer.replace(":", ""));
+                            Log.i("tttt", "beacon t_ids" + t_ids);
+                            Log.i("tttt", "beacon getMac" + place_list.get(t_ids).getiBeacons());
 
-                            if(majer!=null&&place_list.get(t_ids).getiBeacons().contains(majer.replace(":",""))){
-                                shouPoup(true,place_list.get(t_ids).getGame_id());
+                            if (majer != null && place_list.get(t_ids).getiBeacons().contains(majer.replace(":", ""))) {
+                                shouPoup(place_list.get(t_ids).getName(), true, place_list.get(t_ids).getGame_id());
                                 break;
                             }
-                       }
+                        }
                     }
                 }
             }
@@ -629,23 +640,18 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                     @Override
                     public void onSuccess(int whichRequest, PlayMapBean info) {
                         dismissAlert();
-                        if(info.getPlace_list().size()>0){
+                        if (info.getPlace_list().size() > 0) {
                             aMap.clear();
-                            if(place_list!=null){
+                            if (place_list != null) {
                                 place_list.clear();
                             }
                             place_list.addAll(info.getPlace_list());
                             SaveObjectUtils.getInstance(getActivity()).setObject(Constants.DOT_LIST, info);
-                            if(daodan.isSelected()){
-                                RailBean railBean=  SaveObjectUtils.getInstance(getActivity()).getObject(Constants.DOT_INFO, null);
+                            if (daodan.isSelected()) {
+                                RailBean railBean = SaveObjectUtils.getInstance(getActivity()).getObject(Constants.DOT_INFO, null);
                                 place_list.addAll(railBean.getMp3_tag());
                             }
                             addMarkersToMap();
-                            if(info.getIs_end().endsWith("1")){
-                                Intent intent = new Intent(getActivity(), OfflineActivity.class);
-                                intent.putExtra("gameId", place_list.get(t_ids).getGame_id());
-                                startActivity(intent);
-                            }
                         }
                     }
 
