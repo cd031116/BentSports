@@ -155,8 +155,10 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
         aMap.setCustomMapStylePath(path);
         aMap.setMapCustomEnable(true);//true 开启; false 关闭
         RailBean railBean = SaveObjectUtils.getInstance(getActivity()).getObject(Constants.DOT_INFO, null);
-        LatLng southwestLatLng = new LatLng(Double.valueOf(railBean.getFence().getDot_lat()).doubleValue(), Double.valueOf(railBean.getFence().getDot_long()).doubleValue());
-        LatLng northeastLatLng = new LatLng(Double.valueOf(railBean.getFence().getOther_dot_lat()).doubleValue(), Double.valueOf(railBean.getFence().getOther_dot_long()).doubleValue());
+//        LatLng southwestLatLng = new LatLng(Double.valueOf(railBean.getFence().getDot_lat()).doubleValue(), Double.valueOf(railBean.getFence().getDot_long()).doubleValue());
+//        LatLng northeastLatLng = new LatLng(Double.valueOf(railBean.getFence().getOther_dot_lat()).doubleValue(), Double.valueOf(railBean.getFence().getOther_dot_long()).doubleValue());
+        LatLng southwestLatLng = new LatLng(28.109785,112.977275);
+        LatLng northeastLatLng = new LatLng(28.122617,112.989807);
         LatLngBounds latLngBounds = new LatLngBounds(southwestLatLng, northeastLatLng);
         aMap.setMapStatusLimits(latLngBounds);
         aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds, 50));
@@ -465,18 +467,23 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                     Intent intent = new Intent(getActivity(), ArActivity.class);
                     intent.putExtra("gameId", place_list.get(t_ids).getGame_id());
                     startActivity(intent);
+                    t_ids = -1;
                 } else if ("18".endsWith(place_list.get(t_ids).getGame_id())) {
                     Intent intent = new Intent(getActivity(), OfflineActivity.class);
                     intent.putExtra("gameId", place_list.get(t_ids).getGame_id());
                     startActivity(intent);
+                    t_ids = -1;
                 } else {
                     Intent intent = new Intent(getActivity(), PlayWebViewActivity.class);
                     intent.putExtra("gameId", place_list.get(t_ids).getGame_id());
                     intent.putExtra("gameUrl", place_list.get(t_ids).getGame_url());
                     startActivity(intent);
+                    t_ids = -1;
                 }
+            }else {
+                t_ids = -1;
             }
-            t_ids = -1;
+            isGame = false;
             mopupWindow.dismiss();
         }
     };
@@ -621,14 +628,16 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                         String result = bundle.getString(CodeUtils.RESULT_STRING);
                         if ("B33832EF5EFF3EFF30B1B646B6F2410F".endsWith(result)) {
                             Intent intent = new Intent(getActivity(), PlayWebViewActivity.class);
-                            intent.putExtra("gameId", t_ids);
+                            intent.putExtra("gameId", place_list.get(t_ids).getGame_id());
+                            intent.putExtra("gameUrl", place_list.get(t_ids).getGame_url());
                             startActivity(intent);
                         } else {
                             ToastUtils.showShortToast(getActivity(), "二维码不匹配");
                         }
-
+                        t_ids = -1;
                     } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
                         ToastUtils.showShortToast(getActivity(), "二维码不匹配");
+                        t_ids = -1;
                     }
                 } else {
                     ToastUtils.showShortToast(getActivity(), "无结果");
@@ -665,6 +674,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                     @Override
                     public void onError(int whichRequest, Throwable e) {
                         dismissAlert();
+                        SaveObjectUtils.getInstance(getActivity()).setObject(Constants.DOT_LIST, null);
                     }
                 });
     }
