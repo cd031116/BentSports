@@ -340,6 +340,11 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
             handler2.postDelayed(this, 1000);
             if (((System.currentTimeMillis() - times_s) / 1000) >= 2 * 60 * 60) {
                 handler2.removeCallbacks(runnable2);
+                for (MapDot hs : place_list) {
+                    if(hs.getIs_play().endsWith("0")){
+                        hs.setIs_play("1");
+                    }
+                }
                 ji_timer.setText("02.00.00");
             } else {
                 ji_timer.setText(DataUtils.getDateToTime(System.currentTimeMillis() - times_s));

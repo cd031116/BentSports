@@ -150,16 +150,7 @@ public class LoginActivity extends BaseActivity {
                     public void onSuccess(int whichRequest, LoginBase info) {
                         SaveObjectUtils.getInstance(LoginActivity.this).setObject(Constants.USER_INFO, info);
                         dismissAlert();
-
-                        BaseConfig bg = BaseConfig.getInstance(LoginActivity.this);
-//                        int luxian = bg.getIntValue(Constants.LU_XIAN, -1);
                         getdot();
-//                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-//                        if (luxian > 0) {
-//                        } else {
-//                            startActivity(new Intent(LoginActivity.this, ChooseLuxianActivity.class));
-//                        }
-                        finish();
                     }
 
                     @Override
