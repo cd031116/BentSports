@@ -257,10 +257,9 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
      * 显示定位蓝点
      */
     private void addLocaToMap() {
-        aMap.setMyLocationEnabled(true);
+        aMap.setMyLocationEnabled(false);
     // 设置定位的类型为定位模式，有定位、跟随或地图根据面向方向旋转几种
         aMap.setMyLocationType(AMap.LOCATION_TYPE_LOCATE);
-        addMarkersToMap();
     }
 
 
@@ -273,12 +272,14 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                     aMap.clear();
                     RailBean railBean=  SaveObjectUtils.getInstance(getActivity()).getObject(Constants.DOT_INFO, null);
                     place_list.removeAll(railBean.getMp3_tag());
+                    Log.i("tttt","place_list-"+place_list.size());
                     addMarkersToMap();
                 }else {
                     daodan.setSelected(true);
                     aMap.clear();
                     RailBean railBean=  SaveObjectUtils.getInstance(getActivity()).getObject(Constants.DOT_INFO, null);
                     place_list.addAll(railBean.getMp3_tag());
+                    Log.i("tttt","place_list+"+place_list.size());
                     addMarkersToMap();
                 }
                 break;
