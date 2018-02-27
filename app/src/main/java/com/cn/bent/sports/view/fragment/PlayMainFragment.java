@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -12,10 +11,9 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
@@ -42,12 +40,12 @@ import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.DataUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.utils.ToastUtils;
+import com.cn.bent.sports.view.activity.OfflineActivity;
 import com.cn.bent.sports.view.activity.PlayWebViewActivity;
 import com.cn.bent.sports.view.activity.RuleActivity;
 import com.cn.bent.sports.view.activity.ZoomActivity;
 import com.cn.bent.sports.view.poupwindow.DoTaskPoupWindow;
 import com.cn.bent.sports.view.poupwindow.TalkPoupWindow;
-import com.cn.bent.sports.widget.GameDialog;
 import com.cn.bent.sports.widget.ToastDialog;
 import com.minew.beacon.BeaconValueIndex;
 import com.minew.beacon.BluetoothState;
@@ -59,11 +57,14 @@ import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.HuiquRxFunction;
 import com.zhl.network.huiqu.HuiquRxTBFunction;
 import com.zhl.network.huiqu.HuiquTBResult;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.Bind;
 import butterknife.OnClick;
 
@@ -82,7 +83,6 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
 
     @Bind(R.id.map_view)
     MapView mapView;
-
     @Bind(R.id.ji_timer)
     TextView ji_timer;
     @Bind(R.id.jifen_t)
@@ -139,11 +139,11 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
 
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
+        EventBus.getDefault().register(this);
         user = SaveObjectUtils.getInstance(getActivity()).getObject(Constants.USER_INFO, null);
         getMapMsg();
         checkBluetooth();
         handler2 = new Handler();
-        EventBus.getDefault().register(this);
         mapView.onCreate(savedInstanceState);
         mMinewBeaconManager = MinewBeaconManager.getInstance(getActivity());
         if (aMap == null) {
@@ -398,6 +398,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
             public void onClick(Dialog dialog, boolean confirm) {
                 if (confirm) {
                     setcheck();
+                    place_list.get(t_ids).setCheck(true);
                     mEndPoint = null;
                     mEndPoint = new LatLng(Double.valueOf(place_list.get(position).getLatitude()).doubleValue(),
                             Double.valueOf(place_list.get(position).getLongitude()).doubleValue());
@@ -445,7 +446,11 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
             if ("5".endsWith(place_list.get(t_ids).getGame_id())) {
                 Intent intent = new Intent(getActivity(), CaptureActivity.class);
                 startActivityForResult(intent, REQUEST_Scan);
-            } else {
+            }else if("8".endsWith(place_list.get(t_ids).getGame_id())){
+                Intent intent = new Intent(getActivity(), OfflineActivity.class);
+                intent.putExtra("gameId", place_list.get(t_ids).getGame_id());
+                startActivity(intent);
+            }else {
                 Intent intent = new Intent(getActivity(), PlayWebViewActivity.class);
                 intent.putExtra("gameId", place_list.get(t_ids).getGame_id());
                 intent.putExtra("gameUrl", place_list.get(t_ids).getGame_url());
