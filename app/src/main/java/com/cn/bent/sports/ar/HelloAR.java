@@ -251,18 +251,34 @@ public class HelloAR
                     if (tracked_target == 0) {
                         if (video == null && video_renderers.size() > 0) {
                             String target_name = target.name();
-                            if (target_name.equals("argame") && video_renderers.get(0).texId() != 0) {
-                                video = new ARVideo();
-                                video.openVideoFile("video.mp4", video_renderers.get(0).texId());
-                                current_video_renderer = video_renderers.get(0);
-                            } else if (target_name.equals("namecard") && video_renderers.get(1).texId() != 0) {
-                                video = new ARVideo();
-                                video.openTransparentVideoFile("transparentvideo.mp4", video_renderers.get(1).texId());
-                                current_video_renderer = video_renderers.get(1);
-                            } else if (target_name.equals("idback") && video_renderers.get(2).texId() != 0) {
-                                video = new ARVideo();
-                                video.openStreamingVideo("https://sightpvideo-cdn.sightp.com/sdkvideo/EasyARSDKShow201520.mp4", video_renderers.get(2).texId());
-                                current_video_renderer = video_renderers.get(2);
+                            if (target_name.equals("tuo1") && video_renderers.get(0).texId() != 0) {
+                                playTuoVideo(0);
+                            }else if (target_name.equals("tuo2") && video_renderers.get(1).texId() != 0) {
+                                playTuoVideo(1);
+                            }else if (target_name.equals("tuo3") && video_renderers.get(2).texId() != 0) {
+                                playTuoVideo(2);
+                            }else if (target_name.equals("tuo4") && video_renderers.get(3).texId() != 0) {
+                                playTuoVideo(3);
+                            }else if (target_name.equals("tuo5") && video_renderers.get(4).texId() != 0) {
+                                playTuoVideo(4);
+                            }else if (target_name.equals("tuo6") && video_renderers.get(5).texId() != 0) {
+                                playTuoVideo(5);
+                            }else if (target_name.equals("tuo7") && video_renderers.get(6).texId() != 0) {
+                                playTuoVideo(6);
+                            }else if (target_name.equals("tuo8") && video_renderers.get(7).texId() != 0) {
+                                playTuoVideo(7);
+                            }else if (target_name.equals("tuo9") && video_renderers.get(8).texId() != 0) {
+                                playTuoVideo(8);
+                            }else if (target_name.equals("tuo10") && video_renderers.get(9).texId() != 0) {
+                                playTuoVideo(9);
+                            }else if (target_name.equals("tuo11") && video_renderers.get(10).texId() != 0) {
+                                playTuoVideo(10);
+                            }else if (target_name.equals("tuo12") && video_renderers.get(11).texId() != 0) {
+                                playTuoVideo(11);
+                            }else if (target_name.equals("tuo13") && video_renderers.get(12).texId() != 0) {
+                                playTuoVideo(12);
+                            }else if (target_name.equals("tuo14") && video_renderers.get(13).texId() != 0) {
+                                playTuoVideo(13);
                             }
                         }
                         if (video != null) {
@@ -291,5 +307,10 @@ public class HelloAR
         finally {
             frame.dispose();
         }
+    }
+    private void playTuoVideo(int i) {
+        video = new ARVideo();
+        video.openVideoFile("video.mp4", video_renderers.get(i).texId());
+        current_video_renderer = video_renderers.get(i);
     }
 }

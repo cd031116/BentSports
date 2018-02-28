@@ -105,7 +105,7 @@ public class ArActivity extends BaseActivity {
         EventBus.getDefault().unregister(this);
     }
 
-    @OnClick({R.id.top_left, R.id.top_image})
+    @OnClick({R.id.top_left, R.id.top_image,R.id.go_ahead})
     void onClick(View view) {
         switch (view.getId()) {
             case R.id.top_left:
