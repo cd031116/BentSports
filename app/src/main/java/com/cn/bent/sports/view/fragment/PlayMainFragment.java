@@ -231,17 +231,17 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                 markerOption.position(new LatLng(dlat, dlong));
                 markerOption.title(hs.getName());
                 markerOption.draggable(false);
-                if (hs.isCheck() && hs.getIs_play().endsWith("0")) {
+                if (hs.isCheck() && hs.getIs_play().endsWith("0")&&!hs.getType().equals("2")) {
                     markerOption.icon(
                             BitmapDescriptorFactory.fromBitmap(BitmapFactory
                                     .decodeResource(getResources(),
                                             R.drawable.zb_icon)));
-                } else if (hs.getIs_play().endsWith("0") && !hs.isCheck()) {
+                } else if (hs.getIs_play().endsWith("0") && !hs.isCheck()&&!hs.getType().equals("2")) {
                     markerOption.icon(
                             BitmapDescriptorFactory.fromBitmap(BitmapFactory
                                     .decodeResource(getResources(),
                                             R.drawable.zuobiao)));
-                } else if (hs.getIs_play().endsWith("1")) {
+                } else if (hs.getIs_play().endsWith("1")&&!hs.getType().equals("2")) {
                     markerOption.icon(
                             BitmapDescriptorFactory.fromBitmap(BitmapFactory
                                     .decodeResource(getResources(),
