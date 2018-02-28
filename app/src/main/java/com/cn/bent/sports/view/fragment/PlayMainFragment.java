@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -49,7 +48,6 @@ import com.cn.bent.sports.view.activity.PlayWebViewActivity;
 import com.cn.bent.sports.view.activity.RuleActivity;
 import com.cn.bent.sports.view.activity.ZoomActivity;
 import com.cn.bent.sports.view.poupwindow.DoTaskPoupWindow;
-import com.cn.bent.sports.view.poupwindow.MainPoupWindow;
 import com.cn.bent.sports.view.poupwindow.TalkPoupWindow;
 import com.cn.bent.sports.widget.ToastDialog;
 import com.minew.beacon.BeaconValueIndex;
@@ -342,7 +340,9 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
     @Override
     public void onResume() {
         super.onResume();
-
+        if(mMinewBeaconManager!=null){
+            mMinewBeaconManager.startScan();
+        }
         BaseConfig bf = BaseConfig.getInstance(getActivity());
         times_s = bf.getLongValue(Constants.IS_TIME, 0);
         if (times_s > 0) {
@@ -387,7 +387,9 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
     public void onPause() {
         super.onPause();
         mapView.onPause();
-
+        if(mMinewBeaconManager!=null){
+            mMinewBeaconManager.stopScan();
+        }
     }
 
     @Override
@@ -636,9 +638,10 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                     isBlue = true;
                     initListener();
                 }
-                if (mMinewBeaconManager.checkBluetoothState().equals(BluetoothState.BluetoothStatePowerOff))
+                if (mMinewBeaconManager.checkBluetoothState().equals(BluetoothState.BluetoothStatePowerOff)){
                     isBlue = false;
-                checkBluetooth();
+                    checkBluetooth();
+                }
                 break;
             case REQUEST_Scan:
                 if (null != data) {
