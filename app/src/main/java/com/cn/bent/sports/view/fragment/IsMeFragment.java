@@ -47,6 +47,8 @@ public class IsMeFragment extends BaseFragment {
     ImageView diandenglong;
     @Bind(R.id.jixiangqian)
     ImageView jixiangqian;
+    @Bind(R.id.kanyanchu)
+    ImageView kanyanchu;
     @Bind(R.id.user_photo)
     ImageView user_photo;
     @Bind(R.id.nick_name)
@@ -117,25 +119,29 @@ public class IsMeFragment extends BaseFragment {
                         if (cardBean.getStatus() == 1)
                             hongbaoyu.setBackground(getResources().getDrawable(R.drawable.hongbaoyu));
                         break;
-                    case 2:
+                    case 12:
                         if (cardBean.getStatus() == 1)
-                            liunianshou.setBackground(getResources().getDrawable(R.drawable.liunianshou));
+                            liunianshou.setBackground(getResources().getDrawable(R.drawable.diandenglong));
                         break;
-                    case 3:
+                    case 13:
                         if (cardBean.getStatus() == 1)
-                            diandenglong.setBackground(getResources().getDrawable(R.drawable.diandenglong));
+                            diandenglong.setBackground(getResources().getDrawable(R.drawable.jixiangqian));
                         break;
-                    case 4:
+                    case 14:
                         if (cardBean.getStatus() == 1)
-                            jixiangqian.setBackground(getResources().getDrawable(R.drawable.jixiangqian));
+                            jixiangqian.setBackground(getResources().getDrawable(R.drawable.caidengmi));
                         break;
-                    case 5:
+                    case 15:
                         if (cardBean.getStatus() == 1)
-                            caidengmi.setBackground(getResources().getDrawable(R.drawable.caidengmi));
+                            caidengmi.setBackground(getResources().getDrawable(R.drawable.kanyanchu));
                         break;
-                    case 6:
+                    case 16:
                         if (cardBean.getStatus() == 1)
-                            fangbianpao.setBackground(getResources().getDrawable(R.drawable.fangbianpao));
+                            fangbianpao.setBackground(getResources().getDrawable(R.drawable.liunianshou));
+                        break;
+                    case 17:
+                        if (cardBean.getStatus() == 1)
+                            fangbianpao.setBackground(getResources().getDrawable(R.drawable.duichunlian));
                         break;
                 }
             }

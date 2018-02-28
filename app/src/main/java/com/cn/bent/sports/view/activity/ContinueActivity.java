@@ -50,19 +50,22 @@ public class ContinueActivity extends BaseActivity {
             case 1:
                 card_img.setBackground(getResources().getDrawable(R.drawable.hongby));
                 break;
-            case 2:
-                card_img.setBackground(getResources().getDrawable(R.drawable.liuns));
-                break;
-            case 3:
+            case 12:
                 card_img.setBackground(getResources().getDrawable(R.drawable.diandl));
                 break;
-            case 4:
+            case 13:
                 card_img.setBackground(getResources().getDrawable(R.drawable.jixq));
                 break;
-            case 5:
+            case 14:
                 card_img.setBackground(getResources().getDrawable(R.drawable.caidm));
                 break;
-            case 6:
+            case 15:
+                card_img.setBackground(getResources().getDrawable(R.drawable.kanyc));
+                break;
+            case 16:
+                card_img.setBackground(getResources().getDrawable(R.drawable.liuns));
+                break;
+            case 17:
                 card_img.setBackground(getResources().getDrawable(R.drawable.duicl));
                 break;
         }

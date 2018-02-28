@@ -172,7 +172,7 @@ public class HelloAR
         }
         videobg_renderer = new Renderer();
         video_renderers = new ArrayList<VideoRenderer>();
-        for (int k = 0; k < 3; k += 1) {
+        for (int k = 0; k < 14; k += 1) {
             VideoRenderer video_renderer = new VideoRenderer();
             video_renderer.init();
             video_renderers.add(video_renderer);
@@ -310,7 +310,7 @@ public class HelloAR
     }
     private void playTuoVideo(int i) {
         video = new ARVideo();
-        video.openVideoFile("video.mp4", video_renderers.get(i).texId());
+        video.openVideoFile("xtuo.mp4", video_renderers.get(i).texId());
         current_video_renderer = video_renderers.get(i);
     }
 }

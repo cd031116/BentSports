@@ -15,46 +15,65 @@
             android:id="@+id/caidengmi"
             android:layout_width="217px"
             android:layout_height="217px"
-            android:background="@drawable/caidengmi1"/>
+            android:background="@drawable/caidengmi1" />
+
         <ImageView
             android:id="@+id/fangbianpao"
             android:layout_width="217px"
             android:layout_height="217px"
             android:layout_marginLeft="120px"
-            android:background="@drawable/fangbianpao1"/>
+            android:background="@drawable/fangbianpao1" />
+
         <ImageView
             android:id="@+id/hongbaoyu"
             android:layout_width="217px"
             android:layout_height="217px"
             android:layout_marginLeft="120px"
-            android:background="@drawable/hongbaoyu1"/>
+            android:background="@drawable/hongbaoyu1" />
 
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
         android:layout_marginTop="80px"
+        android:gravity="center_horizontal"
         android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/diandenglong"
             android:layout_width="217px"
             android:layout_height="217px"
-            android:background="@drawable/diandenglong1"/>
+            android:background="@drawable/diandenglong1" />
+
         <ImageView
             android:id="@+id/liunianshou"
             android:layout_width="217px"
             android:layout_height="217px"
             android:layout_marginLeft="120px"
-            android:background="@drawable/liunianshou1"/>
+            android:background="@drawable/liunianshou1" />
+
         <ImageView
             android:id="@+id/jixiangqian"
             android:layout_width="217px"
             android:layout_height="217px"
             android:layout_marginLeft="120px"
-            android:background="@drawable/jixiangqian1"/>
+            android:background="@drawable/jixiangqian1" />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80px"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/kanyanchu"
+            android:layout_width="217px"
+            android:layout_height="217px"
+            android:layout_marginLeft="90px"
+            android:background="@drawable/kanyanchu1" />
     </LinearLayout>
 
 </LinearLayout>
