@@ -29,7 +29,6 @@ public class MapDot implements Serializable {
     public String getGame_name() {
         return game_name;
     }
-
     public void setGame_name(String game_name) {
         this.game_name = game_name;
     }

@@ -438,7 +438,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                     mEndPoint = null;
                     mEndPoint = new LatLng(Double.valueOf(place_list.get(position).getLatitude()).doubleValue(),
                             Double.valueOf(place_list.get(position).getLongitude()).doubleValue());
-                    shouPoup(place_list.get(t_ids).getName(), false, place_list.get(t_ids).getGame_id());
+                    shouPoup(place_list.get(t_ids).getGame_name(), false, place_list.get(t_ids).getGame_id());
                     if (times_s <= 0) {
                         if (mStartPoint != null) {
                             login();
