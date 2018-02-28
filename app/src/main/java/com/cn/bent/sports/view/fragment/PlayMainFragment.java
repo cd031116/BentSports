@@ -21,6 +21,7 @@ import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
+import com.amap.api.maps.model.BitmapDescriptor;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.LatLngBounds;
@@ -268,7 +269,9 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
         MyLocationStyle myLocationStyle=new MyLocationStyle();
         myLocationStyle.interval(3*1000);
         myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE_NO_CENTER);
-        myLocationStyle.strokeWidth(1.0f);
+//        myLocationStyle.strokeWidth(1.0f);
+        myLocationStyle.myLocationIcon(BitmapDescriptorFactory
+                .fromResource(R.drawable.dangqwz));
         myLocationStyle.strokeColor(Color.parseColor("#F9DEDE"));// 设置圆形的边框颜色
         myLocationStyle.radiusFillColor(Color.argb(100, 249,222,222));//
         aMap.setMyLocationStyle(myLocationStyle);
