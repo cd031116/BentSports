@@ -72,7 +72,7 @@ public class OfflineActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.commit:
-                if ("123".equals(commit_edit.getText().toString().trim())) {
+                if ("syh".equals(commit_edit.getText().toString().trim())) {
                     commitScore();
                 } else {
                     ToastUtils.showShortToast(this,"游戏失败，再玩一次");
@@ -103,7 +103,7 @@ public class OfflineActivity extends BaseActivity {
     };
 
     private void commitScore() {
-        BaseApi.getDefaultService(this).addScore(user.getMember_id(), 100, Integer.parseInt(gameId))
+        BaseApi.getDefaultService(this).addScore(user.getMember_id(), 30, Integer.parseInt(gameId))
                 .map(new HuiquRxTBFunction<AddScoreEntity>())
                 .compose(RxSchedulers.<AddScoreEntity>io_main())
                 .subscribe(new RxObserver<AddScoreEntity>(this, "addScore", 1, false) {
@@ -140,9 +140,9 @@ public class OfflineActivity extends BaseActivity {
 
     private void setScore(LoginBase user) {
         if (user.getScore() != null)
-            user.setScore(String.valueOf(Integer.parseInt(user.getScore()) + 100));
+            user.setScore(String.valueOf(Integer.parseInt(user.getScore()) + 30));
         else
-            user.setScore(String.valueOf(100));
+            user.setScore(String.valueOf(30));
         SaveObjectUtils.getInstance(OfflineActivity.this).setObject(Constants.USER_INFO, user);
     }
 }

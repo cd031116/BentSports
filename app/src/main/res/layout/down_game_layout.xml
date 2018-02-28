@@ -117,11 +117,13 @@
     
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/time_layout"
+        android:paddingTop="75px"
         android:layout_above="@id/ms_layout"
         android:background="#f5f5f5"
-        android:gravity="center"
-        android:text="线下任务描述："
+        android:gravity="center_horizontal"
+        android:textSize="52px"
+        android:text="线下任务\n村长为了考验你，给你出了一道题，\n拿取弓箭一把，将箭穿过铜钱中间空\n洞即可获得通过密码"
         android:textColor="#333333"/>
 </RelativeLayout>
