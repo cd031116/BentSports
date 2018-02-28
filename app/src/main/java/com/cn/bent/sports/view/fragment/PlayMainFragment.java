@@ -387,14 +387,14 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
     public void onPause() {
         super.onPause();
         mapView.onPause();
-        if(mMinewBeaconManager!=null){
-            mMinewBeaconManager.stopScan();
-        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
+        if(mMinewBeaconManager!=null){
+            mMinewBeaconManager.stopScan();
+        }
         if (handler2 != null) {
             handler2.removeCallbacks(runnable2);
         }
