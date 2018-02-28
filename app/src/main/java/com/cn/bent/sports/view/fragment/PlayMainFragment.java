@@ -442,9 +442,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                             Double.valueOf(place_list.get(position).getLongitude()).doubleValue());
                     shouPoup(place_list.get(t_ids).getGame_name(), false, place_list.get(t_ids).getGame_id());
                     if (times_s <= 0) {
-                        if (mStartPoint != null) {
                             login();
-                        }
                     }
                 } else {
 
@@ -525,7 +523,10 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                     @Override
                     public void onError(int whichRequest, Throwable e) {
                         dismissAlert();
-
+                        BaseConfig bgs = BaseConfig.getInstance(getActivity());
+                        bgs.setLongValue(Constants.IS_TIME, System.currentTimeMillis());
+                        times_s = bgs.getLongValue(Constants.IS_TIME, 0);
+                        setTimes();
                     }
                 });
     }
