@@ -23,7 +23,16 @@ public class MapDot implements Serializable {
     private String name;
     private String game_url;
     private String is_play;
+    private String game_name;
     private boolean isCheck;
+
+    public String getGame_name() {
+        return game_name;
+    }
+
+    public void setGame_name(String game_name) {
+        this.game_name = game_name;
+    }
 
     public boolean isCheck() {
         return isCheck;
