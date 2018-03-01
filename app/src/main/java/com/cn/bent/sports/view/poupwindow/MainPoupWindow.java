@@ -56,13 +56,13 @@ public class MainPoupWindow extends PopupWindow {
 
         /* 设置弹出窗口特征 */
         // 设置视图
-        this.setOutsideTouchable(false);
+        this.setOutsideTouchable(true);
         // 设置弹出窗体的宽和高
         this.setHeight(RelativeLayout.LayoutParams.MATCH_PARENT);
         this.setWidth(RelativeLayout.LayoutParams.MATCH_PARENT);
         this.setContentView(view);
         // 设置弹出窗体可点击
-        this.setFocusable(false);
+        this.setFocusable(true);
         this.getContentView().setFocusableInTouchMode(true);
         // 实例化一个ColorDrawable颜色为半透明
 //        ColorDrawable dw = new ColorDrawable(0xb0000000);
