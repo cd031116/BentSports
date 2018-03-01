@@ -202,7 +202,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                     }
                 } else {
                     isGame = false;
-                    shousoundPoup(place_list.get(i).getMp3(), "", i);
+                    shousoundPoup(place_list.get(i).getMp3(),place_list.get(i).getDesc(), i);
                 }
             }
         }
@@ -465,9 +465,9 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
         }
         if (mopupWindow != null && mopupWindow.isShowing()){
             mopupWindow.setvisib(isShow);
-            mopupWindow.setDistance((int) (Double.parseDouble(distance))+"");
+            mopupWindow.setDistance((int) (Double.parseDouble(distance))+"m");
         } else {
-            mopupWindow = new DoTaskPoupWindow(getActivity(), ganme_name, isShow, photo, sound_path, (int) (Double.parseDouble(distance))+"", itemsOnClick);
+            mopupWindow = new DoTaskPoupWindow(getActivity(), ganme_name, isShow, photo, sound_path, (int) (Double.parseDouble(distance))+"m", itemsOnClick);
             mopupWindow.showAtLocation(getActivity().findViewById(R.id.map_view),
                     Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
         }
@@ -719,7 +719,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
         if (mEndPoint != null) {
             String distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
             if (mopupWindow != null && mopupWindow.isShowing()) {
-                mopupWindow.setDistance((int) (Double.parseDouble(distance))+"");
+                mopupWindow.setDistance((int) (Double.parseDouble(distance))+"m");
             }
         }
     }

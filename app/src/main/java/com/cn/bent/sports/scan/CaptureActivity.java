@@ -38,7 +38,6 @@ public class CaptureActivity extends BaseActivity {
     @Override
     public void initView() {
         super.initView();
-        showDialogMsg(getResources().getString(R.string.cai_deng_mi));
         /**
          * 执行扫面Fragment的初始化操作
          */
@@ -55,6 +54,7 @@ public class CaptureActivity extends BaseActivity {
     @Override
     public void initData() {
         super.initData();
+        showDialogMsg(getResources().getString(R.string.cai_deng_mi));
     }
 
 
