@@ -15,7 +15,7 @@ public class Constants {
     public static final String IS_TIME="is_time";
     public static final String TEST_URL="http://aihw.zhonghuilv.net/";
     public static final String BASE_URL="https://wxxcx.zhonghuilv.net/game/";
-
+    public static final String IS_SHOWS="is_shows";
     public static final String LU_XIAN="lu_xian";
     public static final String AR_KEY="uHF95ree4fY6nj6NrhAFZ3HwZvpQfexUpb0DQoy9vM0733bZ3kczl95yxtZ0sTNgTZE6idFXRx0Ej5UtJ0FEUGFUZLxdKpsH8UOg0J2spZUdLTOUlwtjimxW8yer0GReXJJgUvF1n8yiK7TkkX7hEDliysPlF4CYQaolaOsE4LufSDcBqPU83rPtbsFohb6FNX4iSA4b";
 }

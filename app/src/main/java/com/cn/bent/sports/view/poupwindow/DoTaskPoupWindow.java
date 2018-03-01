@@ -18,6 +18,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cn.bent.sports.R;
+import com.cn.bent.sports.base.BaseConfig;
+import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.SupportMultipleScreensUtil;
 
 import java.io.IOException;
@@ -103,14 +105,16 @@ public class DoTaskPoupWindow extends PopupWindow {
 
     /* 设置弹出窗口特征 */
         // 设置视图
-        this.setOutsideTouchable(true);
         // 设置弹出窗体的宽和高
         this.setHeight(RelativeLayout.LayoutParams.MATCH_PARENT);
         this.setWidth(RelativeLayout.LayoutParams.MATCH_PARENT);
         this.setContentView(view);
+        BaseConfig.getInstance(mContext).setStringValue(Constants.IS_SHOWS,"1");
         // 设置弹出窗体可点击
         SupportMultipleScreensUtil.scale(view);
-        this.setFocusable(true);
+//        this.setOutsideTouchable(true);
+//        this.setFocusable(true);
+        view.setFocusable(true);
         // 实例化一个ColorDrawable颜色为半透明
         ColorDrawable dw = new ColorDrawable(0xb0000000);
         // 设置弹出窗体的背景
@@ -118,20 +122,6 @@ public class DoTaskPoupWindow extends PopupWindow {
         // 设置弹出窗体显示时的动画，从底部向上弹出
         this.setAnimationStyle(R.style.select_anim);
         this.getContentView().measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-        this.getContentView().setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    if (mPlayer != null) {
-                        mPlayer.stop();
-                        mPlayer.release();
-                    }
-                    itemsOnClick.ItemClick(0);
-                    return true;
-                }
-                return false;
-            }
-        });
     }
 
     public void setvisib(boolean istrue) {
@@ -165,5 +155,11 @@ public class DoTaskPoupWindow extends PopupWindow {
         }).start();
     }
 
-
+    public void setclose(){
+        if (mPlayer != null) {
+            mPlayer.stop();
+            mPlayer.release();
+        }
+        itemsOnClick.ItemClick(0);
+    }
 }

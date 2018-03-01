@@ -7,11 +7,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.base.BaseConfig;
 import com.cn.bent.sports.bean.LoginBase;
@@ -47,6 +49,7 @@ public class MainActivity extends BaseActivity {
     int selected = 1;
     FragmentManager mFragmentMan;
     private MainPoupWindow ropupWindow;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,18 +69,19 @@ public class MainActivity extends BaseActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                ropupWindow = new MainPoupWindow(MainActivity.this,null);
+                ropupWindow = new MainPoupWindow(MainActivity.this, null);
                 ropupWindow.showAtLocation(MainActivity.this.findViewById(R.id.id_content),
                         Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
 
             }
-        },1000);
+        }, 1000);
     }
 
     @Override
     public void onResume() {
         super.onResume();
         switchContent(1);
+        selected = 1;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -86,7 +90,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void run() {
                 switchContent(0);
-                selected=0;
+                selected = 0;
             }
         }, 600);
     }
@@ -141,7 +145,7 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.text1, R.id.iamage1,R.id.line1,R.id.line2,R.id.iamage2, R.id.image_me, R.id.is_me})
+    @OnClick({R.id.text1, R.id.iamage1, R.id.line1, R.id.line2, R.id.iamage2, R.id.image_me, R.id.is_me})
     void onclick(View v) {
         switch (v.getId()) {
             case R.id.line1:
@@ -199,17 +203,24 @@ public class MainActivity extends BaseActivity {
     }
 
 
-
+    //
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (event.getAction() == KeyEvent.ACTION_DOWN &&keyCode == KeyEvent.KEYCODE_BACK) {
-           if(ropupWindow!=null&&ropupWindow.isShowing()){
-               ropupWindow.setclose();
-           }
-            return true;
+        if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_BACK) {
+            String index= BaseConfig.getInstance(MainActivity.this).getStringValue(Constants.IS_SHOWS,"1");
+            Log.i("gggg","index="+index);
+            if(index.endsWith("1")){
+                return false;
+            }else {
+              MainActivity.this.finish();
+            }
         }
         return super.onKeyDown(keyCode, event);
     }
 
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
 }

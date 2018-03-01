@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -192,6 +193,9 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
 
     @Override
     public boolean onMarkerClick(Marker marker) {
+        if (mMinewBeaconManager != null) {
+            mMinewBeaconManager.startScan();
+        }
         for (int i = 0; i < mList.size(); i++) {
             Log.d("tttt", "onMarkerClick gameid: " + place_list.get(i).getGame_id()+",gametype:"+ place_list.get(i).getType() + ",isplay:" + place_list.get(i).getIs_play());
             if (marker.equals(mList.get(i))) {
@@ -441,19 +445,6 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
     }
 
 
-    private void showDialogMsg(String names, final int position) {
-        new ToastDialog(getActivity(), R.style.dialog, names, new ToastDialog.OnCloseListener() {
-            @Override
-            public void onClick(Dialog dialog, boolean confirm) {
-                if (confirm) {
-
-                } else {
-
-                }
-                dialog.dismiss();
-            }
-        }).setTitle("提示").show();
-    }
 
     //    boolean isFirst=false;
     private void shouPoup(String ganme_name, boolean isShow, String photo, String sound_path) {
@@ -486,6 +477,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
         @Override
         public void ItemClick(int index) {
             BaseConfig bf = BaseConfig.getInstance(getActivity());
+            bf.setStringValue(Constants.IS_SHOWS,"0");
             times_s = bf.getLongValue(Constants.IS_TIME, 0);
             if (times_s <= 0) {
                 login();
@@ -516,6 +508,9 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
             }
             isGame = false;
             mopupWindow.dismiss();
+            if (mMinewBeaconManager != null) {
+                mMinewBeaconManager.stopScan();
+            }
         }
     };
 
@@ -726,4 +721,5 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
             }
         }
     }
+
 }

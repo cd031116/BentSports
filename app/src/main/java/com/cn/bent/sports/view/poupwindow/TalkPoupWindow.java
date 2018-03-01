@@ -18,6 +18,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cn.bent.sports.R;
+import com.cn.bent.sports.base.BaseConfig;
+import com.cn.bent.sports.utils.Constants;
+import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.utils.SupportMultipleScreensUtil;
 
 import java.io.IOException;
@@ -29,14 +32,14 @@ import java.io.InputStream;
  */
 
 public class TalkPoupWindow extends PopupWindow {
-    private Activity mContext;
+    private   Activity mContext;
     private View view;
     private ImageView close_ima;
     private TextView travel_name, context_t;
     private MediaPlayer mPlayer;
     private ItemInclick itemsOnClick;
 
-    public TalkPoupWindow(Activity mContext, String path,String shuoming,  ItemInclick itemsOnClickd) {
+    public TalkPoupWindow(final Activity mContext, String path, String shuoming, ItemInclick itemsOnClickd) {
         this.mContext = mContext;
         this.itemsOnClick = itemsOnClickd;
         this.view = LayoutInflater.from(mContext).inflate(R.layout.talk_window, null);
@@ -54,6 +57,7 @@ public class TalkPoupWindow extends PopupWindow {
                     mPlayer.stop();
                     mPlayer.release();
                 }
+                BaseConfig.getInstance(mContext).setStringValue(Constants.IS_SHOWS,"0");
                 dismiss();
             }
         });
@@ -67,9 +71,11 @@ public class TalkPoupWindow extends PopupWindow {
         this.setHeight(RelativeLayout.LayoutParams.MATCH_PARENT);
         this.setWidth(RelativeLayout.LayoutParams.MATCH_PARENT);
         this.setContentView(view);
+        BaseConfig.getInstance(mContext).setStringValue(Constants.IS_SHOWS,"1");
         // 设置弹出窗体可点击
         SupportMultipleScreensUtil.scale(view);
-        this.setFocusable(true);
+        this.setFocusable(false);
+        view.setFocusable(true);
         // 实例化一个ColorDrawable颜色为半透明
         ColorDrawable dw = new ColorDrawable(0xb0000000);
         // 设置弹出窗体的背景
@@ -91,6 +97,7 @@ public class TalkPoupWindow extends PopupWindow {
                 return false;
             }
         });
+
     }
 
     public interface ItemInclick {
@@ -113,5 +120,11 @@ public class TalkPoupWindow extends PopupWindow {
         }).start();
     }
 
-
+    public void setclose(){
+        if (mPlayer != null) {
+            mPlayer.stop();
+            mPlayer.release();
+        }
+        dismiss();
+    }
 }

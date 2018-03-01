@@ -16,6 +16,8 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
 import com.cn.bent.sports.R;
+import com.cn.bent.sports.base.BaseConfig;
+import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.SupportMultipleScreensUtil;
 
 import java.io.IOException;
@@ -32,13 +34,14 @@ public class MainPoupWindow extends PopupWindow {
     private ItemInclick itemsOnClick;
     private MediaPlayer mPlayer;
 
-    public MainPoupWindow(Activity mContext, ItemInclick itemsOnClickd) {
+    public MainPoupWindow(final Activity mContext, ItemInclick itemsOnClickd) {
         this.mContext = mContext;
         this.itemsOnClick = itemsOnClickd;
         this.view = LayoutInflater.from(mContext).inflate(R.layout.detail_window, null);
         SupportMultipleScreensUtil.scale(view);
         mPlayer = new MediaPlayer();
         mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        view.setFocusable(true);
         playSund();
         go_to = (ImageView) view.findViewById(R.id.go_to);
         go_to.setOnClickListener(new View.OnClickListener() {
@@ -48,19 +51,21 @@ public class MainPoupWindow extends PopupWindow {
                     mPlayer.stop();
                     mPlayer.release();
                 }
+                BaseConfig.getInstance(mContext).setStringValue(Constants.IS_SHOWS,"0");
                 dismiss();
             }
         });
 
         /* 设置弹出窗口特征 */
         // 设置视图
-        this.setOutsideTouchable(true);
+        this.setOutsideTouchable(false);
         // 设置弹出窗体的宽和高
         this.setHeight(RelativeLayout.LayoutParams.MATCH_PARENT);
         this.setWidth(RelativeLayout.LayoutParams.MATCH_PARENT);
         this.setContentView(view);
+        BaseConfig.getInstance(mContext).setStringValue(Constants.IS_SHOWS,"1");
         // 设置弹出窗体可点击
-        this.setFocusable(true);
+        this.setFocusable(false);
         // 实例化一个ColorDrawable颜色为半透明
         ColorDrawable dw = new ColorDrawable(0xb0000000);
         // 设置弹出窗体的背景
@@ -68,8 +73,8 @@ public class MainPoupWindow extends PopupWindow {
         // 设置弹出窗体显示时的动画，从底部向上弹出
 //        this.setAnimationStyle(R.style.select_anim);
         this.getContentView().measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-
     }
+
 
     public void setclose(){
         if (mPlayer != null) {
@@ -77,7 +82,6 @@ public class MainPoupWindow extends PopupWindow {
             mPlayer.release();
         }
         dismiss();
-
     }
     public interface ItemInclick {
         void ItemClick();
