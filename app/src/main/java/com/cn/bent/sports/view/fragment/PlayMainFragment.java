@@ -102,8 +102,6 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
     //声明AMapLocationClient类对象
     public AMapLocationClient mLocationClient = null;
     //声明AMapLocationClientOption对象
-    public AMapLocationClientOption mLocationOption = null;
-    private String latitude, longitude;
     //----------------
     private LatLng mStartPoint;//起点，116.335891,39.942295
     private LatLng mEndPoint;//终点，116.481288,39.995576
@@ -278,6 +276,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
         myLocationStyle.strokeColor(Color.parseColor("#F9DEDE"));// 设置圆形的边框颜色
         myLocationStyle.radiusFillColor(Color.argb(100, 249, 222, 222));//
         aMap.setMyLocationStyle(myLocationStyle);
+        aMap.setOnMyLocationChangeListener(this);
 //        aMap.setMyLocationType(MyLocationStyle.LOCATION_TYPE_MAP_ROTATE_NO_CENTER);
 //        aMap.setMyLocationType(MyLocationStyle.LOCATION_TYPE_FOLLOW_NO_CENTER);
     }
