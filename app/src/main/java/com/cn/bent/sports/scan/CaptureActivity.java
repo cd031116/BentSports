@@ -1,5 +1,6 @@
 package com.cn.bent.sports.scan;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.widget.LinearLayout;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.utils.ToastUtils;
+import com.cn.bent.sports.widget.GameDialog;
 import com.uuzuche.lib_zxing.activity.CaptureFragment;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.uuzuche.lib_zxing.camera.CameraManager;
@@ -36,6 +38,7 @@ public class CaptureActivity extends BaseActivity {
     @Override
     public void initView() {
         super.initView();
+        showDialogMsg(getResources().getString(R.string.cai_deng_mi));
         /**
          * 执行扫面Fragment的初始化操作
          */
@@ -106,6 +109,18 @@ public class CaptureActivity extends BaseActivity {
                 break;
         }
     }
+    private void showDialogMsg(String names) {
+        new GameDialog(CaptureActivity.this, R.style.dialog, new GameDialog.OnCloseListener() {
+            @Override
+            public void onClick(Dialog dialog, boolean confirm) {
+                if (confirm) {
 
+                } else {
+                    finish();
+                }
+                dialog.dismiss();
+            }
+        }).setTitle(names).show();
+    }
 
 }

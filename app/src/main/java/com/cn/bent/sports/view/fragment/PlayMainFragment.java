@@ -465,9 +465,9 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
         }
         if (mopupWindow != null && mopupWindow.isShowing()){
             mopupWindow.setvisib(isShow);
-            mopupWindow.setDistance(distance);
+            mopupWindow.setDistance((int) (Double.parseDouble(distance))+"");
         } else {
-            mopupWindow = new DoTaskPoupWindow(getActivity(), ganme_name, isShow, photo, sound_path, distance, itemsOnClick);
+            mopupWindow = new DoTaskPoupWindow(getActivity(), ganme_name, isShow, photo, sound_path, (int) (Double.parseDouble(distance))+"", itemsOnClick);
             mopupWindow.showAtLocation(getActivity().findViewById(R.id.map_view),
                     Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
         }
@@ -489,7 +489,8 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
         public void ItemClick(int index) {
             if (index == 1) {
                 if ("14".endsWith(place_list.get(t_ids).getGame_id())) {
-                    showDialogMsg(getResources().getString(R.string.cai_deng_mi));
+                    Intent intent = new Intent(getActivity(), CaptureActivity.class);
+                    startActivityForResult(intent, REQUEST_Scan);
                 } else if ("15".endsWith(place_list.get(t_ids).getGame_id())) {
                     Intent intent = new Intent(getActivity(), ArActivity.class);
                     intent.putExtra("gameId", place_list.get(t_ids).getGame_id());
@@ -715,29 +716,13 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                 });
     }
 
-    private void showDialogMsg(String names) {
-        new GameDialog(getActivity(), R.style.dialog, new GameDialog.OnCloseListener() {
-            @Override
-            public void onClick(Dialog dialog, boolean confirm) {
-                if (confirm) {
-                    Intent intent = new Intent(getActivity(), CaptureActivity.class);
-                    startActivityForResult(intent, REQUEST_Scan);
-                } else {
-
-                }
-                dialog.dismiss();
-            }
-        }).setTitle(names).show();
-    }
-
-
     @Override
     public void onMyLocationChange(Location location) {
         mStartPoint = new LatLng(location.getLatitude(), location.getLongitude());
         if (mEndPoint != null) {
             String distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
             if (mopupWindow != null && mopupWindow.isShowing()) {
-                mopupWindow.setDistance(distance);
+                mopupWindow.setDistance((int) (Double.parseDouble(distance))+"");
             }
         }
     }
