@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.BitmapRegionDecoder;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
+import android.media.MediaPlayer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -29,11 +30,11 @@ public class DoTaskPoupWindow extends PopupWindow {
     private Activity mContext;
     private View view;
     private ImageView image_bg, close_ima;
-    private TextView name_game, go_task;
+    private TextView name_game, go_task,juli;
     private LinearLayout line_s;
     private ItemInclick itemsOnClick;
-
-    public DoTaskPoupWindow(Activity mContext, String names, boolean isDo, String path, ItemInclick itemsOnClickd) {
+    private MediaPlayer mPlayer;
+    public DoTaskPoupWindow(Activity mContext, String names, boolean isDo, String path,String sound_path, String distance,ItemInclick itemsOnClickd) {
         this.mContext = mContext;
         this.itemsOnClick = itemsOnClickd;
         this.view = LayoutInflater.from(mContext).inflate(R.layout.do_task_window, null);
@@ -43,15 +44,17 @@ public class DoTaskPoupWindow extends PopupWindow {
         line_s = (LinearLayout) view.findViewById(R.id.line_s);
         go_task = (TextView) view.findViewById(R.id.go_task);
         close_ima = (ImageView) view.findViewById(R.id.close_ima);
-
+        juli = (TextView) view.findViewById(R.id.juli);
         if (isDo) {
             go_task.setVisibility(View.VISIBLE);
             line_s.setVisibility(View.GONE);
         } else {
             go_task.setVisibility(View.GONE);
             line_s.setVisibility(View.VISIBLE);
+            playSund(sound_path);
         }
         name_game.setText(names);
+        juli.setText(distance);
         close_ima.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,8 +117,25 @@ public class DoTaskPoupWindow extends PopupWindow {
             line_s.setVisibility(View.VISIBLE);
         }
     }
-
+    public void setDistance(String istrue) {
+            juli.setText(istrue);
+    }
     public interface ItemInclick {
         void ItemClick(int position);
+    }
+    private void playSund(final String paths) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mPlayer.reset();
+                try {
+                    mPlayer.setDataSource(paths);
+                    mPlayer.prepare();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                mPlayer.start();
+            }
+        }).start();
     }
 }

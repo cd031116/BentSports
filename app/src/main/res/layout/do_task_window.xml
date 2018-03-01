@@ -39,9 +39,8 @@
             android:layout_alignParentRight="true"
             android:drawableLeft="@drawable/ju_li"
             android:drawablePadding="20px"
-            android:visibility="gone"
+            android:visibility="visible"
             android:padding="43px"
-            android:text="300m"
             android:textColor="#999999" />
 
 

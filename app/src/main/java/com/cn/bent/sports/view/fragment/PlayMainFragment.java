@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -19,6 +20,7 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
+import com.amap.api.maps.AMapUtils;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.BitmapDescriptor;
@@ -77,7 +79,7 @@ import butterknife.OnClick;
  * description
  */
 
-public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClickListener {
+public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClickListener, AMap.OnMyLocationChangeListener {
     public static PlayMainFragment newInstance() {
         PlayMainFragment fragment = new PlayMainFragment();
 //        Bundle bundle = new Bundle();
@@ -118,23 +120,23 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
     private TalkPoupWindow soundWindow;
     private boolean isGame = false;
     //---------------------
-    AMapLocationListener mAMapLocationListener = new AMapLocationListener() {
-        @Override
-        public void onLocationChanged(AMapLocation aMapLocation) {
-            if (aMapLocation != null) {
-                if (aMapLocation.getErrorCode() == 0) {
-                    //可在其中解析amapLocation获取相应内容。
-                    latitude = String.valueOf(aMapLocation.getLatitude());
-                    longitude = String.valueOf(aMapLocation.getLongitude());
-                    mStartPoint = new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude());
-                    addLocaToMap();
-                } else {
-                    //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
-                    //ToastUtils.showShortToast(getActivity(), "获取位置信息失败!");
-                }
-            }
-        }
-    };
+//    AMapLocationListener mAMapLocationListener = new AMapLocationListener() {
+//        @Override
+//        public void onLocationChanged(AMapLocation aMapLocation) {
+//            if (aMapLocation != null) {
+//                if (aMapLocation.getErrorCode() == 0) {
+//                    //可在其中解析amapLocation获取相应内容。
+//                    latitude = String.valueOf(aMapLocation.getLatitude());
+//                    longitude = String.valueOf(aMapLocation.getLongitude());
+//                    mStartPoint = new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude());
+//                    addLocaToMap();
+//                } else {
+//                    //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
+//                    //ToastUtils.showShortToast(getActivity(), "获取位置信息失败!");
+//                }
+//            }
+//        }
+//    };
 
 
     @Override
@@ -231,17 +233,17 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                 markerOption.position(new LatLng(dlat, dlong));
                 markerOption.title(hs.getName());
                 markerOption.draggable(false);
-                if (hs.isCheck() && hs.getIs_play().endsWith("0")&&!hs.getType().equals("2")) {
+                if (hs.isCheck() && hs.getIs_play().endsWith("0") && !hs.getType().equals("2")) {
                     markerOption.icon(
                             BitmapDescriptorFactory.fromBitmap(BitmapFactory
                                     .decodeResource(getResources(),
                                             R.drawable.zb_icon)));
-                } else if (hs.getIs_play().endsWith("0") && !hs.isCheck()&&!hs.getType().equals("2")) {
+                } else if (hs.getIs_play().endsWith("0") && !hs.isCheck() && !hs.getType().equals("2")) {
                     markerOption.icon(
                             BitmapDescriptorFactory.fromBitmap(BitmapFactory
                                     .decodeResource(getResources(),
                                             R.drawable.zuobiao)));
-                } else if (hs.getIs_play().endsWith("1")&&!hs.getType().equals("2")) {
+                } else if (hs.getIs_play().endsWith("1") && !hs.getType().equals("2")) {
                     markerOption.icon(
                             BitmapDescriptorFactory.fromBitmap(BitmapFactory
                                     .decodeResource(getResources(),
@@ -266,14 +268,14 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
     private void addLocaToMap() {
         aMap.setMyLocationEnabled(true);
         // 设置定位的类型为定位模式，有定位、跟随或地图根据面向方向旋转几种
-        MyLocationStyle myLocationStyle=new MyLocationStyle();
-        myLocationStyle.interval(3*1000);
+        MyLocationStyle myLocationStyle = new MyLocationStyle();
+        myLocationStyle.interval(2 * 1000);
         myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE_NO_CENTER);
 //        myLocationStyle.strokeWidth(1.0f);
         myLocationStyle.myLocationIcon(BitmapDescriptorFactory
                 .fromResource(R.drawable.dangqwz));
         myLocationStyle.strokeColor(Color.parseColor("#F9DEDE"));// 设置圆形的边框颜色
-        myLocationStyle.radiusFillColor(Color.argb(100, 249,222,222));//
+        myLocationStyle.radiusFillColor(Color.argb(100, 249, 222, 222));//
         aMap.setMyLocationStyle(myLocationStyle);
 //        aMap.setMyLocationType(MyLocationStyle.LOCATION_TYPE_MAP_ROTATE_NO_CENTER);
 //        aMap.setMyLocationType(MyLocationStyle.LOCATION_TYPE_FOLLOW_NO_CENTER);
@@ -321,11 +323,11 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
 
     }
 
-    private void settimesd(){
+    private void settimesd() {
         BaseConfig bf = BaseConfig.getInstance(getActivity());
         boolean iswanc = false;
         for (MapDot dot : place_list) {
-            if (!dot.getType().endsWith("2")&&dot.getIs_play().endsWith("0")) {
+            if (!dot.getType().endsWith("2") && dot.getIs_play().endsWith("0")) {
                 iswanc = true;
                 break;
             }
@@ -343,7 +345,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
     @Override
     public void onResume() {
         super.onResume();
-        if(mMinewBeaconManager!=null){
+        if (mMinewBeaconManager != null) {
             mMinewBeaconManager.startScan();
         }
         BaseConfig bf = BaseConfig.getInstance(getActivity());
@@ -395,7 +397,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
     @Override
     public void onStop() {
         super.onStop();
-        if(mMinewBeaconManager!=null){
+        if (mMinewBeaconManager != null) {
             mMinewBeaconManager.stopScan();
         }
         if (handler2 != null) {
@@ -443,9 +445,9 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                     mEndPoint = null;
                     mEndPoint = new LatLng(Double.valueOf(place_list.get(position).getLatitude()).doubleValue(),
                             Double.valueOf(place_list.get(position).getLongitude()).doubleValue());
-                    shouPoup(place_list.get(t_ids).getGame_name(), false, place_list.get(t_ids).getGame_id());
+                    shouPoup(place_list.get(t_ids).getGame_name(), false, place_list.get(t_ids).getGame_id(), place_list.get(t_ids).getMp3());
                     if (times_s <= 0) {
-                            login();
+                        login();
                     }
                 } else {
 
@@ -456,11 +458,16 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
     }
 
     //    boolean isFirst=false;
-    private void shouPoup(String ganme_name, boolean isShow, String photo) {
-        if (mopupWindow != null && mopupWindow.isShowing()) {
+    private void shouPoup(String ganme_name, boolean isShow, String photo, String sound_path) {
+        String distance = "";
+        if (mEndPoint != null&&mStartPoint!=null) {
+            distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
+        }
+        if (mopupWindow != null && mopupWindow.isShowing()){
             mopupWindow.setvisib(isShow);
+            mopupWindow.setDistance(distance);
         } else {
-            mopupWindow = new DoTaskPoupWindow(getActivity(), ganme_name, isShow, photo, itemsOnClick);
+            mopupWindow = new DoTaskPoupWindow(getActivity(), ganme_name, isShow, photo, sound_path, distance, itemsOnClick);
             mopupWindow.showAtLocation(getActivity().findViewById(R.id.map_view),
                     Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
         }
@@ -501,7 +508,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                     startActivity(intent);
                     t_ids = -1;
                 }
-            }else {
+            } else {
                 t_ids = -1;
             }
             isGame = false;
@@ -588,15 +595,15 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
 //                    String distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
                     if (place_list != null && place_list.size() > 0 && t_ids >= 0 && isGame) {
                         for (MinewBeacon beacon : minewBeacons) {
-                            String majer = beacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Major).getStringValue()+beacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
+                            String majer = beacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Major).getStringValue() + beacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
                             Log.i("tttt", "beacon majer" + majer.replace(":", ""));
                             Log.i("tttt", "beacon t_ids" + t_ids);
                             Log.i("tttt", "beacon getMac" + place_list.get(t_ids).getiBeacons());
                             if (majer != null) {
-                                for (MajorBean cheeck:place_list.get(t_ids).getiBeacons()){
-                                 String jieguo= cheeck.getMajor()+cheeck.getMinor();
-                                    if(jieguo.endsWith(majer.replace(":", ""))){
-                                        shouPoup(place_list.get(t_ids).getName(), true, place_list.get(t_ids).getGame_id());
+                                for (MajorBean cheeck : place_list.get(t_ids).getiBeacons()) {
+                                    String jieguo = cheeck.getMajor() + cheeck.getMinor();
+                                    if (jieguo.endsWith(majer.replace(":", ""))) {
+                                        shouPoup(place_list.get(t_ids).getName(), true, place_list.get(t_ids).getGame_id(), place_list.get(t_ids).getMp3());
                                         break;
                                     }
                                 }
@@ -642,7 +649,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                     isBlue = true;
                     initListener();
                 }
-                if (mMinewBeaconManager.checkBluetoothState().equals(BluetoothState.BluetoothStatePowerOff)){
+                if (mMinewBeaconManager.checkBluetoothState().equals(BluetoothState.BluetoothStatePowerOff)) {
                     isBlue = false;
                     checkBluetooth();
                 }
@@ -709,4 +716,14 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                 });
     }
 
+    @Override
+    public void onMyLocationChange(Location location) {
+        mStartPoint = new LatLng(location.getLatitude(), location.getLongitude());
+        if (mEndPoint != null) {
+            String distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
+            if (mopupWindow != null && mopupWindow.isShowing()) {
+                mopupWindow.setDistance(distance);
+            }
+        }
+    }
 }
