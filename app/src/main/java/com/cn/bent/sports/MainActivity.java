@@ -68,6 +68,7 @@ public class MainActivity extends BaseActivity {
                 ropupWindow = new MainPoupWindow(MainActivity.this,null);
                 ropupWindow.showAtLocation(MainActivity.this.findViewById(R.id.id_content),
                         Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
+
             }
         },1000);
     }

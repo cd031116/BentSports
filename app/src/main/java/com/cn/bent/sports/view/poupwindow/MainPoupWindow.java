@@ -2,8 +2,12 @@ package com.cn.bent.sports.view.poupwindow;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.AssetFileDescriptor;
 import android.graphics.drawable.ColorDrawable;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,6 +16,8 @@ import android.widget.RelativeLayout;
 
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.utils.SupportMultipleScreensUtil;
+
+import java.io.IOException;
 
 /**
  * Created by lyj on 2018/2/26 0026.
@@ -23,16 +29,26 @@ public class MainPoupWindow extends PopupWindow {
     private View view;
     private ImageView go_to;
     private ItemInclick itemsOnClick;
-    public MainPoupWindow(Activity mContext,ItemInclick itemsOnClickd) {
-        this.mContext=mContext;
+    private MediaPlayer mPlayer;
+
+    public MainPoupWindow(Activity mContext, ItemInclick itemsOnClickd) {
+        this.mContext = mContext;
         this.itemsOnClick = itemsOnClickd;
         this.view = LayoutInflater.from(mContext).inflate(R.layout.detail_window, null);
         SupportMultipleScreensUtil.scale(view);
-        go_to= (ImageView) view.findViewById(R.id.go_to);
+
+        mPlayer = new MediaPlayer();
+        mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        playSund();
+        go_to = (ImageView) view.findViewById(R.id.go_to);
         go_to.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               dismiss();
+                if (mPlayer != null) {
+                    mPlayer.stop();
+                    mPlayer.release();
+                }
+                dismiss();
             }
         });
 
@@ -55,10 +71,38 @@ public class MainPoupWindow extends PopupWindow {
         // 设置弹出窗体显示时的动画，从底部向上弹出
 //        this.setAnimationStyle(R.style.select_anim);
         this.getContentView().measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+
+        this.getContentView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    if (mPlayer != null) {
+                        mPlayer.stop();
+                        mPlayer.release();
+                    }
+                    return false;
+                }
+                return false;
+            }
+        });
     }
 
     public interface ItemInclick {
         void ItemClick();
+    }
+
+    private void playSund() {
+        mPlayer.reset();
+        try {
+            AssetFileDescriptor fileDescriptor = mContext.getAssets().openFd("pre_app.mp3");
+            mPlayer.setDataSource(fileDescriptor.getFileDescriptor(),
+                    fileDescriptor.getStartOffset(),
+                    fileDescriptor.getLength());
+            mPlayer.prepare();
+            mPlayer.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
