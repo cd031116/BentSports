@@ -108,9 +108,6 @@ public class TalkPoupWindow extends PopupWindow {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
             }
         }).start();
     }

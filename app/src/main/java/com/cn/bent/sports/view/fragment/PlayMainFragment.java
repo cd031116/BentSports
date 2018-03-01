@@ -197,7 +197,18 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
             if (marker.equals(mList.get(i))) {
                 if (!place_list.get(i).getType().endsWith("2")) {
                     if (place_list.get(i).getIs_play().endsWith("0")) {
-                        showDialogMsg("是否前往该地点", i);
+                        t_ids = i;
+                        isGame = true;
+                        setcheck();
+                        place_list.get(t_ids).setCheck(true);
+                        addMarkersToMap();
+                        mEndPoint = null;
+                        mEndPoint = new LatLng(Double.valueOf(place_list.get(i).getLatitude()).doubleValue(),
+                                Double.valueOf(place_list.get(i).getLongitude()).doubleValue());
+                        shouPoup(place_list.get(t_ids).getGame_name(), false, place_list.get(t_ids).getGame_id(), place_list.get(t_ids).getMp3());
+                        if (times_s <= 0) {
+                            login();
+                        }
                     } else {
                         isGame = false;
                     }
@@ -438,18 +449,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
             @Override
             public void onClick(Dialog dialog, boolean confirm) {
                 if (confirm) {
-                    t_ids = position;
-                    isGame = true;
-                    setcheck();
-                    place_list.get(t_ids).setCheck(true);
-                    addMarkersToMap();
-                    mEndPoint = null;
-                    mEndPoint = new LatLng(Double.valueOf(place_list.get(position).getLatitude()).doubleValue(),
-                            Double.valueOf(place_list.get(position).getLongitude()).doubleValue());
-                    shouPoup(place_list.get(t_ids).getGame_name(), false, place_list.get(t_ids).getGame_id(), place_list.get(t_ids).getMp3());
-                    if (times_s <= 0) {
-                        login();
-                    }
+
                 } else {
 
                 }

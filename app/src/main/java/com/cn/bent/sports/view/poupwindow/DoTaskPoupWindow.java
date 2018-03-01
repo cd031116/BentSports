@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.BitmapRegionDecoder;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -41,6 +42,7 @@ public class DoTaskPoupWindow extends PopupWindow {
         this.view = LayoutInflater.from(mContext).inflate(R.layout.do_task_window, null);
         SupportMultipleScreensUtil.scale(view);
         mPlayer = new MediaPlayer();
+        mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         image_bg = (ImageView) view.findViewById(R.id.image_bg);
         name_game = (TextView) view.findViewById(R.id.name_game);
         line_s = (LinearLayout) view.findViewById(R.id.line_s);
@@ -156,9 +158,6 @@ public class DoTaskPoupWindow extends PopupWindow {
                     mPlayer.setDataSource(paths);
                     mPlayer.prepare();
                     mPlayer.start();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
