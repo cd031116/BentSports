@@ -36,7 +36,8 @@ public class MainPoupWindow extends PopupWindow {
         this.itemsOnClick = itemsOnClickd;
         this.view = LayoutInflater.from(mContext).inflate(R.layout.detail_window, null);
         SupportMultipleScreensUtil.scale(view);
-
+        view.setFocusable(true); // 这个很重要
+        view.setFocusableInTouchMode(true);
         mPlayer = new MediaPlayer();
         mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         playSund();
@@ -54,16 +55,16 @@ public class MainPoupWindow extends PopupWindow {
 
 
 
-    /* 设置弹出窗口特征 */
+        /* 设置弹出窗口特征 */
         // 设置视图
-        this.setOutsideTouchable(true);
+        this.setOutsideTouchable(false);
         // 设置弹出窗体的宽和高
         this.setHeight(RelativeLayout.LayoutParams.MATCH_PARENT);
         this.setWidth(RelativeLayout.LayoutParams.MATCH_PARENT);
         this.setContentView(view);
-        // 设置弹出窗体可点击
         SupportMultipleScreensUtil.scale(view);
-        this.setFocusable(true);
+        // 设置弹出窗体可点击
+        this.setFocusable(false);
         // 实例化一个ColorDrawable颜色为半透明
         ColorDrawable dw = new ColorDrawable(0xb0000000);
         // 设置弹出窗体的背景
