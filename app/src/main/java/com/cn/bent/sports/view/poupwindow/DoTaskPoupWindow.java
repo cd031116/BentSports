@@ -39,6 +39,7 @@ public class DoTaskPoupWindow extends PopupWindow {
         this.itemsOnClick = itemsOnClickd;
         this.view = LayoutInflater.from(mContext).inflate(R.layout.do_task_window, null);
         SupportMultipleScreensUtil.scale(view);
+        mPlayer = new MediaPlayer();
         image_bg = (ImageView) view.findViewById(R.id.image_bg);
         name_game = (TextView) view.findViewById(R.id.name_game);
         line_s = (LinearLayout) view.findViewById(R.id.line_s);
