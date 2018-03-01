@@ -126,5 +126,5 @@
         android:layout_above="@id/tuli_layout"
         android:layout_below="@id/miaoshu"
         android:layout_marginTop="65px"
-        android:scaleType="matrix" />
+        android:scaleType="fitXY" />
 </RelativeLayout>

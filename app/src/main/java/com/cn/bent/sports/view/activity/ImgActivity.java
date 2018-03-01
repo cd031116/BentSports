@@ -5,9 +5,12 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.bumptech.glide.Glide;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseActivity;
+import com.cn.bent.sports.widget.MyZoomImageView;
 
+import butterknife.Bind;
 import butterknife.OnClick;
 
 /**
