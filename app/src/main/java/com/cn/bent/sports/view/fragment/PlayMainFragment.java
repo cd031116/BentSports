@@ -193,6 +193,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
     @Override
     public boolean onMarkerClick(Marker marker) {
         for (int i = 0; i < mList.size(); i++) {
+            Log.d("tttt", "onMarkerClick gameid: " + place_list.get(i).getGame_id()+",gametype:"+ place_list.get(i).getType() + ",isplay:" + place_list.get(i).getIs_play());
             if (marker.equals(mList.get(i))) {
                 if (!place_list.get(i).getType().endsWith("2")) {
                     if (place_list.get(i).getIs_play().endsWith("0")) {
@@ -202,7 +203,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                     }
                 } else {
                     isGame = false;
-                    shousoundPoup(place_list.get(i).getMp3(),place_list.get(i).getDesc(), i);
+                    shousoundPoup(place_list.get(i).getMp3(), place_list.get(i).getDesc(), i);
                 }
             }
         }
@@ -460,14 +461,14 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
     //    boolean isFirst=false;
     private void shouPoup(String ganme_name, boolean isShow, String photo, String sound_path) {
         String distance = "";
-        if (mEndPoint != null&&mStartPoint!=null) {
+        if (mEndPoint != null && mStartPoint != null) {
             distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
         }
-        if (mopupWindow != null && mopupWindow.isShowing()){
+        if (mopupWindow != null && mopupWindow.isShowing()) {
             mopupWindow.setvisib(isShow);
-            mopupWindow.setDistance((int) (Double.parseDouble(distance))+"m");
+            mopupWindow.setDistance((int) (Double.parseDouble(distance)) + "m");
         } else {
-            mopupWindow = new DoTaskPoupWindow(getActivity(), ganme_name, isShow, photo, sound_path, (int) (Double.parseDouble(distance))+"m", itemsOnClick);
+            mopupWindow = new DoTaskPoupWindow(getActivity(), ganme_name, isShow, photo, sound_path, (int) (Double.parseDouble(distance)) + "m", itemsOnClick);
             mopupWindow.showAtLocation(getActivity().findViewById(R.id.map_view),
                     Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
         }
@@ -719,7 +720,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
         if (mEndPoint != null) {
             String distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
             if (mopupWindow != null && mopupWindow.isShowing()) {
-                mopupWindow.setDistance((int) (Double.parseDouble(distance))+"m");
+                mopupWindow.setDistance((int) (Double.parseDouble(distance)) + "m");
             }
         }
     }

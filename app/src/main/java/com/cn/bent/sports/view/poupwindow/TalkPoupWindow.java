@@ -90,10 +90,10 @@ public class TalkPoupWindow extends PopupWindow {
                 try {
                     mPlayer.setDataSource(paths);
                     mPlayer.prepare();
-                } catch (IOException e) {
+                    mPlayer.start();
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-                mPlayer.start();
             }
         }).start();
     }
