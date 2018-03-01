@@ -85,7 +85,8 @@ public class TalkPoupWindow extends PopupWindow {
                         mPlayer.stop();
                         mPlayer.release();
                     }
-                    return false;
+                    dismiss();
+                    return true;
                 }
                 return false;
             }

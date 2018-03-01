@@ -127,7 +127,7 @@ public class DoTaskPoupWindow extends PopupWindow {
                         mPlayer.release();
                     }
                     itemsOnClick.ItemClick(0);
-                    return false;
+                    return true;
                 }
                 return false;
             }

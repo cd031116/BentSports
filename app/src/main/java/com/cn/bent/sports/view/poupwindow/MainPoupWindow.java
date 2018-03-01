@@ -72,7 +72,7 @@ public class MainPoupWindow extends PopupWindow {
 //        this.setAnimationStyle(R.style.select_anim);
         this.getContentView().measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
 
-        this.getContentView().setOnKeyListener(new View.OnKeyListener() {
+        view.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -80,7 +80,7 @@ public class MainPoupWindow extends PopupWindow {
                         mPlayer.stop();
                         mPlayer.release();
                     }
-                    return false;
+                    return true;
                 }
                 return false;
             }
