@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -198,17 +199,17 @@ public class MainActivity extends BaseActivity {
     }
 
 
+
     @Override
-
-    public
-    void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        if (hasFocus){
-
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_DOWN &&keyCode == KeyEvent.KEYCODE_BACK) {
+           if(ropupWindow!=null&&ropupWindow.isShowing()){
+               ropupWindow.setclose();
+           }
+            return true;
         }
+        return super.onKeyDown(keyCode, event);
     }
-
-
 
 
 }
