@@ -22,7 +22,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:text="名称"
                 android:textColor="#000000"
                 android:textSize="51px" />
 
@@ -68,7 +67,7 @@
                 android:id="@+id/context_t"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:lineSpacingExtra="5px"/>
+                android:lineSpacingExtra="8px"/>
 
 
         </android.support.v4.widget.NestedScrollView>

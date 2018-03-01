@@ -215,7 +215,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                     }
                 } else {
                     isGame = false;
-                    shousoundPoup(place_list.get(i).getMp3(), place_list.get(i).getDesc(), i);
+                    shousoundPoup(place_list.get(t_ids).getName(),place_list.get(i).getMp3(), place_list.get(i).getDesc(), i);
                 }
             }
         }
@@ -465,12 +465,12 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
         }
     }
 
-    private void shousoundPoup(String paths, String shuom, int position) {
+    private void shousoundPoup(String names,String paths, String shuom, int position) {
         if (soundWindow != null) {
             soundWindow.dismiss();
         }
         t_ids = position;
-        soundWindow = new TalkPoupWindow(getActivity(), paths, shuom, null);
+        soundWindow = new TalkPoupWindow(getActivity(),names, paths, shuom, null);
         soundWindow.showAtLocation(getActivity().findViewById(R.id.map_view),
                 Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
 

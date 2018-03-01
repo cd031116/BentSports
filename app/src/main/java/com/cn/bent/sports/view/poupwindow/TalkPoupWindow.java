@@ -39,7 +39,7 @@ public class TalkPoupWindow extends PopupWindow {
     private MediaPlayer mPlayer;
     private ItemInclick itemsOnClick;
 
-    public TalkPoupWindow(final Activity mContext, String path, String shuoming, ItemInclick itemsOnClickd) {
+    public TalkPoupWindow(final Activity mContext,String names_t, String path, String shuoming, ItemInclick itemsOnClickd) {
         this.mContext = mContext;
         this.itemsOnClick = itemsOnClickd;
         this.view = LayoutInflater.from(mContext).inflate(R.layout.talk_window, null);
@@ -62,7 +62,7 @@ public class TalkPoupWindow extends PopupWindow {
             }
         });
         context_t.setText(shuoming);
-
+        travel_name.setText(names_t);
 
     /* 设置弹出窗口特征 */
         // 设置视图
