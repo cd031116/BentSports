@@ -2,6 +2,7 @@ package com.cn.bent.sports.view.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -114,6 +115,7 @@ public class IsMeFragment extends BaseFragment {
                 .into(user_photo);
         if (userMsgEntity.getCard_num() != null && userMsgEntity.getCard_num().size() > 0) {
             for (UserMsgEntity.CardNumBean cardBean : userMsgEntity.getCard_num()) {
+                Log.d("tttt", "getGame_id: "+cardBean.getGame_id());
                 switch (cardBean.getGame_id()) {
                     case 1:
                         if (cardBean.getStatus() == 1)
