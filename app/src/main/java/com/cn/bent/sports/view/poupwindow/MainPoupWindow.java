@@ -3,6 +3,7 @@ package com.cn.bent.sports.view.poupwindow;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -36,8 +37,6 @@ public class MainPoupWindow extends PopupWindow {
         this.itemsOnClick = itemsOnClickd;
         this.view = LayoutInflater.from(mContext).inflate(R.layout.detail_window, null);
         SupportMultipleScreensUtil.scale(view);
-        view.setFocusable(true); // 这个很重要
-        view.setFocusableInTouchMode(true);
         mPlayer = new MediaPlayer();
         mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         playSund();
@@ -62,25 +61,26 @@ public class MainPoupWindow extends PopupWindow {
         this.setHeight(RelativeLayout.LayoutParams.MATCH_PARENT);
         this.setWidth(RelativeLayout.LayoutParams.MATCH_PARENT);
         this.setContentView(view);
-        SupportMultipleScreensUtil.scale(view);
         // 设置弹出窗体可点击
         this.setFocusable(false);
+        this.getContentView().setFocusableInTouchMode(true);
         // 实例化一个ColorDrawable颜色为半透明
-        ColorDrawable dw = new ColorDrawable(0xb0000000);
-        // 设置弹出窗体的背景
-        this.setBackgroundDrawable(dw);
+//        ColorDrawable dw = new ColorDrawable(0xb0000000);
+//        // 设置弹出窗体的背景
+//        this.setBackgroundDrawable(dw);
         // 设置弹出窗体显示时的动画，从底部向上弹出
 //        this.setAnimationStyle(R.style.select_anim);
         this.getContentView().measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
 
-        view.setOnKeyListener(new View.OnKeyListener() {
+        this.getContentView().setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN &&keyCode == KeyEvent.KEYCODE_BACK) {
                     if (mPlayer != null) {
                         mPlayer.stop();
                         mPlayer.release();
                     }
+                    dismiss();
                     return true;
                 }
                 return false;
