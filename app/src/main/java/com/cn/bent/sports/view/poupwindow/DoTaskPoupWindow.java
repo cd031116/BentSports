@@ -7,6 +7,7 @@ import android.graphics.BitmapRegionDecoder;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -115,6 +116,20 @@ public class DoTaskPoupWindow extends PopupWindow {
         // 设置弹出窗体显示时的动画，从底部向上弹出
         this.setAnimationStyle(R.style.select_anim);
         this.getContentView().measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        this.getContentView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    if (mPlayer != null) {
+                        mPlayer.stop();
+                        mPlayer.release();
+                    }
+                    itemsOnClick.ItemClick(0);
+                    return false;
+                }
+                return false;
+            }
+        });
     }
 
     public void setvisib(boolean istrue) {
@@ -140,7 +155,7 @@ public class DoTaskPoupWindow extends PopupWindow {
                 try {
                     mPlayer.setDataSource(paths);
                     mPlayer.prepare();
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 mPlayer.start();
