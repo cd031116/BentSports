@@ -2,6 +2,7 @@ package com.cn.bent.sports.widget;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.cn.bent.sports.utils.SupportMultipleScreensUtil;
  */
 
 public class GameDialog extends Dialog implements View.OnClickListener {
+    private int imgResId = 0;
     private TextView titleTxt;
     private TextView submitTxt;
     private TextView cancelTxt;
@@ -52,12 +54,21 @@ public class GameDialog extends Dialog implements View.OnClickListener {
         this.content = content;
     }
 
-    public GameDialog(Context context, int themeResId,OnCloseListener
+    public GameDialog(Context context, int themeResId, OnCloseListener
             listener) {
         super(context, themeResId);
         this.mContext = context;
         this.listener = listener;
     }
+
+    public GameDialog(Context context, int themeResId, int imgResId, OnCloseListener
+            listener) {
+        super(context, themeResId);
+        this.mContext = context;
+        this.imgResId = imgResId;
+        this.listener = listener;
+    }
+
     public GameDialog(Context context, int themeResId, String content, OnCloseListener
             listener) {
         super(context, themeResId);
@@ -107,8 +118,14 @@ public class GameDialog extends Dialog implements View.OnClickListener {
         if (!TextUtils.isEmpty(positiveName)) {
             submitTxt.setText(positiveName);
         }
-
-        titleTxt.setText(title);
+        if (imgResId == 0)
+            titleTxt.setText(title);
+        else {
+            titleTxt.setText(title);
+            Drawable nav_up = mContext.getResources().getDrawable(imgResId);
+            nav_up.setBounds(0, 0, nav_up.getMinimumWidth(), nav_up.getMinimumHeight());
+            titleTxt.setCompoundDrawables(null, null, null, nav_up);
+        }
     }
 
     @Override

@@ -54,7 +54,7 @@ public class ZoomActivity extends BaseActivity {
             case R.id.img_sy:
                 startActivity(new Intent(this, ImgActivity.class));
 //                startActivity(new Intent(this, ArActivity.class));
-//                startActivity(new Intent(this, OfflineActivity.class));
+//                startActivity(new Intent(this, PlayWebViewActivity.class));
                 break;
             case R.id.back:
                 finish();

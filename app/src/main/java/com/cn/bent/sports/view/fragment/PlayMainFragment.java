@@ -596,13 +596,10 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                     if (place_list != null && place_list.size() > 0 && t_ids >= 0 && isGame) {
                         for (MinewBeacon beacon : minewBeacons) {
                             String majer = beacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Major).getStringValue() + beacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
-                            Log.i("tttt", "beacon majer" + majer.replace(":", ""));
-                            Log.i("tttt", "beacon t_ids" + t_ids);
-                            Log.i("tttt", "beacon getMac" + place_list.get(t_ids).getiBeacons());
                             if (majer != null) {
                                 for (MajorBean cheeck : place_list.get(t_ids).getiBeacons()) {
                                     String jieguo = cheeck.getMajor() + cheeck.getMinor();
-                                    if (jieguo.endsWith(majer.replace(":", ""))) {
+                                    if (jieguo.endsWith(majer)) {
                                         shouPoup(place_list.get(t_ids).getName(), true, place_list.get(t_ids).getGame_id(), place_list.get(t_ids).getMp3());
                                         break;
                                     }

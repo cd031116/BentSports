@@ -17,6 +17,7 @@ public class MapDot implements Serializable {
     private String type;
     private String mp3;
     private String mp4;
+    private String desc;
     private String add_time;
     private String status;
     private String scenic_spot_id;
@@ -26,9 +27,18 @@ public class MapDot implements Serializable {
     private String game_name;
     private boolean isCheck;
 
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
     public String getGame_name() {
         return game_name;
     }
+
     public void setGame_name(String game_name) {
         this.game_name = game_name;
     }

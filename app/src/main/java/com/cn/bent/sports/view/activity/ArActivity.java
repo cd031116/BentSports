@@ -2,6 +2,7 @@ package com.cn.bent.sports.view.activity;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -29,6 +30,7 @@ import com.cn.bent.sports.bean.VideoEvent;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.utils.ToastUtils;
+import com.cn.bent.sports.widget.GameDialog;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.HuiquRxTBFunction;
@@ -69,6 +71,7 @@ public class ArActivity extends BaseActivity {
         super.initView();
         user = (LoginBase) SaveObjectUtils.getInstance(this).getObject(Constants.USER_INFO, null);
         gameId = getIntent().getStringExtra("gameId");
+        showDialogMsg(getResources().getString(R.string.ar_tuo),R.drawable.artuo);
     }
 
     @Override
@@ -103,6 +106,21 @@ public class ArActivity extends BaseActivity {
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+    }
+
+    private void showDialogMsg(String names,int imgResId) {
+        new GameDialog(this, R.style.dialog, imgResId,new GameDialog.OnCloseListener() {
+            @Override
+            public void onClick(Dialog dialog, boolean confirm) {
+
+                if (confirm) {
+
+                } else {
+                    finish();
+                }
+                dialog.dismiss();
+            }
+        }).setTitle(names).show();
     }
 
     @OnClick({R.id.top_left, R.id.top_image,R.id.go_ahead})

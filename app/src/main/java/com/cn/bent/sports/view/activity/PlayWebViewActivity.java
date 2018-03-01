@@ -23,10 +23,12 @@ import com.cn.bent.sports.bean.InfoEvent;
 import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.bean.ReFreshEvent;
 import com.cn.bent.sports.database.TaskCationManager;
+import com.cn.bent.sports.scan.CaptureActivity;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.DataUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.utils.ToastUtils;
+import com.cn.bent.sports.widget.GameDialog;
 import com.cn.bent.sports.widget.ToastDialog;
 import com.google.gson.Gson;
 import com.zhl.network.RxObserver;
@@ -128,8 +130,32 @@ public class PlayWebViewActivity extends BaseActivity {
         webSettings.setJavaScriptEnabled(true);
         // 设置允许JS弹窗
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
-        mWebView.loadUrl(gameUrl+"?uid=" + user.getMember_id() + "&etype=android&gameid=" + gameId);
+        mWebView.loadUrl(gameUrl + "?uid=" + user.getMember_id() + "&etype=android&gameid=" + gameId);
         mWebView.addJavascriptInterface(new JSInterface(), "native");
+        switch (Integer.parseInt(gameId))
+        {
+            case 1:
+                showDialogMsg(getResources().getString(R.string.hong_bao));
+                break;
+            case 12:
+                showDialogMsg(getResources().getString(R.string.deng_long));
+                break;
+            case 13:
+                showDialogMsg(getResources().getString(R.string.chou_qian));
+                break;
+//            case 14:
+//                showDialogMsg(getResources().getString(R.string.cai_deng_mi));
+//                break;
+            case 16:
+                showDialogMsg(getResources().getString(R.string.no_die));
+                break;
+            case 17:
+                showDialogMsg(getResources().getString(R.string.xiong_chumo));
+                break;
+            case 18:
+                showDialogMsg(getResources().getString(R.string.xian_xia));
+                break;
+        }
     }
 
     @Override
@@ -146,6 +172,21 @@ public class PlayWebViewActivity extends BaseActivity {
             addScroe(gameEntity);
             Log.d("dasa", "h5Result: " + gameEntity.getGameid() + ",getScord:" + gameEntity.getScord() + ",getUid:" + gameEntity.getUid());
         }
+    }
+
+    private void showDialogMsg(String names) {
+        new GameDialog(this, R.style.dialog, new GameDialog.OnCloseListener() {
+            @Override
+            public void onClick(Dialog dialog, boolean confirm) {
+
+                if (confirm) {
+
+                } else {
+                    finish();
+                }
+                dialog.dismiss();
+            }
+        }).setTitle(names).show();
     }
 
     private void addScroe(final GameEntity gameEntity) {

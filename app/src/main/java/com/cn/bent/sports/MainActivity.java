@@ -84,6 +84,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void run() {
                 switchContent(0);
+                selected=0;
             }
         }, 600);
     }
