@@ -7,9 +7,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseActivity;
-import com.cn.bent.sports.widget.BaseDragZoomImageView;
 
 
 import butterknife.Bind;
@@ -20,6 +20,9 @@ import butterknife.OnClick;
  */
 
 public class ZoomActivity extends BaseActivity {
+
+    @Bind(R.id.img_sy)
+    ImageView img_sy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,8 @@ public class ZoomActivity extends BaseActivity {
     @Override
     public void initView() {
         super.initView();
+        Glide.with(img_sy.getContext()).load(R.mipmap.syh_map)
+                .into(img_sy);
     }
 
 
@@ -48,9 +53,9 @@ public class ZoomActivity extends BaseActivity {
         super.initData();
     }
 
-    @OnClick({R.id.img_sy,R.id.back})
+    @OnClick({R.id.img_sy, R.id.back})
     void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.img_sy:
                 startActivity(new Intent(this, ImgActivity.class));
 //                startActivity(new Intent(this, ArActivity.class));

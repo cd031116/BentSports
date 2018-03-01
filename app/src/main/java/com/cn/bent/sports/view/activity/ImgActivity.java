@@ -7,6 +7,7 @@ import android.view.WindowManager;
 
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseActivity;
+
 import butterknife.OnClick;
 
 /**

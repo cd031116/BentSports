@@ -4,17 +4,18 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.cn.bent.sports.widget.BaseDragZoomImageView
+    <com.cn.bent.sports.widget.MyZoomImageView
         android:id="@+id/img_syh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scaleType="matrix"
-        android:src="@mipmap/syh_map" />
+        android:src="@mipmap/syh_map"
+        android:scaleType="matrix" />
+
     <ImageView
         android:id="@+id/back"
         android:layout_width="60px"
         android:layout_height="60px"
+        android:layout_marginLeft="44px"
         android:layout_marginTop="44px"
-        android:background="@drawable/guanbi_hei"
-        android:layout_marginLeft="44px"/>
+        android:background="@drawable/guanbi_hei" />
 </RelativeLayout>
