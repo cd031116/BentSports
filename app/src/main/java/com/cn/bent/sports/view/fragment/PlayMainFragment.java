@@ -52,6 +52,7 @@ import com.cn.bent.sports.view.activity.RuleActivity;
 import com.cn.bent.sports.view.activity.ZoomActivity;
 import com.cn.bent.sports.view.poupwindow.DoTaskPoupWindow;
 import com.cn.bent.sports.view.poupwindow.TalkPoupWindow;
+import com.cn.bent.sports.widget.GameDialog;
 import com.cn.bent.sports.widget.ToastDialog;
 import com.minew.beacon.BeaconValueIndex;
 import com.minew.beacon.BluetoothState;
@@ -489,8 +490,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
         public void ItemClick(int index) {
             if (index == 1) {
                 if ("14".endsWith(place_list.get(t_ids).getGame_id())) {
-                    Intent intent = new Intent(getActivity(), CaptureActivity.class);
-                    startActivityForResult(intent, REQUEST_Scan);
+                    showDialogMsg(getResources().getString(R.string.cai_deng_mi));
                 } else if ("15".endsWith(place_list.get(t_ids).getGame_id())) {
                     Intent intent = new Intent(getActivity(), ArActivity.class);
                     intent.putExtra("gameId", place_list.get(t_ids).getGame_id());
@@ -715,6 +715,22 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                     }
                 });
     }
+
+    private void showDialogMsg(String names) {
+        new GameDialog(getActivity(), R.style.dialog, new GameDialog.OnCloseListener() {
+            @Override
+            public void onClick(Dialog dialog, boolean confirm) {
+                if (confirm) {
+                    Intent intent = new Intent(getActivity(), CaptureActivity.class);
+                    startActivityForResult(intent, REQUEST_Scan);
+                } else {
+
+                }
+                dialog.dismiss();
+            }
+        }).setTitle(names).show();
+    }
+
 
     @Override
     public void onMyLocationChange(Location location) {
