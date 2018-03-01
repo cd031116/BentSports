@@ -41,7 +41,6 @@ public class MainPoupWindow extends PopupWindow {
         SupportMultipleScreensUtil.scale(view);
         mPlayer = new MediaPlayer();
         mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        view.setFocusable(true);
         playSund();
         go_to = (ImageView) view.findViewById(R.id.go_to);
         go_to.setOnClickListener(new View.OnClickListener() {
@@ -66,6 +65,7 @@ public class MainPoupWindow extends PopupWindow {
         BaseConfig.getInstance(mContext).setStringValue(Constants.IS_SHOWS,"1");
         // 设置弹出窗体可点击
         this.setFocusable(false);
+        view.setFocusable(true);
         // 实例化一个ColorDrawable颜色为半透明
         ColorDrawable dw = new ColorDrawable(0xb0000000);
         // 设置弹出窗体的背景

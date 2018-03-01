@@ -349,6 +349,9 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
             handler2.removeCallbacks(runnable2);
             bf.setLongValue(Constants.IS_TIME, 0);
             ji_timer.setText("已通关");
+            if (mMinewBeaconManager != null) {
+                mMinewBeaconManager.stopScan();
+            }
         }
     }
 
