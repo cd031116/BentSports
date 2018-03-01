@@ -67,7 +67,6 @@ public class AllFinishActivity extends BaseActivity {
         super.initView();
         user = (LoginBase) SaveObjectUtils.getInstance(this).getObject(Constants.USER_INFO, null);
         game_list.setLayoutManager(new LinearLayoutManager(this));
-        all_time.setText("通关时间：" + DataUtils.getDateToTime(System.currentTimeMillis() - BaseConfig.getInstance(AllFinishActivity.this).getLongValue(Constants.IS_TIME, 0)));
     }
 
     @Override
@@ -96,6 +95,7 @@ public class AllFinishActivity extends BaseActivity {
     }
 
     private void setRecView(AllFinishEntity allFinishEntity) {
+        all_time.setText("通关时间：" + allFinishEntity.getDone_time());
         all_jifen.setText(String.valueOf(allFinishEntity.getTotal_score()));
         CommonAdapter<AllFinishEntity.GameRecordBean> mAdapter = new CommonAdapter<AllFinishEntity.GameRecordBean>(this, R.layout.item_all_finish, allFinishEntity.getGame_record()) {
             @Override

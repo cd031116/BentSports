@@ -121,23 +121,23 @@ public class IsMeFragment extends BaseFragment {
                         break;
                     case 12:
                         if (cardBean.getStatus() == 1)
-                            liunianshou.setBackground(getResources().getDrawable(R.drawable.diandenglong));
+                            diandenglong.setBackground(getResources().getDrawable(R.drawable.diandenglong));
                         break;
                     case 13:
                         if (cardBean.getStatus() == 1)
-                            diandenglong.setBackground(getResources().getDrawable(R.drawable.jixiangqian));
+                            jixiangqian.setBackground(getResources().getDrawable(R.drawable.jixiangqian));
                         break;
                     case 14:
                         if (cardBean.getStatus() == 1)
-                            jixiangqian.setBackground(getResources().getDrawable(R.drawable.caidengmi));
+                            caidengmi.setBackground(getResources().getDrawable(R.drawable.caidengmi));
                         break;
                     case 15:
                         if (cardBean.getStatus() == 1)
-                            caidengmi.setBackground(getResources().getDrawable(R.drawable.kanyanchu));
+                            kanyanchu.setBackground(getResources().getDrawable(R.drawable.kanyanchu));
                         break;
                     case 16:
                         if (cardBean.getStatus() == 1)
-                            fangbianpao.setBackground(getResources().getDrawable(R.drawable.liunianshou));
+                            liunianshou.setBackground(getResources().getDrawable(R.drawable.liunianshou));
                         break;
                     case 17:
                         if (cardBean.getStatus() == 1)

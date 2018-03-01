@@ -17,7 +17,16 @@ public class AllFinishEntity implements Serializable{
 
     private int is_reward;
     private int total_score;
+    private String done_time;
     private List<GameRecordBean> game_record;
+
+    public String getDone_time() {
+        return done_time;
+    }
+
+    public void setDone_time(String done_time) {
+        this.done_time = done_time;
+    }
 
     public int getIs_reward() {
         return is_reward;
