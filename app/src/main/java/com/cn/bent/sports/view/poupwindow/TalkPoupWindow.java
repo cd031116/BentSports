@@ -104,10 +104,13 @@ public class TalkPoupWindow extends PopupWindow {
                 try {
                     mPlayer.setDataSource(paths);
                     mPlayer.prepare();
+                    mPlayer.start();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                mPlayer.start();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }).start();
     }

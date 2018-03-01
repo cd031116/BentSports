@@ -1,5 +1,6 @@
 package com.cn.bent.sports.view.activity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Handler;
 import android.util.Log;
@@ -18,6 +19,7 @@ import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.DataUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.utils.ToastUtils;
+import com.cn.bent.sports.widget.GameDialog;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.HuiquRxTBFunction;
@@ -57,6 +59,22 @@ public class OfflineActivity extends BaseActivity {
         gameId = getIntent().getStringExtra("gameId");
         handler2 = new Handler();
         setTimes();
+        showDialogMsg(getResources().getString(R.string.xian_xia));
+    }
+
+    private void showDialogMsg(String names) {
+        new GameDialog(this, R.style.dialog, new GameDialog.OnCloseListener() {
+            @Override
+            public void onClick(Dialog dialog, boolean confirm) {
+
+                if (confirm) {
+
+                } else {
+                    finish();
+                }
+                dialog.dismiss();
+            }
+        }).setTitle(names).show();
     }
 
     @Override
@@ -75,7 +93,7 @@ public class OfflineActivity extends BaseActivity {
                 if ("syh".equals(commit_edit.getText().toString().trim())) {
                     commitScore();
                 } else {
-                    ToastUtils.showShortToast(this,"游戏失败，再玩一次");
+                    ToastUtils.showShortToast(this, "游戏失败，再玩一次");
                 }
                 break;
         }
