@@ -206,9 +206,6 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                         mEndPoint = new LatLng(Double.valueOf(place_list.get(i).getLatitude()).doubleValue(),
                                 Double.valueOf(place_list.get(i).getLongitude()).doubleValue());
                         shouPoup(place_list.get(t_ids).getGame_name(), false, place_list.get(t_ids).getGame_id(), place_list.get(t_ids).getMp3());
-                        if (times_s <= 0) {
-                            login();
-                        }
                     } else {
                         isGame = false;
                     }
@@ -488,6 +485,11 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
     private DoTaskPoupWindow.ItemInclick itemsOnClick = new DoTaskPoupWindow.ItemInclick() {
         @Override
         public void ItemClick(int index) {
+            BaseConfig bf = BaseConfig.getInstance(getActivity());
+            times_s = bf.getLongValue(Constants.IS_TIME, 0);
+            if (times_s <= 0) {
+                login();
+            }
             if (index == 1) {
                 if ("14".endsWith(place_list.get(t_ids).getGame_id())) {
                     Intent intent = new Intent(getActivity(), CaptureActivity.class);
