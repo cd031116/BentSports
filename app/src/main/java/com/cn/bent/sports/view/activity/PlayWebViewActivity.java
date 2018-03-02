@@ -143,17 +143,14 @@ public class PlayWebViewActivity extends BaseActivity {
             case 13:
                 showDialogMsg(getResources().getString(R.string.chou_qian));
                 break;
-//            case 14:
-//                showDialogMsg(getResources().getString(R.string.cai_deng_mi));
-//                break;
+            case 14:
+                showDialogMsg(getResources().getString(R.string.cai_deng_mi));
+                break;
             case 16:
                 showDialogMsg(getResources().getString(R.string.no_die));
                 break;
             case 17:
                 showDialogMsg(getResources().getString(R.string.xiong_chumo));
-                break;
-            case 18:
-                showDialogMsg(getResources().getString(R.string.xian_xia));
                 break;
         }
     }

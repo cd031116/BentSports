@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -95,7 +96,8 @@ public class AllFinishActivity extends BaseActivity {
     }
 
     private void setRecView(AllFinishEntity allFinishEntity) {
-        all_time.setText("通关时间：" + allFinishEntity.getDone_time());
+        if (!TextUtils.isEmpty(allFinishEntity.getDone_time()))
+            all_time.setText("通关时间：" + allFinishEntity.getDone_time());
         all_jifen.setText(String.valueOf(allFinishEntity.getTotal_score()));
         CommonAdapter<AllFinishEntity.GameRecordBean> mAdapter = new CommonAdapter<AllFinishEntity.GameRecordBean>(this, R.layout.item_all_finish, allFinishEntity.getGame_record()) {
             @Override

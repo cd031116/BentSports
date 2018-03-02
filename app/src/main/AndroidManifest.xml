@@ -78,7 +78,7 @@
         <activity android:name=".view.activity.AllFinishActivity" />
         <activity
             android:name=".view.activity.ImgActivity"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".scan.CaptureActivity"
             android:screenOrientation="portrait" />

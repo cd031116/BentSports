@@ -194,7 +194,6 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
     @Override
     public boolean onMarkerClick(Marker marker) {
         for (int i = 0; i < mList.size(); i++) {
-            Log.d("tttt", "onMarkerClick gameid: " + place_list.get(i).getGame_id()+",gametype:"+ place_list.get(i).getType() + ",isplay:" + place_list.get(i).getIs_play());
             if (marker.equals(mList.get(i))) {
                 if (place_list.get(i).getType().equals("2")) {
                     isGame = false;
@@ -447,7 +446,6 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
     }
 
 
-
     //    boolean isFirst=false;
     private void shouPoup(String ganme_name, boolean isShow, String photo, String sound_path) {
         String distance = "";
@@ -467,12 +465,13 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
         }
     }
 
-    private void shousoundPoup(String names,String paths, String shuom, int position) {
+    private void shousoundPoup(String names, String paths, String shuom, int position) {
         if (soundWindow != null) {
             soundWindow.dismiss();
         }
+        Log.d("tttt", "shousoundPoup: " + t_ids + ",posi:" + position + ",name:" + names + ",path:" + paths);
         t_ids = position;
-        soundWindow = new TalkPoupWindow(getActivity(),names, paths, shuom, null);
+        soundWindow = new TalkPoupWindow(getActivity(), names, paths, shuom, null);
         soundWindow.showAtLocation(getActivity().findViewById(R.id.map_view),
                 Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
 
@@ -482,7 +481,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
         @Override
         public void ItemClick(int index) {
             BaseConfig bf = BaseConfig.getInstance(getActivity());
-            bf.setStringValue(Constants.IS_SHOWS,"0");
+            bf.setStringValue(Constants.IS_SHOWS, "0");
             times_s = bf.getLongValue(Constants.IS_TIME, 0);
             if (times_s <= 0) {
                 login();
