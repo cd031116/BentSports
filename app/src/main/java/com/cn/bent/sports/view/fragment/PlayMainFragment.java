@@ -197,7 +197,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
             if (marker.equals(mList.get(i))) {
                 if (place_list.get(i).getType().equals("2")) {
                     isGame = false;
-                    shousoundPoup(place_list.get(i).getName(),place_list.get(i).getMp3(), place_list.get(i).getDesc(), i);
+                    shousoundPoup(place_list.get(i).getName(), place_list.get(i).getMp3(), place_list.get(i).getDesc(), i);
                     break;
                 } else {
                     if (place_list.get(i).getIs_play().equals("0")) {
@@ -348,7 +348,9 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
             bf.setLongValue(Constants.IS_TIME, 0);
             ji_timer.setText("已通关");
             if (mMinewBeaconManager != null) {
-                mMinewBeaconManager.stopScan();
+                try {
+                    mMinewBeaconManager.stopScan();
+                }catch (Exception e){}
             }
         }
     }
@@ -360,7 +362,10 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
     public void onResume() {
         super.onResume();
         if (mMinewBeaconManager != null) {
-            mMinewBeaconManager.startScan();
+            try {
+                mMinewBeaconManager.startScan();
+            } catch (Exception e) {
+            }
         }
         BaseConfig bf = BaseConfig.getInstance(getActivity());
         times_s = bf.getLongValue(Constants.IS_TIME, 0);
@@ -412,7 +417,11 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
     public void onStop() {
         super.onStop();
         if (mMinewBeaconManager != null) {
-            mMinewBeaconManager.stopScan();
+            try {
+                mMinewBeaconManager.stopScan();
+            }catch (Exception e){
+
+            }
         }
         if (handler2 != null) {
             handler2.removeCallbacks(runnable2);
@@ -450,7 +459,10 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
     private void shouPoup(String ganme_name, boolean isShow, String photo, String sound_path) {
         String distance = "";
         if (mMinewBeaconManager != null) {
-            mMinewBeaconManager.startScan();
+            try {
+                mMinewBeaconManager.startScan();
+            } catch (Exception e) {
+            }
         }
         if (mEndPoint != null && mStartPoint != null) {
             distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
@@ -513,7 +525,9 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
             isGame = false;
             mopupWindow.dismiss();
             if (mMinewBeaconManager != null) {
-                mMinewBeaconManager.stopScan();
+                try {
+                    mMinewBeaconManager.stopScan();
+                }catch (Exception e){}
             }
         }
     };
@@ -564,8 +578,10 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
     }
 
     private void initListener() {
-
-        mMinewBeaconManager.startScan();
+        try {
+            mMinewBeaconManager.startScan();
+        } catch (Exception e) {
+        }
         mMinewBeaconManager.setDeviceManagerDelegateListener(new com.minew.beacon.MinewBeaconManagerListener() {
             /**
              *   if the manager find some new beacon, it will call back this method.

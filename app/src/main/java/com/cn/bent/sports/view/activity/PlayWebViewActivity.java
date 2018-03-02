@@ -223,8 +223,7 @@ public class PlayWebViewActivity extends BaseActivity {
                             ToastUtils.showShortToast(PlayWebViewActivity.this, "积分上传失败,正在重新上传积分");
                             addScroe(gameEntity);
                         } else {
-                            ToastUtils.showShortToast(PlayWebViewActivity.this, "网络异常，积分上传失败，请重新玩此游戏");
-                            toContinue();
+                            ToastUtils.showShortToast(PlayWebViewActivity.this, "网络异常，积分上传失败，请重新提交成绩");
                         }
                     }
                 });

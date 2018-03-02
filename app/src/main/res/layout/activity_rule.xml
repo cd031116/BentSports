@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/rule_bg"
     android:clipToPadding="true"
     android:fitsSystemWindows="true"
-    android:background="@drawable/rule_bg"
     android:padding="43px"
     tools:context="com.cn.bent.sports.view.activity.RuleActivity">
 
@@ -14,33 +14,31 @@
         android:id="@+id/back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20px"
-        android:layout_marginRight="20px"
         android:layout_alignParentRight="true"
-        android:background="@drawable/close"/>
+        android:layout_marginRight="20px"
+        android:layout_marginTop="20px"
+        android:background="@drawable/close" />
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/back"
+        android:layout_marginBottom="270px"
+        android:layout_marginLeft="60px"
+        android:layout_marginRight="60px"
+        android:layout_marginTop="420px"
+        android:paddingLeft="80px"
+        android:paddingRight="80px">
 
         <TextView
-            android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="500px"
+            android:text="@string/guize"
             android:textColor="#521a1e"
-            android:textSize="48px"
-            android:text="爆竹声中一岁除,春风送暖入屠苏"/>
+            android:lineSpacingExtra="10dp"
+            android:textSize="48px" />
+    </android.support.v4.widget.NestedScrollView>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/title"
-        android:layout_marginTop="50px"
-        android:paddingLeft="80px"
-        android:layout_marginLeft="60px"
-        android:layout_marginRight="60px"
-        android:paddingRight="80px"
-        android:textColor="#521a1e"
-        android:textSize="43px"
-        android:text="@string/play_rule"/>
 
 </RelativeLayout>

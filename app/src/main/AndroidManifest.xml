@@ -48,14 +48,17 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="cb572134e6d1d4d7fb9ffa7346dc8ccb" />
 
-        <activity android:name=".view.activity.GuideActivity" />
-        <activity android:name=".ibeacon.ScanActivity" />
+        <activity android:name=".view.activity.GuideActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ibeacon.ScanActivity"
+            android:screenOrientation="portrait" />
 
         <service android:name="com.minew.beacon.ScanService" />
         <service android:name="com.amap.api.location.APSService"></service>
@@ -66,16 +69,23 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".view.activity.SettingActivity" />
-        <activity android:name=".view.activity.ChangeNameActivity" />
+        <activity android:name=".view.activity.SettingActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".view.activity.ChangeNameActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".view.activity.PlayWebViewActivity"
             android:windowSoftInputMode="adjustResize|stateHidden" />
-        <activity android:name=".view.activity.LoginActivity" />
-        <activity android:name=".view.activity.ContinueActivity" />
-        <activity android:name=".view.activity.RuleActivity" />
-        <activity android:name=".view.activity.ZoomActivity" />
-        <activity android:name=".view.activity.AllFinishActivity" />
+        <activity android:name=".view.activity.LoginActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".view.activity.ContinueActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".view.activity.RuleActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".view.activity.ZoomActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".view.activity.AllFinishActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".view.activity.ImgActivity"
             android:screenOrientation="portrait" />
@@ -83,10 +93,14 @@
             android:name=".scan.CaptureActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".view.activity.GetLocationActivity"></activity>
-        <activity android:name=".view.activity.ChooseLuxianActivity" />
-        <activity android:name=".view.activity.ArActivity" />
-        <activity android:name=".view.activity.OfflineActivity" />
-        <activity android:name=".view.activity.LastActivity" />
+        <activity android:name=".view.activity.ChooseLuxianActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".view.activity.ArActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".view.activity.OfflineActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".view.activity.LastActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

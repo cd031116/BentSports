@@ -235,8 +235,7 @@ public class ArActivity extends BaseActivity {
                             ToastUtils.showShortToast(ArActivity.this, "积分上传失败,正在重新上传积分");
                             commitScore(gameEntity);
                         } else {
-                            ToastUtils.showShortToast(ArActivity.this, "网络异常，积分上传失败，请重新玩此游戏");
-                            startActivity(new Intent(ArActivity.this, LastActivity.class));
+                            ToastUtils.showShortToast(ArActivity.this, "网络异常，积分上传失败，请重新提交成绩");
                         }
                     }
                 });

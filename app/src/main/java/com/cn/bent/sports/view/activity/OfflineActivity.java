@@ -149,8 +149,7 @@ public class OfflineActivity extends BaseActivity {
                             ToastUtils.showShortToast(OfflineActivity.this, "积分上传失败,正在重新上传积分");
                             commitScore();
                         } else {
-                            ToastUtils.showShortToast(OfflineActivity.this, "网络异常，积分上传失败，请重新玩此游戏");
-                            startActivity(new Intent(OfflineActivity.this, LastActivity.class));
+                            ToastUtils.showShortToast(OfflineActivity.this, "网络异常，积分上传失败，请重新提交成绩");
                         }
                     }
                 });
