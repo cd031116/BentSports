@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:padding="43px"
             android:textColor="#333333"
-            android:textSize="53px" />
+            android:textSize="17sp" />
 
         <TextView
             android:id="@+id/juli"
