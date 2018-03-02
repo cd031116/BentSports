@@ -193,9 +193,6 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        if (mMinewBeaconManager != null) {
-            mMinewBeaconManager.startScan();
-        }
         for (int i = 0; i < mList.size(); i++) {
             Log.d("tttt", "onMarkerClick gameid: " + place_list.get(i).getGame_id()+",gametype:"+ place_list.get(i).getType() + ",isplay:" + place_list.get(i).getIs_play());
             if (marker.equals(mList.get(i))) {
@@ -454,6 +451,9 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
     //    boolean isFirst=false;
     private void shouPoup(String ganme_name, boolean isShow, String photo, String sound_path) {
         String distance = "";
+        if (mMinewBeaconManager != null) {
+            mMinewBeaconManager.startScan();
+        }
         if (mEndPoint != null && mStartPoint != null) {
             distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
         }
