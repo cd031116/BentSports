@@ -199,7 +199,11 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
         for (int i = 0; i < mList.size(); i++) {
             Log.d("tttt", "onMarkerClick gameid: " + place_list.get(i).getGame_id()+",gametype:"+ place_list.get(i).getType() + ",isplay:" + place_list.get(i).getIs_play());
             if (marker.equals(mList.get(i))) {
-                if (!place_list.get(i).getType().equals("2")) {
+                if (place_list.get(i).getType().equals("2")) {
+                    isGame = false;
+                    shousoundPoup(place_list.get(t_ids).getName(),place_list.get(i).getMp3(), place_list.get(i).getDesc(), i);
+                    break;
+                } else {
                     if (place_list.get(i).getIs_play().equals("0")) {
                         t_ids = i;
                         isGame = true;
@@ -210,12 +214,10 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                         mEndPoint = new LatLng(Double.valueOf(place_list.get(i).getLatitude()).doubleValue(),
                                 Double.valueOf(place_list.get(i).getLongitude()).doubleValue());
                         shouPoup(place_list.get(t_ids).getGame_name(), false, place_list.get(t_ids).getGame_id(), place_list.get(t_ids).getMp3());
+                        break;
                     } else {
                         isGame = false;
                     }
-                } else {
-                    isGame = false;
-                    shousoundPoup(place_list.get(t_ids).getName(),place_list.get(i).getMp3(), place_list.get(i).getDesc(), i);
                 }
             }
         }
