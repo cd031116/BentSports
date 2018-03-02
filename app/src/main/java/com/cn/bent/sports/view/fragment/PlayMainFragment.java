@@ -198,7 +198,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
             if (marker.equals(mList.get(i))) {
                 if (place_list.get(i).getType().equals("2")) {
                     isGame = false;
-                    shousoundPoup(place_list.get(t_ids).getName(),place_list.get(i).getMp3(), place_list.get(i).getDesc(), i);
+                    shousoundPoup(place_list.get(i).getName(),place_list.get(i).getMp3(), place_list.get(i).getDesc(), i);
                     break;
                 } else {
                     if (place_list.get(i).getIs_play().equals("0")) {

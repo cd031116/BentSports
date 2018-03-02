@@ -67,8 +67,8 @@
                 android:id="@+id/context_t"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="17sp"
-                android:lineSpacingExtra="8px"/>
+                android:textSize="16sp"
+                android:lineSpacingExtra="10dp"/>
 
 
         </android.support.v4.widget.NestedScrollView>
