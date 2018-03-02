@@ -199,8 +199,8 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
         for (int i = 0; i < mList.size(); i++) {
             Log.d("tttt", "onMarkerClick gameid: " + place_list.get(i).getGame_id()+",gametype:"+ place_list.get(i).getType() + ",isplay:" + place_list.get(i).getIs_play());
             if (marker.equals(mList.get(i))) {
-                if (!place_list.get(i).getType().endsWith("2")) {
-                    if (place_list.get(i).getIs_play().endsWith("0")) {
+                if (!place_list.get(i).getType().equals("2")) {
+                    if (place_list.get(i).getIs_play().equals("0")) {
                         t_ids = i;
                         isGame = true;
                         setcheck();
@@ -245,17 +245,17 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                 markerOption.position(new LatLng(dlat, dlong));
                 markerOption.title(hs.getName());
                 markerOption.draggable(false);
-                if (hs.isCheck() && hs.getIs_play().endsWith("0") && !hs.getType().equals("2")) {
+                if (hs.isCheck() && hs.getIs_play().equals("0") && !hs.getType().equals("2")) {
                     markerOption.icon(
                             BitmapDescriptorFactory.fromBitmap(BitmapFactory
                                     .decodeResource(getResources(),
                                             R.drawable.zb_icon)));
-                } else if (hs.getIs_play().endsWith("0") && !hs.isCheck() && !hs.getType().equals("2")) {
+                } else if (hs.getIs_play().equals("0") && !hs.isCheck() && !hs.getType().equals("2")) {
                     markerOption.icon(
                             BitmapDescriptorFactory.fromBitmap(BitmapFactory
                                     .decodeResource(getResources(),
                                             R.drawable.zuobiao)));
-                } else if (hs.getIs_play().endsWith("1") && !hs.getType().equals("2")) {
+                } else if (hs.getIs_play().equals("1") && !hs.getType().equals("2")) {
                     markerOption.icon(
                             BitmapDescriptorFactory.fromBitmap(BitmapFactory
                                     .decodeResource(getResources(),
@@ -340,7 +340,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
         BaseConfig bf = BaseConfig.getInstance(getActivity());
         boolean iswanc = false;
         for (MapDot dot : place_list) {
-            if (!dot.getType().endsWith("2") && dot.getIs_play().endsWith("0")) {
+            if (!dot.getType().equals("2") && dot.getIs_play().equals("0")) {
                 iswanc = true;
                 break;
             }
@@ -390,7 +390,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
             if (((System.currentTimeMillis() - times_s) / 1000) >= 2 * 60 * 60) {
                 handler2.removeCallbacks(runnable2);
                 for (MapDot hs : place_list) {
-                    if (hs.getIs_play().endsWith("0")) {
+                    if (hs.getIs_play().equals("0")) {
                         hs.setIs_play("1");
                     }
                 }
@@ -486,15 +486,15 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                 login();
             }
             if (index == 1) {
-                if ("14".endsWith(place_list.get(t_ids).getGame_id())) {
+                if ("14".equals(place_list.get(t_ids).getGame_id())) {
                     Intent intent = new Intent(getActivity(), CaptureActivity.class);
                     startActivityForResult(intent, REQUEST_Scan);
-                } else if ("15".endsWith(place_list.get(t_ids).getGame_id())) {
+                } else if ("15".equals(place_list.get(t_ids).getGame_id())) {
                     Intent intent = new Intent(getActivity(), ArActivity.class);
                     intent.putExtra("gameId", place_list.get(t_ids).getGame_id());
                     startActivity(intent);
                     t_ids = -1;
-                } else if ("18".endsWith(place_list.get(t_ids).getGame_id())) {
+                } else if ("18".equals(place_list.get(t_ids).getGame_id())) {
                     Intent intent = new Intent(getActivity(), OfflineActivity.class);
                     intent.putExtra("gameId", place_list.get(t_ids).getGame_id());
                     startActivity(intent);
@@ -600,7 +600,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                             if (majer != null) {
                                 for (MajorBean cheeck : place_list.get(t_ids).getiBeacons()) {
                                     String jieguo = cheeck.getMajor() + cheeck.getMinor();
-                                    if (jieguo.endsWith(majer)) {
+                                    if (jieguo.equals(majer)) {
                                         shouPoup(place_list.get(t_ids).getName(), true, place_list.get(t_ids).getGame_id(), place_list.get(t_ids).getMp3());
                                         break;
                                     }
@@ -660,7 +660,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                     }
                     if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
                         String result = bundle.getString(CodeUtils.RESULT_STRING);
-                        if ("B33832EF5EFF3EFF30B1B646B6F2410F".endsWith(result)) {
+                        if ("B33832EF5EFF3EFF30B1B646B6F2410F".equals(result)) {
                             Intent intent = new Intent(getActivity(), PlayWebViewActivity.class);
                             intent.putExtra("gameId", place_list.get(t_ids).getGame_id());
                             intent.putExtra("gameUrl", place_list.get(t_ids).getGame_url());
