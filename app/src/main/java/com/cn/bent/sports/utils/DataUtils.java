@@ -1,6 +1,9 @@
 package com.cn.bent.sports.utils;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothManager;
 import android.content.Context;
+import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 
@@ -22,31 +25,32 @@ import java.util.Locale;
 
 public class DataUtils {
 
-        //获取第二天零点时间搓
-        public static long getlongs(){
-            Date date = new Date();
-            date.setDate(date.getDate()+1);
-            date.setHours(0);
-            date.setMinutes(0);
-            date.setSeconds(0);
-            DateFormat format = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
-            String dateto = format.format(date);
-            return getStringToDate(dateto);
-        }
-     //将字符串转为时间戳
+    //获取第二天零点时间搓
+    public static long getlongs() {
+        Date date = new Date();
+        date.setDate(date.getDate() + 1);
+        date.setHours(0);
+        date.setMinutes(0);
+        date.setSeconds(0);
+        DateFormat format = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
+        String dateto = format.format(date);
+        return getStringToDate(dateto);
+    }
+
+    //将字符串转为时间戳
     public static long getStringToDate(String dateString) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
         Date date = new Date();
-        try{
+        try {
             date = dateFormat.parse(dateString);
-        } catch(ParseException e) {
+        } catch (ParseException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return date.getTime();
     }
 
-//时间戳转换成字符窜
+    //时间戳转换成字符窜
     public static String getDateToString(long milSecond) {
         Date date = new Date(milSecond);
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
@@ -55,35 +59,34 @@ public class DataUtils {
 
 
     public static String getDateToTime(long milSecond) {
-        long secoond=milSecond/1000;
-        if(secoond>=2*60*60){
-            return"02.00.00";
-        }else {
+        long secoond = milSecond / 1000;
+        if (secoond >= 2 * 60 * 60) {
+            return "02.00.00";
+        } else {
             long hour = (secoond % (24 * 60 * 60)) / (60 * 60);
             long min = ((secoond % (24 * 60 * 60)) % (60 * 60)) / 60;
             long sec = ((secoond % (24 * 60 * 60)) % (60 * 60)) % 60;
-            return  (hour>=10?(hour+""):("0"+hour))+":"+(min>=10?(min+""):("0"+min))+":"+(sec>=10?(sec+""):("0"+sec));
+            return (hour >= 10 ? (hour + "") : ("0" + hour)) + ":" + (min >= 10 ? (min + "") : ("0" + min)) + ":" + (sec >= 10 ? (sec + "") : ("0" + sec));
         }
     }
 
 
-
-    public static void copyFilesFassets(Context context,String oldPath,String newPath) {
+    public static void copyFilesFassets(Context context, String oldPath, String newPath) {
         try {
             String fileNames[] = context.getAssets().list(oldPath);//获取assets目录下的所有文件及目录名
             if (fileNames.length > 0) {//如果是目录
                 File file = new File(newPath);
                 file.mkdirs();//如果文件夹不存在，则递归
                 for (String fileName : fileNames) {
-                    copyFilesFassets(context,oldPath + "/" + fileName,newPath+"/"+fileName);
+                    copyFilesFassets(context, oldPath + "/" + fileName, newPath + "/" + fileName);
                 }
             } else {//如果是文件
                 InputStream is = context.getAssets().open(oldPath);
                 FileOutputStream fos = new FileOutputStream(new File(newPath));
-                Log.i("tttt","fos="+fos);
+                Log.i("tttt", "fos=" + fos);
                 byte[] buffer = new byte[1024];
-                int byteCount=0;
-                while((byteCount=is.read(buffer))!=-1) {//循环从输入流读取 buffer字节
+                int byteCount = 0;
+                while ((byteCount = is.read(buffer)) != -1) {//循环从输入流读取 buffer字节
                     fos.write(buffer, 0, byteCount);//将读取的输入流写入到输出流
                 }
                 fos.flush();//刷新缓冲区
@@ -127,6 +130,25 @@ public class DataUtils {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private static BluetoothAdapter getDefaultAdapter(Context context) {
+        BluetoothAdapter adapter = null;
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            adapter = BluetoothAdapter.getDefaultAdapter();
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            final BluetoothManager bluetoothManager = (BluetoothManager) context.getSystemService(Context.BLUETOOTH_SERVICE);
+            adapter = bluetoothManager.getAdapter();
+        }
+        return adapter;
+    }
+
+    public boolean isBlue(Context context) {
+        if (getDefaultAdapter(context).disable()) {
+            return false;
+        } else {
+            return true;//打开蓝牙
         }
     }
 }

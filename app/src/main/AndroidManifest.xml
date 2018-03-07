@@ -3,6 +3,7 @@
     package="com.cn.bent.sports">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.BODY_SENSORS" />
     <!-- 写入扩展存储，向扩展卡写入数据，用于写入缓存定位数据 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- 用于进行网络定位 -->
@@ -27,6 +28,15 @@
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-feature android:name="android.hardware.sensor.accelerometer" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-feature
+        android:name="android.hardware.sensor.stepcounter"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.sensor.stepdetector"
+        android:required="true" />
 
     <uses-feature
         android:name="android.hardware.bluetooth_le"
@@ -48,6 +58,9 @@
         </activity>
         <activity
             android:name=".MainActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
             android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
 
@@ -55,13 +68,15 @@
             android:name="com.amap.api.v2.apikey"
             android:value="cb572134e6d1d4d7fb9ffa7346dc8ccb" />
 
-        <activity android:name=".view.activity.GuideActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ibeacon.ScanActivity"
+        <activity
+            android:name=".view.activity.GuideActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ibeacon.ScanActivity"
             android:screenOrientation="portrait" />
 
         <service android:name="com.minew.beacon.ScanService" />
-        <service android:name="com.amap.api.location.APSService"></service>
+        <service android:name="com.amap.api.location.APSService" />
 
         <receiver android:name="com.minew.beacon.BluetoothChangedReceiver">
             <intent-filter>
@@ -75,32 +90,76 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name=".view.activity.PlayWebViewActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
-        <activity android:name=".view.activity.LoginActivity"
-            android:screenOrientation="portrait"/>
         <activity android:name=".view.activity.ContinueActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".view.activity.RuleActivity"
+        <activity
+            android:name=".view.activity.LoginActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".view.activity.ZoomActivity"
+        <activity
+            android:name=".view.activity.RuleActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".view.activity.AllFinishActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.activity.ZoomActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.AllFinishActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.ImgActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".scan.CaptureActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".view.activity.GetLocationActivity"></activity>
-        <activity android:name=".view.activity.ChooseLuxianActivity"
+        <activity
+            android:name=".view.activity.GetLocationActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".view.activity.ArActivity"
+        <activity
+            android:name=".view.activity.ChooseLuxianActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.ArActivity"
+            android:screenOrientation="portrait" />
+        <service
+            android:name=".view.service.MusicService" />
+        <activity android:name=".view.activity.WalkNaviActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".view.activity.OfflineActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".view.activity.LastActivity"
             android:screenOrientation="portrait" />
+
+        <service
+            android:name=".view.service.StepService"
+            android:priority="1000">
+            <intent-filter>
+                <!-- 系统启动完成后会调用-->
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.DATE_CHANGED" />
+                <action android:name="android.intent.action.MEDIA_MOUNTED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="android.intent.action.ACTION_TIME_TICK" />
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".view.service.StepsDetectService"
+            android:priority="1000"
+            android:process="com.cn.bent.sports..pedometer.StepsDetectService">
+            <intent-filter>
+                <!-- 系统启动完成后会调用-->
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.DATE_CHANGED" />
+                <action android:name="android.intent.action.MEDIA_MOUNTED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="android.intent.action.ACTION_TIME_TICK" />
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

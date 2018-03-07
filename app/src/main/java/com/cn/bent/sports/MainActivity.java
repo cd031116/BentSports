@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.base.BaseConfig;
+import com.cn.bent.sports.base.SdcardPermissionAction;
+import com.cn.bent.sports.base.SensorsPermission;
 import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.bean.LookRankEvent;
 import com.cn.bent.sports.database.TaskCationBean;
@@ -23,6 +25,7 @@ import com.cn.bent.sports.database.TaskCationManager;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.view.activity.ChooseLuxianActivity;
+import com.cn.bent.sports.view.activity.StartActivity;
 import com.cn.bent.sports.view.fragment.DoTaskFragment;
 import com.cn.bent.sports.view.fragment.IsMeFragment;
 import com.cn.bent.sports.view.fragment.JinMaoFragment;
@@ -31,6 +34,7 @@ import com.cn.bent.sports.view.fragment.PlayFragment;
 import com.cn.bent.sports.view.fragment.PlayMainFragment;
 import com.cn.bent.sports.view.poupwindow.MainPoupWindow;
 
+import org.aisen.android.support.action.IAction;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -207,12 +211,12 @@ public class MainActivity extends BaseActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_BACK) {
-            String index= BaseConfig.getInstance(MainActivity.this).getStringValue(Constants.IS_SHOWS,"1");
-            Log.i("gggg","index="+index);
-            if(index.endsWith("1")){
+            String index = BaseConfig.getInstance(MainActivity.this).getStringValue(Constants.IS_SHOWS, "1");
+            Log.i("gggg", "index=" + index);
+            if (index.endsWith("1")) {
                 return false;
-            }else {
-              MainActivity.this.finish();
+            } else {
+                MainActivity.this.finish();
             }
         }
         return super.onKeyDown(keyCode, event);
@@ -222,5 +226,25 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
+    }
+
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        // TODO Auto-generated method stub
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            if (this instanceof org.aisen.android.ui.activity.basic.BaseActivity) {
+                org.aisen.android.ui.activity.basic.BaseActivity aisenBaseActivity =
+                        (org.aisen.android.ui.activity.basic.BaseActivity) this;
+                new IAction(aisenBaseActivity, new SensorsPermission(aisenBaseActivity,
+                        null)) {
+                    @Override
+                    public void doAction() {
+
+                    }
+                }.run();
+            }
+        }
     }
 }
