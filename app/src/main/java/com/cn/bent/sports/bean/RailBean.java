@@ -20,11 +20,11 @@ public class RailBean implements Serializable {
         this.fence = fence;
     }
 
-    public List getMp3_tag() {
+    public List<MapDot> getMp3_tag() {
         return mp3_tag;
     }
 
-    public void setMp3_tag(List mp3_tag) {
+    public void setMp3_tag(List<MapDot> mp3_tag) {
         this.mp3_tag = mp3_tag;
     }
 }

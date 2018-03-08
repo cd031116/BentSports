@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="996px"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="720px"
+        android:background="@color/comm_white"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="98px"
+            android:text="qianwang"
+            android:textColor="#333333"
+            android:textSize="46px" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="98px"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/wc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="229px"
+                android:drawablePadding="16px"
+                android:drawableTop="@drawable/wc"
+                android:gravity="center_horizontal"
+                android:text="卫生间"
+                android:textColor="#333333"
+                android:textSize="28px" />
+
+
+            <TextView
+                android:id="@+id/gouwu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="68px"
+                android:drawablePadding="16px"
+                android:drawableTop="@drawable/gouwu"
+                android:gravity="center_horizontal"
+                android:text="购物"
+                android:textColor="#333333"
+                android:textSize="28px" />
+
+            <TextView
+                android:id="@+id/tingcc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="68px"
+                android:drawablePadding="16px"
+                android:drawableTop="@drawable/tingcc"
+                android:gravity="center_horizontal"
+                android:text="停车场"
+                android:textColor="#333333"
+                android:textSize="28px" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/canting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="229px"
+                android:drawablePadding="16px"
+                android:drawableTop="@drawable/canting"
+                android:gravity="center_horizontal"
+                android:text="餐厅"
+                android:textColor="#333333"
+                android:textSize="28px" />
+
+            <TextView
+                android:id="@+id/jiudian"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="68px"
+                android:drawablePadding="16px"
+                android:drawableTop="@drawable/jiudian"
+                android:gravity="center_horizontal"
+                android:text="酒店住宿"
+                android:textColor="#333333"
+                android:textSize="28px" />
+
+
+            <TextView
+                android:id="@+id/damen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="68px"
+                android:drawablePadding="16px"
+                android:drawableTop="@drawable/damen"
+                android:gravity="center_horizontal"
+                android:text="大门"
+                android:textColor="#333333"
+                android:textSize="28px" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/sx_guanbi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="33px">
+
+        <TextView
+            android:layout_width="38px"
+            android:layout_height="39px"
+            android:background="@drawable/sx_guanbi" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/goto_layout"
+        android:layout_width="721px"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48px"
+        android:layout_below="@id/tab_layout"
+        android:background="@color/comm_white"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="95px"
+            android:textColor="#333333"
+            android:textSize="46px" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="140px"
+            android:layout_marginTop="95px"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/cancel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="取消"
+                android:textColor="#999999"
+                android:textSize="46px" />
+
+            <TextView
+                android:id="@+id/submit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="确定"
+                android:textColor="#fb8078"
+                android:textSize="46px" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>
