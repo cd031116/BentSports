@@ -138,6 +138,9 @@
         <activity
             android:name=".view.activity.LastActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.MapActivity"
+            android:screenOrientation="portrait" />
 
         <service
             android:name=".view.service.StepService"
