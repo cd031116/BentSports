@@ -66,4 +66,6 @@ public class MyApplication extends GlobalContext{
         // TODO Auto-generated method stub
         super.onTerminate();
     }
+
+
 }

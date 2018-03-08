@@ -6,10 +6,15 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.IBinder;
+import android.support.annotation.IntDef;
 import android.util.Log;
 
+import com.cn.bent.sports.bean.PlayBean;
 import com.cn.bent.sports.bean.PlayEvent;
 import com.cn.bent.sports.bean.ReFreshEvent;
+import com.cn.bent.sports.bean.StartEvent;
+import com.cn.bent.sports.utils.Constants;
+import com.cn.bent.sports.utils.SaveObjectUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -42,10 +47,15 @@ public class MusicService extends Service{
         }
         public void play() {
             mPlayer.start();//开启音乐
+            SaveObjectUtils.getInstance(getApplicationContext()).setObject(Constants.PLAY_POSION,null);
         }
 
         public void pause() {
             mPlayer.pause();//暂停音乐
+            PlayBean bean=new PlayBean();
+            bean.setTotalPosition(mPlayer.getDuration());
+            bean.setCurentPosition(mPlayer.getCurrentPosition());
+            SaveObjectUtils.getInstance(getApplicationContext()).setObject(Constants.PLAY_POSION,bean);
         }
         public void stop() {
             mPlayer.stop();//暂停音乐
@@ -70,7 +80,8 @@ public class MusicService extends Service{
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(PlayEvent event) {
-        Log.i("tttt","event="+event.getPaths());
+        played(event.getPaths(),false);
+        Log.i("dddd","onEvent");
     }
 
 
@@ -86,7 +97,6 @@ public class MusicService extends Service{
            return;
         }
 
-        Log.i("tttt","setDataSource=");
         try {
             mPlayer.setDataSource(paths);
             mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -95,13 +105,16 @@ public class MusicService extends Service{
                 @Override
                 public void onPrepared(MediaPlayer mp) {
                     mPlayer.start();
+                    Log.i("dddd","onPrepared");
+                    EventBus.getDefault().post(new StartEvent(true));
                 }
 
             });
             mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
-
+                    EventBus.getDefault().post(new StartEvent(false));
+                    SaveObjectUtils.getInstance(getApplicationContext()).setObject(Constants.PLAY_POSION,null);
                 }
             });
         } catch (Exception e) {
@@ -124,7 +137,7 @@ public class MusicService extends Service{
     @Override
     public void onCreate() {
         super.onCreate();
-        EventBus.getDefault().register(this);
+         EventBus.getDefault().register(this);
         if(mPlayer==null){
             mPlayer=new MediaPlayer();
         }
@@ -149,7 +162,14 @@ public class MusicService extends Service{
         }
         mPlayer.release();
         mPlayer = null;
+        SaveObjectUtils.getInstance(getApplicationContext()).setObject(Constants.PLAY_POSION,null);
         super.onDestroy();
+    }
 
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        SaveObjectUtils.getInstance(getApplicationContext()).setObject(Constants.PLAY_POSION,null);
+        Log.i("dddd","onDestroy");
+        super.onTaskRemoved(rootIntent);
     }
 }

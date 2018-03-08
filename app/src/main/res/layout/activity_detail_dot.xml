@@ -75,12 +75,12 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="42px"
-                android:layout_marginTop="10px">
+                android:layout_marginLeft="42px">
             <SeekBar
                 android:id="@+id/seekbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:thumb="@drawable/jindud"
               />
 
                 <TextView
@@ -91,7 +91,7 @@
                     android:layout_marginLeft="20px"
                     android:textSize="34px"
                     android:textColor="#999999"
-                    android:text="23:23"/>
+                    android:text=""/>
                 <TextView
                     android:id="@+id/total_time"
                     android:layout_width="wrap_content"
@@ -101,7 +101,7 @@
                     android:layout_marginRight="20px"
                     android:textSize="34px"
                     android:textColor="#999999"
-                    android:text="23:23"/>
+                    android:text=""/>
 
             </RelativeLayout>
         </LinearLayout>
