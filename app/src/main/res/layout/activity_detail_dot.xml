@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fffff4"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true"
+    tools:context="com.cn.bent.sports.view.activity.DetailDotActivity">
+
+    <RelativeLayout
+        android:id="@+id/top_rea"
+        android:layout_width="match_parent"
+        android:layout_height="120px"
+        android:background="#ffffff">
+
+        <ImageView
+            android:layout_width="70px"
+            android:layout_height="match_parent"
+            android:src="@drawable/scan_return" />
+
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="题目"
+            android:textColor="#000000"
+            android:textSize="43px" />
+    </RelativeLayout>
+
+
+    <ImageView
+        android:id="@+id/bg_top"
+        android:layout_width="match_parent"
+        android:layout_height="600px"
+        android:background="@drawable/start_bg"
+        android:layout_below="@+id/top_rea" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="650px"
+        android:layout_marginBottom="58px"
+        android:layout_marginLeft="28px"
+        android:layout_marginRight="28px"
+        android:background="#ffffff"
+        android:orientation="vertical"
+        android:padding="44px">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="116px"
+                android:layout_height="116px">
+
+                <ImageView
+                    android:id="@+id/di_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#000000"/>
+
+                <ImageView
+                    android:id="@+id/paly_t"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="42px"
+                android:layout_marginTop="10px">
+            <SeekBar
+                android:id="@+id/seekbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+              />
+
+                <TextView
+                    android:id="@+id/curent_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/seekbar"
+                    android:layout_marginLeft="20px"
+                    android:textSize="34px"
+                    android:textColor="#999999"
+                    android:text="23:23"/>
+                <TextView
+                    android:id="@+id/total_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/seekbar"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20px"
+                    android:textSize="34px"
+                    android:textColor="#999999"
+                    android:text="23:23"/>
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/title_dot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#333333"
+            android:text="欢乐竹林"
+            android:paddingTop="70px"
+            android:textSize="57px"/>
+
+
+
+        <TextView
+            android:id="@+id/title_c"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#333333"
+            android:text="欢乐竹林欢乐竹林欢乐竹林欢乐竹林欢乐竹林欢乐竹林欢乐竹林欢乐竹林欢乐竹林欢乐竹林欢乐竹林欢乐竹林欢乐竹林"
+            android:paddingTop="60px"
+            android:lineSpacingExtra="10dp"
+            android:textSize="40px"/>
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

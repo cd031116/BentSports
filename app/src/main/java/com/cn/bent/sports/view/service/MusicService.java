@@ -6,6 +6,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.cn.bent.sports.bean.PlayEvent;
 import com.cn.bent.sports.bean.ReFreshEvent;
@@ -46,7 +47,9 @@ public class MusicService extends Service{
         public void pause() {
             mPlayer.pause();//暂停音乐
         }
-
+        public void stop() {
+            mPlayer.stop();//暂停音乐
+        }
         public long getMusicDuration() {
             return mPlayer.getDuration();//获取文件的总长度
         }
@@ -58,31 +61,42 @@ public class MusicService extends Service{
         public void setPosition (int position) {
             mPlayer.seekTo(position);//重新设定播放进度
         }
+        public void setPatss (String paths,boolean ischange) {
+            played(paths,ischange);
+        }
+
     }
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(PlayEvent event) {
-        play(event.getPaths());
+        Log.i("tttt","event="+event.getPaths());
     }
 
 
-    public void play( String paths) {
+    private void played( String paths,boolean qiehuan) {
         if(mPlayer==null){
             mPlayer=new MediaPlayer();
         }
-        if(mPlayer.isPlaying()){
+        if(mPlayer.isPlaying()&&qiehuan){
             mPlayer.stop();
             mPlayer.reset();
         }
+        if(mPlayer.isPlaying()&&!qiehuan){
+           return;
+        }
+
+        Log.i("tttt","setDataSource=");
         try {
             mPlayer.setDataSource(paths);
             mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            mPlayer.prepare();
             mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
                     mPlayer.start();
                 }
+
             });
             mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override

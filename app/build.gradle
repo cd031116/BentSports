@@ -63,10 +63,11 @@ dependencies {
     compile "com.android.support:recyclerview-v7:${rootProject.ext.supportLibVersion}"
     compile files('libs/minewBeaconScan.jar')
     compile files('libs/EasyAR.jar')
+    compile files('libs/lite-orm-1.7.0.jar')
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.github.bumptech.glide:glide:4.0.0'
-    compile 'com.amap.api:3dmap:latest.integration'
+//    compile 'com.amap.api:3dmap:latest.integration'
     compile 'com.amap.api:navi-3dmap:latest.integration'
     compile 'com.amap.api:location:latest.integration'
     compile 'com.amap.api:search:latest.integration'
@@ -75,5 +76,4 @@ dependencies {
     compile 'cn.yipianfengye.android:zxing-library:2.2'
     compile 'com.yuyh.imgsel:library:2.0.2'
     testCompile 'junit:junit:4.12'
-    compile files('libs/lite-orm-1.7.0.jar')
 }
