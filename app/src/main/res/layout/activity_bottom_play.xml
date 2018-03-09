@@ -7,6 +7,7 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/line_top"
         android:layout_width="match_parent"
         android:layout_height="454px"
         android:layout_alignParentBottom="true"
@@ -55,18 +56,28 @@
                 android:layout_height="wrap_content"
                 android:padding="42px">
 
-                <TextView
-                    android:id="@+id/name_t"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="欢乐竹林" />
 
-                <ImageView
-                    android:id="@+id/go_detail"
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:id="@+id/name_line"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:src="@drawable/jinrxq" />
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/name_t"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="欢乐竹林" />
+
+                    <ImageView
+                        android:id="@+id/go_detail"
+                        android:layout_width="100px"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/jinrxq" />
+
+                </RelativeLayout>
+
 
                 <SeekBar
                     android:id="@+id/seekbar"
@@ -74,7 +85,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5px"
                     android:layout_marginBottom="5px"
-                    android:layout_below="@+id/name_t"
+                    android:layout_below="@+id/name_line"
                     android:thumb="@drawable/jindud" />
 
                 <TextView

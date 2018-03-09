@@ -93,6 +93,7 @@ public class StartActivity extends BaseActivity {
 //            StartActivity.this.finish();
 //        }
         startActivity(new Intent(StartActivity.this,MapActivity.class));
+        StartActivity.this.finish();
     }
 
 

@@ -47,6 +47,7 @@ import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.PlayBean;
 import com.cn.bent.sports.bean.PointsEntity;
 import com.cn.bent.sports.bean.RailBean;
+import com.cn.bent.sports.bean.StartEvent;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.NiceUtil;
 import com.cn.bent.sports.utils.SaveObjectUtils;
@@ -58,6 +59,10 @@ import com.cn.bent.sports.widget.NearDialog;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.HuiquRxFunction;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -109,6 +114,7 @@ public class MapActivity extends BaseActivity {
     @Override
     public void initView() {
         super.initView();
+        EventBus.getDefault().register(this);
         if (aMap == null) {
             aMap = mMapView.getMap();
         }
@@ -153,6 +159,15 @@ public class MapActivity extends BaseActivity {
             if(info!=null){
                 yinp_bf.setBackgroundResource(R.drawable.tizhibf);
             }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(StartEvent event) {
+        if (event.isStart()) {
+            yinp_bf.setBackgroundResource(R.drawable.bofang);
+        } else {
+            yinp_bf.setBackgroundResource(R.drawable.tizhibf);
         }
     }
 
@@ -534,6 +549,7 @@ public class MapActivity extends BaseActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
         //在activity执行onDestroy时执行mMapView.onDestroy()，销毁地图
         mMapView.onDestroy();
         mLocationClient.unRegisterLocationListener(mAMapLocationListener);

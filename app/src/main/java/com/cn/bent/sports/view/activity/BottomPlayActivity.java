@@ -162,7 +162,7 @@ public class BottomPlayActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.play_t,R.id.go_daohang,R.id.go_detail,R.id.main_top})
+    @OnClick({R.id.play_t,R.id.go_daohang,R.id.go_detail,R.id.main_top,R.id.name_line,R.id.line_top})
     void onclick(View v) {
         switch (v.getId()) {
             case R.id.play_t:
@@ -183,10 +183,14 @@ public class BottomPlayActivity extends BaseActivity {
                 startActivity(new Intent(this, WalkNaviActivity.class));
                 break;
             case R.id.go_detail:
+            case R.id.name_line:
                 startActivity(new Intent(this, DetailDotActivity.class));
                 break;
             case R.id.main_top:
                 BottomPlayActivity.this.finish();
+                break;
+            case R.id.line_top:
+
                 break;
         }
     }
