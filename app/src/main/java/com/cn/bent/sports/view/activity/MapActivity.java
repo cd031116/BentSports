@@ -97,7 +97,6 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     private List<PointsEntity> mPointsList = new ArrayList<PointsEntity>();
     ServiceConnection serviceConnection;
     MusicService.MusicController mycontrol;
-    private Handler mHandler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

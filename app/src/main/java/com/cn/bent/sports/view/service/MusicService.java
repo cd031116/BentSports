@@ -50,6 +50,7 @@ public class MusicService extends Service{
 
         public void pause() {
             mPlayer.pause();//暂停音乐
+            Log.i("dddd","mPlayer.pause");
             PlayBean bean=new PlayBean();
             bean.setTotalPosition(mPlayer.getDuration());
             bean.setCurentPosition(mPlayer.getCurrentPosition());
@@ -154,6 +155,7 @@ public class MusicService extends Service{
 
     @Override
     public void onDestroy() {
+        Log.i("dddd","onDestroy=service");
         EventBus.getDefault().unregister(this);
         if (mPlayer.isPlaying()) {
             mPlayer.stop();
@@ -164,10 +166,4 @@ public class MusicService extends Service{
         super.onDestroy();
     }
 
-    @Override
-    public void onTaskRemoved(Intent rootIntent) {
-        SaveObjectUtils.getInstance(getApplicationContext()).setObject(Constants.PLAY_POSION,null);
-        Log.i("dddd","onDestroy");
-        super.onTaskRemoved(rootIntent);
-    }
 }
