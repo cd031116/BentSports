@@ -176,6 +176,7 @@
 
         <activity
             android:name=".view.activity.DetailDotActivity"
+
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.BottomPlayActivity"

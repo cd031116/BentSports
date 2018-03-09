@@ -84,14 +84,15 @@ public class StartActivity extends BaseActivity {
     }
 
     private void redirectTo() {
-        LoginBase user = SaveObjectUtils.getInstance(StartActivity.this).getObject(Constants.USER_INFO, null);
-        if(user==null){
-            startActivity(new Intent(StartActivity.this,LoginActivity.class));
-            StartActivity.this.finish();
-        }else {
-            startActivity(new Intent(StartActivity.this,MainActivity.class));
-            StartActivity.this.finish();
-        }
+//        LoginBase user = SaveObjectUtils.getInstance(StartActivity.this).getObject(Constants.USER_INFO, null);
+//        if(user==null){
+//            startActivity(new Intent(StartActivity.this,LoginActivity.class));
+//            StartActivity.this.finish();
+//        }else {
+//            startActivity(new Intent(StartActivity.this,MainActivity.class));
+//            StartActivity.this.finish();
+//        }
+        startActivity(new Intent(StartActivity.this,MapActivity.class));
     }
 
 

@@ -1,15 +1,23 @@
 package com.cn.bent.sports.view.activity;
 
 import android.app.Dialog;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.amap.api.location.AMapLocation;
@@ -36,9 +44,14 @@ import com.amap.api.services.core.LatLonPoint;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
+import com.cn.bent.sports.bean.PlayBean;
 import com.cn.bent.sports.bean.PointsEntity;
 import com.cn.bent.sports.bean.RailBean;
+import com.cn.bent.sports.utils.Constants;
+import com.cn.bent.sports.utils.NiceUtil;
+import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.utils.ToastUtils;
+import com.cn.bent.sports.view.service.MusicService;
 import com.cn.bent.sports.widget.AroundDialog;
 import com.cn.bent.sports.widget.GotoWhereDialog;
 import com.cn.bent.sports.widget.NearDialog;
@@ -64,7 +77,8 @@ public class MapActivity extends BaseActivity {
     @Bind(R.id.fujin)
     TextView fujin;
 
-
+    @Bind(R.id.yinp_bf)
+    ImageView yinp_bf;
     private boolean isFirstLoc = true; // 是否首次定位
     private boolean isShowRec = true; // 是否显示列表
     float mCurrentZoom = 18f;//默认地图缩放比例值
@@ -77,7 +91,9 @@ public class MapActivity extends BaseActivity {
     private AMap aMap;
     private LatLonPoint lp = new LatLonPoint(28.008977, 113.088063);//
     private List<PointsEntity> mPointsList = new ArrayList<PointsEntity>();
-
+    ServiceConnection serviceConnection;
+    MusicService.MusicController mycontrol;
+    private Handler mHandler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +120,40 @@ public class MapActivity extends BaseActivity {
         aMap.setOnMultiPointClickListener(multiPointClickListener);
         // 绑定 Marker 被点击事件
         aMap.setOnMarkerClickListener(markerClickListener);
+        Intent intent = new Intent(this, MusicService.class);
+        startService(intent);
+        if (serviceConnection == null) {
+            serviceConnection = new ServiceConnection() {
+                @Override
+                public void onServiceConnected(ComponentName name, IBinder service) {
+                    mycontrol = (MusicService.MusicController) service;
+                    Log.i("dddd", "mycontrol");
+                    checkPause();
+                    //设置进度条的最大长度
+                    //连接之后启动子线程设置当前进度
+                }
+
+                @Override
+                public void onServiceDisconnected(ComponentName name) {
+
+                }
+            };
+            //以绑定方式连接服务
+            bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+        }
+    }
+
+
+
+    private void checkPause() {
+        if (mycontrol != null && mycontrol.isPlay()) {
+            yinp_bf.setBackgroundResource(R.drawable.bofang);
+        } else if (mycontrol != null) {
+            PlayBean info= SaveObjectUtils.getInstance(getApplicationContext()).getObject(Constants.PLAY_POSION,null);
+            if(info!=null){
+                yinp_bf.setBackgroundResource(R.drawable.tizhibf);
+            }
+        }
     }
 
     @Override
@@ -147,7 +197,7 @@ public class MapActivity extends BaseActivity {
                 });
     }
 
-    @OnClick({R.id.shaixuan, R.id.fujin})
+    @OnClick({R.id.shaixuan, R.id.fujin,R.id.zhankai,R.id.yinp_bf})
     void onCLick(View view) {
         switch (view.getId()) {
             case R.id.shaixuan:
@@ -155,6 +205,23 @@ public class MapActivity extends BaseActivity {
                 break;
             case R.id.fujin:
                 gotoNearPlace();
+                break;
+            case R.id.zhankai:
+                Intent intent1 = new Intent(this,BottomPlayActivity.class);
+                this.startActivity(intent1);
+                this.overridePendingTransition(R.anim.pop_enter_anim,0);
+                break;
+            case R.id.yinp_bf:
+                if (mycontrol == null) {
+                    break;
+                }
+                if (mycontrol.isPlay()) {
+                    mycontrol.pause();
+                    yinp_bf.setBackgroundResource(R.drawable.tizhibf);
+                } else {
+                    mycontrol.play();
+                    yinp_bf.setBackgroundResource(R.drawable.bofang);
+                }
                 break;
         }
     }
@@ -485,6 +552,7 @@ public class MapActivity extends BaseActivity {
         super.onResume();
         //在activity执行onResume时执行mMapView.onResume ()，重新绘制加载地图
         mMapView.onResume();
+        checkPause();
 
     }
 

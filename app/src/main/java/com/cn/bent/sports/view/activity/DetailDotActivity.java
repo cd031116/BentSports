@@ -51,9 +51,6 @@ public class DetailDotActivity extends BaseActivity {
     @Override
     public void initView() {
         super.initView();
-        Intent intent1 = new Intent(this,BottomPlayActivity.class);
-        this.startActivity(intent1);
-        this.overridePendingTransition(R.anim.pop_enter_anim,0);
         EventBus.getDefault().register(this);
         mHandler = new Handler();
         Intent intent = new Intent(this, MusicService.class);
@@ -136,6 +133,7 @@ public class DetailDotActivity extends BaseActivity {
             mHandler.postDelayed(runnable, 100);
             seekBar.setMax((int) mycontrol.getMusicDuration());
             total_time.setText(NiceUtil.formatTime(mycontrol.getMusicDuration()));
+            paly_t.setBackgroundResource(R.drawable.bofang);
         } else if (mycontrol != null) {
             PlayBean info= SaveObjectUtils.getInstance(getApplicationContext()).getObject(Constants.PLAY_POSION,null);
            if(info!=null){

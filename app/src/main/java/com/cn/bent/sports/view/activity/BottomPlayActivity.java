@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.PlayBean;
+import com.cn.bent.sports.bean.PlayEvent;
 import com.cn.bent.sports.bean.StartEvent;
 import com.cn.bent.sports.evevt.DistanceEvent;
 import com.cn.bent.sports.evevt.DistanceSubscriber;
@@ -116,6 +117,12 @@ public class BottomPlayActivity extends BaseActivity {
     @Override
     public void initData() {
         super.initData();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                EventBus.getDefault().post(new PlayEvent("https://yjly.oss-cn-beijing.aliyuncs.com/yjly/power/144533422789324.mp3"));
+            }
+        }, 100);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -140,6 +147,7 @@ public class BottomPlayActivity extends BaseActivity {
             mHandler.postDelayed(runnable, 100);
             seekbar.setMax((int) mycontrol.getMusicDuration());
             total_time.setText(NiceUtil.formatTime(mycontrol.getMusicDuration()));
+            play_t.setBackgroundResource(R.drawable.bofang);
         } else if (mycontrol != null) {
             PlayBean info= SaveObjectUtils.getInstance(getApplicationContext()).getObject(Constants.PLAY_POSION,null);
             if(info!=null){
@@ -154,7 +162,7 @@ public class BottomPlayActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.play_t,R.id.go_daohang})
+    @OnClick({R.id.play_t,R.id.go_daohang,R.id.go_detail,R.id.main_top})
     void onclick(View v) {
         switch (v.getId()) {
             case R.id.play_t:
@@ -172,8 +180,13 @@ public class BottomPlayActivity extends BaseActivity {
                 }
                 break;
             case R.id.go_daohang:
-
-
+                startActivity(new Intent(this, WalkNaviActivity.class));
+                break;
+            case R.id.go_detail:
+                startActivity(new Intent(this, DetailDotActivity.class));
+                break;
+            case R.id.main_top:
+                BottomPlayActivity.this.finish();
                 break;
         }
     }
@@ -211,6 +224,11 @@ public class BottomPlayActivity extends BaseActivity {
         EventBus.getDefault().unregister(this);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        checkPause();
+    }
 
     @Override
     public void finish() {
