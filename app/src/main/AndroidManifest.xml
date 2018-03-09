@@ -173,11 +173,14 @@
                 <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
             </intent-filter>
         </service>
-        <activity android:name=".view.activity.DetailDotActivity"
-            android:screenOrientation="portrait"  />
-        <activity android:name=".view.activity.BottomPlayActivity"
+
+        <activity
+            android:name=".view.activity.DetailDotActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.BottomPlayActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoTitleTranslucentTheme"  />
+            android:theme="@style/NoTitleTranslucentTheme" />
     </application>
 
 </manifest>
