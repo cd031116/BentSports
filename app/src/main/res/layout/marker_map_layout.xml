@@ -91,6 +91,23 @@
             android:textSize="23px" />
 
         <TextView
+            android:id="@+id/yuyin_bf"
+            android:layout_width="102px"
+            android:layout_height="102px"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="28px"
+            android:layout_marginBottom="56px"
+            android:background="@color/comm_white"
+            android:drawablePadding="9px"
+            android:drawableTop="@drawable/choose_lx"
+            android:gravity="center_horizontal"
+            android:paddingTop="10px"
+            android:text="路线"
+            android:textColor="#333333"
+            android:textSize="23px" />
+
+        <TextView
             android:id="@+id/paizhao"
             android:layout_width="102px"
             android:layout_height="102px"

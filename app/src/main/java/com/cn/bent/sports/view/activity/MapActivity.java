@@ -122,6 +122,7 @@ public class MapActivity extends BaseActivity {
                     @Override
                     public void onSuccess(int whichRequest, RailBean info) {
                         dismissAlert();
+                        List<LatLng> pointLatLngs = new ArrayList<LatLng>();//位置点集合
                         for (int i = 0; i < info.getMp3_tag().size(); i++) {
                             PointsEntity pointsEntity = new PointsEntity();
                             pointsEntity.setPointId(info.getMp3_tag().get(i).getPlace_id());
@@ -131,7 +132,11 @@ public class MapActivity extends BaseActivity {
                             locationBean.setLongitude(Double.parseDouble(info.getMp3_tag().get(i).getLongitude()));
                             pointsEntity.setLocation(locationBean);
                             mPointsList.add(pointsEntity);
+                            LatLng latLng=new LatLng(Double.parseDouble(info.getMp3_tag().get(i).getLatitude()),Double.parseDouble(info.getMp3_tag().get(i).getLongitude()));
+                            pointLatLngs.add(latLng);
                         }
+                        aMap.addPolyline(new PolylineOptions().
+                                addAll(pointLatLngs).width(10).color(0xAAFF0000));
                     }
 
                     @Override
