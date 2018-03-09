@@ -5,8 +5,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.hardware.Sensor;
-import android.hardware.SensorManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
@@ -74,7 +73,7 @@ import butterknife.OnClick;
  * Created by dawn on 2018/3/8.
  */
 
-public class MapActivity extends BaseActivity {
+public class MapActivity extends BaseActivity implements AMap.OnMyLocationChangeListener{
     @Bind(R.id.mapView)
     MapView mMapView;
     @Bind(R.id.shaixuan)
@@ -126,6 +125,7 @@ public class MapActivity extends BaseActivity {
         aMap.setOnMultiPointClickListener(multiPointClickListener);
         // 绑定 Marker 被点击事件
         aMap.setOnMarkerClickListener(markerClickListener);
+        startLocation();
         Intent intent = new Intent(this, MusicService.class);
         startService(intent);
         if (serviceConnection == null) {
@@ -242,13 +242,18 @@ public class MapActivity extends BaseActivity {
     }
 
     public void startLocation() {
-        MyLocationStyle myLocationStyle;
-        myLocationStyle = new MyLocationStyle();//初始化定位蓝点样式类myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE);//连续定位、且将视角移动到地图中心点，定位点依照设备方向旋转，并且会跟随设备移动。（1秒1次定位）如果不设置myLocationType，默认也会执行此种模式。
-        myLocationStyle.showMyLocation(true);
-        aMap.setMyLocationStyle(myLocationStyle);//设置定位蓝点的Style
-//aMap.getUiSettings().setMyLocationButtonEnabled(true);设置默认定位按钮是否显示，非必需设置。
-        aMap.setMyLocationEnabled(true);// 设置为true表示启动显示定位蓝点，false表示隐藏定位蓝点并不进行定位，默认是false。
-
+        aMap.setMyLocationEnabled(true);
+        // 设置定位的类型为定位模式，有定位、跟随或地图根据面向方向旋转几种
+        MyLocationStyle myLocationStyle = new MyLocationStyle();
+        myLocationStyle.interval(2 * 1000);
+        myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE_NO_CENTER);
+//        myLocationStyle.strokeWidth(1.0f);
+        myLocationStyle.myLocationIcon(BitmapDescriptorFactory
+                .fromResource(R.drawable.dangqwz));
+        myLocationStyle.strokeColor(Color.parseColor("#F9DEDE"));// 设置圆形的边框颜色
+        myLocationStyle.radiusFillColor(Color.argb(100, 249, 222, 222));//
+        aMap.setMyLocationStyle(myLocationStyle);
+        aMap.setOnMyLocationChangeListener(this);
         aMap.setOnCameraChangeListener(new AMap.OnCameraChangeListener() {
             @Override
             public void onCameraChange(CameraPosition cameraPosition) {
@@ -260,28 +265,6 @@ public class MapActivity extends BaseActivity {
                 mCurrentZoom = cameraPosition.zoom;//获取手指缩放地图后的值
             }
         });
-        aMap.setOnMyLocationChangeListener(new AMap.OnMyLocationChangeListener() {
-            @Override
-            public void onMyLocationChange(Location location) {
-
-            }
-        });
-
-        mLocationClient = new AMapLocationClient(this);
-//设置定位回调监听
-        mLocationClient.setLocationListener(mAMapLocationListener);
-//初始化AMapLocationClientOption对象
-        mLocationOption = new AMapLocationClientOption();
-        //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。
-        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-        //设置定位模式为AMapLocationMode.Device_Sensors，仅设备模式。
-//        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Device_Sensors);
-        mLocationOption.setInterval(1000 * 2);
-        //给定位客户端对象设置定位参数
-        mLocationClient.setLocationOption(mLocationOption);
-        //启动定位
-        mLocationOption.setOnceLocation(false);
-        mLocationClient.startLocation();
     }
 
     //前往筛选点
@@ -456,41 +439,39 @@ public class MapActivity extends BaseActivity {
         }
     }
 
-    AMapLocationListener mAMapLocationListener = new AMapLocationListener() {
-        @Override
-        public void onLocationChanged(AMapLocation aMapLocation) {
-            if (aMapLocation != null) {
-                if (isFirstLoc) {
-                    LatLng ll = null;
-                    ll = getMostAccuracyLocation(aMapLocation);
-                    if (ll == null) {
-                        return;
-                    }
-                    isFirstLoc = false;
-                    points.add(ll);//加入集合
-                    last = ll;
-
-                    return;//画轨迹最少得2个点，首地定位到这里就可以返回了
-                }
-                //从第二个点开始
-                LatLng ll = new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude());
-                //sdk回调gps位置的频率是1秒1个，位置点太近动态画在图上不是很明显，可以设置点之间距离大于为5米才添加到集合中
-                if (AMapUtils.calculateLineDistance(last, ll) < 5) {
+    @Override
+    public void onMyLocationChange(Location location) {
+        if (location != null) {
+            if (isFirstLoc) {
+                LatLng ll = null;
+                ll = getMostAccuracyLocation(location);
+                if (ll == null) {
                     return;
                 }
-
-                points.add(ll);//如果要运动完成后画整个轨迹，位置点都在这个集合中
-
+                isFirstLoc = false;
+                points.add(ll);//加入集合
                 last = ll;
-//清除上一次轨迹，避免重叠绘画
-                mMapView.getMap().clear();
-                //将points集合中的点绘制轨迹线条图层，显示在地图上
-                Polyline polyline = aMap.addPolyline(new PolylineOptions().
-                        addAll(points).width(10).color(0xAAFF0000));
 
+                return;//画轨迹最少得2个点，首地定位到这里就可以返回了
             }
+            //从第二个点开始
+            LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
+            //sdk回调gps位置的频率是1秒1个，位置点太近动态画在图上不是很明显，可以设置点之间距离大于为5米才添加到集合中
+            if (AMapUtils.calculateLineDistance(last, ll) < 5) {
+                return;
+            }
+
+            points.add(ll);//如果要运动完成后画整个轨迹，位置点都在这个集合中
+
+            last = ll;
+//清除上一次轨迹，避免重叠绘画
+            mMapView.getMap().clear();
+            //将points集合中的点绘制轨迹线条图层，显示在地图上
+            Polyline polyline = aMap.addPolyline(new PolylineOptions().
+                    addAll(points).width(10).color(0xAAFF0000));
+
         }
-    };
+    }
 
     /**
      * 首次定位很重要，选一个精度相对较高的起始点
@@ -500,7 +481,7 @@ public class MapActivity extends BaseActivity {
      * 这里不是固定死的，你可以根据你的需求调整，如果你的轨迹刚开始效果不是很好，你可以将半径调小，两点之间距离也调小，
      * gps的精度半径一般是10-50米
      */
-    private LatLng getMostAccuracyLocation(AMapLocation location) {
+    private LatLng getMostAccuracyLocation(Location location) {
 
         Log.d("dddd", "getMostAccuracyLocation getAccuracy: " + location.getAccuracy());
         if (location.getAccuracy() > 40) {//gps位置精度大于40米的点直接弃用
@@ -552,10 +533,6 @@ public class MapActivity extends BaseActivity {
         EventBus.getDefault().unregister(this);
         //在activity执行onDestroy时执行mMapView.onDestroy()，销毁地图
         mMapView.onDestroy();
-        mLocationClient.unRegisterLocationListener(mAMapLocationListener);
-        if (mLocationClient != null && mLocationClient.isStarted()) {
-            mLocationClient.stopLocation();
-        }
         // 关闭定位图层
         aMap.setMyLocationEnabled(false);
         mMapView.getMap().clear();

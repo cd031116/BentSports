@@ -61,9 +61,9 @@
             android:layout_width="102px"
             android:layout_height="102px"
             android:layout_alignParentRight="true"
+            android:layout_below="@id/shaixuan"
             android:layout_marginRight="28px"
             android:layout_marginTop="28px"
-            android:layout_below="@id/shaixuan"
             android:background="@color/comm_white"
             android:drawablePadding="9px"
             android:drawableTop="@drawable/fujin"
@@ -79,8 +79,8 @@
             android:layout_width="102px"
             android:layout_height="102px"
             android:layout_alignParentBottom="true"
-            android:layout_marginLeft="28px"
             android:layout_marginBottom="56px"
+            android:layout_marginLeft="28px"
             android:background="@color/comm_white"
             android:drawablePadding="9px"
             android:drawableTop="@drawable/luxian_1"
@@ -90,30 +90,40 @@
             android:textColor="#333333"
             android:textSize="23px" />
 
-        <TextView
+        <LinearLayout
             android:id="@+id/yuyin_bf"
-            android:layout_width="102px"
-            android:layout_height="102px"
+            android:layout_width="112px"
+            android:layout_height="112px"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="28px"
             android:layout_marginBottom="56px"
+            android:layout_marginRight="28px"
             android:background="@color/comm_white"
-            android:drawablePadding="9px"
-            android:drawableTop="@drawable/choose_lx"
             android:gravity="center_horizontal"
-            android:paddingTop="10px"
-            android:text="路线"
-            android:textColor="#333333"
-            android:textSize="23px" />
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_marginTop="20px"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/choose_lx"/>
+            <TextView
+                android:layout_marginTop="20px"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="自动讲解"
+                android:textColor="#333333"
+                android:textSize="23px" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/paizhao"
             android:layout_width="102px"
             android:layout_height="102px"
-            android:layout_marginLeft="28px"
-            android:layout_marginBottom="28px"
             android:layout_above="@id/luxian"
+            android:layout_marginBottom="28px"
+            android:layout_marginLeft="28px"
             android:background="@color/comm_white"
             android:drawableTop="@drawable/paizhao"
             android:gravity="center"
@@ -123,9 +133,9 @@
             android:id="@+id/saomiao"
             android:layout_width="102px"
             android:layout_height="102px"
-            android:layout_marginLeft="28px"
-            android:layout_marginBottom="28px"
             android:layout_above="@id/paizhao"
+            android:layout_marginBottom="28px"
+            android:layout_marginLeft="28px"
             android:background="@color/comm_white"
             android:drawableTop="@drawable/saomiao"
             android:gravity="center"
