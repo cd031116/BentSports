@@ -1,11 +1,14 @@
 package com.cn.bent.sports.view.activity;
 
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,45 +18,49 @@ import android.widget.TextView;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.PlayBean;
-import com.cn.bent.sports.bean.PlayEvent;
 import com.cn.bent.sports.bean.StartEvent;
+import com.cn.bent.sports.evevt.DistanceEvent;
+import com.cn.bent.sports.evevt.DistanceSubscriber;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.NiceUtil;
 import com.cn.bent.sports.utils.SaveObjectUtils;
+import com.cn.bent.sports.utils.SupportMultipleScreensUtil;
 import com.cn.bent.sports.view.service.MusicService;
 
+import org.aisen.android.component.eventbus.NotificationCenter;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class DetailDotActivity extends BaseActivity {
-    @Bind(R.id.seekbar)
-    SeekBar seekBar;
-    @Bind(R.id.total_time)
-    TextView total_time;
+public class BottomPlayActivity extends BaseActivity {
+    @Bind(R.id.name_t)
+    TextView name_t;
+    @Bind(R.id.play_t)
+    ImageView play_t;
     @Bind(R.id.curent_time)
     TextView curent_time;
-    @Bind(R.id.paly_t)
-    ImageView paly_t;
-
+    @Bind(R.id.total_time)
+    TextView total_time;
+    @Bind(R.id.seekbar)
+    SeekBar seekbar;
+    @Bind(R.id.distance)
+    TextView distance;
     private Handler mHandler;
     ServiceConnection serviceConnection;
     MusicService.MusicController mycontrol;
-
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_detail_dot;
+        return R.layout.activity_bottom_play;
     }
 
     @Override
     public void initView() {
         super.initView();
-        Intent intent1 = new Intent(this,BottomPlayActivity.class);
-        this.startActivity(intent1);
-        this.overridePendingTransition(R.anim.pop_enter_anim,0);
+        NotificationCenter.defaultCenter().subscriber(DistanceEvent.class, disevent);
         EventBus.getDefault().register(this);
         mHandler = new Handler();
         Intent intent = new Intent(this, MusicService.class);
@@ -66,14 +73,14 @@ public class DetailDotActivity extends BaseActivity {
                     Log.i("dddd", "mycontrol");
                     checkPause();
                     //设置进度条的最大长度
-                    seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                    seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                         @Override
                         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                             if (fromUser) {
                                 mycontrol.setPosition(progress);
                                 if (!mycontrol.isPlay()) {
                                     mycontrol.play();
-                                    paly_t.setBackgroundResource(R.drawable.bofang);
+                                    play_t.setBackgroundResource(R.drawable.bofang);
                                     mHandler.postDelayed(runnable, 100);
                                 }
                             }
@@ -92,7 +99,7 @@ public class DetailDotActivity extends BaseActivity {
                     //连接之后启动子线程设置当前进度
                     mHandler.postDelayed(runnable, 10);
                     if (mycontrol.isPlay()) {
-                        paly_t.setBackgroundResource(R.drawable.bofang);
+                        play_t.setBackgroundResource(R.drawable.bofang);
                     }
                 }
 
@@ -106,51 +113,72 @@ public class DetailDotActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public void initData() {
+        super.initData();
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(StartEvent event) {
         if (event.isStart()) {
             int max = (int) mycontrol.getMusicDuration();
-            seekBar.setMax(max);
+            seekbar.setMax(max);
             total_time.setText(NiceUtil.formatTime(mycontrol.getMusicDuration()));
-            paly_t.setBackgroundResource(R.drawable.bofang);
+            play_t.setBackgroundResource(R.drawable.bofang);
             mHandler.postDelayed(runnable, 100);
         } else {
-            seekBar.setProgress(0);
+            seekbar.setProgress(0);
             mHandler.removeCallbacks(runnable);
             curent_time.setText(NiceUtil.formatTime(0));
-            paly_t.setBackgroundResource(R.drawable.zanting);
+            play_t.setBackgroundResource(R.drawable.zanting);
         }
     }
-
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-    }
-
 
     private void checkPause() {
         if (mycontrol != null && mycontrol.isPlay()) {
             Log.i("dddd", "checkPause");
             mHandler.postDelayed(runnable, 100);
-            seekBar.setMax((int) mycontrol.getMusicDuration());
+            seekbar.setMax((int) mycontrol.getMusicDuration());
             total_time.setText(NiceUtil.formatTime(mycontrol.getMusicDuration()));
         } else if (mycontrol != null) {
             PlayBean info= SaveObjectUtils.getInstance(getApplicationContext()).getObject(Constants.PLAY_POSION,null);
-           if(info!=null){
-               seekBar.setMax(info.getTotalPosition());
-               seekBar.setProgress(info.getCurentPosition());
-               total_time.setText(NiceUtil.formatTime(info.getTotalPosition()));
-               curent_time.setText(NiceUtil.formatTime(info.getCurentPosition()));
-               paly_t.setBackgroundResource(R.drawable.zanting);
-           }
+            if(info!=null){
+                seekbar.setMax(info.getTotalPosition());
+                seekbar.setProgress(info.getCurentPosition());
+                total_time.setText(NiceUtil.formatTime(info.getTotalPosition()));
+                curent_time.setText(NiceUtil.formatTime(info.getCurentPosition()));
+                play_t.setBackgroundResource(R.drawable.zanting);
+            }
 
         }
     }
 
+
+    @OnClick({R.id.play_t,R.id.go_daohang})
+    void onclick(View v) {
+        switch (v.getId()) {
+            case R.id.play_t:
+                if (mycontrol == null) {
+                    break;
+                }
+                if (mycontrol.isPlay()) {
+                    mycontrol.pause();
+                    play_t.setBackgroundResource(R.drawable.zanting);
+                    mHandler.removeCallbacks(runnable);
+                } else {
+                    mycontrol.play();
+                    play_t.setBackgroundResource(R.drawable.bofang);
+                    mHandler.postDelayed(runnable, 100);
+                }
+                break;
+            case R.id.go_daohang:
+
+
+                break;
+        }
+    }
     private void setprogress() {
-        seekBar.setProgress((int) mycontrol.getPosition());
+        seekbar.setProgress((int) mycontrol.getPosition());
         if (mycontrol.isPlay()) {
             curent_time.setText(NiceUtil.formatTime((int) mycontrol.getPosition()));
         }
@@ -167,41 +195,26 @@ public class DetailDotActivity extends BaseActivity {
     };
 
 
-    @OnClick({R.id.paly_t})
-    void onclick(View v) {
-        switch (v.getId()) {
-            case R.id.paly_t:
-                if (mycontrol == null) {
-                    break;
-                }
-                if (mycontrol.isPlay()) {
-                    mycontrol.pause();
-                    paly_t.setBackgroundResource(R.drawable.zanting);
-                    mHandler.removeCallbacks(runnable);
-                } else {
-                    mycontrol.play();
-                    paly_t.setBackgroundResource(R.drawable.bofang);
-                    mHandler.postDelayed(runnable, 100);
-                }
-                break;
+    //刷新距离
+    DistanceSubscriber disevent = new DistanceSubscriber() {
+        @Override
+        public void onEvent(DistanceEvent event) {
+            distance.setText(event.getDistance());
         }
-    }
-
-    @Override
-    public void initData() {
-        super.initData();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                EventBus.getDefault().post(new PlayEvent("https://yjly.oss-cn-beijing.aliyuncs.com/yjly/power/144533422789324.mp3"));
-            }
-        }, 100);
-    }
+    };
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
         mHandler.removeCallbacks(runnable);
+        NotificationCenter.defaultCenter().unsubscribe(DistanceEvent.class, disevent);
+        EventBus.getDefault().unregister(this);
+    }
+
+
+    @Override
+    public void finish() {
+        super.finish();
+        this.overridePendingTransition(R.anim.pop_exit_anim,0);
     }
 }
