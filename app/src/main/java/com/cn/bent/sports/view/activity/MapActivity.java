@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
@@ -16,7 +17,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -122,6 +125,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     private MinewBeaconManager mMinewBeaconManager;
     private static final int REQUEST_ENABLE_BT = 2;
     private boolean isBlue = false;
+    private static final int GPS_REQUEST_CODE = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -320,7 +324,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                     if (Build.VERSION.SDK_INT >= 23) {
                         showPermission();
                     } else {
-                        startLocation();//定位方法
+                        openGPSSettings();//定位方法
                     }
                 else
                     aMap.setMyLocationEnabled(false);
@@ -352,6 +356,54 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         }
     }
 
+    /**
+     * 检测GPS是否打开
+     *
+     * @return
+     */
+    private boolean checkGPSIsOpen() {
+        boolean isOpen;
+        LocationManager locationManager = (LocationManager) this
+                .getSystemService(Context.LOCATION_SERVICE);
+        isOpen = locationManager.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER);
+        return isOpen;
+    }
+
+    /**
+     * 跳转GPS设置
+     */
+    private void openGPSSettings() {
+        if (checkGPSIsOpen()) {
+            startLocation(); //自己写的定位方法
+        } else {
+            //没有打开则弹出对话框
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.notifyTitle)
+                    .setMessage(R.string.gpsNotifyMsg)
+                    // 拒绝, 退出应用
+                    .setNegativeButton(R.string.cancel,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                }
+                            })
+
+                    .setPositiveButton(R.string.setting,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //跳转GPS设置界面
+                                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                    startActivityForResult(intent, GPS_REQUEST_CODE);
+                                }
+                            })
+                    .setCancelable(false)
+                    .show();
+
+        }
+    }
+
     public void showPermission() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED
@@ -363,7 +415,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             // 申请一个（或多个）权限，并提供用于回调返回的获取码（用户定义）
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_PHONE_STATE}, READ_PHONE_STATE);
         } else {
-            startLocation();
+            openGPSSettings();
         }
     }
 
@@ -598,8 +650,8 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         @Override
         public boolean onPointClick(MultiPointItem pointItem) {
             Log.d("dddd", "onPointClick: " + pointItem.getLatLng().latitude);
-            Log.d("dddd", "onPointClick: " + pointItem.getCustomerId());
             PointsEntity pointsEntity = (PointsEntity) pointItem.getObject();
+            Log.d("dddd", "onPointClick: " + pointItem.getCustomerId() + ",getPointId:" + pointsEntity.getPointId() + "，mp3:" + pointsEntity.getMp3());
             EventBus.getDefault().post(new PlayEvent(pointsEntity.getMp3()));
             return false;
         }
@@ -675,7 +727,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             case READ_PHONE_STATE:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // 获取到权限，作相应处理（调用定位SDK应当确保相关权限均被授权，否则可能引起定位失败）
-                    startLocation();
+                    openGPSSettings();
                 } else {
                     // 没有获取到权限，做特殊处理
                     Toast.makeText(getApplicationContext(), "获取位置权限失败，请手动开启", Toast.LENGTH_SHORT).show();
@@ -790,6 +842,10 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                     checkBluetooth();
                 }
                 break;
+            case GPS_REQUEST_CODE:
+                openGPSSettings();
+                break;
+
         }
     }
 }

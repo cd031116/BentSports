@@ -1,5 +1,8 @@
 package com.cn.bent.sports.view.activity;
 
+import android.content.Context;
+import android.location.LocationManager;
+
 import com.amap.api.maps.model.BitmapDescriptor;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.cn.bent.sports.R;
@@ -72,4 +75,5 @@ public class BitmapManager {
         }
         return bitmapDescriptor;
     }
+
 }

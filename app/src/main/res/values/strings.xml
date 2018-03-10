@@ -2,6 +2,12 @@
     <string name="app_name">AI旅行</string>
     <item name="is_scale_size_tag" type="id" />
     <item name="is_scale_font_tag" type="id" />
+    <string name="notifyTitle">提示</string>
+    <string name="notifyMsg">当前应用缺少必要权限。\n\n请点击\"设置\"-\"权限\"-打开所需权限。</string>
+    <string name="gpsNotifyMsg">当前应用需要打开定位功能。\n\n请点击\"设置\"-\"定位服务\"-打开定位功能。</string>
+    <string name="setting">设置</string>
+    <string name="cancel">取消</string>
+
     <string name="scan_tips">将二维码图片对准扫描框即可自动扫描</string>
     <string name="cai_deng_mi">手机扫描周边二维码获取灯谜，每猜对一个灯谜将获得3积分，最高可得30分！</string>
     <string name="hong_bao">猛戳红包，戳地越多，积分越多。可玩多次，取最好成绩提交，最高30分！</string>
