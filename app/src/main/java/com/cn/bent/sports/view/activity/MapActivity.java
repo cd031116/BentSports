@@ -2,6 +2,7 @@ package com.cn.bent.sports.view.activity;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.bluetooth.BluetoothAdapter;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -50,6 +51,7 @@ import com.amap.api.services.core.LatLonPoint;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
+import com.cn.bent.sports.bean.MajorBean;
 import com.cn.bent.sports.bean.PlayBean;
 import com.cn.bent.sports.bean.PlayEvent;
 import com.cn.bent.sports.bean.PointsEntity;
@@ -57,6 +59,7 @@ import com.cn.bent.sports.bean.RailBean;
 import com.cn.bent.sports.bean.StartEvent;
 import com.cn.bent.sports.sensor.UpdateUiCallBack;
 import com.cn.bent.sports.utils.Constants;
+import com.cn.bent.sports.utils.DataUtils;
 import com.cn.bent.sports.utils.NiceUtil;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.utils.ToastUtils;
@@ -65,6 +68,11 @@ import com.cn.bent.sports.view.service.StepService;
 import com.cn.bent.sports.widget.AroundDialog;
 import com.cn.bent.sports.widget.GotoWhereDialog;
 import com.cn.bent.sports.widget.NearDialog;
+import com.minew.beacon.BeaconValueIndex;
+import com.minew.beacon.BluetoothState;
+import com.minew.beacon.MinewBeacon;
+import com.minew.beacon.MinewBeaconManager;
+import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.HuiquRxFunction;
@@ -111,6 +119,9 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     MusicService.MusicController mycontrol;
     private boolean isBind = false;
     private static final int READ_PHONE_STATE = 100;
+    private MinewBeaconManager mMinewBeaconManager;
+    private static final int REQUEST_ENABLE_BT = 2;
+    private boolean isBlue = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -605,6 +616,14 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     };
 
     @Override
+    public void onStop() {
+        super.onStop();
+        if (DataUtils.isBlue(MapActivity.this) && mMinewBeaconManager != null) {
+            mMinewBeaconManager.stopScan();
+        }
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
@@ -624,6 +643,9 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     @Override
     public void onResume() {
         super.onResume();
+        if (DataUtils.isBlue(MapActivity.this) && mMinewBeaconManager != null) {
+            mMinewBeaconManager.startScan();
+        }
         //在activity执行onResume时执行mMapView.onResume ()，重新绘制加载地图
         mMapView.onResume();
         checkPause();
@@ -660,6 +682,113 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                 }
                 break;
             default:
+                break;
+        }
+    }
+    //蓝牙模块---------------------------------------------------------------------------------------------------------------
+
+
+    private void showBLEDialog() {
+        if (!isBlue) {
+            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
+        }
+    }
+
+    /**
+     * check Bluetooth state
+     */
+    private void checkBluetooth() {
+        BluetoothState bluetoothState = mMinewBeaconManager.checkBluetoothState();
+        switch (bluetoothState) {
+            case BluetoothStateNotSupported:
+                ToastUtils.showShortToast(MapActivity.this, "手机不支持蓝牙");
+                break;
+            case BluetoothStatePowerOff:
+                showBLEDialog();
+                break;
+            case BluetoothStatePowerOn:
+                initListener();
+                break;
+        }
+    }
+
+    private void initListener() {
+        if (DataUtils.isBlue(MapActivity.this)) {
+            mMinewBeaconManager.startScan();
+        }
+        mMinewBeaconManager.setDeviceManagerDelegateListener(new com.minew.beacon.MinewBeaconManagerListener() {
+            /**
+             *   if the manager find some new beacon, it will call back this method.
+             *
+             *  @param minewBeacons  new beacons the manager scanned
+             */
+            @Override
+            public void onAppearBeacons(List<com.minew.beacon.MinewBeacon> minewBeacons) {
+
+            }
+
+            /**
+             *  if a beacon didn't update data in 10 seconds, we think this beacon is out of rang, the manager will call back this method.
+             *
+             *  @param minewBeacons beacons out of range
+             */
+            @Override
+            public void onDisappearBeacons(List<com.minew.beacon.MinewBeacon> minewBeacons) {
+            }
+
+            /**
+             *  the manager calls back this method every 1 seconds, you can get all scanned beacons.
+             *
+             *  @param minewBeacons all scanned beacons
+             */
+            @Override
+            public void onRangeBeacons(List<MinewBeacon> minewBeacons) {
+                if (minewBeacons != null && minewBeacons.size() > 0) {
+//                    String distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
+                    for (MinewBeacon beacon : minewBeacons) {
+                        String majer = beacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Major).getStringValue() + beacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
+                        if (majer != null) {
+
+
+                        }
+                    }
+                }
+            }
+
+            /**
+             *  the manager calls back this method when BluetoothStateChanged.
+             *
+             *  @param state BluetoothState
+             */
+            @Override
+            public void onUpdateState(com.minew.beacon.BluetoothState state) {
+                switch (state) {
+                    case BluetoothStatePowerOn:
+                        Toast.makeText(MapActivity.this, "蓝牙打开", Toast.LENGTH_SHORT).show();
+                        break;
+                    case BluetoothStatePowerOff:
+                        Toast.makeText(MapActivity.this, "蓝牙关闭", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case REQUEST_ENABLE_BT:
+                Log.d("dddd", "onActivityResult: " + mMinewBeaconManager.checkBluetoothState());
+                if (mMinewBeaconManager.checkBluetoothState().equals(BluetoothState.BluetoothStatePowerOn)) {
+                    isBlue = true;
+                    initListener();
+                }
+                if (mMinewBeaconManager.checkBluetoothState().equals(BluetoothState.BluetoothStatePowerOff)) {
+                    isBlue = false;
+                    checkBluetooth();
+                }
                 break;
         }
     }

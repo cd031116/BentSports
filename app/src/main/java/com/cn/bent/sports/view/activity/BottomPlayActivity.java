@@ -173,7 +173,7 @@ public class BottomPlayActivity extends BaseActivity {
                     mycontrol.pause();
                     play_t.setBackgroundResource(R.drawable.zanting);
                     mHandler.removeCallbacks(runnable);
-                } else {
+                } else if (mycontrol.isHave()){
                     mycontrol.play();
                     play_t.setBackgroundResource(R.drawable.bofang);
                     mHandler.postDelayed(runnable, 100);

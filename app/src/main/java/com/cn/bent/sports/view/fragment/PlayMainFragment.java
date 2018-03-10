@@ -353,11 +353,8 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
     @Override
     public void onResume() {
         super.onResume();
-        if (mMinewBeaconManager != null) {
-            try {
-                mMinewBeaconManager.startScan();
-            } catch (Exception e) {
-            }
+        if (DataUtils.isBlue(getActivity())&&mMinewBeaconManager != null) {
+            mMinewBeaconManager.startScan();
         }
         BaseConfig bf = BaseConfig.getInstance(getActivity());
         times_s = bf.getLongValue(Constants.IS_TIME, 0);
@@ -408,12 +405,8 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
     @Override
     public void onStop() {
         super.onStop();
-        if (mMinewBeaconManager != null) {
-            try {
-                mMinewBeaconManager.stopScan();
-            }catch (Exception e){
-
-            }
+        if (DataUtils.isBlue(getActivity())&&mMinewBeaconManager != null) {
+            mMinewBeaconManager.stopScan();
         }
         if (handler2 != null) {
             handler2.removeCallbacks(runnable2);
@@ -450,11 +443,8 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
     //    boolean isFirst=false;
     private void shouPoup(String ganme_name, boolean isShow, String photo, String sound_path) {
         String distance = "";
-        if (mMinewBeaconManager != null) {
-            try {
-                mMinewBeaconManager.startScan();
-            } catch (Exception e) {
-            }
+        if (DataUtils.isBlue(getActivity())&&mMinewBeaconManager != null) {
+            mMinewBeaconManager.startScan();
         }
         if (mEndPoint != null && mStartPoint != null) {
             distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
@@ -516,10 +506,8 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
             }
             isGame = false;
             mopupWindow.dismiss();
-            if (mMinewBeaconManager != null) {
-                try {
-                    mMinewBeaconManager.stopScan();
-                }catch (Exception e){}
+            if (DataUtils.isBlue(getActivity())&&mMinewBeaconManager != null) {
+                mMinewBeaconManager.stopScan();
             }
         }
     };
@@ -570,9 +558,8 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
     }
 
     private void initListener() {
-        try {
+        if (DataUtils.isBlue(getActivity())) {
             mMinewBeaconManager.startScan();
-        } catch (Exception e) {
         }
         mMinewBeaconManager.setDeviceManagerDelegateListener(new com.minew.beacon.MinewBeaconManagerListener() {
             /**

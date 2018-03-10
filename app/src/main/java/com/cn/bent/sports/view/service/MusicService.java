@@ -23,10 +23,11 @@ import org.greenrobot.eventbus.ThreadMode;
  * description
  */
 
-public class MusicService extends Service{
+public class MusicService extends Service {
 
     private MediaPlayer mPlayer;
-    private boolean isHave=false;
+    private boolean isHave = false;
+
     public MusicService() {
     }
 
@@ -43,24 +44,29 @@ public class MusicService extends Service{
         public boolean isPlay() {
             return mPlayer.isPlaying();//正在播放
         }
+
         public void play() {
             mPlayer.start();//开启音乐
-            SaveObjectUtils.getInstance(getApplicationContext()).setObject(Constants.PLAY_POSION,null);
+            SaveObjectUtils.getInstance(getApplicationContext()).setObject(Constants.PLAY_POSION, null);
         }
+
         public boolean isHave() {
             return isHave;
         }
+
         public void pause() {
             mPlayer.pause();//暂停音乐
-            Log.i("dddd","mPlayer.pause");
-            PlayBean bean=new PlayBean();
+            Log.i("dddd", "mPlayer.pause");
+            PlayBean bean = new PlayBean();
             bean.setTotalPosition(mPlayer.getDuration());
             bean.setCurentPosition(mPlayer.getCurrentPosition());
-            SaveObjectUtils.getInstance(getApplicationContext()).setObject(Constants.PLAY_POSION,bean);
+            SaveObjectUtils.getInstance(getApplicationContext()).setObject(Constants.PLAY_POSION, bean);
         }
+
         public void stop() {
             mPlayer.stop();//暂停音乐
         }
+
         public long getMusicDuration() {
             return mPlayer.getDuration();//获取文件的总长度
         }
@@ -69,66 +75,75 @@ public class MusicService extends Service{
             return mPlayer.getCurrentPosition();//获取当前播放进度
         }
 
-        public void setPosition (int position) {
+        public void setPosition(int position) {
             mPlayer.seekTo(position);//重新设定播放进度
         }
-        public void setPatss (String paths,boolean ischange) {
-            played(paths,ischange);
+
+        public void setPatss(String paths, boolean ischange) {
+            played(paths, ischange);
         }
 
     }
-
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(PlayEvent event) {
-        played(event.getPaths(),false);
-        Log.i("dddd","onEvent");
+        played(event.getPaths(), false);
+        Log.i("dddd", "onEvent");
     }
 
 
-    private void played( String paths,boolean qiehuan) {
-        if(mPlayer==null){
-            mPlayer=new MediaPlayer();
+    private void played(final String paths, boolean qiehuan) {
+        if (mPlayer == null) {
+            mPlayer = new MediaPlayer();
         }
-        if(mPlayer.isPlaying()&&qiehuan){
+        if (mPlayer.isPlaying() && qiehuan) {
             mPlayer.stop();
             mPlayer.reset();
         }
-        if(mPlayer.isPlaying()&&!qiehuan){
-           return;
+        if (mPlayer.isPlaying() && !qiehuan) {
+            return;
         }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    mPlayer.setDataSource(paths);
+                    isHave = true;
+                    mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                    mPlayer.prepare();
+                    mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                        @Override
+                        public void onPrepared(MediaPlayer mp) {
+                            mPlayer.start();
+                            Log.i("dddd", "onPrepared");
+                            EventBus.getDefault().post(new StartEvent(true));
+                        }
 
-        try {
-            mPlayer.setDataSource(paths);
-            isHave=true;
-            mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            mPlayer.prepareAsync();
-            mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mp) {
-                    mPlayer.start();
-                    Log.i("dddd","onPrepared");
-                    EventBus.getDefault().post(new StartEvent(true));
+                    });
+                    mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                        @Override
+                        public void onCompletion(MediaPlayer mp) {
+                            EventBus.getDefault().post(new StartEvent(false));
+                            SaveObjectUtils.getInstance(getApplicationContext()).setObject(Constants.PLAY_POSION, null);
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
 
-            });
-            mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    EventBus.getDefault().post(new StartEvent(false));
-                    SaveObjectUtils.getInstance(getApplicationContext()).setObject(Constants.PLAY_POSION,null);
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+            }
+        }).start();
+
+
     }
 
 
     /**
      * 当绑定服务的时候，自动回调这个方法
      * 返回的对象可以直接操作Service内部的内容
+     *
      * @param intent
      * @return
      */
@@ -140,15 +155,16 @@ public class MusicService extends Service{
     @Override
     public void onCreate() {
         super.onCreate();
-         EventBus.getDefault().register(this);
-        if(mPlayer==null){
-            mPlayer=new MediaPlayer();
+        EventBus.getDefault().register(this);
+        if (mPlayer == null) {
+            mPlayer = new MediaPlayer();
         }
     }
 
     /**
      * 任意一次unbindService()方法，都会触发这个方法
      * 用于释放一些绑定时使用的资源
+     *
      * @param intent
      * @return
      */
@@ -159,14 +175,14 @@ public class MusicService extends Service{
 
     @Override
     public void onDestroy() {
-        Log.i("dddd","onDestroy=service");
+        Log.i("dddd", "onDestroy=service");
         EventBus.getDefault().unregister(this);
         if (mPlayer.isPlaying()) {
             mPlayer.stop();
         }
         mPlayer.release();
         mPlayer = null;
-        SaveObjectUtils.getInstance(getApplicationContext()).setObject(Constants.PLAY_POSION,null);
+        SaveObjectUtils.getInstance(getApplicationContext()).setObject(Constants.PLAY_POSION, null);
         super.onDestroy();
     }
 

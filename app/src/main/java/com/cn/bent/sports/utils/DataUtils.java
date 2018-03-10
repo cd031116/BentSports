@@ -144,7 +144,7 @@ public class DataUtils {
         return adapter;
     }
 
-    public boolean isBlue(Context context) {
+    public static boolean isBlue(Context context) {
         if (getDefaultAdapter(context).disable()) {
             return false;
         } else {

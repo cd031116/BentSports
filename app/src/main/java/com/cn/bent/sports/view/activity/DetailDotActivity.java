@@ -176,7 +176,7 @@ public class DetailDotActivity extends BaseActivity {
                     mycontrol.pause();
                     paly_t.setBackgroundResource(R.drawable.zanting);
                     mHandler.removeCallbacks(runnable);
-                } else {
+                } else if(mycontrol.isHave()){
                     mycontrol.play();
                     paly_t.setBackgroundResource(R.drawable.bofang);
                     mHandler.postDelayed(runnable, 100);
