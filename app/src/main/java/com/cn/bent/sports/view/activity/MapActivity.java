@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -124,7 +125,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         aMap.setOnMultiPointClickListener(multiPointClickListener);
         // 绑定 Marker 被点击事件
         aMap.setOnMarkerClickListener(markerClickListener);
-        startLocation();
+
         Intent intent = new Intent(this, MusicService.class);
         startService(intent);
         if (serviceConnection == null) {
@@ -186,7 +187,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                     @Override
                     public void onSuccess(int whichRequest, RailBean info) {
                         dismissAlert();
-                        List<LatLng> pointLatLngs = new ArrayList<LatLng>();//位置点集合
+//                        List<LatLng> pointLatLngs = new ArrayList<LatLng>();//位置点集合
                         for (int i = 0; i < info.getMp3_tag().size(); i++) {
                             PointsEntity pointsEntity = new PointsEntity();
                             pointsEntity.setPointId(info.getMp3_tag().get(i).getPlace_id());
@@ -196,11 +197,11 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                             locationBean.setLongitude(Double.parseDouble(info.getMp3_tag().get(i).getLongitude()));
                             pointsEntity.setLocation(locationBean);
                             mPointsList.add(pointsEntity);
-                            LatLng latLng=new LatLng(Double.parseDouble(info.getMp3_tag().get(i).getLatitude()),Double.parseDouble(info.getMp3_tag().get(i).getLongitude()));
-                            pointLatLngs.add(latLng);
+//                            LatLng latLng=new LatLng(Double.parseDouble(info.getMp3_tag().get(i).getLatitude()),Double.parseDouble(info.getMp3_tag().get(i).getLongitude()));
+//                            pointLatLngs.add(latLng);
                         }
-                        aMap.addPolyline(new PolylineOptions().
-                                addAll(pointLatLngs).width(10).color(0xAAFF0000));
+//                        aMap.addPolyline(new PolylineOptions().
+//                                addAll(pointLatLngs).width(10).color(0xAAFF0000));
                     }
 
                     @Override
@@ -211,7 +212,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                 });
     }
 
-    @OnClick({R.id.shaixuan, R.id.fujin,R.id.zhankai,R.id.yinp_bf})
+    @OnClick({R.id.shaixuan, R.id.fujin,R.id.zhankai,R.id.yinp_bf,R.id.dingwei})
     void onCLick(View view) {
         switch (view.getId()) {
             case R.id.shaixuan:
@@ -219,6 +220,9 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                 break;
             case R.id.fujin:
                 gotoNearPlace();
+                break;
+            case R.id.dingwei:
+                startLocation();
                 break;
             case R.id.zhankai:
                 Intent intent1 = new Intent(this,BottomPlayActivity.class);
@@ -241,6 +245,8 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     }
 
     public void startLocation() {
+         Log.e("David", "GPS是否打开 " + LocationManager.GPS_PROVIDER);
+         Log.e("David", "网络定位是否打开 " + LocationManager.NETWORK_PROVIDER);
         aMap.setMyLocationEnabled(true);
         // 设置定位的类型为定位模式，有定位、跟随或地图根据面向方向旋转几种
         MyLocationStyle myLocationStyle = new MyLocationStyle();
