@@ -274,11 +274,11 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                         }
                         aMap.addPolyline(new PolylineOptions().
                                 addAll(pointLatLngs).width(14).color(0xAA0000FF));
-                        for (int i=1;i<=pointLatLngs.size();i++){
+                        for (int i=0;i<pointLatLngs.size();i++){
                             MarkerOptions markerOption = new MarkerOptions();
                             markerOption.position(new LatLng(pointLatLngs.get(i).latitude, pointLatLngs.get(i).longitude));
                             markerOption.draggable(false);
-                            markerOption.icon(BitmapManager.getInstance().getBitmapDescriptor(i));
+                            markerOption.icon(BitmapManager.getInstance().getBitmapDescriptor(i+1));
                             aMap.addMarker(markerOption);
                         }
                     }
