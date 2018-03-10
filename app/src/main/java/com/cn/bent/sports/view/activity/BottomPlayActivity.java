@@ -238,6 +238,6 @@ public class BottomPlayActivity extends BaseActivity {
     @Override
     public void finish() {
         super.finish();
-        this.overridePendingTransition(R.anim.pop_exit_anim,0);
+        this.overridePendingTransition(R.anim.slide_bottom_in, R.anim.slide_bottom_out);
     }
 }

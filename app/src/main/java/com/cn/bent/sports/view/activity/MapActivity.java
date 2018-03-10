@@ -242,7 +242,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             case R.id.zhankai:
                 Intent intent1 = new Intent(this,BottomPlayActivity.class);
                 this.startActivity(intent1);
-                this.overridePendingTransition(R.anim.pop_enter_anim,0);
+                this.overridePendingTransition(R.anim.slide_bottom_in, R.anim.slide_bottom_out);
                 break;
             case R.id.yinp_bf:
                 if (mycontrol == null) {
