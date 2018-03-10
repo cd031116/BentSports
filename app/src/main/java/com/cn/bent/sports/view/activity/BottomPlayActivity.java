@@ -224,6 +224,7 @@ public class BottomPlayActivity extends BaseActivity {
     public void onDestroy() {
         super.onDestroy();
         mHandler.removeCallbacks(runnable);
+        unbindService(serviceConnection);
         NotificationCenter.defaultCenter().unsubscribe(DistanceEvent.class, disevent);
         EventBus.getDefault().unregister(this);
     }

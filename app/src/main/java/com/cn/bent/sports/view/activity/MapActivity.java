@@ -93,7 +93,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
 
     List<LatLng> points = new ArrayList<LatLng>();//位置点集合
     LatLng last = new LatLng(0, 0);//上一个定位点
-
+    private  AnimationDrawable animationDrawable;
     private AMap aMap;
     private LatLonPoint lp = new LatLonPoint(28.008977, 113.088063);//
     private List<PointsEntity> mPointsList = new ArrayList<PointsEntity>();
@@ -154,10 +154,17 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
 
     private void checkPause() {
         if (mycontrol != null && mycontrol.isPlay()) {
-            yinp_bf.setBackgroundResource(R.drawable.bofang);
+            yinp_bf.setBackgroundResource(R.drawable.play_anim);
+            animationDrawable = (AnimationDrawable) yinp_bf.getBackground();
+            if (animationDrawable != null && !animationDrawable.isRunning()) {
+                animationDrawable.start();
+            }
         } else if (mycontrol != null) {
             PlayBean info= SaveObjectUtils.getInstance(getApplicationContext()).getObject(Constants.PLAY_POSION,null);
             if(info!=null){
+                if (animationDrawable != null && animationDrawable.isRunning()) {
+                    animationDrawable.stop();
+                }
                 yinp_bf.setBackgroundResource(R.drawable.tizhibf);
             }
         }
@@ -166,8 +173,15 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(StartEvent event) {
         if (event.isStart()) {
-            yinp_bf.setBackgroundResource(R.drawable.bofang);
+            yinp_bf.setBackgroundResource(R.drawable.play_anim);
+            animationDrawable = (AnimationDrawable) yinp_bf.getBackground();
+            if (animationDrawable != null && !animationDrawable.isRunning()) {
+                animationDrawable.start();
+            }
         } else {
+            if (animationDrawable != null && animationDrawable.isRunning()) {
+                animationDrawable.stop();
+            }
             yinp_bf.setBackgroundResource(R.drawable.tizhibf);
         }
     }
@@ -235,13 +249,18 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                     break;
                 }
                 if (mycontrol.isPlay()) {
+                    if (animationDrawable != null && animationDrawable.isRunning()) {
+                        animationDrawable.stop();
+                    }
                     mycontrol.pause();
                     yinp_bf.setBackgroundResource(R.drawable.tizhibf);
-                } else {
+                } else if(mycontrol.isHave()){
                     mycontrol.play();
-                    yinp_bf.setImageResource(R.drawable.play_anim);
-                    AnimationDrawable animationDrawable1 = (AnimationDrawable) yinp_bf.getDrawable();
-                    animationDrawable1.start();
+                    yinp_bf.setBackgroundResource(R.drawable.play_anim);
+                    animationDrawable = (AnimationDrawable) yinp_bf.getBackground();
+                    if (animationDrawable != null && !animationDrawable.isRunning()) {
+                        animationDrawable.start();
+                    }
                 }
                 break;
         }
@@ -539,6 +558,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        unbindService(serviceConnection);
         //在activity执行onDestroy时执行mMapView.onDestroy()，销毁地图
         mMapView.onDestroy();
         // 关闭定位图层

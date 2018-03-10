@@ -201,5 +201,6 @@ public class DetailDotActivity extends BaseActivity {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
         mHandler.removeCallbacks(runnable);
+        unbindService(serviceConnection);
     }
 }

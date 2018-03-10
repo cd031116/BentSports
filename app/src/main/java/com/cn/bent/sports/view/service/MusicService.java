@@ -26,7 +26,7 @@ import org.greenrobot.eventbus.ThreadMode;
 public class MusicService extends Service{
 
     private MediaPlayer mPlayer;
-
+    private boolean isHave=false;
     public MusicService() {
     }
 
@@ -47,7 +47,9 @@ public class MusicService extends Service{
             mPlayer.start();//开启音乐
             SaveObjectUtils.getInstance(getApplicationContext()).setObject(Constants.PLAY_POSION,null);
         }
-
+        public boolean isHave() {
+            return isHave;
+        }
         public void pause() {
             mPlayer.pause();//暂停音乐
             Log.i("dddd","mPlayer.pause");
@@ -77,6 +79,7 @@ public class MusicService extends Service{
     }
 
 
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(PlayEvent event) {
         played(event.getPaths(),false);
@@ -98,6 +101,7 @@ public class MusicService extends Service{
 
         try {
             mPlayer.setDataSource(paths);
+            isHave=true;
             mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mPlayer.prepare();
             mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
