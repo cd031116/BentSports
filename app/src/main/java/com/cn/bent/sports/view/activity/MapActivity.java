@@ -1,17 +1,21 @@
 package com.cn.bent.sports.view.activity;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -20,6 +24,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -77,7 +82,7 @@ import butterknife.OnClick;
  * Created by dawn on 2018/3/8.
  */
 
-public class MapActivity extends BaseActivity implements AMap.OnMyLocationChangeListener{
+public class MapActivity extends BaseActivity implements AMap.OnMyLocationChangeListener {
     @Bind(R.id.mapView)
     MapView mMapView;
     @Bind(R.id.shaixuan)
@@ -96,13 +101,15 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
 
     List<LatLng> points = new ArrayList<LatLng>();//位置点集合
     LatLng last = new LatLng(0, 0);//上一个定位点
-    private  AnimationDrawable animationDrawable;
+    private AnimationDrawable animationDrawable;
     private AMap aMap;
     private LatLonPoint lp = new LatLonPoint(28.008977, 113.088063);//
     private List<PointsEntity> mPointsList = new ArrayList<PointsEntity>();
     ServiceConnection serviceConnection;
     MusicService.MusicController mycontrol;
     private boolean isBind = false;
+    private static final int READ_PHONE_STATE = 100;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -201,7 +208,6 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     };
 
 
-
     private void checkPause() {
         if (mycontrol != null && mycontrol.isPlay()) {
             yinp_bf.setBackgroundResource(R.drawable.play_anim);
@@ -210,8 +216,8 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                 animationDrawable.start();
             }
         } else if (mycontrol != null) {
-            PlayBean info= SaveObjectUtils.getInstance(getApplicationContext()).getObject(Constants.PLAY_POSION,null);
-            if(info!=null){
+            PlayBean info = SaveObjectUtils.getInstance(getApplicationContext()).getObject(Constants.PLAY_POSION, null);
+            if (info != null) {
                 if (animationDrawable != null && animationDrawable.isRunning()) {
                     animationDrawable.stop();
                 }
@@ -277,7 +283,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                 });
     }
 
-    @OnClick({R.id.shaixuan, R.id.fujin,R.id.zhankai,R.id.yinp_bf,R.id.dingwei})
+    @OnClick({R.id.shaixuan, R.id.fujin, R.id.zhankai, R.id.yinp_bf, R.id.dingwei})
     void onCLick(View view) {
         switch (view.getId()) {
             case R.id.shaixuan:
@@ -287,10 +293,14 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                 gotoNearPlace();
                 break;
             case R.id.dingwei:
-                startLocation();
+                if (Build.VERSION.SDK_INT >= 23) {
+                    showPermission();
+                } else {
+                    startLocation();//定位方法
+                }
                 break;
             case R.id.zhankai:
-                Intent intent1 = new Intent(this,BottomPlayActivity.class);
+                Intent intent1 = new Intent(this, BottomPlayActivity.class);
                 this.startActivity(intent1);
                 this.overridePendingTransition(R.anim.slide_bottom_in, R.anim.slide_bottom_out);
                 break;
@@ -304,7 +314,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                     }
                     mycontrol.pause();
                     yinp_bf.setBackgroundResource(R.drawable.tizhibf);
-                } else if(mycontrol.isHave()){
+                } else if (mycontrol.isHave()) {
                     mycontrol.play();
                     yinp_bf.setBackgroundResource(R.drawable.play_anim);
                     animationDrawable = (AnimationDrawable) yinp_bf.getBackground();
@@ -316,9 +326,24 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         }
     }
 
+    public void showPermission() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
+                != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "没有权限,请手动开启定位权限", Toast.LENGTH_SHORT).show();
+            // 申请一个（或多个）权限，并提供用于回调返回的获取码（用户定义）
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_PHONE_STATE}, READ_PHONE_STATE);
+        } else {
+            startLocation();
+        }
+    }
+
     public void startLocation() {
-         Log.e("David", "GPS是否打开 " + LocationManager.GPS_PROVIDER);
-         Log.e("David", "网络定位是否打开 " + LocationManager.NETWORK_PROVIDER);
+        Log.e("dddd", "GPS是否打开 " + LocationManager.GPS_PROVIDER);
+        Log.e("dddd", "网络定位是否打开 " + LocationManager.NETWORK_PROVIDER);
         aMap.setMyLocationEnabled(true);
         // 设置定位的类型为定位模式，有定位、跟随或地图根据面向方向旋转几种
         MyLocationStyle myLocationStyle = new MyLocationStyle();
@@ -545,7 +570,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             mMapView.getMap().clear();
             //将points集合中的点绘制轨迹线条图层，显示在地图上
             Polyline polyline = aMap.addPolyline(new PolylineOptions().
-                    addAll(points).width(10).color(0xAAFF0000));
+                    addAll(points).width(15).color(0xAAD1D1D1));
 
         }
     }
@@ -642,5 +667,25 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         super.onSaveInstanceState(outState);
         //在activity执行onSaveInstanceState时执行mMapView.onSaveInstanceState (outState)，保存地图当前的状态
         mMapView.onSaveInstanceState(outState);
+    }
+
+    //Android6.0申请权限的回调方法
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            // requestCode即所声明的权限获取码，在checkSelfPermission时传入
+            case READ_PHONE_STATE:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // 获取到权限，作相应处理（调用定位SDK应当确保相关权限均被授权，否则可能引起定位失败）
+                    startLocation();
+                } else {
+                    // 没有获取到权限，做特殊处理
+                    Toast.makeText(getApplicationContext(), "获取位置权限失败，请手动开启", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
+                break;
+        }
     }
 }
