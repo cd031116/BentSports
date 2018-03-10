@@ -95,6 +95,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     ImageView yinp_bf;
     private boolean isFirstLoc = true; // 是否首次定位
     private boolean isShowRec = true; // 是否显示列表
+    private boolean isShowLuxian = true; // 是否显示路线
     float mCurrentZoom = 18f;//默认地图缩放比例值
     private AMapLocationClient mLocationClient;
     private AMapLocationClientOption mLocationOption;
@@ -258,7 +259,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                     @Override
                     public void onSuccess(int whichRequest, RailBean info) {
                         dismissAlert();
-//                        List<LatLng> pointLatLngs = new ArrayList<LatLng>();//位置点集合
+                        List<LatLng> pointLatLngs = new ArrayList<LatLng>();//位置点集合
                         for (int i = 0; i < info.getMp3_tag().size(); i++) {
                             PointsEntity pointsEntity = new PointsEntity();
                             pointsEntity.setPointId(info.getMp3_tag().get(i).getPlace_id());
@@ -268,11 +269,18 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                             locationBean.setLongitude(Double.parseDouble(info.getMp3_tag().get(i).getLongitude()));
                             pointsEntity.setLocation(locationBean);
                             mPointsList.add(pointsEntity);
-//                            LatLng latLng=new LatLng(Double.parseDouble(info.getMp3_tag().get(i).getLatitude()),Double.parseDouble(info.getMp3_tag().get(i).getLongitude()));
-//                            pointLatLngs.add(latLng);
+                            LatLng latLng=new LatLng(Double.parseDouble(info.getMp3_tag().get(i).getLatitude()),Double.parseDouble(info.getMp3_tag().get(i).getLongitude()));
+                            pointLatLngs.add(latLng);
                         }
-//                        aMap.addPolyline(new PolylineOptions().
-//                                addAll(pointLatLngs).width(10).color(0xAAFF0000));
+                        aMap.addPolyline(new PolylineOptions().
+                                addAll(pointLatLngs).width(14).color(0xAA0000FF));
+                        for (int i=1;i<=pointLatLngs.size();i++){
+                            MarkerOptions markerOption = new MarkerOptions();
+                            markerOption.position(new LatLng(pointLatLngs.get(i).latitude, pointLatLngs.get(i).longitude));
+                            markerOption.draggable(false);
+                            markerOption.icon(BitmapManager.getInstance().getBitmapDescriptor(i));
+                            aMap.addMarker(markerOption);
+                        }
                     }
 
                     @Override
@@ -293,11 +301,14 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                 gotoNearPlace();
                 break;
             case R.id.dingwei:
-                if (Build.VERSION.SDK_INT >= 23) {
-                    showPermission();
-                } else {
-                    startLocation();//定位方法
-                }
+                if (isShowLuxian)
+                    if (Build.VERSION.SDK_INT >= 23) {
+                        showPermission();
+                    } else {
+                        startLocation();//定位方法
+                    }
+                else
+                    aMap.setMyLocationEnabled(false);
                 break;
             case R.id.zhankai:
                 Intent intent1 = new Intent(this, BottomPlayActivity.class);
@@ -402,7 +413,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                     markerOption.position(new LatLng(pointsEntity.getLocation().getLatitude(), pointsEntity.getLocation().getLongitude()));
                     markerOption.title(pointsEntity.getPointId());
                     markerOption.draggable(false);
-                    markerOption.icon(getBitmapDescriptor(pointsEntity.getType()));
+                    markerOption.icon(BitmapManager.getInstance().getBitmapDescriptor(pointsEntity.getType()));
                     aMap.addMarker(markerOption);
                 }
                 break;
@@ -433,7 +444,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     private void setOverLay(int index) {
         aMap.clear();
         MultiPointOverlayOptions overlayOptions = new MultiPointOverlayOptions();
-        BitmapDescriptor bitmapDescriptor = getBitmapDescriptor(index);
+        BitmapDescriptor bitmapDescriptor = BitmapManager.getInstance().getBitmapDescriptor(index);
         overlayOptions.icon(bitmapDescriptor);//设置图标
         MultiPointOverlay multiPointOverlay = aMap.addMultiPointOverlay(overlayOptions);
         List<MultiPointItem> multiPointItemList = new ArrayList<MultiPointItem>();
@@ -447,50 +458,6 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         }
         multiPointOverlay.setItems(multiPointItemList);
     }
-
-    private BitmapDescriptor getBitmapDescriptor(int index) {
-        BitmapDescriptor bitmapDescriptor = null;
-        switch (index) {
-            case 1:
-                bitmapDescriptor = BitmapDescriptorFactory
-                        .fromResource(R.drawable.yuyin_1);
-                break;
-            case 2:
-                bitmapDescriptor = BitmapDescriptorFactory
-                        .fromResource(R.drawable.yuyin_1);
-                break;
-            case 3:
-                bitmapDescriptor = BitmapDescriptorFactory
-                        .fromResource(R.drawable.wc1);
-                break;
-            case 4:
-                bitmapDescriptor = BitmapDescriptorFactory
-                        .fromResource(R.drawable.gouwu1);
-                break;
-            case 5:
-                bitmapDescriptor = BitmapDescriptorFactory
-                        .fromResource(R.drawable.canting1);
-                break;
-            case 6:
-                bitmapDescriptor = BitmapDescriptorFactory
-                        .fromResource(R.drawable.jiudian1);
-                break;
-            case 7:
-                bitmapDescriptor = BitmapDescriptorFactory
-                        .fromResource(R.drawable.tichec1);
-                break;
-            case 8:
-                bitmapDescriptor = BitmapDescriptorFactory
-                        .fromResource(R.drawable.damen1);
-                break;
-            default:
-                bitmapDescriptor = BitmapDescriptorFactory
-                        .fromResource(R.drawable.yuyin_1);
-                break;
-        }
-        return bitmapDescriptor;
-    }
-
 
     //前往附近点
     private void gotoNearPlace() {
