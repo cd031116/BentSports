@@ -51,6 +51,7 @@ import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.PlayBean;
+import com.cn.bent.sports.bean.PlayEvent;
 import com.cn.bent.sports.bean.PointsEntity;
 import com.cn.bent.sports.bean.RailBean;
 import com.cn.bent.sports.bean.StartEvent;
@@ -186,14 +187,14 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         public void onServiceConnected(ComponentName name, IBinder service) {
             StepService stepService = ((StepService.StepBinder) service).getService();
             //设置初始化数据
-            waik_num.setText(stepService.getStepCount()+"");
+            waik_num.setText(stepService.getStepCount() + "");
             Log.d("StepService", "stepService=");
             //设置步数监听回调
             stepService.registerCallback(new UpdateUiCallBack() {
                 @Override
                 public void updateUi(int stepCount) {
-                    Log.d("StepService", "stepCount="+stepCount);
-                    waik_num.setText(stepCount+"");
+                    Log.d("StepService", "stepCount=" + stepCount);
+                    waik_num.setText(stepCount + "");
                 }
             });
         }
@@ -270,17 +271,18 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                             locationBean.setLatitude(Double.parseDouble(info.getMp3_tag().get(i).getLatitude()));
                             locationBean.setLongitude(Double.parseDouble(info.getMp3_tag().get(i).getLongitude()));
                             pointsEntity.setLocation(locationBean);
+                            pointsEntity.setMp3(info.getMp3_tag().get(i).getMp3());
                             mPointsList.add(pointsEntity);
-                            LatLng latLng=new LatLng(Double.parseDouble(info.getMp3_tag().get(i).getLatitude()),Double.parseDouble(info.getMp3_tag().get(i).getLongitude()));
+                            LatLng latLng = new LatLng(Double.parseDouble(info.getMp3_tag().get(i).getLatitude()), Double.parseDouble(info.getMp3_tag().get(i).getLongitude()));
                             pointLatLngs.add(latLng);
                         }
                         aMap.addPolyline(new PolylineOptions().
                                 addAll(pointLatLngs).width(14).color(0xAA0000FF));
-                        for (int i=0;i<pointLatLngs.size();i++){
+                        for (int i = 0; i < pointLatLngs.size(); i++) {
                             MarkerOptions markerOption = new MarkerOptions();
                             markerOption.position(new LatLng(pointLatLngs.get(i).latitude, pointLatLngs.get(i).longitude));
                             markerOption.draggable(false);
-                            markerOption.icon(BitmapManager.getInstance().getBitmapDescriptor(i+1));
+                            markerOption.icon(BitmapManager.getInstance().getBitmapDescriptor(i + 1));
                             aMap.addMarker(markerOption);
                         }
                     }
@@ -455,6 +457,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                 LatLng latLng = new LatLng(pointsEntity.getLocation().getLatitude(), pointsEntity.getLocation().getLongitude());
                 MultiPointItem multiPointItem = new MultiPointItem(latLng);
                 multiPointItem.setCustomerId(pointsEntity.getPointId());
+                multiPointItem.setObject(pointsEntity);
                 multiPointItemList.add(multiPointItem);
             }
         }
@@ -585,6 +588,8 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         public boolean onPointClick(MultiPointItem pointItem) {
             Log.d("dddd", "onPointClick: " + pointItem.getLatLng().latitude);
             Log.d("dddd", "onPointClick: " + pointItem.getCustomerId());
+            PointsEntity pointsEntity = (PointsEntity) pointItem.getObject();
+            EventBus.getDefault().post(new PlayEvent(pointsEntity.getMp3()));
             return false;
         }
     };
@@ -594,6 +599,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         // 返回 true 则表示接口已响应事件，否则返回false
         @Override
         public boolean onMarkerClick(Marker marker) {
+            Log.d("dddd", "onMarkerClick: " + marker.getTitle());
             return false;
         }
     };

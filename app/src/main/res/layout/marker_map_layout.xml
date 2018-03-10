@@ -74,67 +74,45 @@
             android:textSize="23px" />
 
 
-        <TextView
-            android:id="@+id/luxian"
+        <CheckBox
+            android:id="@+id/lxdl_layout"
             android:layout_width="102px"
             android:layout_height="102px"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="56px"
+            android:layout_marginLeft="28px"
+            android:layout_marginTop="20px"
+            android:paddingTop="20px"
+            android:button="@null"
+            android:checked="false"
+            android:drawableTop="@drawable/choose_lx"
+            android:text="自动讲解"
+            android:background="@color/comm_white"
+            android:textColor="#333333"
+            android:textSize="23px" />
+
+
+        <TextView
+            android:id="@+id/luxian"
+            android:layout_width="102px"
+            android:layout_height="102px"
+            android:layout_above="@id/lxdl_layout"
+            android:layout_marginBottom="28px"
             android:layout_marginLeft="28px"
             android:background="@color/comm_white"
             android:drawablePadding="9px"
             android:drawableTop="@drawable/luxian_1"
             android:gravity="center_horizontal"
-            android:paddingTop="10px"
+            android:paddingTop="20px"
             android:text="路线"
             android:textColor="#333333"
             android:textSize="23px" />
-
-        <LinearLayout
-            android:id="@+id/yuyin_bf"
-            android:layout_width="112px"
-            android:layout_height="112px"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="56px"
-            android:layout_marginRight="28px"
-            android:background="@color/comm_white"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20px"
-                android:background="@drawable/choose_lx" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20px"
-                android:text="自动讲解"
-                android:textColor="#333333"
-                android:textSize="23px" />
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/paizhao"
-            android:layout_width="102px"
-            android:layout_height="102px"
-            android:layout_above="@id/luxian"
-            android:layout_marginBottom="28px"
-            android:layout_marginLeft="28px"
-            android:background="@color/comm_white"
-            android:drawableTop="@drawable/paizhao"
-            android:gravity="center"
-            android:paddingTop="28px" />
 
         <TextView
             android:id="@+id/saomiao"
             android:layout_width="102px"
             android:layout_height="102px"
-            android:layout_above="@id/paizhao"
+            android:layout_above="@id/luxian"
             android:layout_marginBottom="28px"
             android:layout_marginLeft="28px"
             android:background="@color/comm_white"
@@ -143,16 +121,37 @@
             android:paddingTop="28px" />
 
 
+
+            <CheckBox
+                android:id="@+id/yuyin_bf"
+                android:layout_width="102px"
+                android:layout_height="102px"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="56px"
+                android:layout_marginRight="28px"
+                android:layout_marginTop="20px"
+                android:paddingTop="20px"
+                android:button="@null"
+                android:checked="false"
+                android:background="@color/comm_white"
+                android:drawableTop="@drawable/choose_lx"
+                android:text="自动讲解"
+                android:textColor="#333333"
+                android:textSize="23px" />
+
+
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="102px"
             android:layout_marginLeft="30px"
             android:layout_marginTop="56px"
-            android:gravity="center"
-            android:paddingLeft="30px"
-            android:paddingRight="30px"
             android:background="@drawable/bg_round_white"
-            android:orientation="horizontal">
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingLeft="30px"
+            android:paddingRight="30px">
 
             <TextView
                 android:id="@+id/waik_num"
@@ -165,11 +164,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#999999"
-                android:text="步"
+                android:gravity="bottom"
                 android:paddingLeft="3px"
                 android:paddingTop="5px"
-                android:gravity="bottom"
+                android:text="步"
+                android:textColor="#999999"
                 android:textSize="43px" />
         </LinearLayout>
 
