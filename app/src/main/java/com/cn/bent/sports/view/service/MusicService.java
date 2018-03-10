@@ -103,7 +103,7 @@ public class MusicService extends Service{
             mPlayer.setDataSource(paths);
             isHave=true;
             mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            mPlayer.prepare();
+            mPlayer.prepareAsync();
             mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {

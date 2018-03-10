@@ -363,6 +363,9 @@ public class StepService extends Service implements SensorEventListener {
                 CURRENT_STEP++;
             }
         }
+        if (mCallback != null) {
+            mCallback.updateUi(CURRENT_STEP);
+        }
     }
 
     /**
@@ -381,6 +384,9 @@ public class StepService extends Service implements SensorEventListener {
             @Override
             public void stepChanged(int steps) {
                 CURRENT_STEP = steps;
+                if (mCallback != null) {
+                    mCallback.updateUi(CURRENT_STEP);
+                }
             }
         });
         if (isAvailable) {

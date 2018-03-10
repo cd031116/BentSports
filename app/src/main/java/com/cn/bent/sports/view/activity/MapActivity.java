@@ -187,10 +187,12 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             StepService stepService = ((StepService.StepBinder) service).getService();
             //设置初始化数据
             waik_num.setText(stepService.getStepCount()+"");
+            Log.d("StepService", "stepService=");
             //设置步数监听回调
             stepService.registerCallback(new UpdateUiCallBack() {
                 @Override
                 public void updateUi(int stepCount) {
+                    Log.d("StepService", "stepCount="+stepCount);
                     waik_num.setText(stepCount+"");
                 }
             });
@@ -204,7 +206,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
          */
         @Override
         public void onServiceDisconnected(ComponentName name) {
-
+            Log.d("StepService", "ComponentName=");
         }
     };
 
