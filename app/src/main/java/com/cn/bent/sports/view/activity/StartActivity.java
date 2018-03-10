@@ -14,6 +14,7 @@ import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.base.BaseConfig;
 import com.cn.bent.sports.base.SdcardPermissionAction;
+import com.cn.bent.sports.base.SensorsPermission;
 import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.DataUtils;
@@ -81,6 +82,18 @@ public class StartActivity extends BaseActivity {
                 }.run();
             }
         }
+        if (this instanceof org.aisen.android.ui.activity.basic.BaseActivity) {
+            org.aisen.android.ui.activity.basic.BaseActivity aisenBaseActivity =
+                    (org.aisen.android.ui.activity.basic.BaseActivity) this;
+            new IAction(aisenBaseActivity, new SensorsPermission(aisenBaseActivity,
+                    null)) {
+                @Override
+                public void doAction() {
+
+                }
+            }.run();
+        }
+
     }
 
     private void redirectTo() {

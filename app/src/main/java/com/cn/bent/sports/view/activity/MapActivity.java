@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -238,7 +239,9 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                     yinp_bf.setBackgroundResource(R.drawable.tizhibf);
                 } else {
                     mycontrol.play();
-                    yinp_bf.setBackgroundResource(R.drawable.bofang);
+                    yinp_bf.setImageResource(R.drawable.play_anim);
+                    AnimationDrawable animationDrawable1 = (AnimationDrawable) yinp_bf.getDrawable();
+                    animationDrawable1.start();
                 }
                 break;
         }

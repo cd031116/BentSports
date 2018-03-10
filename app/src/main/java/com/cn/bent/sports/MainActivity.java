@@ -234,17 +234,6 @@ public class MainActivity extends BaseActivity {
         // TODO Auto-generated method stub
         super.onWindowFocusChanged(hasFocus);
         if (hasFocus) {
-            if (this instanceof org.aisen.android.ui.activity.basic.BaseActivity) {
-                org.aisen.android.ui.activity.basic.BaseActivity aisenBaseActivity =
-                        (org.aisen.android.ui.activity.basic.BaseActivity) this;
-                new IAction(aisenBaseActivity, new SensorsPermission(aisenBaseActivity,
-                        null)) {
-                    @Override
-                    public void doAction() {
-
-                    }
-                }.run();
-            }
         }
     }
 }
