@@ -72,10 +72,7 @@ public class StepService extends Service implements SensorEventListener {
      * 上一次的步数
      */
     private int previousStepCount = 0;
-    /**
-     * 通知管理对象
-     */
-    private NotificationManager mNotificationManager;
+
     /**
      * 加速度传感器中获取的步数
      */
@@ -114,25 +111,6 @@ public class StepService extends Service implements SensorEventListener {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         return sdf.format(date);
     }
-
-    /**
-     * 初始化通知栏
-     */
-//    private void initNotification() {
-//        mBuilder = new NotificationCompat.Builder(this);
-//        mBuilder.setContentTitle(getResources().getString(R.string.app_name))
-//                .setContentText("今日步数" + CURRENT_STEP + " 步")
-//                .setContentIntent(getDefalutIntent(Notification.FLAG_ONGOING_EVENT))
-//                .setWhen(System.currentTimeMillis())//通知产生的时间，会在通知信息里显示
-//                .setPriority(Notification.PRIORITY_DEFAULT)//设置该通知优先级
-//                .setAutoCancel(false)//设置这个标志当用户单击面板就可以让通知将自动取消
-//                .setOngoing(true)//ture，设置他为一个正在进行的通知。他们通常是用来表示一个后台任务,用户积极参与(如播放音乐)或以某种方式正在等待,因此占用设备(如一个文件下载,同步操作,主动网络连接)
-//                .setSmallIcon(R.mipmap.logo);
-//        Notification notification = mBuilder.build();
-//        mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-//        startForeground(notifyId_Step, notification);
-//        Log.d(TAG, "initNotification()");
-//    }
 
     /**
      * 初始化当天的步数
@@ -256,14 +234,6 @@ public class StepService extends Service implements SensorEventListener {
         this.mCallback = paramICallback;
     }
 
-    /**
-     * 记步Notification的ID
-     */
-    int notifyId_Step = 100;
-    /**
-     * 提醒锻炼的Notification的ID
-     */
-    int notify_remind_id = 200;
 
 
 
@@ -341,7 +311,7 @@ public class StepService extends Service implements SensorEventListener {
         Sensor detectorSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
         if (countSensor != null) {
             stepSensorType = Sensor.TYPE_STEP_COUNTER;
-            Log.v(TAG, "Sensor.TYPE_STEP_COUNTER");
+            Log.d(TAG, "Sensor.TYPE_STEP_COUNTER");
             sensorManager.registerListener(StepService.this, countSensor, SensorManager.SENSOR_DELAY_NORMAL);
         } else if (detectorSensor != null) {
             stepSensorType = Sensor.TYPE_STEP_DETECTOR;
@@ -369,6 +339,7 @@ public class StepService extends Service implements SensorEventListener {
      */
     @Override
     public void onSensorChanged(SensorEvent event) {
+        Logger.d(TAG,"event");
         if (stepSensorType == Sensor.TYPE_STEP_COUNTER) {
             //获取当前传感器返回的临时步数
             int tempStep = (int) event.values[0];
@@ -386,7 +357,7 @@ public class StepService extends Service implements SensorEventListener {
                 //记录最后一次APP打开到现在的总步数
                 previousStepCount = thisStepCount;
             }
-            Logger.d("tempStep" + tempStep);
+            Logger.d(TAG,"tempStep" + tempStep);
         } else if (stepSensorType == Sensor.TYPE_STEP_DETECTOR) {
             if (event.values[0] == 1.0) {
                 CURRENT_STEP++;
@@ -413,9 +384,9 @@ public class StepService extends Service implements SensorEventListener {
             }
         });
         if (isAvailable) {
-            Log.v(TAG, "加速度传感器可以使用");
+            Log.d(TAG, "加速度传感器可以使用");
         } else {
-            Log.v(TAG, "加速度传感器无法使用");
+            Log.d(TAG, "加速度传感器无法使用");
         }
     }
 
@@ -436,6 +407,7 @@ public class StepService extends Service implements SensorEventListener {
         @Override
         public void onFinish() {
             // 如果计时器正常结束，则开始计步
+            Logger.d(TAG,"TimeCount");
             time.cancel();
             save();
             startTimeCount();

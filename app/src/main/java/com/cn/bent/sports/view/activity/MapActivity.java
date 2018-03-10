@@ -137,7 +137,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         aMap.setOnMultiPointClickListener(multiPointClickListener);
         // 绑定 Marker 被点击事件
         aMap.setOnMarkerClickListener(markerClickListener);
-
+        setupService();
         Intent intent = new Intent(this, MusicService.class);
         startService(intent);
         if (serviceConnection == null) {
@@ -185,12 +185,12 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         public void onServiceConnected(ComponentName name, IBinder service) {
             StepService stepService = ((StepService.StepBinder) service).getService();
             //设置初始化数据
-            waik_num.setText(stepService.getStepCount());
+            waik_num.setText(stepService.getStepCount()+"");
             //设置步数监听回调
             stepService.registerCallback(new UpdateUiCallBack() {
                 @Override
                 public void updateUi(int stepCount) {
-                    waik_num.setText(stepCount);
+                    waik_num.setText(stepCount+"");
                 }
             });
         }

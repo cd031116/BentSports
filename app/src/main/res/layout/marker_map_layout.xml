@@ -158,7 +158,7 @@
                 android:id="@+id/waik_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="95203"
+                android:text="0"
                 android:textColor="#3fcfe4"
                 android:textSize="72px" />
 
