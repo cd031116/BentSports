@@ -49,11 +49,13 @@ import com.cn.bent.sports.bean.PlayBean;
 import com.cn.bent.sports.bean.PointsEntity;
 import com.cn.bent.sports.bean.RailBean;
 import com.cn.bent.sports.bean.StartEvent;
+import com.cn.bent.sports.sensor.UpdateUiCallBack;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.NiceUtil;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.utils.ToastUtils;
 import com.cn.bent.sports.view.service.MusicService;
+import com.cn.bent.sports.view.service.StepService;
 import com.cn.bent.sports.widget.AroundDialog;
 import com.cn.bent.sports.widget.GotoWhereDialog;
 import com.cn.bent.sports.widget.NearDialog;
@@ -82,7 +84,8 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     TextView shaixuan;
     @Bind(R.id.fujin)
     TextView fujin;
-
+    @Bind(R.id.waik_num)
+    TextView waik_num;
     @Bind(R.id.yinp_bf)
     ImageView yinp_bf;
     private boolean isFirstLoc = true; // 是否首次定位
@@ -99,6 +102,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     private List<PointsEntity> mPointsList = new ArrayList<PointsEntity>();
     ServiceConnection serviceConnection;
     MusicService.MusicController mycontrol;
+    private boolean isBind = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -149,6 +153,52 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
         }
     }
+
+    /**
+     * 开启计步服务
+     */
+    private void setupService() {
+        Intent intent = new Intent(this, StepService.class);
+        isBind = bindService(intent, conn, Context.BIND_AUTO_CREATE);
+        startService(intent);
+    }
+
+    /**
+     * 用于查询应用服务（application Service）的状态的一种interface，
+     * 更详细的信息可以参考Service 和 context.bindService()中的描述，
+     * 和许多来自系统的回调方式一样，ServiceConnection的方法都是进程的主线程中调用的。
+     */
+    ServiceConnection conn = new ServiceConnection() {
+        /**
+         * 在建立起于Service的连接时会调用该方法，目前Android是通过IBind机制实现与服务的连接。
+         * @param name 实际所连接到的Service组件名称
+         * @param service 服务的通信信道的IBind，可以通过Service访问对应服务
+         */
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            StepService stepService = ((StepService.StepBinder) service).getService();
+            //设置初始化数据
+            waik_num.setText(stepService.getStepCount());
+            //设置步数监听回调
+            stepService.registerCallback(new UpdateUiCallBack() {
+                @Override
+                public void updateUi(int stepCount) {
+                    waik_num.setText(stepCount);
+                }
+            });
+        }
+
+        /**
+         * 当与Service之间的连接丢失的时候会调用该方法，
+         * 这种情况经常发生在Service所在的进程崩溃或者被Kill的时候调用，
+         * 此方法不会移除与Service的连接，当服务重新启动的时候仍然会调用 onServiceConnected()。
+         * @param name 丢失连接的组件名称
+         */
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+    };
 
 
 
@@ -559,6 +609,9 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         super.onDestroy();
         EventBus.getDefault().unregister(this);
         unbindService(serviceConnection);
+        if (isBind) {
+            this.unbindService(conn);
+        }
         //在activity执行onDestroy时执行mMapView.onDestroy()，销毁地图
         mMapView.onDestroy();
         // 关闭定位图层
