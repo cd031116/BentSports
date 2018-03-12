@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.amap.api.maps.model.LatLng;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.PlayBean;
@@ -56,6 +57,7 @@ public class BottomPlayActivity extends BaseActivity {
     ServiceConnection serviceConnection;
     MusicService.MusicController mycontrol;
     private  PointsEntity pEnty;
+    private LatLng mlatlng;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_bottom_play;
@@ -65,6 +67,7 @@ public class BottomPlayActivity extends BaseActivity {
     public void initView() {
         super.initView();
          pEnty = (PointsEntity) getIntent().getSerializableExtra("enty");
+        mlatlng= (LatLng) getIntent().getParcelableExtra("startLatlng");
         NotificationCenter.defaultCenter().subscriber(DistanceEvent.class, disevent);
         EventBus.getDefault().register(this);
         mHandler = new Handler();
@@ -186,6 +189,7 @@ public class BottomPlayActivity extends BaseActivity {
                 }else {
                     Intent intent=new Intent(this, WalkNaviActivity.class);
                     intent.putExtra("enty",pEnty);
+                    intent.putExtra("startLatlng",mlatlng);
                     startActivity(intent);
                 }
                 break;

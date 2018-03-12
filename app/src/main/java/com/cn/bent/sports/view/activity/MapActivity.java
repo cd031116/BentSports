@@ -120,6 +120,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     private boolean isBlue = false;
     private static final int GPS_REQUEST_CODE = 10;
     private  PointsEntity mPointsEntity;
+    private   LatLng startLatlng;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -325,6 +326,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             case R.id.zhankai:
                 Intent intent1 = new Intent(this, BottomPlayActivity.class);
                 intent1.putExtra("enty",mPointsEntity);
+                intent1.putExtra("startLatlng",startLatlng);
                 this.startActivity(intent1);
                 this.overridePendingTransition(R.anim.slide_bottom_in, R.anim.slide_bottom_out);
                 break;
@@ -573,6 +575,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     @Override
     public void onMyLocationChange(Location location) {
         if (location != null) {
+            startLatlng=new LatLng(location.getLatitude(), location.getLongitude());
             if (isFirstLoc) {
                 LatLng ll = null;
                 ll = getMostAccuracyLocation(location);

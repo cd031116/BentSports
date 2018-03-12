@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.amap.api.maps.model.LatLng;
 import com.amap.api.navi.AMapNavi;
 import com.amap.api.navi.AMapNaviListener;
 import com.amap.api.navi.AMapNaviView;
@@ -39,10 +40,12 @@ public class WalkNaviActivity extends AppCompatActivity implements AMapNaviListe
     private AMapNavi mAMapNavi;
     private double slat,slong;
     private  PointsEntity pEnty;
+    private LatLng mlatlng;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         pEnty = (PointsEntity) getIntent().getSerializableExtra("enty");
+        mlatlng= (LatLng) getIntent().getParcelableExtra("startLatlng");
         setContentView(R.layout.activity_walk_navi);
         View rootView=findViewById(android.R.id.content);
         SupportMultipleScreensUtil.init(getApplication());
@@ -91,7 +94,7 @@ public class WalkNaviActivity extends AppCompatActivity implements AMapNaviListe
 
     @Override
     public void onInitNaviSuccess() {
-        startPoints=new NaviLatLng(slat,slong);
+        startPoints=new NaviLatLng(mlatlng.latitude,mlatlng.longitude);
         endPoints=new NaviLatLng(pEnty.getLocation().getLatitude(),pEnty.getLocation().getLongitude());
         mAMapNavi.calculateWalkRoute(startPoints, endPoints);
     }
