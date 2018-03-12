@@ -135,8 +135,11 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     private static final int REQUEST_ENABLE_BT = 2;
     private boolean isBlue = false;
     private static final int GPS_REQUEST_CODE = 10;
-    private  PointsEntity mPointsEntity;
-    private   LatLng startLatlng;
+    private PointsEntity mPointsEntity;
+    private LatLng startLatlng;
+    private Polyline polyline;
+    private boolean isShowPolyLine = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -162,8 +165,6 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lp.getLatitude(), lp.getLongitude()), 17));
         // 绑定海量点点击事件
         aMap.setOnMultiPointClickListener(multiPointClickListener);
-        // 绑定 Marker 被点击事件
-        aMap.setOnMarkerClickListener(markerClickListener);
         stepCheckBox.setOnCheckedChangeListener(stepCheckedChangeListener);
         yyCheckBox.setOnCheckedChangeListener(yyCheckedChangeListener);
         setupService();
@@ -303,9 +304,10 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                             LatLng latLng = new LatLng(Double.parseDouble(info.getMp3_tag().get(i).getLatitude()), Double.parseDouble(info.getMp3_tag().get(i).getLongitude()));
                             pointLatLngs.add(latLng);
                         }
-                        Polyline polyline = aMap.addPolyline(new PolylineOptions().
+                        if (polyline != null)
+                            polyline.remove();
+                        polyline = aMap.addPolyline(new PolylineOptions().
                                 addAll(pointLatLngs).width(14).color(0xAA0000FF));
-                        polyline.remove();
                         for (int i = 0; i < pointLatLngs.size(); i++) {
                             MarkerOptions markerOption = new MarkerOptions();
                             markerOption.position(new LatLng(pointLatLngs.get(i).latitude, pointLatLngs.get(i).longitude));
@@ -329,11 +331,16 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     OnCheckedChangeListener stepCheckedChangeListener = new OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+            //清除上一次轨迹，避免重叠绘画
+            if (polyline != null)
+                polyline.remove();
             if (isChecked) {
-
-            } else {
-
-            }
+                isShowPolyLine = true;
+                //将points集合中的点绘制轨迹线条图层，显示在地图上
+                polyline = aMap.addPolyline(new PolylineOptions().
+                        addAll(points).width(15).color(0xAAD1D1D1));
+            } else
+                isShowPolyLine = false;
         }
     };
 
@@ -382,8 +389,8 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                 break;
             case R.id.zhankai:
                 Intent intent1 = new Intent(this, BottomPlayActivity.class);
-                intent1.putExtra("enty",mPointsEntity);
-                intent1.putExtra("startLatlng",startLatlng);
+                intent1.putExtra("enty", mPointsEntity);
+                intent1.putExtra("startLatlng", startLatlng);
                 this.startActivity(intent1);
                 this.overridePendingTransition(R.anim.slide_bottom_in, R.anim.slide_bottom_out);
                 break;
@@ -543,14 +550,8 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             case 1:
                 //TODO 全部
                 aMap.clear();
-                for (PointsEntity pointsEntity : mPointsList) {
-//                    MarkerOptions markerOption = new MarkerOptions();
-//                    markerOption.position(new LatLng(pointsEntity.getLocation().getLatitude(), pointsEntity.getLocation().getLongitude()));
-//                    markerOption.title(pointsEntity.getPointId());
-//                    markerOption.draggable(false);
-//                    markerOption.icon(BitmapManager.getInstance().getBitmapDescriptor(pointsEntity.getType()));
-//                    aMap.addMarker(markerOption);
-                    setOverLay(Integer.parseInt(pointsEntity.getPointId()));
+                for (int i = 0; i < mPointsList.size(); i++) {
+                    setOverLay(i);
                 }
                 break;
             case 2:
@@ -578,7 +579,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     }
 
     private void setOverLay(int index) {
-        aMap.clear();
+//        aMap.clear();
         MultiPointOverlayOptions overlayOptions = new MultiPointOverlayOptions();
         BitmapDescriptor bitmapDescriptor = BitmapManager.getInstance().getBitmapDescriptor(index);
         overlayOptions.icon(bitmapDescriptor);//设置图标
@@ -648,6 +649,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     @Override
     public void onMyLocationChange(Location location) {
         if (location != null) {
+            startLatlng = new LatLng(location.getLatitude(), location.getLongitude());
             startLatlng=new LatLng(location.getLatitude(), location.getLongitude());
             if(mPointsEntity!=null){
                 String distance = String.valueOf(AMapUtils.calculateLineDistance(startLatlng, new LatLng(mPointsEntity.getLocation().getLatitude(),mPointsEntity.getLocation().getLongitude())))+"M";
@@ -675,14 +677,11 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             }
 
             points.add(ll);//如果要运动完成后画整个轨迹，位置点都在这个集合中
-
             last = ll;
-//清除上一次轨迹，避免重叠绘画
-            mMapView.getMap().clear();
-            //将points集合中的点绘制轨迹线条图层，显示在地图上
-            Polyline polyline = aMap.addPolyline(new PolylineOptions().
-                    addAll(points).width(15).color(0xAAD1D1D1));
-
+            if (isShowPolyLine)
+                //将points集合中的点绘制轨迹线条图层，显示在地图上
+                polyline = aMap.addPolyline(new PolylineOptions().
+                        addAll(points).width(15).color(0xAAD1D1D1));
         }
     }
 
@@ -726,19 +725,9 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         @Override
         public boolean onPointClick(MultiPointItem pointItem) {
             Log.d("dddd", "onPointClick: " + pointItem.getLatLng().latitude);
-             mPointsEntity = (PointsEntity) pointItem.getObject();
+            mPointsEntity = (PointsEntity) pointItem.getObject();
             Log.d("dddd", "onPointClick: " + pointItem.getCustomerId() + ",getPointId:" + mPointsEntity.getPointId() + "，mp3:" + mPointsEntity.getMp3());
             EventBus.getDefault().post(new PlayEvent(mPointsEntity.getMp3(), true));
-            return false;
-        }
-    };
-    // 定义 Marker 点击事件监听
-    AMap.OnMarkerClickListener markerClickListener = new AMap.OnMarkerClickListener() {
-        // marker 对象被点击时回调的接口
-        // 返回 true 则表示接口已响应事件，否则返回false
-        @Override
-        public boolean onMarkerClick(Marker marker) {
-            Log.d("dddd", "onMarkerClick: " + marker.getTitle());
             return false;
         }
     };
@@ -912,7 +901,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
 
     //------------------------切换语音
     private void chanVioce(final int positon) {
-      final String clickpath=   mPointsList.get(positon).getMp3();
+        final String clickpath = mPointsList.get(positon).getMp3();
         if (mycontrol.isPlay()) {
             BaseConfig bg = BaseConfig.getInstance(getApplicationContext());
             String nowpaths = bg.getStringValue(Constants.NOW_PLAY, "");
