@@ -15,7 +15,6 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
@@ -26,14 +25,11 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
-import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.AMapUtils;
 import com.amap.api.maps.CameraUpdateFactory;
@@ -54,7 +50,6 @@ import com.amap.api.services.core.LatLonPoint;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
-import com.cn.bent.sports.bean.MajorBean;
 import com.cn.bent.sports.bean.PlayBean;
 import com.cn.bent.sports.bean.PlayEvent;
 import com.cn.bent.sports.bean.PointsEntity;
@@ -63,7 +58,6 @@ import com.cn.bent.sports.bean.StartEvent;
 import com.cn.bent.sports.sensor.UpdateUiCallBack;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.DataUtils;
-import com.cn.bent.sports.utils.NiceUtil;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.utils.ToastUtils;
 import com.cn.bent.sports.view.service.MusicService;
@@ -75,7 +69,6 @@ import com.minew.beacon.BeaconValueIndex;
 import com.minew.beacon.BluetoothState;
 import com.minew.beacon.MinewBeacon;
 import com.minew.beacon.MinewBeaconManager;
-import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.HuiquRxFunction;
@@ -109,8 +102,6 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     private boolean isShowRec = true; // 是否显示列表
     private boolean isShowLuxian = true; // 是否显示路线
     float mCurrentZoom = 18f;//默认地图缩放比例值
-    private AMapLocationClient mLocationClient;
-    private AMapLocationClientOption mLocationOption;
 
     List<LatLng> points = new ArrayList<LatLng>();//位置点集合
     LatLng last = new LatLng(0, 0);//上一个定位点
