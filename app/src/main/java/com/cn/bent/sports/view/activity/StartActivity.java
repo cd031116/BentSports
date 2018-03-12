@@ -1,28 +1,25 @@
 package com.cn.bent.sports.view.activity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-
-import com.cn.bent.sports.MainActivity;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.base.BaseConfig;
 import com.cn.bent.sports.base.SdcardPermissionAction;
 import com.cn.bent.sports.base.SensorsPermission;
-import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.DataUtils;
-import com.cn.bent.sports.utils.SaveObjectUtils;
 
 import org.aisen.android.support.action.IAction;
 
-import java.io.InputStream;
 
 public class StartActivity extends BaseActivity {
 

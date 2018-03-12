@@ -75,7 +75,7 @@
 
 
         <CheckBox
-            android:id="@+id/lxdl_layout"
+            android:id="@+id/bsgj_layout"
             android:layout_width="102px"
             android:layout_height="102px"
             android:layout_alignParentBottom="true"
@@ -86,7 +86,7 @@
             android:button="@null"
             android:checked="false"
             android:drawableTop="@drawable/choose_lx"
-            android:text="自动讲解"
+            android:text="步数轨迹"
             android:background="@color/comm_white"
             android:textColor="#333333"
             android:textSize="23px" />
@@ -96,7 +96,7 @@
             android:id="@+id/luxian"
             android:layout_width="102px"
             android:layout_height="102px"
-            android:layout_above="@id/lxdl_layout"
+            android:layout_above="@id/bsgj_layout"
             android:layout_marginBottom="28px"
             android:layout_marginLeft="28px"
             android:background="@color/comm_white"

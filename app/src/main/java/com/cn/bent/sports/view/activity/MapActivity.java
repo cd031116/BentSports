@@ -11,6 +11,7 @@ import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
@@ -25,6 +26,9 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -98,8 +102,14 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     TextView fujin;
     @Bind(R.id.waik_num)
     TextView waik_num;
+    @Bind(R.id.luxian)
+    TextView luxian;
     @Bind(R.id.yinp_bf)
     ImageView yinp_bf;
+    @Bind(R.id.bsgj_layout)
+    CheckBox stepCheckBox;
+    @Bind(R.id.yuyin_bf)
+    CheckBox yyCheckBox;
     private boolean isFirstLoc = true; // 是否首次定位
     private boolean isShowRec = true; // 是否显示列表
     private boolean isShowLuxian = true; // 是否显示路线
@@ -148,6 +158,8 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         aMap.setOnMultiPointClickListener(multiPointClickListener);
         // 绑定 Marker 被点击事件
         aMap.setOnMarkerClickListener(markerClickListener);
+        stepCheckBox.setOnCheckedChangeListener(stepCheckedChangeListener);
+        yyCheckBox.setOnCheckedChangeListener(yyCheckedChangeListener);
         setupService();
         Intent intent = new Intent(this, MusicService.class);
         startService(intent);
@@ -285,8 +297,9 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                             LatLng latLng = new LatLng(Double.parseDouble(info.getMp3_tag().get(i).getLatitude()), Double.parseDouble(info.getMp3_tag().get(i).getLongitude()));
                             pointLatLngs.add(latLng);
                         }
-                        aMap.addPolyline(new PolylineOptions().
+                        Polyline polyline = aMap.addPolyline(new PolylineOptions().
                                 addAll(pointLatLngs).width(14).color(0xAA0000FF));
+                        polyline.remove();
                         for (int i = 0; i < pointLatLngs.size(); i++) {
                             MarkerOptions markerOption = new MarkerOptions();
                             markerOption.position(new LatLng(pointLatLngs.get(i).latitude, pointLatLngs.get(i).longitude));
@@ -304,7 +317,35 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                 });
     }
 
-    @OnClick({R.id.shaixuan, R.id.fujin, R.id.zhankai, R.id.yinp_bf, R.id.dingwei})
+    /**
+     * 步行轨迹
+     */
+    OnCheckedChangeListener stepCheckedChangeListener = new OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+            if (isChecked) {
+
+            } else {
+
+            }
+        }
+    };
+
+    /**
+     * 自动讲解
+     */
+    OnCheckedChangeListener yyCheckedChangeListener = new OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+            if (isChecked) {
+
+            } else {
+
+            }
+        }
+    };
+
+    @OnClick({R.id.shaixuan, R.id.fujin, R.id.zhankai, R.id.yinp_bf, R.id.dingwei, R.id.luxian})
     void onCLick(View view) {
         switch (view.getId()) {
             case R.id.shaixuan:
@@ -312,6 +353,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                 break;
             case R.id.fujin:
                 gotoNearPlace();
+
                 break;
             case R.id.dingwei:
                 if (isShowLuxian)
@@ -322,6 +364,15 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                     }
                 else
                     aMap.setMyLocationEnabled(false);
+                break;
+            case R.id.luxian:
+                if (isShowLuxian) {
+                    setLuxianPng(isShowLuxian);
+                    isShowLuxian = false;
+                } else {
+                    setLuxianPng(isShowLuxian);
+                    isShowLuxian = true;
+                }
                 break;
             case R.id.zhankai:
                 Intent intent1 = new Intent(this, BottomPlayActivity.class);
@@ -351,6 +402,17 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                 break;
         }
     }
+
+    private void setLuxianPng(boolean isShowLuxian) {
+        Drawable drawable = null;
+        if (isShowLuxian)
+            drawable = getResources().getDrawable(R.drawable.luxian_1);
+        else
+            drawable = getResources().getDrawable(R.drawable.close_line);
+        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());//这句一定要加
+        luxian.setCompoundDrawables(null, drawable, null, null);//setCompoundDrawables用来设置图片显示在文本的哪一端
+    }
+
 
     /**
      * 检测GPS是否打开
@@ -401,23 +463,27 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     }
 
     public void showPermission() {
+        Log.d("dddd", "showPermission: " + ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                + ",ACCESS_FINE_LOCATION:" + ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                + ",READ_PHONE_STATE:" + ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
+                + ",PERMISSION_GRANTED:" + PackageManager.PERMISSION_GRANTED);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED
                 || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED
                 || ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
                 != PackageManager.PERMISSION_GRANTED) {
+            Log.d("dddd", "showPermission 没有权限,请手动开启定位权限: ");
             Toast.makeText(this, "没有权限,请手动开启定位权限", Toast.LENGTH_SHORT).show();
             // 申请一个（或多个）权限，并提供用于回调返回的获取码（用户定义）
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_PHONE_STATE}, READ_PHONE_STATE);
         } else {
+            Log.d("dddd", "showPermission openGPSSettings: ");
             openGPSSettings();
         }
     }
 
     public void startLocation() {
-        Log.e("dddd", "GPS是否打开 " + LocationManager.GPS_PROVIDER);
-        Log.e("dddd", "网络定位是否打开 " + LocationManager.NETWORK_PROVIDER);
         aMap.setMyLocationEnabled(true);
         // 设置定位的类型为定位模式，有定位、跟随或地图根据面向方向旋转几种
         MyLocationStyle myLocationStyle = new MyLocationStyle();
@@ -472,12 +538,13 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                 //TODO 全部
                 aMap.clear();
                 for (PointsEntity pointsEntity : mPointsList) {
-                    MarkerOptions markerOption = new MarkerOptions();
-                    markerOption.position(new LatLng(pointsEntity.getLocation().getLatitude(), pointsEntity.getLocation().getLongitude()));
-                    markerOption.title(pointsEntity.getPointId());
-                    markerOption.draggable(false);
-                    markerOption.icon(BitmapManager.getInstance().getBitmapDescriptor(pointsEntity.getType()));
-                    aMap.addMarker(markerOption);
+//                    MarkerOptions markerOption = new MarkerOptions();
+//                    markerOption.position(new LatLng(pointsEntity.getLocation().getLatitude(), pointsEntity.getLocation().getLongitude()));
+//                    markerOption.title(pointsEntity.getPointId());
+//                    markerOption.draggable(false);
+//                    markerOption.icon(BitmapManager.getInstance().getBitmapDescriptor(pointsEntity.getType()));
+//                    aMap.addMarker(markerOption);
+                    setOverLay(Integer.parseInt(pointsEntity.getPointId()));
                 }
                 break;
             case 2:
@@ -624,19 +691,19 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
 
         LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
 
-        if (AMapUtils.calculateLineDistance(last, ll) > 10) {
-            last = ll;
-            points.clear();//有任意连续两点位置大于10，重新取点
-            return null;
-        }
+//        if (AMapUtils.calculateLineDistance(last, ll) > 10) {
+//            last = ll;
+//            points.clear();//有任意连续两点位置大于10，重新取点
+//            return null;
+//        }
         points.add(ll);
         last = ll;
         //有5个连续的点之间的距离小于10，认为gps已稳定，以最新的点为起始点
-        if (points.size() >= 5) {
-            points.clear();
-            return ll;
-        }
-        return null;
+//        if (points.size() >= 5) {
+//            points.clear();
+//            return ll;
+//        }
+        return ll;
     }
 
 
