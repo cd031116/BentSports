@@ -19,6 +19,7 @@ import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.PlayBean;
 import com.cn.bent.sports.bean.PlayEvent;
+import com.cn.bent.sports.bean.PointsEntity;
 import com.cn.bent.sports.bean.StartEvent;
 import com.cn.bent.sports.evevt.DistanceEvent;
 import com.cn.bent.sports.evevt.DistanceSubscriber;
@@ -26,6 +27,7 @@ import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.NiceUtil;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.utils.SupportMultipleScreensUtil;
+import com.cn.bent.sports.utils.ToastUtils;
 import com.cn.bent.sports.view.service.MusicService;
 
 import org.aisen.android.component.eventbus.NotificationCenter;
@@ -53,6 +55,7 @@ public class BottomPlayActivity extends BaseActivity {
     private Handler mHandler;
     ServiceConnection serviceConnection;
     MusicService.MusicController mycontrol;
+    private  PointsEntity pEnty;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_bottom_play;
@@ -61,6 +64,7 @@ public class BottomPlayActivity extends BaseActivity {
     @Override
     public void initView() {
         super.initView();
+         pEnty = (PointsEntity) getIntent().getSerializableExtra("enty");
         NotificationCenter.defaultCenter().subscriber(DistanceEvent.class, disevent);
         EventBus.getDefault().register(this);
         mHandler = new Handler();
@@ -117,12 +121,9 @@ public class BottomPlayActivity extends BaseActivity {
     @Override
     public void initData() {
         super.initData();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                EventBus.getDefault().post(new PlayEvent("https://yjly.oss-cn-beijing.aliyuncs.com/yjly/power/144533422789324.mp3",false));
-            }
-        }, 100);
+        if(pEnty!=null){
+            name_t.setText(pEnty.getName());
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -180,7 +181,13 @@ public class BottomPlayActivity extends BaseActivity {
                 }
                 break;
             case R.id.go_daohang:
-                startActivity(new Intent(this, WalkNaviActivity.class));
+                if(pEnty==null){
+                    ToastUtils.showShortToast(BottomPlayActivity.this,"请选择目的地");
+                }else {
+                    Intent intent=new Intent(this, WalkNaviActivity.class);
+                    intent.putExtra("enty",pEnty);
+                    startActivity(intent);
+                }
                 break;
             case R.id.go_detail:
             case R.id.name_line:

@@ -119,7 +119,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     private static final int REQUEST_ENABLE_BT = 2;
     private boolean isBlue = false;
     private static final int GPS_REQUEST_CODE = 10;
-
+    private  PointsEntity mPointsEntity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -324,6 +324,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                 break;
             case R.id.zhankai:
                 Intent intent1 = new Intent(this, BottomPlayActivity.class);
+                intent1.putExtra("enty",mPointsEntity);
                 this.startActivity(intent1);
                 this.overridePendingTransition(R.anim.slide_bottom_in, R.anim.slide_bottom_out);
                 break;
@@ -643,9 +644,9 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         @Override
         public boolean onPointClick(MultiPointItem pointItem) {
             Log.d("dddd", "onPointClick: " + pointItem.getLatLng().latitude);
-            PointsEntity pointsEntity = (PointsEntity) pointItem.getObject();
-            Log.d("dddd", "onPointClick: " + pointItem.getCustomerId() + ",getPointId:" + pointsEntity.getPointId() + "，mp3:" + pointsEntity.getMp3());
-            EventBus.getDefault().post(new PlayEvent(pointsEntity.getMp3(), true));
+             mPointsEntity = (PointsEntity) pointItem.getObject();
+            Log.d("dddd", "onPointClick: " + pointItem.getCustomerId() + ",getPointId:" + mPointsEntity.getPointId() + "，mp3:" + mPointsEntity.getMp3());
+            EventBus.getDefault().post(new PlayEvent(mPointsEntity.getMp3(), true));
             return false;
         }
     };
@@ -797,7 +798,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                             for (PointsEntity.IBeaconsBean cheeck : mPointsList.get(i).getIBeacons()) {
                                 String jieguo = String.valueOf(cheeck.getMajor()) + String.valueOf(cheeck.getMinor());
                                 if (jieguo.equals(majer)) {
-                                    chanVioce(mPointsList.get(i).getMp3());
+                                    chanVioce(i);
                                     break;
                                 }
                             }
@@ -828,11 +829,12 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     ExxitDialog mDialog;
 
     //------------------------切换语音
-    private void chanVioce(final String pstas) {
+    private void chanVioce(final int positon) {
+      final String clickpath=   mPointsList.get(positon).getMp3();
         if (mycontrol.isPlay()) {
             BaseConfig bg = BaseConfig.getInstance(getApplicationContext());
             String nowpaths = bg.getStringValue(Constants.NOW_PLAY, "");
-            if (nowpaths.equals(pstas)) {
+            if (nowpaths.equals(clickpath)) {
                 return;
             }
             if (mDialog != null && mDialog.isShowing()) {
@@ -843,7 +845,8 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                 public void onClick(Dialog dialog, boolean confirm) {
                     if (confirm) {
                         dialog.dismiss();
-                        EventBus.getDefault().post(new PlayEvent(pstas, true));
+                        EventBus.getDefault().post(new PlayEvent(clickpath, true));
+                        mPointsEntity=mPointsList.get(positon);
                     } else {
                         dialog.dismiss();
                     }
@@ -852,7 +855,8 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             mDialog.setPositiveButton("切换").show();
 
         } else {
-            EventBus.getDefault().post(new PlayEvent(pstas, false));
+            EventBus.getDefault().post(new PlayEvent(clickpath, false));
+            mPointsEntity=mPointsList.get(positon);
         }
     }
 

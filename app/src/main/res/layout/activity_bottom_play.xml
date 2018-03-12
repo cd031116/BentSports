@@ -67,7 +67,7 @@
                         android:id="@+id/name_t"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="欢乐竹林" />
+                        android:text="" />
 
                     <ImageView
                         android:id="@+id/go_detail"

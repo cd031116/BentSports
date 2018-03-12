@@ -16,6 +16,7 @@ import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.PlayBean;
 import com.cn.bent.sports.bean.PlayEvent;
+import com.cn.bent.sports.bean.PointsEntity;
 import com.cn.bent.sports.bean.StartEvent;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.NiceUtil;
@@ -38,11 +39,13 @@ public class DetailDotActivity extends BaseActivity {
     TextView curent_time;
     @Bind(R.id.paly_t)
     ImageView paly_t;
+    @Bind(R.id.title)
+    TextView mtitle;
 
     private Handler mHandler;
     ServiceConnection serviceConnection;
     MusicService.MusicController mycontrol;
-
+    private  PointsEntity pEnty;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_detail_dot;
@@ -51,6 +54,7 @@ public class DetailDotActivity extends BaseActivity {
     @Override
     public void initView() {
         super.initView();
+        pEnty = (PointsEntity) getIntent().getSerializableExtra("enty");
         EventBus.getDefault().register(this);
         mHandler = new Handler();
         Intent intent = new Intent(this, MusicService.class);
@@ -188,12 +192,10 @@ public class DetailDotActivity extends BaseActivity {
     @Override
     public void initData() {
         super.initData();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                EventBus.getDefault().post(new PlayEvent("https://yjly.oss-cn-beijing.aliyuncs.com/yjly/power/144533422789324.mp3",false));
-            }
-        }, 100);
+        if(pEnty!=null){
+            mtitle.setText(pEnty.getName());
+        }
+
     }
 
     @Override
