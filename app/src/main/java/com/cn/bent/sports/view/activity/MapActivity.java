@@ -60,6 +60,7 @@ import com.cn.bent.sports.bean.PlayEvent;
 import com.cn.bent.sports.bean.PointsEntity;
 import com.cn.bent.sports.bean.RailBean;
 import com.cn.bent.sports.bean.StartEvent;
+import com.cn.bent.sports.evevt.DistanceEvent;
 import com.cn.bent.sports.sensor.UpdateUiCallBack;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.DataUtils;
@@ -79,6 +80,7 @@ import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.HuiquRxFunction;
 
+import org.aisen.android.component.eventbus.NotificationCenter;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -106,6 +108,10 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     TextView luxian;
     @Bind(R.id.yinp_bf)
     ImageView yinp_bf;
+    @Bind(R.id.juli)
+    TextView mjuli;
+    @Bind(R.id.tour_name)
+    TextView tour_name;
     @Bind(R.id.bsgj_layout)
     CheckBox stepCheckBox;
     @Bind(R.id.yuyin_bf)
@@ -643,6 +649,12 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     public void onMyLocationChange(Location location) {
         if (location != null) {
             startLatlng=new LatLng(location.getLatitude(), location.getLongitude());
+            if(mPointsEntity!=null){
+                String distance = String.valueOf(AMapUtils.calculateLineDistance(startLatlng, new LatLng(mPointsEntity.getLocation().getLatitude(),mPointsEntity.getLocation().getLongitude())))+"M";
+                mjuli.setText(distance);
+                NotificationCenter.defaultCenter().publish(new DistanceEvent(distance));
+            }
+
             if (isFirstLoc) {
                 LatLng ll = null;
                 ll = getMostAccuracyLocation(location);
@@ -917,6 +929,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                         dialog.dismiss();
                         EventBus.getDefault().post(new PlayEvent(clickpath, true));
                         mPointsEntity=mPointsList.get(positon);
+                        tour_name.setText(mPointsEntity.getName());
                     } else {
                         dialog.dismiss();
                     }
@@ -927,6 +940,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         } else {
             EventBus.getDefault().post(new PlayEvent(clickpath, false));
             mPointsEntity=mPointsList.get(positon);
+            tour_name.setText(mPointsEntity.getName());
         }
     }
 
@@ -972,7 +986,8 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             ExitFunction();
             return true;
+        }else {
+            return super.onKeyDown(keyCode, event);
         }
-        return super.onKeyDown(keyCode, event);
     }
 }

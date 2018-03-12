@@ -95,7 +95,7 @@
                     android:layout_below="@+id/seekbar"
                     android:drawableLeft="@drawable/juli"
                     android:drawablePadding="15px"
-                    android:text="45M"
+                    android:text=""
                     android:textColor="#999999"
                     android:textSize="34px" />
 
