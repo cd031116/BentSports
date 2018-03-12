@@ -139,6 +139,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     private LatLng startLatlng;
     private Polyline polyline;
     private boolean isShowPolyLine = false;
+    private List<LatLng> pointLatLngs = new ArrayList<LatLng>();//位置点集合
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -290,7 +291,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                     @Override
                     public void onSuccess(int whichRequest, RailBean info) {
                         dismissAlert();
-                        List<LatLng> pointLatLngs = new ArrayList<LatLng>();//位置点集合
+
                         for (int i = 0; i < info.getMp3_tag().size(); i++) {
                             PointsEntity pointsEntity = new PointsEntity();
                             pointsEntity.setPointId(info.getMp3_tag().get(i).getPlace_id());
@@ -304,10 +305,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                             LatLng latLng = new LatLng(Double.parseDouble(info.getMp3_tag().get(i).getLatitude()), Double.parseDouble(info.getMp3_tag().get(i).getLongitude()));
                             pointLatLngs.add(latLng);
                         }
-                        if (polyline != null)
-                            polyline.remove();
-                        polyline = aMap.addPolyline(new PolylineOptions().
-                                addAll(pointLatLngs).width(14).color(0xAA0000FF));
+
                         for (int i = 0; i < pointLatLngs.size(); i++) {
                             MarkerOptions markerOption = new MarkerOptions();
                             markerOption.position(new LatLng(pointLatLngs.get(i).latitude, pointLatLngs.get(i).longitude));
@@ -379,11 +377,15 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                     aMap.setMyLocationEnabled(false);
                 break;
             case R.id.luxian:
+                setLuxianPng(isShowLuxian);
+                if (polyline != null)
+                    polyline.remove();
                 if (isShowLuxian) {
-                    setLuxianPng(isShowLuxian);
+                    polyline = aMap.addPolyline(new PolylineOptions().
+                            addAll(pointLatLngs).width(14).color(0xAA0000FF));
                     isShowLuxian = false;
                 } else {
-                    setLuxianPng(isShowLuxian);
+                    polyline=null;
                     isShowLuxian = true;
                 }
                 break;
