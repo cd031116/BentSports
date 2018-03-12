@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="807px"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_round_white"
+        android:gravity="center"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30px"
+            android:gravity="center_horizontal"
+            android:textColor="#000000"
+            android:text="说明"
+            android:textSize="57px"
+            android:visibility="visible" />
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="734px"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20px"
+            android:gravity="center_horizontal"
+            android:textColor="#999999"
+            android:textSize="33px"
+            android:visibility="visible" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="35px"
+            android:layout_marginTop="43px"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="80px"
+                android:background="@drawable/call_in_bg"
+                android:gravity="center"
+                android:paddingBottom="20px"
+                android:paddingLeft="70px"
+                android:paddingRight="70px"
+                android:paddingTop="20px"
+                android:text="取消"
+                android:textColor="#ffffff"
+                android:textSize="46px" />
+
+
+            <TextView
+                android:id="@+id/submit"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20px"
+                android:background="@drawable/sure_bg"
+                android:gravity="center"
+                android:paddingBottom="20px"
+                android:paddingLeft="70px"
+                android:paddingRight="70px"
+                android:paddingTop="20px"
+                android:text="确定"
+                android:textColor="#ffffff"
+                android:textSize="46px" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

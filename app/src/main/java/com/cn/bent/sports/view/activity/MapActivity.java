@@ -21,6 +21,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -28,8 +29,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amap.api.location.AMapLocationClient;
-import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.AMapUtils;
 import com.amap.api.maps.CameraUpdateFactory;
@@ -50,6 +49,8 @@ import com.amap.api.services.core.LatLonPoint;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
+import com.cn.bent.sports.base.BaseConfig;
+import com.cn.bent.sports.bean.MajorBean;
 import com.cn.bent.sports.bean.PlayBean;
 import com.cn.bent.sports.bean.PlayEvent;
 import com.cn.bent.sports.bean.PointsEntity;
@@ -63,6 +64,7 @@ import com.cn.bent.sports.utils.ToastUtils;
 import com.cn.bent.sports.view.service.MusicService;
 import com.cn.bent.sports.view.service.StepService;
 import com.cn.bent.sports.widget.AroundDialog;
+import com.cn.bent.sports.widget.ExxitDialog;
 import com.cn.bent.sports.widget.GotoWhereDialog;
 import com.cn.bent.sports.widget.NearDialog;
 import com.minew.beacon.BeaconValueIndex;
@@ -643,7 +645,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             Log.d("dddd", "onPointClick: " + pointItem.getLatLng().latitude);
             PointsEntity pointsEntity = (PointsEntity) pointItem.getObject();
             Log.d("dddd", "onPointClick: " + pointItem.getCustomerId() + ",getPointId:" + pointsEntity.getPointId() + "，mp3:" + pointsEntity.getMp3());
-            EventBus.getDefault().post(new PlayEvent(pointsEntity.getMp3(),false));
+            EventBus.getDefault().post(new PlayEvent(pointsEntity.getMp3(), true));
             return false;
         }
     };
@@ -791,9 +793,14 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
 //                    String distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
                     for (MinewBeacon beacon : minewBeacons) {
                         String majer = beacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Major).getStringValue() + beacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
-                        if (majer != null) {
-
-
+                        for (int i = 0; i < mPointsList.size(); i++) {
+                            for (PointsEntity.IBeaconsBean cheeck : mPointsList.get(i).getIBeacons()) {
+                                String jieguo = String.valueOf(cheeck.getMajor()) + String.valueOf(cheeck.getMinor());
+                                if (jieguo.equals(majer)) {
+                                    chanVioce(mPointsList.get(i).getMp3());
+                                    break;
+                                }
+                            }
                         }
                     }
                 }
@@ -818,6 +825,37 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         });
     }
 
+    ExxitDialog mDialog;
+
+    //------------------------切换语音
+    private void chanVioce(final String pstas) {
+        if (mycontrol.isPlay()) {
+            BaseConfig bg = BaseConfig.getInstance(getApplicationContext());
+            String nowpaths = bg.getStringValue(Constants.NOW_PLAY, "");
+            if (nowpaths.equals(pstas)) {
+                return;
+            }
+            if (mDialog != null && mDialog.isShowing()) {
+                return;
+            }
+            mDialog = new ExxitDialog(MapActivity.this, R.style.dialog, "正在介绍当前景点,是否切换至下一个点?", new ExxitDialog.OnCloseListener() {
+                @Override
+                public void onClick(Dialog dialog, boolean confirm) {
+                    if (confirm) {
+                        dialog.dismiss();
+                        EventBus.getDefault().post(new PlayEvent(pstas, true));
+                    } else {
+                        dialog.dismiss();
+                    }
+                }
+            });
+            mDialog.setPositiveButton("切换").show();
+
+        } else {
+            EventBus.getDefault().post(new PlayEvent(pstas, false));
+        }
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -838,5 +876,29 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                 break;
 
         }
+    }
+
+    private void ExitFunction() {
+        new ExxitDialog(MapActivity.this, R.style.dialog, "确定退出AI旅行?", new ExxitDialog.OnCloseListener() {
+            @Override
+            public void onClick(Dialog dialog, boolean confirm) {
+                if (confirm) {
+                    dialog.dismiss();
+                    MapActivity.this.finish();
+                } else {
+                    dialog.dismiss();
+                }
+            }
+        }).show();
+    }
+
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            ExitFunction();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

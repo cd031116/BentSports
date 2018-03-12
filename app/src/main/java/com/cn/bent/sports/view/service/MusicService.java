@@ -8,6 +8,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.cn.bent.sports.base.BaseConfig;
 import com.cn.bent.sports.bean.PlayBean;
 import com.cn.bent.sports.bean.PlayEvent;
 import com.cn.bent.sports.bean.StartEvent;
@@ -109,6 +110,8 @@ public class MusicService extends Service {
             public void run() {
                 try {
                     mPlayer.setDataSource(paths);
+                    BaseConfig bg=BaseConfig.getInstance(getApplicationContext());
+                    bg.setStringValue(Constants.NOW_PLAY,paths);
                     isHave = true;
                     mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
                     mPlayer.prepare();

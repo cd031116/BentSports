@@ -2,7 +2,6 @@ package com.cn.bent.sports.widget;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -11,13 +10,13 @@ import android.widget.TextView;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.utils.SupportMultipleScreensUtil;
 
-
 /**
- * Created by lyj on 2018/1/9 0009.
+ * Created by lyj on 2018/3/12 0012.
  * description
  */
 
-public class GameDialog extends Dialog implements View.OnClickListener {
+public class ExxitDialog extends Dialog implements View.OnClickListener{
+
     private int imgResId = 0;
     private TextView titleTxt;
     private TextView submitTxt;
@@ -26,8 +25,6 @@ public class GameDialog extends Dialog implements View.OnClickListener {
     private String content;
     private OnCloseListener listener;
     private String positiveName;
-    private String negativeName;
-    private String title;
 
     public String getContent() {
         return content;
@@ -37,39 +34,32 @@ public class GameDialog extends Dialog implements View.OnClickListener {
         this.content = content;
     }
 
-    public GameDialog(Context context) {
+    public ExxitDialog(Context context) {
         super(context);
         this.mContext = context;
     }
 
-    public GameDialog(Context context, String content) {
+    public ExxitDialog(Context context, String content) {
         super(context, R.style.dialog);
         this.mContext = context;
         this.content = content;
     }
 
-    public GameDialog(Context context, int themeResId, String content) {
+    public ExxitDialog(Context context, int themeResId, String content) {
         super(context, themeResId);
         this.mContext = context;
         this.content = content;
     }
 
-    public GameDialog(Context context, int themeResId, OnCloseListener
+    public ExxitDialog(Context context, int themeResId, OnCloseListener
             listener) {
         super(context, themeResId);
         this.mContext = context;
         this.listener = listener;
     }
 
-    public GameDialog(Context context, int themeResId, int imgResId, OnCloseListener
-            listener) {
-        super(context, themeResId);
-        this.mContext = context;
-        this.imgResId = imgResId;
-        this.listener = listener;
-    }
 
-    public GameDialog(Context context, int themeResId, String content, OnCloseListener
+    public ExxitDialog(Context context, int themeResId, String content, OnCloseListener
             listener) {
         super(context, themeResId);
         this.mContext = context;
@@ -77,30 +67,21 @@ public class GameDialog extends Dialog implements View.OnClickListener {
         this.listener = listener;
     }
 
-    protected GameDialog(Context context, boolean cancelable, OnCancelListener cancelListener) {
+    protected ExxitDialog(Context context, boolean cancelable, OnCancelListener cancelListener) {
         super(context, cancelable, cancelListener);
         this.mContext = context;
     }
 
-    public GameDialog setTitle(String title) {
-        this.title = title;
-        return this;
-    }
 
-    public GameDialog setPositiveButton(String name) {
+    public ExxitDialog setPositiveButton(String name) {
         this.positiveName = name;
-        return this;
-    }
-
-    public GameDialog setNegativeButton(String name) {
-        this.negativeName = name;
         return this;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.exit_dialog_item);
+        setContentView(R.layout.game_dialog);
         View rootView = findViewById(android.R.id.content);
         SupportMultipleScreensUtil.init(mContext);
         SupportMultipleScreensUtil.scale(rootView);
@@ -118,14 +99,7 @@ public class GameDialog extends Dialog implements View.OnClickListener {
         if (!TextUtils.isEmpty(positiveName)) {
             submitTxt.setText(positiveName);
         }
-        if (imgResId == 0)
-            titleTxt.setText(title);
-        else {
-            titleTxt.setText(title);
-            Drawable nav_up = mContext.getResources().getDrawable(imgResId);
-            nav_up.setBounds(0, 0, nav_up.getMinimumWidth(), nav_up.getMinimumHeight());
-            titleTxt.setCompoundDrawables(null, null, null, nav_up);
-        }
+        titleTxt.setText(content);
     }
 
     @Override
