@@ -643,7 +643,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             Log.d("dddd", "onPointClick: " + pointItem.getLatLng().latitude);
             PointsEntity pointsEntity = (PointsEntity) pointItem.getObject();
             Log.d("dddd", "onPointClick: " + pointItem.getCustomerId() + ",getPointId:" + pointsEntity.getPointId() + "，mp3:" + pointsEntity.getMp3());
-            EventBus.getDefault().post(new PlayEvent(pointsEntity.getMp3()));
+            EventBus.getDefault().post(new PlayEvent(pointsEntity.getMp3(),false));
             return false;
         }
     };

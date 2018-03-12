@@ -88,7 +88,7 @@ public class MusicService extends Service {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(PlayEvent event) {
-        played(event.getPaths(), false);
+        played(event.getPaths(), event.isHuan());
         Log.i("dddd", "onEvent");
     }
 
@@ -126,6 +126,10 @@ public class MusicService extends Service {
                         public void onCompletion(MediaPlayer mp) {
                             EventBus.getDefault().post(new StartEvent(false));
                             SaveObjectUtils.getInstance(getApplicationContext()).setObject(Constants.PLAY_POSION, null);
+                            if (mPlayer.isPlaying()) {
+                                mPlayer.stop();
+                            }
+                            mPlayer.release();
                         }
                     });
                 } catch (Exception e) {
