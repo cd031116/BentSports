@@ -61,11 +61,17 @@ import com.cn.bent.sports.bean.PointsEntity;
 import com.cn.bent.sports.bean.RailBean;
 import com.cn.bent.sports.bean.StartEvent;
 import com.cn.bent.sports.evevt.DistanceEvent;
+import com.cn.bent.sports.evevt.DistanceSubscriber;
+import com.cn.bent.sports.evevt.ShowPoupEvent;
+import com.cn.bent.sports.evevt.ShowSubscriber;
+import com.cn.bent.sports.scan.CaptureActivity;
 import com.cn.bent.sports.sensor.UpdateUiCallBack;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.DataUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.utils.ToastUtils;
+import com.cn.bent.sports.view.poupwindow.DoTaskPoupWindow;
+import com.cn.bent.sports.view.poupwindow.LineListPoupWindow;
 import com.cn.bent.sports.view.service.MusicService;
 import com.cn.bent.sports.view.service.StepService;
 import com.cn.bent.sports.widget.AroundDialog;
@@ -140,6 +146,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     private Polyline polyline;
     private boolean isShowPolyLine = false;
     private List<LatLng> pointLatLngs = new ArrayList<LatLng>();//位置点集合
+    private LineListPoupWindow mopupWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,6 +163,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     @Override
     public void initView() {
         super.initView();
+        NotificationCenter.defaultCenter().subscriber(ShowPoupEvent.class, disevent);
         EventBus.getDefault().register(this);
         if (aMap == null) {
             aMap = mMapView.getMap();
@@ -624,7 +632,6 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     public void onMyLocationChange(Location location) {
         if (location != null) {
             startLatlng = new LatLng(location.getLatitude(), location.getLongitude());
-            startLatlng = new LatLng(location.getLatitude(), location.getLongitude());
             if (mPointsEntity != null) {
                 String distance = String.valueOf(AMapUtils.calculateLineDistance(startLatlng, new LatLng(mPointsEntity.getLocation().getLatitude(), mPointsEntity.getLocation().getLongitude()))) + "M";
                 mjuli.setText(distance);
@@ -725,6 +732,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         super.onDestroy();
         EventBus.getDefault().unregister(this);
         unbindService(serviceConnection);
+        NotificationCenter.defaultCenter().unsubscribe(ShowPoupEvent.class, disevent);
         if (isBind) {
             this.unbindService(conn);
         }
@@ -782,6 +790,31 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                 break;
         }
     }
+    //刷新距离
+    ShowSubscriber disevent = new ShowSubscriber() {
+        @Override
+        public void onEvent(ShowPoupEvent event) {
+            shouPoup();
+        }
+    };
+
+    private void shouPoup() {
+        mopupWindow = new LineListPoupWindow(MapActivity.this, startLatlng, mPointsList, itemsOnClick);
+        mopupWindow.showAtLocation(this.findViewById(R.id.mapView),
+                Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+    }
+
+    private LineListPoupWindow.ItemInclick itemsOnClick = new LineListPoupWindow.ItemInclick() {
+        @Override
+        public void ItemClick(int index) {
+            mopupWindow.dismiss();
+            mPointsEntity=mPointsList.get(index);
+            aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mPointsEntity.getLocation().getLatitude(),mPointsEntity.getLocation().getLongitude()), mCurrentZoom));
+
+        }
+    };
+
+
     //蓝牙模块---------------------------------------------------------------------------------------------------------------
 
 
@@ -895,12 +928,12 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                 @Override
                 public void onClick(Dialog dialog, boolean confirm) {
                     if (confirm) {
-                        dialog.dismiss();
+                        mDialog.dismiss();
                         EventBus.getDefault().post(new PlayEvent(clickpath, true));
                         mPointsEntity = mPointsList.get(positon);
                         tour_name.setText(mPointsEntity.getName());
                     } else {
-                        dialog.dismiss();
+                        mDialog.dismiss();
                     }
                 }
             });

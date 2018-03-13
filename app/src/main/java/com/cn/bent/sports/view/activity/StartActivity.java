@@ -41,7 +41,7 @@ public class StartActivity extends BaseActivity {
         aa.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationEnd(Animation arg0) {
-
+                redirectTo();
             }
 
             @Override
@@ -62,7 +62,7 @@ public class StartActivity extends BaseActivity {
         BaseConfig bg = BaseConfig.getInstance(StartActivity.this);
         final int isFirst = bg.getIntValue(Constants.IS_FIRST, 0);
         if (isFirst == 1) {
-            redirectTo();
+
         } else {
             if (this instanceof org.aisen.android.ui.activity.basic.BaseActivity) {
                 org.aisen.android.ui.activity.basic.BaseActivity aisenBaseActivity =
@@ -72,8 +72,8 @@ public class StartActivity extends BaseActivity {
                     @Override
                     public void doAction() {
                         if (isFirst == 0) {
-                            MAsyncTask asyncTask = new MAsyncTask();
-                            asyncTask.execute();//开始执行
+//                            MAsyncTask asyncTask = new MAsyncTask();
+//                            asyncTask.execute();//开始执行
                         }
                     }
                 }.run();

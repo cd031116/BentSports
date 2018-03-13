@@ -24,6 +24,7 @@ import com.cn.bent.sports.bean.PointsEntity;
 import com.cn.bent.sports.bean.StartEvent;
 import com.cn.bent.sports.evevt.DistanceEvent;
 import com.cn.bent.sports.evevt.DistanceSubscriber;
+import com.cn.bent.sports.evevt.ShowPoupEvent;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.NiceUtil;
 import com.cn.bent.sports.utils.SaveObjectUtils;
@@ -166,7 +167,7 @@ public class BottomPlayActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.play_t,R.id.go_daohang,R.id.go_detail,R.id.main_top,R.id.name_line,R.id.line_top})
+    @OnClick({R.id.play_t,R.id.go_daohang,R.id.go_detail,R.id.main_top,R.id.name_line,R.id.line_top,R.id.travel_name})
     void onclick(View v) {
         switch (v.getId()) {
             case R.id.play_t:
@@ -202,6 +203,9 @@ public class BottomPlayActivity extends BaseActivity {
                 break;
             case R.id.line_top:
 
+                break;
+            case R.id.travel_name:
+                NotificationCenter.defaultCenter().publish(new ShowPoupEvent());
                 break;
         }
     }
