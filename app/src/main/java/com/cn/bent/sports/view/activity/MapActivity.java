@@ -826,7 +826,6 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             mopupWindow.dismiss();
             mPointsEntity=mPointsList.get(index);
             aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mPointsEntity.getLocation().getLatitude(),mPointsEntity.getLocation().getLongitude()), mCurrentZoom));
-
         }
     };
 
@@ -1004,7 +1003,6 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_BACK) {
             if(mopupWindow!=null&&mopupWindow.isShowing()){
                 mopupWindow.dismiss();
-                Log.i("gggg","mopupWindow");
                 return false;
             }else {
                 ExitFunction();

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.PopupWindow;
@@ -53,7 +54,7 @@ public class LineListPoupWindow extends PopupWindow {
                 holder.setText(R.id.t_name,s.getName());
                 if(mLatlng!=null){
                     String julis = String.valueOf(AMapUtils.calculateLineDistance(mLatlng, new LatLng(s.getLocation().getLatitude(),s.getLocation().getLongitude())));
-                    holder.setText(R.id.distance,julis+"M");
+                    holder.setText(R.id.distance,(int) (Double.parseDouble(julis)) +"M");
                 }
 
                 holder.setOnClickListener(R.id.top_view, new View.OnClickListener() {
