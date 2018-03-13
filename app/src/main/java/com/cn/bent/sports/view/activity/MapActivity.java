@@ -74,6 +74,7 @@ import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.utils.ToastUtils;
 import com.cn.bent.sports.view.poupwindow.DoTaskPoupWindow;
 import com.cn.bent.sports.view.poupwindow.LineListPoupWindow;
+import com.cn.bent.sports.view.poupwindow.XianluPoupWindow;
 import com.cn.bent.sports.view.service.MusicService;
 import com.cn.bent.sports.view.service.StepService;
 import com.cn.bent.sports.widget.AroundDialog;
@@ -135,6 +136,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     private AMap aMap;
     private LatLonPoint lp = new LatLonPoint(28.008977, 113.088063);//
     private List<PointsEntity> mPointsList = new ArrayList<PointsEntity>();
+    private List<List<PointsEntity>> mPointsEntityList = new ArrayList<List<PointsEntity>>();
     ServiceConnection serviceConnection;
     MusicService.MusicController mycontrol;
     private boolean isBind = false;
@@ -149,6 +151,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     private boolean isShowPolyLine = false;
     private List<LatLng> pointLatLngs = new ArrayList<LatLng>();//位置点集合
     private LineListPoupWindow mopupWindow;
+    private XianluPoupWindow xlWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -320,7 +323,8 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                             LatLng latLng = new LatLng(Double.parseDouble(info.getMp3_tag().get(i).getLatitude()), Double.parseDouble(info.getMp3_tag().get(i).getLongitude()));
                             pointLatLngs.add(latLng);
                         }
-
+                        mPointsEntityList.add(mPointsList);
+                        mPointsEntityList.add(mPointsList);
                         for (int i = 0; i < pointLatLngs.size(); i++) {
                             setOverLay(i);
                         }
@@ -377,7 +381,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                 gotoNearPlace();
                 break;
             case R.id.dingwei:
-                Log.d("dddd", "onCLick: "+startLatlng.latitude);
+                Log.d("dddd", "onCLick: " + startLatlng.latitude);
                 if (startLatlng == null)
                     if (Build.VERSION.SDK_INT >= 23)
                         showPermission();
@@ -391,8 +395,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                 if (polyline != null)
                     polyline.remove();
                 if (isShowLuxian) {
-                    polyline = aMap.addPolyline(new PolylineOptions().
-                            addAll(pointLatLngs).width(14).color(0xAA0000FF));
+                    shouLuxianPoup();
                     isShowLuxian = false;
                 } else {
                     polyline = null;
@@ -427,6 +430,32 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                 break;
         }
     }
+
+    private void shouLuxianPoup() {
+        xlWindow = new XianluPoupWindow(MapActivity.this, mPointsEntityList, luxianItemsOnClick);
+        xlWindow.showAtLocation(this.findViewById(R.id.mapView),
+                Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+    }
+
+    private XianluPoupWindow.ItemInclick luxianItemsOnClick = new XianluPoupWindow.ItemInclick() {
+        @Override
+        public void ItemClick(int index) {
+            xlWindow.dismiss();
+            pointLatLngs = new ArrayList<>();
+            for (PointsEntity pointsEntity : mPointsEntityList.get(index)) {
+                pointLatLngs.add(new LatLng(pointsEntity.getLocation().getLatitude(), pointsEntity.getLocation().getLongitude()));
+            }
+            for (int i = 0; i < pointLatLngs.size(); i++) {
+                setOverLay(i);
+            }
+            if (polyline != null)
+                polyline.remove();
+            polyline = aMap.addPolyline(new PolylineOptions().
+                        addAll(pointLatLngs).width(14).color(0xAA0000FF));
+            aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mPointsEntityList.get(index).get(0).getLocation().getLatitude(),
+                    mPointsEntityList.get(index).get(0).getLocation().getLongitude()), mCurrentZoom));
+        }
+    };
 
     private void setLuxianPng(boolean isShowLuxian) {
         Drawable drawable = null;
@@ -476,9 +505,9 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     }
 
     public void showPermission() {
-        Log.d("dddd", "showPermission PERMISSION_DENIED: "+PackageManager.PERMISSION_DENIED
-                +",ACCESS_COARSE_LOCATION:"+ Manifest.permission.ACCESS_COARSE_LOCATION
-                +",PERMISSION_GRANTED:"+ PackageManager.PERMISSION_GRANTED);
+        Log.d("dddd", "showPermission PERMISSION_DENIED: " + PackageManager.PERMISSION_DENIED
+                + ",ACCESS_COARSE_LOCATION:" + Manifest.permission.ACCESS_COARSE_LOCATION
+                + ",PERMISSION_GRANTED:" + PackageManager.PERMISSION_GRANTED);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED
                 || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -707,7 +736,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             Log.d("dddd", "onPointClick: " + pointItem.getCustomerId() + ",getPointId:" + mPointsEntity.getPointId() + "，mp3:" + mPointsEntity.getMp3());
             EventBus.getDefault().post(new PlayEvent(mPointsEntity.getMp3(), true));
             tour_name.setText(mPointsEntity.getName());
-            if(startLatlng!=null){
+            if (startLatlng != null) {
                 String distance = String.valueOf(AMapUtils.calculateLineDistance(startLatlng, new LatLng(mPointsEntity.getLocation().getLatitude(), mPointsEntity.getLocation().getLongitude()))) + "M";
                 mjuli.setText((int) (Double.parseDouble(distance)) +"M");
                 NotificationCenter.defaultCenter().publish(new DistanceEvent(distance));

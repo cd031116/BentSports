@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/xianlu_layout"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#f0f0f0" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="158px"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/xianlu_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="42px"
+            android:text="1、石燕湖线路"
+            android:textColor="#666666"
+            android:textSize="43px" />
+
+
+        <TextView
+            android:id="@+id/xianlu_jd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:paddingRight="42px"
+            android:text="个景点"
+            android:textColor="#999999"
+            android:textSize="42px" />
+
+        <TextView
+            android:id="@+id/xianlu_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/xianlu_jd"
+            android:text="12"
+            android:textColor="#fd7d6f"
+            android:textSize="43px" />
+    </RelativeLayout>
+</LinearLayout>
