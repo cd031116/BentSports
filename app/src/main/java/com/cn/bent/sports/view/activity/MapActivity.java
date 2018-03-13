@@ -320,11 +320,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                         }
 
                         for (int i = 0; i < pointLatLngs.size(); i++) {
-                            MarkerOptions markerOption = new MarkerOptions();
-                            markerOption.position(new LatLng(pointLatLngs.get(i).latitude, pointLatLngs.get(i).longitude));
-                            markerOption.draggable(false);
-                            markerOption.icon(BitmapManager.getInstance().getBitmapDescriptor(i + 1));
-                            aMap.addMarker(markerOption);
+                            setOverLay(i);
                         }
                     }
 
@@ -379,6 +375,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                 gotoNearPlace();
                 break;
             case R.id.dingwei:
+                Log.d("dddd", "onCLick: "+startLatlng.latitude);
                 if (startLatlng == null)
                     if (Build.VERSION.SDK_INT >= 23)
                         showPermission();
@@ -477,6 +474,9 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     }
 
     public void showPermission() {
+        Log.d("dddd", "showPermission PERMISSION_DENIED: "+PackageManager.PERMISSION_DENIED
+                +",ACCESS_COARSE_LOCATION:"+ Manifest.permission.ACCESS_COARSE_LOCATION
+                +",PERMISSION_GRANTED:"+ PackageManager.PERMISSION_GRANTED);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED
                 || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
