@@ -161,13 +161,18 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             aMap = mMapView.getMap();
         }
         aMap.showMapText(false);//关闭文字
-//        aMap.showBuildings(false);//关闭3d楼块
         aMap.getUiSettings().setZoomControlsEnabled(false);//去掉高德地图右下角隐藏的缩放按钮
         aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lp.getLatitude(), lp.getLongitude()), 17));
         // 绑定海量点点击事件
         aMap.setOnMultiPointClickListener(multiPointClickListener);
+        aMap.setOnCameraChangeListener(onCameraChangeListener);
         stepCheckBox.setOnCheckedChangeListener(stepCheckedChangeListener);
         yyCheckBox.setOnCheckedChangeListener(yyCheckedChangeListener);
+        if (Build.VERSION.SDK_INT >= 23) {
+            showPermission();
+        } else {
+            openGPSSettings();//定位方法
+        }
         setupService();
         Intent intent = new Intent(this, MusicService.class);
         startService(intent);
@@ -364,17 +369,15 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                 break;
             case R.id.fujin:
                 gotoNearPlace();
-
                 break;
             case R.id.dingwei:
-                if (isShowLuxian)
-                    if (Build.VERSION.SDK_INT >= 23) {
+                if (startLatlng == null)
+                    if (Build.VERSION.SDK_INT >= 23)
                         showPermission();
-                    } else {
+                    else
                         openGPSSettings();//定位方法
-                    }
                 else
-                    aMap.setMyLocationEnabled(false);
+                    aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startLatlng, mCurrentZoom));
                 break;
             case R.id.luxian:
                 setLuxianPng(isShowLuxian);
@@ -385,7 +388,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                             addAll(pointLatLngs).width(14).color(0xAA0000FF));
                     isShowLuxian = false;
                 } else {
-                    polyline=null;
+                    polyline = null;
                     isShowLuxian = true;
                 }
                 break;
@@ -421,13 +424,12 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     private void setLuxianPng(boolean isShowLuxian) {
         Drawable drawable = null;
         if (isShowLuxian)
-            drawable = getResources().getDrawable(R.drawable.luxian_1);
-        else
             drawable = getResources().getDrawable(R.drawable.close_line);
+        else
+            drawable = getResources().getDrawable(R.drawable.luxian_1);
         drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());//这句一定要加
         luxian.setCompoundDrawables(null, drawable, null, null);//setCompoundDrawables用来设置图片显示在文本的哪一端
     }
-
 
     /**
      * 检测GPS是否打开
@@ -449,19 +451,9 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         if (checkGPSIsOpen()) {
             startLocation(); //自己写的定位方法
         } else {
-            //没有打开则弹出对话框
             new AlertDialog.Builder(this)
                     .setTitle(R.string.notifyTitle)
                     .setMessage(R.string.gpsNotifyMsg)
-                    // 拒绝, 退出应用
-                    .setNegativeButton(R.string.cancel,
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    finish();
-                                }
-                            })
-
                     .setPositiveButton(R.string.setting,
                             new DialogInterface.OnClickListener() {
                                 @Override
@@ -473,27 +465,20 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                             })
                     .setCancelable(false)
                     .show();
-
         }
     }
 
     public void showPermission() {
-        Log.d("dddd", "showPermission: " + ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                + ",ACCESS_FINE_LOCATION:" + ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                + ",READ_PHONE_STATE:" + ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
-                + ",PERMISSION_GRANTED:" + PackageManager.PERMISSION_GRANTED);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED
                 || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED
                 || ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
                 != PackageManager.PERMISSION_GRANTED) {
-            Log.d("dddd", "showPermission 没有权限,请手动开启定位权限: ");
             Toast.makeText(this, "没有权限,请手动开启定位权限", Toast.LENGTH_SHORT).show();
             // 申请一个（或多个）权限，并提供用于回调返回的获取码（用户定义）
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_PHONE_STATE}, READ_PHONE_STATE);
         } else {
-            Log.d("dddd", "showPermission openGPSSettings: ");
             openGPSSettings();
         }
     }
@@ -504,24 +489,12 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         MyLocationStyle myLocationStyle = new MyLocationStyle();
         myLocationStyle.interval(2 * 1000);
         myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE_NO_CENTER);
-//        myLocationStyle.strokeWidth(1.0f);
         myLocationStyle.myLocationIcon(BitmapDescriptorFactory
                 .fromResource(R.drawable.dangqwz));
         myLocationStyle.strokeColor(Color.parseColor("#F9DEDE"));// 设置圆形的边框颜色
         myLocationStyle.radiusFillColor(Color.argb(100, 249, 222, 222));//
         aMap.setMyLocationStyle(myLocationStyle);
         aMap.setOnMyLocationChangeListener(this);
-        aMap.setOnCameraChangeListener(new AMap.OnCameraChangeListener() {
-            @Override
-            public void onCameraChange(CameraPosition cameraPosition) {
-
-            }
-
-            @Override
-            public void onCameraChangeFinish(CameraPosition cameraPosition) {
-                mCurrentZoom = cameraPosition.zoom;//获取手指缩放地图后的值
-            }
-        });
     }
 
     //前往筛选点
@@ -548,10 +521,10 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
 
     //根据下表筛选marker点
     private void chooseAroundPlace(int index) {
+        aMap.clear();
         switch (index) {
             case 1:
                 //TODO 全部
-                aMap.clear();
                 for (int i = 0; i < mPointsList.size(); i++) {
                     setOverLay(i);
                 }
@@ -581,7 +554,6 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     }
 
     private void setOverLay(int index) {
-//        aMap.clear();
         MultiPointOverlayOptions overlayOptions = new MultiPointOverlayOptions();
         BitmapDescriptor bitmapDescriptor = BitmapManager.getInstance().getBitmapDescriptor(index);
         overlayOptions.icon(bitmapDescriptor);//设置图标
@@ -652,9 +624,9 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     public void onMyLocationChange(Location location) {
         if (location != null) {
             startLatlng = new LatLng(location.getLatitude(), location.getLongitude());
-            startLatlng=new LatLng(location.getLatitude(), location.getLongitude());
-            if(mPointsEntity!=null){
-                String distance = String.valueOf(AMapUtils.calculateLineDistance(startLatlng, new LatLng(mPointsEntity.getLocation().getLatitude(),mPointsEntity.getLocation().getLongitude())))+"M";
+            startLatlng = new LatLng(location.getLatitude(), location.getLongitude());
+            if (mPointsEntity != null) {
+                String distance = String.valueOf(AMapUtils.calculateLineDistance(startLatlng, new LatLng(mPointsEntity.getLocation().getLatitude(), mPointsEntity.getLocation().getLongitude()))) + "M";
                 mjuli.setText(distance);
                 NotificationCenter.defaultCenter().publish(new DistanceEvent(distance));
             }
@@ -711,11 +683,6 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
 //        }
         points.add(ll);
         last = ll;
-        //有5个连续的点之间的距离小于10，认为gps已稳定，以最新的点为起始点
-//        if (points.size() >= 5) {
-//            points.clear();
-//            return ll;
-//        }
         return ll;
     }
 
@@ -731,6 +698,17 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             Log.d("dddd", "onPointClick: " + pointItem.getCustomerId() + ",getPointId:" + mPointsEntity.getPointId() + "，mp3:" + mPointsEntity.getMp3());
             EventBus.getDefault().post(new PlayEvent(mPointsEntity.getMp3(), true));
             return false;
+        }
+    };
+    AMap.OnCameraChangeListener onCameraChangeListener = new AMap.OnCameraChangeListener() {
+        @Override
+        public void onCameraChange(CameraPosition cameraPosition) {
+
+        }
+
+        @Override
+        public void onCameraChangeFinish(CameraPosition cameraPosition) {
+            mCurrentZoom = cameraPosition.zoom;//获取手指缩放地图后的值
         }
     };
 
@@ -919,7 +897,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                     if (confirm) {
                         dialog.dismiss();
                         EventBus.getDefault().post(new PlayEvent(clickpath, true));
-                        mPointsEntity=mPointsList.get(positon);
+                        mPointsEntity = mPointsList.get(positon);
                         tour_name.setText(mPointsEntity.getName());
                     } else {
                         dialog.dismiss();
@@ -930,7 +908,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
 
         } else {
             EventBus.getDefault().post(new PlayEvent(clickpath, false));
-            mPointsEntity=mPointsList.get(positon);
+            mPointsEntity = mPointsList.get(positon);
             tour_name.setText(mPointsEntity.getName());
         }
     }
@@ -977,7 +955,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             ExitFunction();
             return true;
-        }else {
+        } else {
             return super.onKeyDown(keyCode, event);
         }
     }
