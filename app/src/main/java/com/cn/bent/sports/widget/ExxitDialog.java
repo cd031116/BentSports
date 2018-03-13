@@ -81,7 +81,7 @@ public class ExxitDialog extends Dialog implements View.OnClickListener{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.game_dialog);
+        setContentView(R.layout.exit_dialog_item);
         View rootView = findViewById(android.R.id.content);
         SupportMultipleScreensUtil.init(mContext);
         SupportMultipleScreensUtil.scale(rootView);
