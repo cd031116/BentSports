@@ -16,6 +16,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
@@ -50,6 +51,7 @@ import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.maps.model.Polyline;
 import com.amap.api.maps.model.PolylineOptions;
 import com.amap.api.services.core.LatLonPoint;
+import com.cn.bent.sports.MainActivity;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
@@ -634,7 +636,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             startLatlng = new LatLng(location.getLatitude(), location.getLongitude());
             if (mPointsEntity != null) {
                 String distance = String.valueOf(AMapUtils.calculateLineDistance(startLatlng, new LatLng(mPointsEntity.getLocation().getLatitude(), mPointsEntity.getLocation().getLongitude()))) + "M";
-                mjuli.setText(Integer.parseInt(distance)+"");
+                mjuli.setText((int) (Double.parseDouble(distance)) +"M");
                 NotificationCenter.defaultCenter().publish(new DistanceEvent(distance));
             }
 
@@ -707,7 +709,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             tour_name.setText(mPointsEntity.getName());
             if(startLatlng!=null){
                 String distance = String.valueOf(AMapUtils.calculateLineDistance(startLatlng, new LatLng(mPointsEntity.getLocation().getLatitude(), mPointsEntity.getLocation().getLongitude()))) + "M";
-                mjuli.setText(Integer.parseInt(distance)+"");
+                mjuli.setText((int) (Double.parseDouble(distance)) +"M");
                 NotificationCenter.defaultCenter().publish(new DistanceEvent(distance));
             }
             return false;
@@ -735,7 +737,6 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         EventBus.getDefault().unregister(this);
         unbindService(serviceConnection);
         NotificationCenter.defaultCenter().unsubscribe(ShowPoupEvent.class, disevent);
@@ -749,6 +750,10 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         mMapView.getMap().clear();
         mMapView.onDestroy();
         mMapView = null;
+        if(mopupWindow!=null&&mopupWindow.isShowing()){
+            mopupWindow.dismiss();
+        }
+        super.onDestroy();
     }
 
     @Override
@@ -800,7 +805,12 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     ShowSubscriber disevent = new ShowSubscriber() {
         @Override
         public void onEvent(ShowPoupEvent event) {
-            shouPoup();
+             new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    shouPoup();
+                }
+            }, 50);
         }
     };
 
@@ -990,12 +1000,17 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
 
 
     @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            ExitFunction();
-            return true;
-        } else {
-            return super.onKeyDown(keyCode, event);
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_BACK) {
+            if(mopupWindow!=null&&mopupWindow.isShowing()){
+                mopupWindow.dismiss();
+                Log.i("gggg","mopupWindow");
+                return false;
+            }else {
+                ExitFunction();
+                return true;
+            }
         }
+        return super.onKeyDown(keyCode, event);
     }
 }

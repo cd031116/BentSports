@@ -208,6 +208,7 @@ public class BottomPlayActivity extends BaseActivity {
 
                 break;
             case R.id.travel_name:
+                this.finish();
                 NotificationCenter.defaultCenter().publish(new ShowPoupEvent());
                 break;
         }
@@ -234,7 +235,7 @@ public class BottomPlayActivity extends BaseActivity {
     DistanceSubscriber disevent = new DistanceSubscriber() {
         @Override
         public void onEvent(DistanceEvent event) {
-            distance.setText(Integer.parseInt(event.getDistance())+"");
+            distance.setText((int) (Double.parseDouble(event.getDistance())) +"M");
         }
     };
 
