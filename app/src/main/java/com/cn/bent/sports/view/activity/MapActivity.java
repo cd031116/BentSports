@@ -634,7 +634,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             startLatlng = new LatLng(location.getLatitude(), location.getLongitude());
             if (mPointsEntity != null) {
                 String distance = String.valueOf(AMapUtils.calculateLineDistance(startLatlng, new LatLng(mPointsEntity.getLocation().getLatitude(), mPointsEntity.getLocation().getLongitude()))) + "M";
-                mjuli.setText(distance);
+                mjuli.setText(Integer.parseInt(distance)+"");
                 NotificationCenter.defaultCenter().publish(new DistanceEvent(distance));
             }
 
@@ -704,6 +704,12 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             mPointsEntity = (PointsEntity) pointItem.getObject();
             Log.d("dddd", "onPointClick: " + pointItem.getCustomerId() + ",getPointId:" + mPointsEntity.getPointId() + "，mp3:" + mPointsEntity.getMp3());
             EventBus.getDefault().post(new PlayEvent(mPointsEntity.getMp3(), true));
+            tour_name.setText(mPointsEntity.getName());
+            if(startLatlng!=null){
+                String distance = String.valueOf(AMapUtils.calculateLineDistance(startLatlng, new LatLng(mPointsEntity.getLocation().getLatitude(), mPointsEntity.getLocation().getLongitude()))) + "M";
+                mjuli.setText(Integer.parseInt(distance)+"");
+                NotificationCenter.defaultCenter().publish(new DistanceEvent(distance));
+            }
             return false;
         }
     };

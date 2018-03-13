@@ -188,6 +188,9 @@ public class BottomPlayActivity extends BaseActivity {
                 if(pEnty==null){
                     ToastUtils.showShortToast(BottomPlayActivity.this,"请选择目的地");
                 }else {
+                    if(mycontrol!=null&&mycontrol.isPlay()){
+                        mycontrol.pause();
+                    }
                     Intent intent=new Intent(this, WalkNaviActivity.class);
                     intent.putExtra("enty",pEnty);
                     intent.putExtra("startLatlng",mlatlng);
@@ -231,7 +234,7 @@ public class BottomPlayActivity extends BaseActivity {
     DistanceSubscriber disevent = new DistanceSubscriber() {
         @Override
         public void onEvent(DistanceEvent event) {
-            distance.setText(event.getDistance());
+            distance.setText(Integer.parseInt(event.getDistance())+"");
         }
     };
 
