@@ -134,6 +134,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     CheckBox yyCheckBox;
     @Bind(R.id.tour_list)
     RecyclerView tour_list;
+
     private boolean isFirstLoc = true; // 是否首次定位
     private boolean isShowRec = true; // 是否显示列表
     private boolean isShowLuxian = true; // 是否显示路线
@@ -149,6 +150,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     private Map<Integer, PointsEntity> mPointsEntityMap = new HashMap<>();
     private Map<Integer, Marker> mMarkerMap = new HashMap<>();
     private List<List<PointsEntity>> mPointsEntityList = new ArrayList<List<PointsEntity>>();
+    private int chooseItem = 10000;
     ServiceConnection serviceConnection;
     MusicService.MusicController mycontrol;
     private boolean isBind = false;
@@ -474,7 +476,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                 polyline.remove();
             polyline = aMap.addPolyline(new PolylineOptions().
                     addAll(pointLatLngs).width(14).color(0xAA0000FF));
-
+            chooseItem = index;
 
             mAdapter = new CommonAdapter<PointsEntity>(MapActivity.this, R.layout.tour_line_item, mPointsEntityList.get(index)) {
                 @Override
@@ -501,8 +503,6 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                         holder.getView(R.id.tour_num).setBackground(MapActivity.this.getResources().getDrawable(R.drawable.tour_choose_item_bg));
                         ((TextView) holder.getView(R.id.tour_name)).setTextColor(MapActivity.this.getResources().getColor(R.color.color_fd7d6f));
                     } else {
-                        mMarkerMap.get(Integer.parseInt(pointsEntity.getPointId())).remove();
-                        setMarkerLay(pointsEntity.getType());
                         holder.getView(R.id.tour_num).setBackground(MapActivity.this.getResources().getDrawable(R.drawable.tour_item_bg));
                         TextView textView = (TextView) holder.getView(R.id.tour_name);
                         textView.setTextColor(MapActivity.this.getResources().getColor(R.color.color_666666));
@@ -671,7 +671,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         // 将Marker设置为贴地显示，可以双指下拉地图查看效果
         markerOption.setFlat(true);//设置marker平贴地图效果
         Marker marker = aMap.addMarker(markerOption);
-        mMarkerMap.put(Integer.parseInt(pointsEntity.getPointId()),marker);
+        mMarkerMap.put(Integer.parseInt(pointsEntity.getPointId()), marker);
 
     }
 
@@ -795,6 +795,17 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
 
             Log.d("dddd", "onPointClick: " + marker.getTitle() + ",getPointId:" + mPointsEntity.getPointId() + "，mp3:" + mPointsEntity.getMp3());
             playMarkerAudio(mPointsEntity);
+            if (chooseItem != 10000) {
+                List<PointsEntity> pointsEntities = mPointsEntityList.get(chooseItem);
+                for (int i = 0; i < pointsEntities.size(); i++) {
+                    mPointsEntityList.get(chooseItem).get(i).setShow(false);
+                    if (mPointsEntity.getPointId().equals(pointsEntities.get(i).getPointId())) {
+                        mPointsEntityList.get(chooseItem).get(i).setShow(true);
+                        tour_list.smoothScrollToPosition(i);
+                    }
+                }
+                mAdapter.notifyDataSetChanged();
+            }
             return true;
         }
     };
@@ -812,15 +823,15 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     private void addAnimMarker(PointsEntity pointsEntity) {
         for (Integer integer : mMarkerMap.keySet()) {
             mMarkerMap.get(integer).remove();
-            setMarkerLay(mPointsEntityMap.get(integer).getType());
+            setOverLay(mPointsEntityMap.get(integer).getType(), mPointsEntityMap.get(integer));
         }
         mMarkerMap.get(Integer.parseInt(pointsEntity.getPointId())).remove();
         MarkerOptions markerOption = new MarkerOptions();
         markerOption.position(new LatLng(pointsEntity.getLocation().getLatitude(), pointsEntity.getLocation().getLongitude()))
                 .icons(BitmapManager.getInstance().getBitmapDescriptorOverlay())
                 .title(pointsEntity.getPointId() + "");
-        Marker marker1= aMap.addMarker(markerOption);
-        mMarkerMap.put(Integer.parseInt(pointsEntity.getPointId()),marker1);
+        Marker marker1 = aMap.addMarker(markerOption);
+        mMarkerMap.put(Integer.parseInt(pointsEntity.getPointId()), marker1);
     }
 
     AMap.OnCameraChangeListener onCameraChangeListener = new AMap.OnCameraChangeListener() {
@@ -996,7 +1007,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
              */
             @Override
             public void onRangeBeacons(List<MinewBeacon> minewBeacons) {
-                if (minewBeacons != null && minewBeacons.size() > 0&&yyCheckBox.isChecked()) {
+                if (minewBeacons != null && minewBeacons.size() > 0 && yyCheckBox.isChecked()) {
 //                    String distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
                     for (MinewBeacon beacon : minewBeacons) {
                         String majer = beacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Major).getStringValue() + beacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
