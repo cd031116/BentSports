@@ -98,7 +98,7 @@ public class MusicService extends Service {
         if (mPlayer == null) {
             mPlayer = new MediaPlayer();
         }
-        if (mPlayer.isPlaying() && qiehuan) {
+        if (qiehuan) {
             mPlayer.stop();
             mPlayer.reset();
         }

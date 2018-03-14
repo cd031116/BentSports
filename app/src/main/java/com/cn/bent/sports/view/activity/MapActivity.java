@@ -190,7 +190,6 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                 @Override
                 public void onServiceConnected(ComponentName name, IBinder service) {
                     mycontrol = (MusicService.MusicController) service;
-                    Log.i("dddd", "mycontrol");
                     checkPause();
                     //设置进度条的最大长度
                     //连接之后启动子线程设置当前进度
@@ -231,12 +230,10 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             StepService stepService = ((StepService.StepBinder) service).getService();
             //设置初始化数据
             waik_num.setText(stepService.getStepCount() + "");
-            Log.d("StepService", "stepService=");
             //设置步数监听回调
             stepService.registerCallback(new UpdateUiCallBack() {
                 @Override
                 public void updateUi(int stepCount) {
-                    Log.d("StepService", "stepCount=" + stepCount);
                     waik_num.setText(stepCount + "");
                 }
             });
@@ -250,7 +247,6 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
          */
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            Log.d("StepService", "ComponentName=");
         }
     };
 
@@ -857,6 +853,8 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             mopupWindow.dismiss();
             mPointsEntity = mPointsList.get(index);
             aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mPointsEntity.getLocation().getLatitude(), mPointsEntity.getLocation().getLongitude()), mCurrentZoom));
+            EventBus.getDefault().post(new PlayEvent(mPointsEntity.getMp3(), true));
+            tour_name.setText(mPointsEntity.getName());
         }
     };
 
@@ -917,7 +915,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
              */
             @Override
             public void onRangeBeacons(List<MinewBeacon> minewBeacons) {
-                if (minewBeacons != null && minewBeacons.size() > 0) {
+                if (minewBeacons != null && minewBeacons.size() > 0&&yyCheckBox.isChecked()) {
 //                    String distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
                     for (MinewBeacon beacon : minewBeacons) {
                         String majer = beacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Major).getStringValue() + beacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
@@ -988,7 +986,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             mDialog.setPositiveButton("切换").show();
 
         } else {
-            EventBus.getDefault().post(new PlayEvent(clickpath, false));
+            EventBus.getDefault().post(new PlayEvent(clickpath, true));
             QueueManager.clear();
             mPointsEntity = mPointsList.get(positon);
             tour_name.setText(mPointsEntity.getName());

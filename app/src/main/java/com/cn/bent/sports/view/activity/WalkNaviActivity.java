@@ -86,6 +86,8 @@ public class WalkNaviActivity extends AppCompatActivity implements AMapNaviListe
     protected void onDestroy() {
         super.onDestroy();
         mAMapNaviView.onDestroy();
+        mAMapNavi.pauseNavi();
+        mAMapNavi.destroy();
     }
     @Override
     public void onInitNaviFailure() {
