@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:drawable="@drawable/tour_play1"
+        android:duration="100" />
+    <item
+        android:drawable="@drawable/tour_play2"
+        android:duration="100" />
+    <item
+        android:drawable="@drawable/tour_play3"
+        android:duration="100" />
+    <item
+        android:drawable="@drawable/tour_play4"
+        android:duration="100" />
+    <item
+        android:drawable="@drawable/tour_play5"
+        android:duration="100" />
+</animation-list>

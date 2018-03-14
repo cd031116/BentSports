@@ -55,12 +55,6 @@ public class XianluPoupWindow extends PopupWindow {
                         itemsOnClick.ItemClick(position);
                     }
                 });
-//                holder.setOnClickListener(R.id.main_top, new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        itemsOnClick.ItemClick(position);
-//                    }
-//                });
             }
         };
         r_list.setLayoutManager(new LinearLayoutManager(mContext));

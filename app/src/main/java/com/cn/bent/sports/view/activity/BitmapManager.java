@@ -1,11 +1,14 @@
 package com.cn.bent.sports.view.activity;
 
 import android.content.Context;
+import android.graphics.drawable.AnimationDrawable;
 import android.location.LocationManager;
 
 import com.amap.api.maps.model.BitmapDescriptor;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.cn.bent.sports.R;
+
+import java.util.ArrayList;
 
 /**
  * Created by dawn on 2018/3/10.
@@ -15,7 +18,7 @@ public class BitmapManager {
 
     private static BitmapManager instance = null;
 
-    private BitmapManager(){
+    private BitmapManager() {
     }
 
     public static BitmapManager getInstance() {
@@ -30,6 +33,7 @@ public class BitmapManager {
 
     /**
      * marker点图标
+     *
      * @param index
      * @return
      */
@@ -74,6 +78,16 @@ public class BitmapManager {
                 break;
         }
         return bitmapDescriptor;
+    }
+
+    public ArrayList<BitmapDescriptor> getBitmapDescriptorOverlay() {
+        ArrayList<BitmapDescriptor> iconList = new ArrayList<>();
+        iconList.add(BitmapDescriptorFactory.fromResource(R.drawable.tour_play1));
+        iconList.add(BitmapDescriptorFactory.fromResource(R.drawable.tour_play2));
+        iconList.add(BitmapDescriptorFactory.fromResource(R.drawable.tour_play3));
+        iconList.add(BitmapDescriptorFactory.fromResource(R.drawable.tour_play4));
+        iconList.add(BitmapDescriptorFactory.fromResource(R.drawable.tour_play5));
+        return iconList;
     }
 
 }

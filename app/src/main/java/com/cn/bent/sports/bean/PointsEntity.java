@@ -28,6 +28,15 @@ public class PointsEntity implements Serializable{
     private String iconUrl;
     private String pointImg;
     private List<IBeaconsBean> iBeacons;
+    private boolean isShow;
+
+    public boolean isShow() {
+        return isShow;
+    }
+
+    public void setShow(boolean show) {
+        isShow = show;
+    }
 
     public String getPointId() {
         return pointId;

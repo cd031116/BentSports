@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
@@ -21,6 +22,8 @@ import android.os.IBinder;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -43,12 +46,15 @@ import com.amap.api.maps.model.BitmapDescriptor;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.Marker;
+import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MultiPointItem;
 import com.amap.api.maps.model.MultiPointOverlay;
 import com.amap.api.maps.model.MultiPointOverlayOptions;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.maps.model.Polyline;
 import com.amap.api.maps.model.PolylineOptions;
+import com.amap.api.maps.model.Tile;
 import com.amap.api.services.core.LatLonPoint;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
@@ -64,6 +70,9 @@ import com.cn.bent.sports.database.QueueManager;
 import com.cn.bent.sports.evevt.DistanceEvent;
 import com.cn.bent.sports.evevt.ShowPoupEvent;
 import com.cn.bent.sports.evevt.ShowSubscriber;
+import com.cn.bent.sports.recyclebase.CommonAdapter;
+import com.cn.bent.sports.recyclebase.ViewHolder;
+import com.cn.bent.sports.scan.CaptureActivity;
 import com.cn.bent.sports.sensor.UpdateUiCallBack;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.DataUtils;
@@ -91,7 +100,9 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -121,6 +132,8 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     CheckBox stepCheckBox;
     @Bind(R.id.yuyin_bf)
     CheckBox yyCheckBox;
+    @Bind(R.id.tour_list)
+    RecyclerView tour_list;
     private boolean isFirstLoc = true; // 是否首次定位
     private boolean isShowRec = true; // 是否显示列表
     private boolean isShowLuxian = true; // 是否显示路线
@@ -132,6 +145,9 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     private AMap aMap;
     private LatLonPoint lp = new LatLonPoint(28.008977, 113.088063);//
     private List<PointsEntity> mPointsList = new ArrayList<PointsEntity>();
+
+    private Map<Integer, PointsEntity> mPointsEntityMap = new HashMap<>();
+    private Map<Integer, Marker> mMarkerMap = new HashMap<>();
     private List<List<PointsEntity>> mPointsEntityList = new ArrayList<List<PointsEntity>>();
     ServiceConnection serviceConnection;
     MusicService.MusicController mycontrol;
@@ -148,6 +164,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     private List<LatLng> pointLatLngs = new ArrayList<LatLng>();//位置点集合
     private LineListPoupWindow mopupWindow;
     private XianluPoupWindow xlWindow;
+    private CommonAdapter<PointsEntity> mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,7 +190,8 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         aMap.getUiSettings().setZoomControlsEnabled(false);//去掉高德地图右下角隐藏的缩放按钮
         aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lp.getLatitude(), lp.getLongitude()), 17));
         // 绑定海量点点击事件
-        aMap.setOnMultiPointClickListener(multiPointClickListener);
+//        aMap.setOnMultiPointClickListener(multiPointClickListener);
+        aMap.setOnMarkerClickListener(mMarkerClickListener);
         aMap.setOnCameraChangeListener(onCameraChangeListener);
         stepCheckBox.setOnCheckedChangeListener(stepCheckedChangeListener);
         yyCheckBox.setOnCheckedChangeListener(yyCheckedChangeListener);
@@ -316,15 +334,18 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                             locationBean.setLatitude(Double.parseDouble(info.getMp3_tag().get(i).getLatitude()));
                             locationBean.setLongitude(Double.parseDouble(info.getMp3_tag().get(i).getLongitude()));
                             pointsEntity.setLocation(locationBean);
+                            pointsEntity.setName(info.getMp3_tag().get(i).getName());
                             pointsEntity.setMp3(info.getMp3_tag().get(i).getMp3());
                             mPointsList.add(pointsEntity);
+                            mPointsEntityMap.put(Integer.parseInt(info.getMp3_tag().get(i).getPlace_id()), pointsEntity);
                             LatLng latLng = new LatLng(Double.parseDouble(info.getMp3_tag().get(i).getLatitude()), Double.parseDouble(info.getMp3_tag().get(i).getLongitude()));
                             pointLatLngs.add(latLng);
                         }
                         mPointsEntityList.add(mPointsList);
                         mPointsEntityList.add(mPointsList);
-                        for (int i = 0; i < pointLatLngs.size(); i++) {
-                            setOverLay(i);
+
+                        for (Integer index : mPointsEntityMap.keySet()) {
+                            setOverLay(mPointsEntityMap.get(index).getType(), mPointsEntityMap.get(index));
                         }
                     }
 
@@ -394,9 +415,11 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                     polyline.remove();
                 if (isShowLuxian) {
                     shouLuxianPoup();
+                    tour_list.setVisibility(View.VISIBLE);
                     isShowLuxian = false;
                 } else {
                     polyline = null;
+                    tour_list.setVisibility(View.GONE);
                     isShowLuxian = true;
                 }
                 break;
@@ -437,19 +460,59 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
 
     private XianluPoupWindow.ItemInclick luxianItemsOnClick = new XianluPoupWindow.ItemInclick() {
         @Override
-        public void ItemClick(int index) {
+        public void ItemClick(final int index) {
             xlWindow.dismiss();
             pointLatLngs = new ArrayList<>();
             for (PointsEntity pointsEntity : mPointsEntityList.get(index)) {
                 pointLatLngs.add(new LatLng(pointsEntity.getLocation().getLatitude(), pointsEntity.getLocation().getLongitude()));
             }
+            aMap.clear();
             for (int i = 0; i < pointLatLngs.size(); i++) {
-                setOverLay(i);
+                setMarkerLay(mPointsEntityList.get(index).get(i).getType());
             }
             if (polyline != null)
                 polyline.remove();
             polyline = aMap.addPolyline(new PolylineOptions().
-                        addAll(pointLatLngs).width(14).color(0xAA0000FF));
+                    addAll(pointLatLngs).width(14).color(0xAA0000FF));
+
+
+            mAdapter = new CommonAdapter<PointsEntity>(MapActivity.this, R.layout.tour_line_item, mPointsEntityList.get(index)) {
+                @Override
+                protected void convert(final ViewHolder holder, final PointsEntity pointsEntity, final int position) {
+                    holder.setText(R.id.tour_num, (position + 1) + "");
+                    holder.setText(R.id.tour_name, pointsEntity.getName());
+
+                    holder.getConvertView().setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            mPointsEntity = pointsEntity;
+                            for (PointsEntity entity : mPointsEntityList.get(index)) {
+                                entity.setShow(false);
+                            }
+                            pointsEntity.setShow(true);
+                            aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(pointsEntity.getLocation().getLatitude(),
+                                    pointsEntity.getLocation().getLongitude()), mCurrentZoom));
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    });
+                    if (pointsEntity.isShow()) {
+                        addAnimMarker(pointsEntity);
+                        playMarkerAudio(pointsEntity);
+                        holder.getView(R.id.tour_num).setBackground(MapActivity.this.getResources().getDrawable(R.drawable.tour_choose_item_bg));
+                        ((TextView) holder.getView(R.id.tour_name)).setTextColor(MapActivity.this.getResources().getColor(R.color.color_fd7d6f));
+                    } else {
+                        mMarkerMap.get(Integer.parseInt(pointsEntity.getPointId())).remove();
+                        setMarkerLay(pointsEntity.getType());
+                        holder.getView(R.id.tour_num).setBackground(MapActivity.this.getResources().getDrawable(R.drawable.tour_item_bg));
+                        TextView textView = (TextView) holder.getView(R.id.tour_name);
+                        textView.setTextColor(MapActivity.this.getResources().getColor(R.color.color_666666));
+                    }
+                }
+            };
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MapActivity.this);
+            linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+            tour_list.setLayoutManager(linearLayoutManager);
+            tour_list.setAdapter(mAdapter);
             aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mPointsEntityList.get(index).get(0).getLocation().getLatitude(),
                     mPointsEntityList.get(index).get(0).getLocation().getLongitude()), mCurrentZoom));
         }
@@ -558,54 +621,58 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
 
     //根据下表筛选marker点
     private void chooseAroundPlace(int index) {
+
         aMap.clear();
         switch (index) {
             case 1:
                 //TODO 全部
-                for (int i = 0; i < mPointsList.size(); i++) {
-                    setOverLay(i);
+                for (Integer i : mPointsEntityMap.keySet()) {
+                    setOverLay(mPointsEntityMap.get(i).getType(), mPointsEntityMap.get(i));
                 }
                 break;
             case 2:
-                setOverLay(2);
+                setMarkerLay(2);
                 break;
             case 3:
-                setOverLay(3);
+                setMarkerLay(3);
                 break;
             case 4:
-                setOverLay(4);
+                setMarkerLay(4);
                 break;
             case 5:
-                setOverLay(5);
+                setMarkerLay(5);
                 break;
             case 6:
-                setOverLay(6);
+                setMarkerLay(6);
                 break;
             case 7:
-                setOverLay(7);
+                setMarkerLay(7);
                 break;
             case 8:
-                setOverLay(8);
+                setMarkerLay(8);
                 break;
         }
     }
 
-    private void setOverLay(int index) {
-        MultiPointOverlayOptions overlayOptions = new MultiPointOverlayOptions();
-        BitmapDescriptor bitmapDescriptor = BitmapManager.getInstance().getBitmapDescriptor(index);
-        overlayOptions.icon(bitmapDescriptor);//设置图标
-        MultiPointOverlay multiPointOverlay = aMap.addMultiPointOverlay(overlayOptions);
-        List<MultiPointItem> multiPointItemList = new ArrayList<MultiPointItem>();
-        for (PointsEntity pointsEntity : mPointsList) {
-            if (pointsEntity.getType() == index) {
-                LatLng latLng = new LatLng(pointsEntity.getLocation().getLatitude(), pointsEntity.getLocation().getLongitude());
-                MultiPointItem multiPointItem = new MultiPointItem(latLng);
-                multiPointItem.setCustomerId(pointsEntity.getPointId());
-                multiPointItem.setObject(pointsEntity);
-                multiPointItemList.add(multiPointItem);
-            }
+    private void setMarkerLay(int index) {
+        for (Integer i : mPointsEntityMap.keySet()) {
+            if (index == mPointsEntityMap.get(i).getType())
+                setOverLay(mPointsEntityMap.get(i).getType(), mPointsEntityMap.get(i));
         }
-        multiPointOverlay.setItems(multiPointItemList);
+    }
+
+    private void setOverLay(int index, PointsEntity pointsEntity) {
+
+        MarkerOptions markerOption = new MarkerOptions();
+        markerOption.position(new LatLng(pointsEntity.getLocation().getLatitude(), pointsEntity.getLocation().getLongitude()));
+        markerOption.draggable(true);//设置Marker可拖动
+        markerOption.title(pointsEntity.getPointId() + "");
+        markerOption.icon(BitmapManager.getInstance().getBitmapDescriptor(index));
+        // 将Marker设置为贴地显示，可以双指下拉地图查看效果
+        markerOption.setFlat(true);//设置marker平贴地图效果
+        Marker marker = aMap.addMarker(markerOption);
+        mMarkerMap.put(Integer.parseInt(pointsEntity.getPointId()),marker);
+
     }
 
     //前往附近点
@@ -697,10 +764,8 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
 
     /**
      * 首次定位很重要，选一个精度相对较高的起始点
-     * 注意：如果一直显示gps信号弱，说明过滤的标准过高了，
      * 你可以将location.getRadius()>25中的过滤半径调大，比如>40，
      * 并且将连续5个点之间的距离DistanceUtil.getDistance(last, ll ) > 5也调大一点，比如>10，
-     * 这里不是固定死的，你可以根据你的需求调整，如果你的轨迹刚开始效果不是很好，你可以将半径调小，两点之间距离也调小，
      * gps的精度半径一般是10-50米
      */
     private LatLng getMostAccuracyLocation(Location location) {
@@ -722,26 +787,42 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         return ll;
     }
 
-
-    // 定义海量点点击事件
-    AMap.OnMultiPointClickListener multiPointClickListener = new AMap.OnMultiPointClickListener() {
-        // 海量点中某一点被点击时回调的接口
-        // 返回 true 则表示接口已响应事件，否则返回false
+    AMap.OnMarkerClickListener mMarkerClickListener = new AMap.OnMarkerClickListener() {
         @Override
-        public boolean onPointClick(MultiPointItem pointItem) {
-            Log.d("dddd", "onPointClick: " + pointItem.getLatLng().latitude);
-            mPointsEntity = (PointsEntity) pointItem.getObject();
-            Log.d("dddd", "onPointClick: " + pointItem.getCustomerId() + ",getPointId:" + mPointsEntity.getPointId() + "，mp3:" + mPointsEntity.getMp3());
-            EventBus.getDefault().post(new PlayEvent(mPointsEntity.getMp3(), true));
-            tour_name.setText(mPointsEntity.getName());
-            if (startLatlng != null) {
-                String distance = String.valueOf(AMapUtils.calculateLineDistance(startLatlng, new LatLng(mPointsEntity.getLocation().getLatitude(), mPointsEntity.getLocation().getLongitude()))) + "M";
-                mjuli.setText((int) (Double.parseDouble(distance)) + "M");
-                NotificationCenter.defaultCenter().publish(new DistanceEvent(distance));
-            }
-            return false;
+        public boolean onMarkerClick(Marker marker) {
+            mPointsEntity = mPointsEntityMap.get(Integer.parseInt(marker.getTitle()));
+            addAnimMarker(mPointsEntity);
+
+            Log.d("dddd", "onPointClick: " + marker.getTitle() + ",getPointId:" + mPointsEntity.getPointId() + "，mp3:" + mPointsEntity.getMp3());
+            playMarkerAudio(mPointsEntity);
+            return true;
         }
     };
+
+    private void playMarkerAudio(PointsEntity pointsEntity) {
+        EventBus.getDefault().post(new PlayEvent(pointsEntity.getMp3(), true));
+        tour_name.setText(pointsEntity.getName());
+        if (startLatlng != null) {
+            String distance = String.valueOf(AMapUtils.calculateLineDistance(startLatlng, new LatLng(pointsEntity.getLocation().getLatitude(), pointsEntity.getLocation().getLongitude())));
+            mjuli.setText((int) (Double.parseDouble(distance)) + "M");
+            NotificationCenter.defaultCenter().publish(new DistanceEvent(distance));
+        }
+    }
+
+    private void addAnimMarker(PointsEntity pointsEntity) {
+        for (Integer integer : mMarkerMap.keySet()) {
+            mMarkerMap.get(integer).remove();
+            setMarkerLay(mPointsEntityMap.get(integer).getType());
+        }
+        mMarkerMap.get(Integer.parseInt(pointsEntity.getPointId())).remove();
+        MarkerOptions markerOption = new MarkerOptions();
+        markerOption.position(new LatLng(pointsEntity.getLocation().getLatitude(), pointsEntity.getLocation().getLongitude()))
+                .icons(BitmapManager.getInstance().getBitmapDescriptorOverlay())
+                .title(pointsEntity.getPointId() + "");
+        Marker marker1= aMap.addMarker(markerOption);
+        mMarkerMap.put(Integer.parseInt(pointsEntity.getPointId()),marker1);
+    }
+
     AMap.OnCameraChangeListener onCameraChangeListener = new AMap.OnCameraChangeListener() {
         @Override
         public void onCameraChange(CameraPosition cameraPosition) {

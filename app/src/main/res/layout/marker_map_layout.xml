@@ -103,7 +103,7 @@
             android:drawablePadding="9px"
             android:drawableTop="@drawable/luxian_1"
             android:gravity="center_horizontal"
-            android:paddingTop="20px"
+            android:paddingTop="10px"
             android:text="路线"
             android:textColor="#333333"
             android:textSize="23px" />
