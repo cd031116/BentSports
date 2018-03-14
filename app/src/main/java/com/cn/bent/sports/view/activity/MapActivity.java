@@ -21,6 +21,7 @@ import android.os.IBinder;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -42,8 +43,6 @@ import com.amap.api.maps.model.BitmapDescriptor;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
-import com.amap.api.maps.model.Marker;
-import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MultiPointItem;
 import com.amap.api.maps.model.MultiPointOverlay;
 import com.amap.api.maps.model.MultiPointOverlayOptions;
@@ -51,28 +50,25 @@ import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.maps.model.Polyline;
 import com.amap.api.maps.model.PolylineOptions;
 import com.amap.api.services.core.LatLonPoint;
-import com.cn.bent.sports.MainActivity;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.base.BaseConfig;
-import com.cn.bent.sports.bean.MajorBean;
 import com.cn.bent.sports.bean.PlayBean;
 import com.cn.bent.sports.bean.PlayEvent;
 import com.cn.bent.sports.bean.PointsEntity;
 import com.cn.bent.sports.bean.RailBean;
 import com.cn.bent.sports.bean.StartEvent;
+import com.cn.bent.sports.database.QueueBean;
+import com.cn.bent.sports.database.QueueManager;
 import com.cn.bent.sports.evevt.DistanceEvent;
-import com.cn.bent.sports.evevt.DistanceSubscriber;
 import com.cn.bent.sports.evevt.ShowPoupEvent;
 import com.cn.bent.sports.evevt.ShowSubscriber;
-import com.cn.bent.sports.scan.CaptureActivity;
 import com.cn.bent.sports.sensor.UpdateUiCallBack;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.DataUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.utils.ToastUtils;
-import com.cn.bent.sports.view.poupwindow.DoTaskPoupWindow;
 import com.cn.bent.sports.view.poupwindow.LineListPoupWindow;
 import com.cn.bent.sports.view.poupwindow.XianluPoupWindow;
 import com.cn.bent.sports.view.service.MusicService;
@@ -290,6 +286,13 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                 animationDrawable.stop();
             }
             yinp_bf.setBackgroundResource(R.drawable.tizhibf);
+            BaseConfig bg = BaseConfig.getInstance(getApplicationContext());
+            String nowpaths = bg.getStringValue(Constants.NOW_PLAY, "-1");
+            String hanepaths = QueueManager.getMp3();
+            if (nowpaths.equals(hanepaths)) {
+                EventBus.getDefault().post(new PlayEvent(hanepaths, true));
+                QueueManager.clear();
+            }
         }
     }
 
@@ -309,7 +312,6 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                     @Override
                     public void onSuccess(int whichRequest, RailBean info) {
                         dismissAlert();
-
                         for (int i = 0; i < info.getMp3_tag().size(); i++) {
                             PointsEntity pointsEntity = new PointsEntity();
                             pointsEntity.setPointId(info.getMp3_tag().get(i).getPlace_id());
@@ -665,7 +667,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             startLatlng = new LatLng(location.getLatitude(), location.getLongitude());
             if (mPointsEntity != null) {
                 String distance = String.valueOf(AMapUtils.calculateLineDistance(startLatlng, new LatLng(mPointsEntity.getLocation().getLatitude(), mPointsEntity.getLocation().getLongitude()))) + "M";
-                mjuli.setText((int) (Double.parseDouble(distance)) +"M");
+                mjuli.setText((int) (Double.parseDouble(distance)) + "M");
                 NotificationCenter.defaultCenter().publish(new DistanceEvent(distance));
             }
 
@@ -738,7 +740,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             tour_name.setText(mPointsEntity.getName());
             if (startLatlng != null) {
                 String distance = String.valueOf(AMapUtils.calculateLineDistance(startLatlng, new LatLng(mPointsEntity.getLocation().getLatitude(), mPointsEntity.getLocation().getLongitude()))) + "M";
-                mjuli.setText((int) (Double.parseDouble(distance)) +"M");
+                mjuli.setText((int) (Double.parseDouble(distance)) + "M");
                 NotificationCenter.defaultCenter().publish(new DistanceEvent(distance));
             }
             return false;
@@ -779,7 +781,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         mMapView.getMap().clear();
         mMapView.onDestroy();
         mMapView = null;
-        if(mopupWindow!=null&&mopupWindow.isShowing()){
+        if (mopupWindow != null && mopupWindow.isShowing()) {
             mopupWindow.dismiss();
         }
         super.onDestroy();
@@ -794,7 +796,6 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         //在activity执行onResume时执行mMapView.onResume ()，重新绘制加载地图
         mMapView.onResume();
         checkPause();
-
     }
 
     @Override
@@ -830,11 +831,12 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                 break;
         }
     }
+
     //刷新距离
     ShowSubscriber disevent = new ShowSubscriber() {
         @Override
         public void onEvent(ShowPoupEvent event) {
-             new Handler().postDelayed(new Runnable() {
+            new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     shouPoup();
@@ -853,15 +855,12 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         @Override
         public void ItemClick(int index) {
             mopupWindow.dismiss();
-            mPointsEntity=mPointsList.get(index);
-            aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mPointsEntity.getLocation().getLatitude(),mPointsEntity.getLocation().getLongitude()), mCurrentZoom));
+            mPointsEntity = mPointsList.get(index);
+            aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mPointsEntity.getLocation().getLatitude(), mPointsEntity.getLocation().getLongitude()), mCurrentZoom));
         }
     };
 
-
     //蓝牙模块---------------------------------------------------------------------------------------------------------------
-
-
     private void showBLEDialog() {
         if (!isBlue) {
             Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -926,7 +925,10 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                             for (PointsEntity.IBeaconsBean cheeck : mPointsList.get(i).getIBeacons()) {
                                 String jieguo = String.valueOf(cheeck.getMajor()) + String.valueOf(cheeck.getMinor());
                                 if (jieguo.equals(majer)) {
-                                    chanVioce(i);
+                                    if (!TextUtils.isEmpty(mPointsEntity.getMp3())) {
+                                        QueueManager.update(new QueueBean(mPointsEntity.getMp3()));
+                                        chanVioce(i);
+                                    }
                                     break;
                                 }
                             }
@@ -974,9 +976,11 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                     if (confirm) {
                         mDialog.dismiss();
                         EventBus.getDefault().post(new PlayEvent(clickpath, true));
+                        QueueManager.clear();
                         mPointsEntity = mPointsList.get(positon);
                         tour_name.setText(mPointsEntity.getName());
                     } else {
+                        QueueManager.clear();
                         mDialog.dismiss();
                     }
                 }
@@ -985,6 +989,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
 
         } else {
             EventBus.getDefault().post(new PlayEvent(clickpath, false));
+            QueueManager.clear();
             mPointsEntity = mPointsList.get(positon);
             tour_name.setText(mPointsEntity.getName());
         }
@@ -1030,10 +1035,10 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_BACK) {
-            if(mopupWindow!=null&&mopupWindow.isShowing()){
+            if (mopupWindow != null && mopupWindow.isShowing()) {
                 mopupWindow.dismiss();
                 return false;
-            }else {
+            } else {
                 ExitFunction();
                 return true;
             }
