@@ -196,7 +196,6 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         aMap.setOnMarkerClickListener(mMarkerClickListener);
         aMap.setOnCameraChangeListener(onCameraChangeListener);
         stepCheckBox.setOnCheckedChangeListener(stepCheckedChangeListener);
-        yyCheckBox.setOnCheckedChangeListener(yyCheckedChangeListener);
         if (Build.VERSION.SDK_INT >= 23) {
             showPermission();
         } else {
@@ -375,20 +374,6 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                         addAll(points).width(15).color(0xAAD1D1D1));
             } else
                 isShowPolyLine = false;
-        }
-    };
-
-    /**
-     * 自动讲解
-     */
-    OnCheckedChangeListener yyCheckedChangeListener = new OnCheckedChangeListener() {
-        @Override
-        public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-            if (isChecked) {
-
-            } else {
-
-            }
         }
     };
 
@@ -795,20 +780,24 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
 
             Log.d("dddd", "onPointClick: " + marker.getTitle() + ",getPointId:" + mPointsEntity.getPointId() + "，mp3:" + mPointsEntity.getMp3());
             playMarkerAudio(mPointsEntity);
-            if (chooseItem != 10000) {
-                List<PointsEntity> pointsEntities = mPointsEntityList.get(chooseItem);
-                for (int i = 0; i < pointsEntities.size(); i++) {
-                    mPointsEntityList.get(chooseItem).get(i).setShow(false);
-                    if (mPointsEntity.getPointId().equals(pointsEntities.get(i).getPointId())) {
-                        mPointsEntityList.get(chooseItem).get(i).setShow(true);
-                        tour_list.smoothScrollToPosition(i);
-                    }
-                }
-                mAdapter.notifyDataSetChanged();
-            }
+            notifyRecyChanged();
             return true;
         }
     };
+
+    private void notifyRecyChanged() {
+        if (chooseItem != 10000) {
+            List<PointsEntity> pointsEntities = mPointsEntityList.get(chooseItem);
+            for (int i = 0; i < pointsEntities.size(); i++) {
+                mPointsEntityList.get(chooseItem).get(i).setShow(false);
+                if (mPointsEntity.getPointId().equals(pointsEntities.get(i).getPointId())) {
+                    mPointsEntityList.get(chooseItem).get(i).setShow(true);
+                    tour_list.smoothScrollToPosition(i);
+                }
+            }
+            mAdapter.notifyDataSetChanged();
+        }
+    }
 
     private void playMarkerAudio(PointsEntity pointsEntity) {
         EventBus.getDefault().post(new PlayEvent(pointsEntity.getMp3(), true));
@@ -944,9 +933,11 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         public void ItemClick(int index) {
             mopupWindow.dismiss();
             mPointsEntity = mPointsList.get(index);
+            addAnimMarker(mPointsEntity);
+            playMarkerAudio(mPointsEntity);
             aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mPointsEntity.getLocation().getLatitude(), mPointsEntity.getLocation().getLongitude()), mCurrentZoom));
-            EventBus.getDefault().post(new PlayEvent(mPointsEntity.getMp3(), true));
-            tour_name.setText(mPointsEntity.getName());
+            if (!isShowLuxian)
+                notifyRecyChanged();
         }
     };
 
