@@ -8,7 +8,6 @@ package com.cn.bent.sports.bean;
 public class PlayEvent {
 private String paths;
 private boolean isHuan;
-
     public boolean isHuan() {
         return isHuan;
     }

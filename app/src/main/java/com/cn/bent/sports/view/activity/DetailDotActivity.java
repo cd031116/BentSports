@@ -127,7 +127,10 @@ public class DetailDotActivity extends BaseActivity {
     @Override
     public void onResume() {
         super.onResume();
-
+            pEnty=SaveObjectUtils.getInstance(getApplicationContext()).getObject(Constants.NOW_POION, null);
+        if(pEnty!=null){
+            mtitle.setText(pEnty.getName());
+        }
     }
 
 

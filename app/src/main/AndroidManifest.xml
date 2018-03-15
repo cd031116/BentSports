@@ -63,8 +63,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
-        android:launchMode="singleTask"
-        android:screenOrientation="portrait"/>
+
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="cb572134e6d1d4d7fb9ffa7346dc8ccb" />
@@ -176,7 +175,6 @@
 
         <activity
             android:name=".view.activity.DetailDotActivity"
-
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.BottomPlayActivity"

@@ -1,59 +1,26 @@
 package com.cn.bent.sports;
 
-import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.TextView;
 
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.base.BaseConfig;
-import com.cn.bent.sports.base.SdcardPermissionAction;
-import com.cn.bent.sports.base.SensorsPermission;
-import com.cn.bent.sports.bean.LoginBase;
-import com.cn.bent.sports.bean.LookRankEvent;
-import com.cn.bent.sports.database.TaskCationBean;
-import com.cn.bent.sports.database.TaskCationManager;
 import com.cn.bent.sports.utils.Constants;
-import com.cn.bent.sports.utils.SaveObjectUtils;
-import com.cn.bent.sports.view.activity.ChooseLuxianActivity;
-import com.cn.bent.sports.view.activity.StartActivity;
-import com.cn.bent.sports.view.fragment.DoTaskFragment;
 import com.cn.bent.sports.view.fragment.IsMeFragment;
-import com.cn.bent.sports.view.fragment.JinMaoFragment;
 import com.cn.bent.sports.view.fragment.MainTabFragment;
-import com.cn.bent.sports.view.fragment.PlayFragment;
 import com.cn.bent.sports.view.fragment.PlayMainFragment;
 import com.cn.bent.sports.view.poupwindow.MainPoupWindow;
 
-import org.aisen.android.support.action.IAction;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import butterknife.Bind;
-import butterknife.OnClick;
-
 public class MainActivity extends BaseActivity {
-    @Bind({R.id.iamage1, R.id.iamage2, R.id.image_me})
-    List<ImageButton> mTabs;
-    @Bind({R.id.text1, R.id.text_2, R.id.is_me})
-    List<TextView> mText;
     int selected = 1;
     FragmentManager mFragmentMan;
     private MainPoupWindow ropupWindow;
-
+//e11818
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,35 +36,13 @@ public class MainActivity extends BaseActivity {
     @Override
     public void initView() {
         super.initView();
-        EventBus.getDefault().register(this);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                ropupWindow = new MainPoupWindow(MainActivity.this, null);
-                ropupWindow.showAtLocation(MainActivity.this.findViewById(R.id.id_content),
-                        Gravity.CENTER | Gravity.CENTER_HORIZONTAL, 0, 0);
-
-            }
-        }, 1000);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        switchContent(1);
-        selected = 1;
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(LookRankEvent event) {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                switchContent(0);
-                selected = 0;
-            }
-        }, 600);
-    }
 
     @Override
     public void initData() {
@@ -107,7 +52,6 @@ public class MainActivity extends BaseActivity {
 
     // 3. 先进第二个或第三个的子模块，再返回首页
     private String lastFragmentTag = null;
-
     private void changeFrament(String tag, int index) {
         BaseConfig bg = BaseConfig.getInstance(MainActivity.this);
         if (mFragmentMan != null) {
@@ -149,65 +93,9 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.text1, R.id.iamage1, R.id.line1, R.id.line2, R.id.iamage2, R.id.image_me, R.id.is_me})
-    void onclick(View v) {
-        switch (v.getId()) {
-            case R.id.line1:
-            case R.id.iamage1:
-            case R.id.text1:
-                if (selected == 0) {
-                    break;
-                }
-                selected = 0;
-                switchContent(selected);
-                break;
-            case R.id.iamage2:
-                if (selected == 1) {
-                    break;
-                }
-                selected = 1;
-                switchContent(selected);
-                break;
-            case R.id.line2:
-            case R.id.image_me:
-            case R.id.is_me:
-                if (selected == 2) {
-                    break;
-                }
-                selected = 2;
-                switchContent(selected);
-                break;
-        }
-    }
-
-    void switchContent(int select) {
-        initFoot();
-        if (select == 0) {
-            mTabs.get(0).setSelected(true);
-            mText.get(0).setTextColor(Color.parseColor("#e11818"));
-            changeFrament("aFragment", 0);
-        } else if (select == 1) {
-            mTabs.get(1).setSelected(true);
-            mText.get(1).setTextColor(Color.parseColor("#e11818"));
-            changeFrament("bFragment", 1);
-        } else if (select == 2) {
-            mTabs.get(2).setSelected(true);
-            mText.get(2).setTextColor(Color.parseColor("#e11818"));
-            changeFrament("cFragment", 2);
-        }
-    }
-
-    private void initFoot() {
-        mTabs.get(0).setSelected(false);
-        mTabs.get(1).setSelected(false);
-        mTabs.get(2).setSelected(false);
-        mText.get(0).setTextColor(Color.parseColor("#333333"));
-        mText.get(1).setTextColor(Color.parseColor("#333333"));
-        mText.get(2).setTextColor(Color.parseColor("#333333"));
-    }
 
 
-    //
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_BACK) {
@@ -229,11 +117,4 @@ public class MainActivity extends BaseActivity {
     }
 
 
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        // TODO Auto-generated method stub
-        super.onWindowFocusChanged(hasFocus);
-        if (hasFocus) {
-        }
-    }
 }

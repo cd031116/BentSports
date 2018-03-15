@@ -28,7 +28,6 @@ public class MusicService extends Service {
 
     private MediaPlayer mPlayer;
     private boolean isHave = false;
-
     public MusicService() {
     }
 
@@ -42,12 +41,25 @@ public class MusicService extends Service {
     // 相同应用内部不同组件绑定，可以使用内部类以及Binder对象来返回。
     public class MusicController extends Binder {
 
+
+
         public boolean isPlay() {
-            return mPlayer.isPlaying();//正在播放
+            boolean isplay=false;
+            try {
+                isplay=  mPlayer.isPlaying();
+            }catch (Exception e){
+
+            }
+            return isplay;//正在播放
         }
 
         public void play() {
-            mPlayer.start();//开启音乐
+            try {
+                mPlayer.start();//开启音乐
+            }catch (Exception e){
+
+            }
+
             SaveObjectUtils.getInstance(getApplicationContext()).setObject(Constants.PLAY_POSION, null);
         }
 
@@ -69,19 +81,31 @@ public class MusicService extends Service {
         }
 
         public long getMusicDuration() {
-            return mPlayer.getDuration();//获取文件的总长度
+            long total=0;
+            try {
+                total=mPlayer.getDuration();//开启音乐
+            }catch (Exception e){
+
+            }
+            return total;//获取当前播放进度
         }
 
         public long getPosition() {
-            return mPlayer.getCurrentPosition();//获取当前播放进度
+            long curent=0;
+            try {
+                curent=mPlayer.getCurrentPosition();//开启音乐
+            }catch (Exception e){
+
+            }
+            return curent;//获取当前播放进度
         }
 
         public void setPosition(int position) {
             mPlayer.seekTo(position);//重新设定播放进度
         }
 
-        public void setPatss(String paths, boolean ischange) {
-            played(paths, ischange);
+        public void setPatss(String paths, boolean ischange ,String namse) {
+            played(paths, ischange,namse);
         }
 
     }
@@ -89,12 +113,12 @@ public class MusicService extends Service {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(PlayEvent event) {
-        played(event.getPaths(), event.isHuan());
+        played(event.getPaths(), event.isHuan(),event.getPaths());
         Log.i("dddd", "onEvent");
     }
 
 
-    private void played(final String paths, boolean qiehuan) {
+    private void played(final String paths, boolean qiehuan,final String paname) {
         if (mPlayer == null) {
             mPlayer = new MediaPlayer();
         }
@@ -110,16 +134,17 @@ public class MusicService extends Service {
             public void run() {
                 try {
                     mPlayer.setDataSource(paths);
+                    Log.i("dddd", "setDataSource");
                     BaseConfig bg=BaseConfig.getInstance(getApplicationContext());
                     bg.setStringValue(Constants.NOW_PLAY,paths);
                     isHave = true;
                     mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                    mPlayer.prepare();
+                    mPlayer.prepareAsync();
                     mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                         @Override
                         public void onPrepared(MediaPlayer mp) {
-                            mPlayer.start();
                             Log.i("dddd", "onPrepared");
+                            mPlayer.start();
                             EventBus.getDefault().post(new StartEvent(true));
                         }
 

@@ -12,6 +12,7 @@ public class PlayBean implements Serializable {
 
     private int totalPosition;
 
+
     public int getCurentPosition() {
         return curentPosition;
     }

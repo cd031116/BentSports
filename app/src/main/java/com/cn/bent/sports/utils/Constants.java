@@ -18,5 +18,6 @@ public class Constants {
     public static final String LU_XIAN="lu_xian";
     public static final String PLAY_POSION="play_posion";
     public static final String NOW_PLAY="now_play";
+    public static final String NOW_POION="now_poion";
     public static final String AR_KEY="uHF95ree4fY6nj6NrhAFZ3HwZvpQfexUpb0DQoy9vM0733bZ3kczl95yxtZ0sTNgTZE6idFXRx0Ej5UtJ0FEUGFUZLxdKpsH8UOg0J2spZUdLTOUlwtjimxW8yer0GReXJJgUvF1n8yiK7TkkX7hEDliysPlF4CYQaolaOsE4LufSDcBqPU83rPtbsFohb6FNX4iSA4b";
 }

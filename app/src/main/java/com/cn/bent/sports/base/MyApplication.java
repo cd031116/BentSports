@@ -21,6 +21,8 @@ public class MyApplication extends GlobalContext{
     public static MyApplication instance;
     private ActivityManagerd activityManager = null;
 
+
+
     @Override
     public void onCreate() {
         super.onCreate();

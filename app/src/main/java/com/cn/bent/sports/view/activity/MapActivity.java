@@ -271,12 +271,16 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
 
 
     private void checkPause() {
+        if(mPointsEntity!=null){
+            tour_name.setText(mPointsEntity.getName());
+        }
         if (mycontrol != null && mycontrol.isPlay()) {
             yinp_bf.setBackgroundResource(R.drawable.play_anim);
             animationDrawable = (AnimationDrawable) yinp_bf.getBackground();
             if (animationDrawable != null && !animationDrawable.isRunning()) {
                 animationDrawable.start();
             }
+
         } else if (mycontrol != null) {
             PlayBean info = SaveObjectUtils.getInstance(getApplicationContext()).getObject(Constants.PLAY_POSION, null);
             if (info != null) {
@@ -291,6 +295,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(StartEvent event) {
         if (event.isStart()) {
+            SaveObjectUtils.getInstance(getApplicationContext()).setObject(Constants.NOW_POION, mPointsEntity);
             yinp_bf.setBackgroundResource(R.drawable.play_anim);
             animationDrawable = (AnimationDrawable) yinp_bf.getBackground();
             if (animationDrawable != null && !animationDrawable.isRunning()) {
@@ -300,6 +305,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             if (animationDrawable != null && animationDrawable.isRunning()) {
                 animationDrawable.stop();
             }
+            SaveObjectUtils.getInstance(getApplicationContext()).setObject(Constants.NOW_POION, null);
             yinp_bf.setBackgroundResource(R.drawable.tizhibf);
             BaseConfig bg = BaseConfig.getInstance(getApplicationContext());
             String nowpaths = bg.getStringValue(Constants.NOW_PLAY, "-1");
@@ -872,6 +878,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         }
         //在activity执行onResume时执行mMapView.onResume ()，重新绘制加载地图
         mMapView.onResume();
+            mPointsEntity=SaveObjectUtils.getInstance(getApplicationContext()).getObject(Constants.NOW_POION, null);
         checkPause();
     }
 

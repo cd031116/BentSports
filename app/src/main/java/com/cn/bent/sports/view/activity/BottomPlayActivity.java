@@ -147,6 +147,9 @@ public class BottomPlayActivity extends BaseActivity {
     }
 
     private void checkPause() {
+        if(pEnty!=null){
+            name_t.setText(pEnty.getName());
+        }
         if (mycontrol != null && mycontrol.isPlay()) {
             Log.i("dddd", "checkPause");
             mHandler.postDelayed(runnable, 100);
@@ -251,6 +254,7 @@ public class BottomPlayActivity extends BaseActivity {
     @Override
     public void onResume() {
         super.onResume();
+            pEnty=SaveObjectUtils.getInstance(getApplicationContext()).getObject(Constants.NOW_POION, null);
         checkPause();
     }
 
