@@ -145,10 +145,10 @@ public class DataUtils {
     }
 
     public static boolean isBlue(Context context) {
-        if (getDefaultAdapter(context).disable()) {
-            return false;
+        if (getDefaultAdapter(context).isEnabled()) {
+            return true;
         } else {
-            return true;//打开蓝牙
+            return false;//打开蓝牙
         }
     }
 }

@@ -1069,14 +1069,16 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                     for (MinewBeacon beacon : minewBeacons) {
                         String majer = beacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Major).getStringValue() + beacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
                         for (int i = 0; i < mPointsList.size(); i++) {
-                            for (PointsEntity.IBeaconsBean cheeck : mPointsList.get(i).getIBeacons()) {
-                                String jieguo = String.valueOf(cheeck.getMajor()) + String.valueOf(cheeck.getMinor());
-                                if (jieguo.equals(majer)) {
-                                    if (!TextUtils.isEmpty(mPointsEntity.getMp3())) {
-                                        QueueManager.update(new QueueBean(mPointsEntity.getMp3()));
-                                        chanVioce(i);
+                            if( mPointsList.get(i).getIBeacons()!=null&&mPointsList.get(i).getIBeacons().size()>0){
+                                for (PointsEntity.IBeaconsBean cheeck : mPointsList.get(i).getIBeacons()) {
+                                    String jieguo = String.valueOf(cheeck.getMajor()) + String.valueOf(cheeck.getMinor());
+                                    if (jieguo.equals(majer)) {
+                                        if (!TextUtils.isEmpty(mPointsEntity.getMp3())) {
+                                            QueueManager.update(new QueueBean(mPointsEntity.getMp3()));
+                                            chanVioce(i);
+                                        }
+                                        break;
                                     }
-                                    break;
                                 }
                             }
                         }
