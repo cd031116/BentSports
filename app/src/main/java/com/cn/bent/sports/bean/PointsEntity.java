@@ -1,5 +1,7 @@
 package com.cn.bent.sports.bean;
 
+import org.aisen.android.component.orm.annotation.PrimaryKey;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -20,7 +22,7 @@ public class PointsEntity implements Serializable{
      * iconUrl :
      * pointImg : http://222.240.60.23:8091/Upload/img/HPGGC.jpg
      */
-
+    @PrimaryKey(column = "pointId")
     private int pointId;
     private LocationBean location;
     private int type;

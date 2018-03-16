@@ -19,7 +19,6 @@ import butterknife.OnClick;
  */
 
 public class ContinueActivity extends BaseActivity {
-
     @Bind(R.id.card_img)
     ImageView card_img;
     @Bind(R.id.scord)

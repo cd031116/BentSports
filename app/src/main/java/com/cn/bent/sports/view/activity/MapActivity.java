@@ -1084,8 +1084,8 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                                 for (PointsEntity.IBeaconsBean cheeck : mPointsList.get(i).getIBeacons()) {
                                     String jieguo = String.valueOf(cheeck.getMajor()) + String.valueOf(cheeck.getMinor());
                                     if (jieguo.equals(majer)) {
-                                        if (!TextUtils.isEmpty(mPointsEntity.getMp3())) {
-                                            QueueManager.update(new QueueBean(mPointsEntity.getMp3()));
+                                        if (!TextUtils.isEmpty(mPointsList.get(i).getMp3())) {
+                                            QueueManager.update(new QueueBean(mPointsList.get(i).getMp3()));
                                             chanVioce(i);
                                         }
                                         break;
