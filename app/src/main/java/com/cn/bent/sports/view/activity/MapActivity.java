@@ -404,7 +404,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         @Override
         public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
             //清除上一次轨迹，避免重叠绘画
-            Log.d("dddd", "onCheckedChanged isChecked: "+isChecked+",points.size():"+points.size());
+            Log.d("dddd", "onCheckedChanged isChecked: " + isChecked + ",points.size():" + points.size());
             if (polyline != null)
                 polyline.remove();
             if (isChecked) {
@@ -523,8 +523,8 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                     });
                     if (pointsEntity.isShow()) {
                         addAnimMarker(pointsEntity);
-                        if (pointsEntity.getType() == 2)
-                            playMarkerAudio(pointsEntity);
+                        if (pointsEntity.getType() == 2&&!TextUtils.isEmpty(pointsEntity.getMp3()))
+                                playMarkerAudio(pointsEntity);
                         holder.getView(R.id.tour_num).setBackground(MapActivity.this.getResources().getDrawable(R.drawable.tour_choose_item_bg));
                         ((TextView) holder.getView(R.id.tour_name)).setTextColor(MapActivity.this.getResources().getColor(R.color.color_fd7d6f));
                     } else {
@@ -842,7 +842,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             addAnimMarker(mPointsEntity);
 
             Log.d("dddd", "onPointClick: " + marker.getTitle() + ",getPointId:" + mPointsEntity.getPointId() + "，mp3:" + mPointsEntity.getMp3());
-            if (mPointsEntity.getType() == 2)
+            if (mPointsEntity.getType() == 2&&!TextUtils.isEmpty(mPointsEntity.getMp3()))
                 playMarkerAudio(mPointsEntity);
             notifyRecyChanged();
             return true;
@@ -999,7 +999,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             mopupWindow.dismiss();
             mPointsEntity = mPointsList.get(index);
             addAnimMarker(mPointsEntity);
-            if (mPointsEntity.getType() == 2)
+            if (mPointsEntity.getType() == 2&&!TextUtils.isEmpty(mPointsEntity.getMp3()))
                 playMarkerAudio(mPointsEntity);
             aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mPointsEntity.getLocation().getLatitude(), mPointsEntity.getLocation().getLongitude()), mCurrentZoom));
             if (!isShowLuxian)
