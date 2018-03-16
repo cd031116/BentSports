@@ -814,10 +814,10 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
 
             points.add(ll);//如果要运动完成后画整个轨迹，位置点都在这个集合中
             last = ll;
-            if (isShowPolyLine)
-                //将points集合中的点绘制轨迹线条图层，显示在地图上
-                polyline = aMap.addPolyline(new PolylineOptions().
-                        addAll(points).width(15).color(0xAAD1D1D1));
+//            if (isShowPolyLine)
+//                //将points集合中的点绘制轨迹线条图层，显示在地图上
+//                polyline = aMap.addPolyline(new PolylineOptions().
+//                        addAll(points).width(15).color(0xAAD1D1D1));
         }
     }
 
