@@ -9,18 +9,19 @@ import java.util.List;
 
 public class PointsEntity implements Serializable{
 
+
     /**
-     * pointId : 1
-     * location : {"longitude":113.088702,"latitude":28.013602}
-     * iBeacons : [{"major":10001,"minor":2}]
-     * type : 1
-     * mp3 : http://wxxcx.zhonghuilv.net/upload/outdoor/scenic_dot/1.mp3
-     * name : 龙舟基地
-     * iconUrl : http://wxxcx.zhonghuilv.net/xxx.png
-     * pointImg : http://wxxcx.zhonghuilv.net/xxx.png
+     * pointId : 44
+     * location : {"longitude":113.088348,"latitude":28.006678}
+     * iBeacons : [{"major":10003,"minor":1}]
+     * type : 2
+     * mp3 : http://222.240.60.23:8091/Upload/video/11hepinggeguangchang.mp3
+     * name : 和平鸽广场
+     * iconUrl :
+     * pointImg : http://222.240.60.23:8091/Upload/img/HPGGC.jpg
      */
 
-    private String pointId;
+    private int pointId;
     private LocationBean location;
     private int type;
     private String mp3;
@@ -38,11 +39,11 @@ public class PointsEntity implements Serializable{
         isShow = show;
     }
 
-    public String getPointId() {
+    public int getPointId() {
         return pointId;
     }
 
-    public void setPointId(String pointId) {
+    public void setPointId(int pointId) {
         this.pointId = pointId;
     }
 
@@ -102,10 +103,10 @@ public class PointsEntity implements Serializable{
         this.iBeacons = iBeacons;
     }
 
-    public static class LocationBean implements Serializable{
+    public static class LocationBean {
         /**
-         * longitude : 113.088702
-         * latitude : 28.013602
+         * longitude : 113.088348
+         * latitude : 28.006678
          */
 
         private double longitude;
@@ -130,8 +131,8 @@ public class PointsEntity implements Serializable{
 
     public static class IBeaconsBean {
         /**
-         * major : 10001
-         * minor : 2
+         * major : 10003
+         * minor : 1
          */
 
         private int major;

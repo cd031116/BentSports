@@ -12,6 +12,7 @@ import com.cn.bent.sports.bean.ScenicSpotEntity;
 import com.cn.bent.sports.bean.UserMsgEntity;
 import com.zhl.network.huiqu.HuiquResult;
 import com.zhl.network.huiqu.HuiquTBResult;
+import com.zhl.network.huiqu.ResponseResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +49,7 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST("outdoor?str=getSpotsByParkCode")
-    Observable<HuiquResult<ScenicSpotEntity>> getscenicSpotData(
+    Observable<ResponseResult<ScenicSpotEntity>> getscenicSpotData(
             @Field("scenicSpotId") String scenicSpotId);
 
     /**

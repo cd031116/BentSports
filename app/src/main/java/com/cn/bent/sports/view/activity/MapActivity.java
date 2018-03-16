@@ -94,6 +94,7 @@ import com.minew.beacon.MinewBeaconManager;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.HuiquRxFunction;
+import com.zhl.network.huiqu.ResponseRxFunction;
 
 import org.aisen.android.component.eventbus.NotificationCenter;
 import org.greenrobot.eventbus.EventBus;
@@ -331,19 +332,22 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         showAlert("......", true);
 
         BaseApi.getDefaultService(this).getscenicSpotData("1")
-                .map(new HuiquRxFunction<ScenicSpotEntity>())
+                .map(new ResponseRxFunction<ScenicSpotEntity>())
                 .compose(RxSchedulers.<ScenicSpotEntity>io_main())
                 .subscribe(new RxObserver<ScenicSpotEntity>(MapActivity.this, "getscenicSpotData", 2, false) {
                     @Override
                     public void onSuccess(int whichRequest, ScenicSpotEntity scenicSpotEntity) {
                         dismissAlert();
-                        if (scenicSpotEntity != null && scenicSpotEntity.getCenterPoint() != null)
+                        if (scenicSpotEntity != null && scenicSpotEntity.getCenterPoint() != null) {
                             lp = new LatLonPoint(Double.parseDouble(scenicSpotEntity.getCenterPoint().getLatitude()),
                                     Double.parseDouble(scenicSpotEntity.getCenterPoint().getLatitude()));
+                            Log.w("dddd", "onSuccess getLatitude: " + scenicSpotEntity.getCenterPoint().getLatitude());
+                        }
                         if (scenicSpotEntity != null && scenicSpotEntity.getPoints() != null && scenicSpotEntity.getPoints().size() > 0) {
                             mPointsList.addAll(scenicSpotEntity.getPoints());
+                            Log.w("dddd", "onSuccess size: " + scenicSpotEntity.getPoints().size());
                             for (PointsEntity pointsEntity : scenicSpotEntity.getPoints()) {
-                                mPointsEntityMap.put(Integer.parseInt(pointsEntity.getPointId()), pointsEntity);
+                                mPointsEntityMap.put(pointsEntity.getPointId(), pointsEntity);
                                 setOverLay(pointsEntity.getType(), pointsEntity);
                             }
                         }
@@ -522,9 +526,10 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                         }
                     });
                     if (pointsEntity.isShow()) {
-                        addAnimMarker(pointsEntity);
-                        if (pointsEntity.getType() == 2&&!TextUtils.isEmpty(pointsEntity.getMp3()))
-                                playMarkerAudio(pointsEntity);
+                        if (pointsEntity.getType() == 2 && !TextUtils.isEmpty(pointsEntity.getMp3())) {
+                            addAnimMarker(pointsEntity);
+                            playMarkerAudio(pointsEntity);
+                        }
                         holder.getView(R.id.tour_num).setBackground(MapActivity.this.getResources().getDrawable(R.drawable.tour_choose_item_bg));
                         ((TextView) holder.getView(R.id.tour_name)).setTextColor(MapActivity.this.getResources().getColor(R.color.color_fd7d6f));
                     } else {
@@ -696,7 +701,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         // 将Marker设置为贴地显示，可以双指下拉地图查看效果
         markerOption.setFlat(true);//设置marker平贴地图效果
         Marker marker = aMap.addMarker(markerOption);
-        mMarkerMap.put(Integer.parseInt(pointsEntity.getPointId()), marker);
+        mMarkerMap.put(pointsEntity.getPointId(), marker);
 
     }
 
@@ -839,11 +844,12 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         @Override
         public boolean onMarkerClick(Marker marker) {
             mPointsEntity = mPointsEntityMap.get(Integer.parseInt(marker.getTitle()));
-            addAnimMarker(mPointsEntity);
 
             Log.d("dddd", "onPointClick: " + marker.getTitle() + ",getPointId:" + mPointsEntity.getPointId() + "，mp3:" + mPointsEntity.getMp3());
-            if (mPointsEntity.getType() == 2&&!TextUtils.isEmpty(mPointsEntity.getMp3()))
+            if (mPointsEntity.getType() == 2 && !TextUtils.isEmpty(mPointsEntity.getMp3())) {
+                addAnimMarker(mPointsEntity);
                 playMarkerAudio(mPointsEntity);
+            }
             notifyRecyChanged();
             return true;
         }
@@ -854,7 +860,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             List<PointsEntity> pointsEntities = mPointsEntityList.get(chooseItem);
             for (int i = 0; i < pointsEntities.size(); i++) {
                 mPointsEntityList.get(chooseItem).get(i).setShow(false);
-                if (mPointsEntity.getPointId().equals(pointsEntities.get(i).getPointId())) {
+                if (mPointsEntity.getPointId() == pointsEntities.get(i).getPointId()) {
                     mPointsEntityList.get(chooseItem).get(i).setShow(true);
                     tour_list.smoothScrollToPosition(i);
                 }
@@ -878,13 +884,13 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             mMarkerMap.get(integer).remove();
             setOverLay(mPointsEntityMap.get(integer).getType(), mPointsEntityMap.get(integer));
         }
-        mMarkerMap.get(Integer.parseInt(pointsEntity.getPointId())).remove();
+        mMarkerMap.get(pointsEntity.getPointId()).remove();
         MarkerOptions markerOption = new MarkerOptions();
         markerOption.position(new LatLng(pointsEntity.getLocation().getLatitude(), pointsEntity.getLocation().getLongitude()))
                 .icons(BitmapManager.getInstance().getBitmapDescriptorOverlay())
                 .title(pointsEntity.getPointId() + "");
         Marker marker1 = aMap.addMarker(markerOption);
-        mMarkerMap.put(Integer.parseInt(pointsEntity.getPointId()), marker1);
+        mMarkerMap.put(pointsEntity.getPointId(), marker1);
     }
 
     AMap.OnCameraChangeListener onCameraChangeListener = new AMap.OnCameraChangeListener() {
@@ -998,9 +1004,10 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         public void ItemClick(int index) {
             mopupWindow.dismiss();
             mPointsEntity = mPointsList.get(index);
-            addAnimMarker(mPointsEntity);
-            if (mPointsEntity.getType() == 2&&!TextUtils.isEmpty(mPointsEntity.getMp3()))
+            if (mPointsEntity.getType() == 2 && !TextUtils.isEmpty(mPointsEntity.getMp3())) {
+                addAnimMarker(mPointsEntity);
                 playMarkerAudio(mPointsEntity);
+            }
             aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mPointsEntity.getLocation().getLatitude(), mPointsEntity.getLocation().getLongitude()), mCurrentZoom));
             if (!isShowLuxian)
                 notifyRecyChanged();
@@ -1069,7 +1076,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                     for (MinewBeacon beacon : minewBeacons) {
                         String majer = beacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Major).getStringValue() + beacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
                         for (int i = 0; i < mPointsList.size(); i++) {
-                            if( mPointsList.get(i).getIBeacons()!=null&&mPointsList.get(i).getIBeacons().size()>0){
+                            if (mPointsList.get(i).getIBeacons() != null && mPointsList.get(i).getIBeacons().size() > 0) {
                                 for (PointsEntity.IBeaconsBean cheeck : mPointsList.get(i).getIBeacons()) {
                                     String jieguo = String.valueOf(cheeck.getMajor()) + String.valueOf(cheeck.getMinor());
                                     if (jieguo.equals(majer)) {
