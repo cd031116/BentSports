@@ -314,7 +314,9 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             BaseConfig bg = BaseConfig.getInstance(getApplicationContext());
             String nowpaths = bg.getStringValue(Constants.NOW_PLAY, "-1");
             String hanepaths = QueueManager.getMp3();
-            if (nowpaths.equals(hanepaths)) {
+            Log.i("dddd","nowpaths="+nowpaths);
+            Log.i("dddd","hanepaths="+hanepaths);
+            if (!nowpaths.equals(hanepaths)) {
                 EventBus.getDefault().post(new PlayEvent(hanepaths, true));
                 QueueManager.clear();
             }
@@ -782,7 +784,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         if (location != null) {
             startLatlng = new LatLng(location.getLatitude(), location.getLongitude());
             if (mPointsEntity != null) {
-                String distance = String.valueOf(AMapUtils.calculateLineDistance(startLatlng, new LatLng(mPointsEntity.getLocation().getLatitude(), mPointsEntity.getLocation().getLongitude()))) + "M";
+                String distance = String.valueOf(AMapUtils.calculateLineDistance(startLatlng, new LatLng(mPointsEntity.getLocation().getLatitude(), mPointsEntity.getLocation().getLongitude())));
                 mjuli.setText((int) (Double.parseDouble(distance)) + "M");
                 NotificationCenter.defaultCenter().publish(new DistanceEvent(distance));
             }
@@ -908,9 +910,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     @Override
     public void onStop() {
         super.onStop();
-        if (DataUtils.isBlue(MapActivity.this) && mMinewBeaconManager != null) {
-            mMinewBeaconManager.stopScan();
-        }
+
     }
 
     @Override
