@@ -274,7 +274,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
 
 
     private void checkPause() {
-        if(mPointsEntity!=null){
+        if (mPointsEntity != null) {
             tour_name.setText(mPointsEntity.getName());
         }
         if (mycontrol != null && mycontrol.isPlay()) {
@@ -337,16 +337,18 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                     @Override
                     public void onSuccess(int whichRequest, ScenicSpotEntity scenicSpotEntity) {
                         dismissAlert();
-                        if (scenicSpotEntity!=null&&scenicSpotEntity.getCenterPoint()!=null)
-                            lp=new LatLonPoint(Double.parseDouble(scenicSpotEntity.getCenterPoint().getLatitude()),
+                        if (scenicSpotEntity != null && scenicSpotEntity.getCenterPoint() != null)
+                            lp = new LatLonPoint(Double.parseDouble(scenicSpotEntity.getCenterPoint().getLatitude()),
                                     Double.parseDouble(scenicSpotEntity.getCenterPoint().getLatitude()));
-                        if (scenicSpotEntity!=null&&scenicSpotEntity.getPoints()!=null&&scenicSpotEntity.getPoints().size()>0){
+                        if (scenicSpotEntity != null && scenicSpotEntity.getPoints() != null && scenicSpotEntity.getPoints().size() > 0) {
                             mPointsList.addAll(scenicSpotEntity.getPoints());
                             for (PointsEntity pointsEntity : scenicSpotEntity.getPoints()) {
                                 mPointsEntityMap.put(Integer.parseInt(pointsEntity.getPointId()), pointsEntity);
                                 setOverLay(pointsEntity.getType(), pointsEntity);
                             }
                         }
+                        mPointsEntityList.add(mPointsList);
+                        mPointsEntityList.add(mPointsList);
 
                     }
 
@@ -402,6 +404,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         @Override
         public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
             //清除上一次轨迹，避免重叠绘画
+            Log.d("dddd", "onCheckedChanged isChecked: "+isChecked+",points.size():"+points.size());
             if (polyline != null)
                 polyline.remove();
             if (isChecked) {
@@ -499,7 +502,6 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             polyline = aMap.addPolyline(new PolylineOptions().
                     addAll(pointLatLngs).width(14).color(0xAA0000FF));
             chooseItem = index;
-
             mAdapter = new CommonAdapter<PointsEntity>(MapActivity.this, R.layout.tour_line_item, mPointsEntityList.get(index)) {
                 @Override
                 protected void convert(final ViewHolder holder, final PointsEntity pointsEntity, final int position) {
@@ -521,7 +523,8 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                     });
                     if (pointsEntity.isShow()) {
                         addAnimMarker(pointsEntity);
-                        playMarkerAudio(pointsEntity);
+                        if (pointsEntity.getType() == 2)
+                            playMarkerAudio(pointsEntity);
                         holder.getView(R.id.tour_num).setBackground(MapActivity.this.getResources().getDrawable(R.drawable.tour_choose_item_bg));
                         ((TextView) holder.getView(R.id.tour_name)).setTextColor(MapActivity.this.getResources().getColor(R.color.color_fd7d6f));
                     } else {
@@ -629,15 +632,15 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                 dialog.dismiss();
             }
         });
-        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
         Window window = aroundDialog.getWindow();
-        lp.copyFrom(window.getAttributes());
+        layoutParams.copyFrom(window.getAttributes());
         if (isShowRec)
-            lp.y = 448;
+            layoutParams.y = 448;
         else
-            lp.y = 188;
-        lp.gravity = Gravity.TOP;
-        window.setAttributes(lp);
+            layoutParams.y = 188;
+        layoutParams.gravity = Gravity.TOP;
+        window.setAttributes(layoutParams);
         aroundDialog.show();
     }
 
@@ -727,22 +730,45 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     /**
      * 最近的地方
      *
-     * @param index 1、卫生间，2、卫生间，3、卫生间，4、卫生间，5、卫生间，6、卫生间
+     * @param index 1、卫生间，2、购物，3、停车场，4、餐厅，5、酒店住宿，6、大门
      */
     private void goFujinPlace(int index) {
+        LatLng secLatlng = new LatLng(lp.getLatitude(), lp.getLongitude());
+        float minDistance = AMapUtils.calculateLineDistance(startLatlng, new LatLng(0.0, 0.0));
         switch (index) {
             case 1:
+                calculateLatlng(3, minDistance, secLatlng);
                 break;
             case 2:
+                calculateLatlng(4, minDistance, secLatlng);
                 break;
             case 3:
+                calculateLatlng(7, minDistance, secLatlng);
                 break;
             case 4:
+                calculateLatlng(5, minDistance, secLatlng);
                 break;
             case 5:
+                calculateLatlng(6, minDistance, secLatlng);
                 break;
             case 6:
+                calculateLatlng(8, minDistance, secLatlng);
                 break;
+        }
+        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(secLatlng, mCurrentZoom));
+    }
+
+    private void calculateLatlng(int index, float minDistance, LatLng secLatlng) {
+        for (Integer integer : mPointsEntityMap.keySet()) {
+            if (index == integer) {
+                float lineDistance = AMapUtils.calculateLineDistance(startLatlng,
+                        new LatLng(mPointsEntityMap.get(integer).getLocation().getLatitude(), mPointsEntityMap.get(integer).getLocation().getLongitude()));
+                if (minDistance > lineDistance) {
+                    minDistance = lineDistance;
+                    mPointsEntity = mPointsEntityMap.get(integer);
+                    secLatlng = new LatLng(mPointsEntityMap.get(integer).getLocation().getLatitude(), mPointsEntityMap.get(integer).getLocation().getLongitude());
+                }
+            }
         }
     }
 
@@ -816,7 +842,8 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             addAnimMarker(mPointsEntity);
 
             Log.d("dddd", "onPointClick: " + marker.getTitle() + ",getPointId:" + mPointsEntity.getPointId() + "，mp3:" + mPointsEntity.getMp3());
-            playMarkerAudio(mPointsEntity);
+            if (mPointsEntity.getType() == 2)
+                playMarkerAudio(mPointsEntity);
             notifyRecyChanged();
             return true;
         }
@@ -909,7 +936,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         }
         //在activity执行onResume时执行mMapView.onResume ()，重新绘制加载地图
         mMapView.onResume();
-            mPointsEntity=SaveObjectUtils.getInstance(getApplicationContext()).getObject(Constants.NOW_POION, null);
+        mPointsEntity = SaveObjectUtils.getInstance(getApplicationContext()).getObject(Constants.NOW_POION, null);
         checkPause();
     }
 
@@ -972,7 +999,8 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             mopupWindow.dismiss();
             mPointsEntity = mPointsList.get(index);
             addAnimMarker(mPointsEntity);
-            playMarkerAudio(mPointsEntity);
+            if (mPointsEntity.getType() == 2)
+                playMarkerAudio(mPointsEntity);
             aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mPointsEntity.getLocation().getLatitude(), mPointsEntity.getLocation().getLongitude()), mCurrentZoom));
             if (!isShowLuxian)
                 notifyRecyChanged();
