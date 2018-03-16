@@ -314,8 +314,8 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             BaseConfig bg = BaseConfig.getInstance(getApplicationContext());
             String nowpaths = bg.getStringValue(Constants.NOW_PLAY, "-1");
             String hanepaths = QueueManager.getMp3();
-            Log.i("dddd","nowpaths="+nowpaths);
-            Log.i("dddd","hanepaths="+hanepaths);
+            Log.i("dddd", "nowpaths=" + nowpaths);
+            Log.i("dddd", "hanepaths=" + hanepaths);
             if (!nowpaths.equals(hanepaths)) {
                 EventBus.getDefault().post(new PlayEvent(hanepaths, true));
                 QueueManager.clear();
@@ -411,15 +411,16 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
             //清除上一次轨迹，避免重叠绘画
             Log.d("dddd", "onCheckedChanged isChecked: " + isChecked + ",points.size():" + points.size());
-            if (polyline != null)
-                polyline.remove();
             if (isChecked) {
                 isShowPolyLine = true;
                 //将points集合中的点绘制轨迹线条图层，显示在地图上
                 polyline = aMap.addPolyline(new PolylineOptions().
                         addAll(points).width(15).color(0xAAD1D1D1));
-            } else
+            } else {
                 isShowPolyLine = false;
+                if (polyline != null)
+                    polyline.remove();
+            }
         }
     };
 
@@ -497,10 +498,11 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             xlWindow.dismiss();
             pointLatLngs = new ArrayList<>();
             for (PointsEntity pointsEntity : mPointsEntityList.get(index)) {
-                pointLatLngs.add(new LatLng(pointsEntity.getLocation().getLatitude(), pointsEntity.getLocation().getLongitude()));
+                if (pointsEntity.getType() == 2)
+                    pointLatLngs.add(new LatLng(pointsEntity.getLocation().getLatitude(), pointsEntity.getLocation().getLongitude()));
             }
             aMap.clear();
-            for (int i = 0; i < pointLatLngs.size(); i++) {
+            for (int i = 0; i < mPointsEntityList.get(index).size(); i++) {
                 setMarkerLay(mPointsEntityList.get(index).get(i).getType());
             }
             if (polyline != null)
@@ -762,21 +764,23 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                 calculateLatlng(8, minDistance, secLatlng);
                 break;
         }
-        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(secLatlng, mCurrentZoom));
     }
 
     private void calculateLatlng(int index, float minDistance, LatLng secLatlng) {
         for (Integer integer : mPointsEntityMap.keySet()) {
-            if (index == integer) {
+            if (index == mPointsEntityMap.get(integer).getType()) {
                 float lineDistance = AMapUtils.calculateLineDistance(startLatlng,
                         new LatLng(mPointsEntityMap.get(integer).getLocation().getLatitude(), mPointsEntityMap.get(integer).getLocation().getLongitude()));
                 if (minDistance > lineDistance) {
                     minDistance = lineDistance;
                     mPointsEntity = mPointsEntityMap.get(integer);
                     secLatlng = new LatLng(mPointsEntityMap.get(integer).getLocation().getLatitude(), mPointsEntityMap.get(integer).getLocation().getLongitude());
+                    Log.d("dddd", "minDistance latitude: " + secLatlng.latitude + ",longitude:" + secLatlng.longitude);
                 }
             }
         }
+        Log.d("dddd", "calculateLatlng latitude: " + secLatlng.latitude + ",longitude:" + secLatlng.longitude);
+        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(secLatlng, mCurrentZoom));
     }
 
     @Override
