@@ -8,6 +8,7 @@ import com.cn.bent.sports.bean.PhotoPath;
 import com.cn.bent.sports.bean.PlayMapBean;
 import com.cn.bent.sports.bean.RailBean;
 import com.cn.bent.sports.bean.RankEntity;
+import com.cn.bent.sports.bean.ScenicSpotEntity;
 import com.cn.bent.sports.bean.UserMsgEntity;
 import com.zhl.network.huiqu.HuiquResult;
 import com.zhl.network.huiqu.HuiquTBResult;
@@ -39,6 +40,16 @@ public interface ApiService {
     @POST("outdoor/user/getCheckCode")
     Observable<HuiquTBResult> getcode(
             @Field("mobile") String phone);
+
+    /**
+     *  获取石燕湖数据
+     * @param scenicSpotId
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("outdoor?str=getSpotsByParkCode")
+    Observable<HuiquResult<ScenicSpotEntity>> getscenicSpotData(
+            @Field("scenicSpotId") String scenicSpotId);
 
     /**
      * 新闻评论

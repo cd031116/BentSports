@@ -64,6 +64,7 @@ import com.cn.bent.sports.bean.PlayBean;
 import com.cn.bent.sports.bean.PlayEvent;
 import com.cn.bent.sports.bean.PointsEntity;
 import com.cn.bent.sports.bean.RailBean;
+import com.cn.bent.sports.bean.ScenicSpotEntity;
 import com.cn.bent.sports.bean.StartEvent;
 import com.cn.bent.sports.database.QueueBean;
 import com.cn.bent.sports.database.QueueManager;
@@ -183,6 +184,8 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     @Override
     public void initView() {
         super.initView();
+        mMinewBeaconManager = MinewBeaconManager.getInstance(this);
+        checkBluetooth();
         NotificationCenter.defaultCenter().subscriber(ShowPoupEvent.class, disevent);
         EventBus.getDefault().register(this);
         if (aMap == null) {
@@ -326,34 +329,25 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
 
     private void getdot() {
         showAlert("......", true);
-        BaseApi.getDefaultService(this).getFenceAndDot()
-                .map(new HuiquRxFunction<RailBean>())
-                .compose(RxSchedulers.<RailBean>io_main())
-                .subscribe(new RxObserver<RailBean>(MapActivity.this, "login", 1, false) {
-                    @Override
-                    public void onSuccess(int whichRequest, RailBean info) {
-                        dismissAlert();
-                        for (int i = 0; i < info.getMp3_tag().size(); i++) {
-                            PointsEntity pointsEntity = new PointsEntity();
-                            pointsEntity.setPointId(info.getMp3_tag().get(i).getPlace_id());
-                            pointsEntity.setType(i / 2 + 2);
-                            PointsEntity.LocationBean locationBean = new PointsEntity.LocationBean();
-                            locationBean.setLatitude(Double.parseDouble(info.getMp3_tag().get(i).getLatitude()));
-                            locationBean.setLongitude(Double.parseDouble(info.getMp3_tag().get(i).getLongitude()));
-                            pointsEntity.setLocation(locationBean);
-                            pointsEntity.setName(info.getMp3_tag().get(i).getName());
-                            pointsEntity.setMp3(info.getMp3_tag().get(i).getMp3());
-                            mPointsList.add(pointsEntity);
-                            mPointsEntityMap.put(Integer.parseInt(info.getMp3_tag().get(i).getPlace_id()), pointsEntity);
-                            LatLng latLng = new LatLng(Double.parseDouble(info.getMp3_tag().get(i).getLatitude()), Double.parseDouble(info.getMp3_tag().get(i).getLongitude()));
-                            pointLatLngs.add(latLng);
-                        }
-                        mPointsEntityList.add(mPointsList);
-                        mPointsEntityList.add(mPointsList);
 
-                        for (Integer index : mPointsEntityMap.keySet()) {
-                            setOverLay(mPointsEntityMap.get(index).getType(), mPointsEntityMap.get(index));
+        BaseApi.getDefaultService(this).getscenicSpotData("1")
+                .map(new HuiquRxFunction<ScenicSpotEntity>())
+                .compose(RxSchedulers.<ScenicSpotEntity>io_main())
+                .subscribe(new RxObserver<ScenicSpotEntity>(MapActivity.this, "getscenicSpotData", 2, false) {
+                    @Override
+                    public void onSuccess(int whichRequest, ScenicSpotEntity scenicSpotEntity) {
+                        dismissAlert();
+                        if (scenicSpotEntity!=null&&scenicSpotEntity.getCenterPoint()!=null)
+                            lp=new LatLonPoint(Double.parseDouble(scenicSpotEntity.getCenterPoint().getLatitude()),
+                                    Double.parseDouble(scenicSpotEntity.getCenterPoint().getLatitude()));
+                        if (scenicSpotEntity!=null&&scenicSpotEntity.getPoints()!=null&&scenicSpotEntity.getPoints().size()>0){
+                            mPointsList.addAll(scenicSpotEntity.getPoints());
+                            for (PointsEntity pointsEntity : scenicSpotEntity.getPoints()) {
+                                mPointsEntityMap.put(Integer.parseInt(pointsEntity.getPointId()), pointsEntity);
+                                setOverLay(pointsEntity.getType(), pointsEntity);
+                            }
                         }
+
                     }
 
                     @Override
@@ -362,6 +356,43 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                         ToastUtils.showLongToast(MapActivity.this, e.getMessage());
                     }
                 });
+
+//        BaseApi.getDefaultService(this).getFenceAndDot()
+//                .map(new HuiquRxFunction<RailBean>())
+//                .compose(RxSchedulers.<RailBean>io_main())
+//                .subscribe(new RxObserver<RailBean>(MapActivity.this, "login", 1, false) {
+//                    @Override
+//                    public void onSuccess(int whichRequest, RailBean info) {
+//                        dismissAlert();
+//                        for (int i = 0; i < info.getMp3_tag().size(); i++) {
+//                            PointsEntity pointsEntity = new PointsEntity();
+//                            pointsEntity.setPointId(info.getMp3_tag().get(i).getPlace_id());
+//                            pointsEntity.setType(i / 2 + 2);
+//                            PointsEntity.LocationBean locationBean = new PointsEntity.LocationBean();
+//                            locationBean.setLatitude(Double.parseDouble(info.getMp3_tag().get(i).getLatitude()));
+//                            locationBean.setLongitude(Double.parseDouble(info.getMp3_tag().get(i).getLongitude()));
+//                            pointsEntity.setLocation(locationBean);
+//                            pointsEntity.setName(info.getMp3_tag().get(i).getName());
+//                            pointsEntity.setMp3(info.getMp3_tag().get(i).getMp3());
+//                            mPointsList.add(pointsEntity);
+//                            mPointsEntityMap.put(Integer.parseInt(info.getMp3_tag().get(i).getPlace_id()), pointsEntity);
+//                            LatLng latLng = new LatLng(Double.parseDouble(info.getMp3_tag().get(i).getLatitude()), Double.parseDouble(info.getMp3_tag().get(i).getLongitude()));
+//                            pointLatLngs.add(latLng);
+//                        }
+//                        mPointsEntityList.add(mPointsList);
+//                        mPointsEntityList.add(mPointsList);
+//
+//                        for (Integer index : mPointsEntityMap.keySet()) {
+//                            setOverLay(mPointsEntityMap.get(index).getType(), mPointsEntityMap.get(index));
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onError(int whichRequest, Throwable e) {
+//                        dismissAlert();
+//                        ToastUtils.showLongToast(MapActivity.this, e.getMessage());
+//                    }
+//                });
     }
 
     /**
