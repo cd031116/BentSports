@@ -75,9 +75,15 @@ public class TaskCationManager {
     }
 
     //设置已经播放
-    public static void updatePlay(PointsEntity enty) {
-        enty.setPlay(true);
-        TaskCationDB.getDB().update(null, enty);
+    public static void sethavePlay(String paths) {
+        List<PointsEntity> mTaskLists = TaskCationDB.getDB().select(null, PointsEntity.class);
+        for (PointsEntity info : mTaskLists) {
+            if(info.getMp3().equals(paths)){
+                info.setPlay(true);
+                TaskCationDB.getDB().update(null,info);
+                break;
+            }
+        }
     }
 
     //设置当前播放
@@ -91,6 +97,20 @@ public class TaskCationManager {
         TaskCationDB.getDB().deleteAll(null, PointsEntity.class);
         TaskCationDB.getDB().insert(null, mTaskLists);
     }
+
+
+    //重置所有播放
+    public static void updatePlay(String paths) {
+        List<PointsEntity> mTaskLists = TaskCationDB.getDB().select(null, PointsEntity.class);
+        for (PointsEntity info : mTaskLists) {
+            if(info.getMp3().equals(paths)){
+                info.setNow(false);
+                TaskCationDB.getDB().update(null,info);
+                break;
+            }
+        }
+    }
+
 
     //重置所有播放
     public static void updatePlay() {

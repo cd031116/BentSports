@@ -12,6 +12,7 @@ import com.cn.bent.sports.base.BaseConfig;
 import com.cn.bent.sports.bean.PlayBean;
 import com.cn.bent.sports.bean.PlayEvent;
 import com.cn.bent.sports.bean.StartEvent;
+import com.cn.bent.sports.database.TaskCationManager;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 
@@ -143,6 +144,7 @@ public class MusicService extends Service {
                         public void onPrepared(MediaPlayer mp) {
                             Log.i("dddd", "onPrepared");
                             mPlayer.start();
+                            TaskCationManager.sethavePlay(paths);
                             EventBus.getDefault().post(new StartEvent(true));
                         }
 
@@ -151,6 +153,7 @@ public class MusicService extends Service {
                         @Override
                         public void onCompletion(MediaPlayer mp) {
                             EventBus.getDefault().post(new StartEvent(false));
+                            TaskCationManager.updatePlay(paths);
                             SaveObjectUtils.getInstance(getApplicationContext()).setObject(Constants.PLAY_POSION, null);
                             if (mPlayer.isPlaying()) {
                                 mPlayer.stop();
