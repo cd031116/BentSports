@@ -24,6 +24,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.text.style.BulletSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -44,12 +45,20 @@ import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.maps.model.Polyline;
 import com.amap.api.maps.model.PolylineOptions;
 import com.amap.api.services.core.LatLonPoint;
+import com.amap.api.services.route.BusRouteResult;
+import com.amap.api.services.route.DrivePath;
+import com.amap.api.services.route.DriveRouteResult;
+import com.amap.api.services.route.RideRouteResult;
+import com.amap.api.services.route.RouteSearch;
+import com.amap.api.services.route.WalkPath;
+import com.amap.api.services.route.WalkRouteResult;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
@@ -65,6 +74,7 @@ import com.cn.bent.sports.database.TaskCationManager;
 import com.cn.bent.sports.evevt.DistanceEvent;
 import com.cn.bent.sports.evevt.ShowPoupEvent;
 import com.cn.bent.sports.evevt.ShowSubscriber;
+import com.cn.bent.sports.overlay.WalkRouteOverlay;
 import com.cn.bent.sports.recyclebase.CommonAdapter;
 import com.cn.bent.sports.recyclebase.ViewHolder;
 import com.cn.bent.sports.sensor.UpdateUiCallBack;
@@ -80,6 +90,7 @@ import com.cn.bent.sports.widget.AroundDialog;
 import com.cn.bent.sports.widget.ExxitDialog;
 import com.cn.bent.sports.widget.GotoWhereDialog;
 import com.cn.bent.sports.widget.NearDialog;
+import com.cn.bent.sports.widget.RouteTool;
 import com.minew.beacon.BeaconValueIndex;
 import com.minew.beacon.BluetoothState;
 import com.minew.beacon.MinewBeacon;
@@ -105,7 +116,7 @@ import butterknife.OnClick;
  * Created by dawn on 2018/3/8.
  */
 
-public class MapActivity extends BaseActivity implements AMap.OnMyLocationChangeListener {
+public class MapActivity extends BaseActivity implements AMap.OnMyLocationChangeListener, RouteSearch.OnRouteSearchListener {
     @Bind(R.id.mapView)
     MapView mMapView;
     @Bind(R.id.shaixuan)
@@ -160,6 +171,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     private LineListPoupWindow mopupWindow;
     private XianluPoupWindow xlWindow;
     private CommonAdapter<PointsEntity> mAdapter;
+    private RouteSearch routeSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -190,6 +202,8 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
 //        aMap.setOnMultiPointClickListener(multiPointClickListener);
         aMap.setOnMarkerClickListener(mMarkerClickListener);
         aMap.setOnCameraChangeListener(onCameraChangeListener);
+        routeSearch = new RouteSearch(this);
+        routeSearch.setRouteSearchListener(this);
         stepCheckBox.setOnCheckedChangeListener(stepCheckedChangeListener);
         if (Build.VERSION.SDK_INT >= 23) {
             showPermission();
@@ -302,9 +316,9 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             }
             SaveObjectUtils.getInstance(getApplicationContext()).setObject(Constants.NOW_POION, null);
             yinp_bf.setBackgroundResource(R.drawable.tizhibf);
-           if(TaskCationManager.getQuen()>=0){
-               chanVioce(TaskCationManager.getQuen());
-           }
+            if (TaskCationManager.getQuen() >= 0) {
+                chanVioce(TaskCationManager.getQuen());
+            }
         }
     }
 
@@ -331,7 +345,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                         }
                         if (scenicSpotEntity != null && scenicSpotEntity.getPoints() != null && scenicSpotEntity.getPoints().size() > 0) {
                             mPointsList.addAll(scenicSpotEntity.getPoints());
-                            if(TaskCationManager.getSize()<=0){
+                            if (TaskCationManager.getSize() <= 0) {
                                 TaskCationManager.insert(scenicSpotEntity.getPoints());
                             }
                             Log.w("dddd", "onSuccess size: " + scenicSpotEntity.getPoints().size());
@@ -485,7 +499,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             xlWindow.dismiss();
             pointLatLngs = new ArrayList<>();
             for (PointsEntity pointsEntity : mPointsEntityList.get(index)) {
-                if (pointsEntity.getType() == 2)
+                if (pointsEntity.getType() == 4)
                     pointLatLngs.add(new LatLng(pointsEntity.getLocation().getLatitude(), pointsEntity.getLocation().getLongitude()));
             }
             aMap.clear();
@@ -494,8 +508,26 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             }
             if (polyline != null)
                 polyline.remove();
-            polyline = aMap.addPolyline(new PolylineOptions().
-                    addAll(pointLatLngs).width(14).color(0xAA0000FF));
+            LatLng oneLatlng = null;
+            LatLng startLatlng = null;
+            for (int num = 0; num < pointLatLngs.size(); num++) {
+                if (num == 0) {
+                    oneLatlng = pointLatLngs.get(num);
+                    startLatlng = pointLatLngs.get(num);
+                } else {
+                    RouteSearch.WalkRouteQuery query = new RouteSearch.WalkRouteQuery(
+                            new RouteSearch.FromAndTo(new LatLonPoint(startLatlng.latitude, startLatlng.longitude),
+                                    new LatLonPoint(pointLatLngs.get(num).latitude, pointLatLngs.get(num).longitude)),
+                            RouteSearch.WalkDefault);
+                    routeSearch.calculateWalkRouteAsyn(query);
+                    startLatlng = pointLatLngs.get(num);
+                }
+            }
+            if (oneLatlng != null)
+                aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(oneLatlng, mCurrentZoom));
+
+//                    polyline = aMap.addPolyline(new PolylineOptions().
+//                    addAll(pointLatLngs).width(14).color(0xAA0000FF));
             chooseItem = index;
             mAdapter = new CommonAdapter<PointsEntity>(MapActivity.this, R.layout.tour_line_item, mPointsEntityList.get(index)) {
                 @Override
@@ -538,6 +570,41 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                     mPointsEntityList.get(index).get(0).getLocation().getLongitude()), mCurrentZoom));
         }
     };
+
+    @Override
+    public void onBusRouteSearched(BusRouteResult busRouteResult, int i) {
+
+    }
+
+    @Override
+    public void onDriveRouteSearched(DriveRouteResult driveRouteResult, int i) {
+
+    }
+
+    @Override
+    public void onWalkRouteSearched(WalkRouteResult walkRouteResult, int i) {
+        WalkPath walkPath = walkRouteResult.getPaths().get(0);
+        RouteTool walkRouteOverlay = new RouteTool(this, aMap, walkPath, walkRouteResult.getStartPos(),
+                walkRouteResult.getTargetPos());
+        for (int index = 1; index <= pointLatLngs.size(); index++) {
+            Log.d("dddd", "onWalkRouteSearched: " + walkRouteResult.getStartPos().getLatitude()
+                    + ",latitude:" + pointLatLngs.get(index).latitude);
+            if (walkRouteResult.getStartPos().getLatitude() == pointLatLngs.get(index).latitude &&
+                    walkRouteResult.getStartPos().getLongitude() == pointLatLngs.get(index).longitude) {
+                walkRouteOverlay.getStartBitmapDescriptor(R.drawable.position_1);
+
+                break;
+            }
+        }
+        walkRouteOverlay.setView(R.color.color_fd7d6f, 18f);
+        walkRouteOverlay.setNodeIconVisibility(false);//隐藏转弯的节点
+        walkRouteOverlay.addToMap();
+    }
+
+    @Override
+    public void onRideRouteSearched(RideRouteResult rideRouteResult, int i) {
+
+    }
 
     private void setLuxianPng(boolean isShowLuxian) {
         Drawable drawable = null;
@@ -801,7 +868,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
 
             points.add(ll);//如果要运动完成后画整个轨迹，位置点都在这个集合中
             last = ll;
-            if (isShowPolyLine){
+            if (isShowPolyLine) {
                 if (polyline != null)
                     polyline.remove();
                 //将points集合中的点绘制轨迹线条图层，显示在地图上
@@ -1072,9 +1139,9 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                                     if (jieguo.equals(majer)) {
                                         if (!TextUtils.isEmpty(mPointsList.get(i).getMp3())) {
                                             QueueManager.update(new QueueBean(mPointsList.get(i).getMp3()));
-                                            if(TaskCationManager.isPlay(i)||TaskCationManager.isNow(i)){
+                                            if (TaskCationManager.isPlay(i) || TaskCationManager.isNow(i)) {
 
-                                            }else {
+                                            } else {
                                                 chanVioce(i);
                                             }
                                             break;
@@ -1109,14 +1176,15 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     ExxitDialog mDialog;
 
     //------------------------切换语音
-    long sTime=0;
+    long sTime = 0;
+
     private void chanVioce(final int positon) {
         //没有播放过又不是当前播放的
         final String clickpath = mPointsList.get(positon).getMp3();
-      if(System.currentTimeMillis()-sTime<7000){
-        return;
-      }
-        sTime=System.currentTimeMillis();
+        if (System.currentTimeMillis() - sTime < 7000) {
+            return;
+        }
+        sTime = System.currentTimeMillis();
         if (mycontrol.isPlay()) {
             TaskCationManager.addQuen(positon);
             if (mDialog != null && mDialog.isShowing()) {
