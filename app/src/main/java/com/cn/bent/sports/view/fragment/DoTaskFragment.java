@@ -349,7 +349,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
         Log.d("aaaa", "onResume: aa");
         BaseConfig bf = BaseConfig.getInstance(getActivity());
         times_s = bf.getLongValue(Constants.IS_TIME, 0);
-        mLoction = TaskCationManager.getHistory();
+//        mLoction = TaskCationManager.getHistory();
         if (mLoction.size() <= 0) {
             bf.setLongValue(Constants.IS_TIME, 0);
         }

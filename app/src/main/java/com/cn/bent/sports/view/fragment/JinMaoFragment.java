@@ -154,7 +154,7 @@ public class JinMaoFragment extends BaseFragment implements AMap.OnMarkerClickLi
 
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
-        mLoction = TaskCationManager.getHistory();
+//        mLoction = TaskCationManager.getHistory();
         user = SaveObjectUtils.getInstance(getActivity()).getObject(Constants.USER_INFO, null);
         handler2 = new Handler();
         EventBus.getDefault().register(this);
@@ -326,7 +326,7 @@ public class JinMaoFragment extends BaseFragment implements AMap.OnMarkerClickLi
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ReFreshEvent event) {
-        mLoction = TaskCationManager.getHistory();
+//        mLoction = TaskCationManager.getHistory();
         BaseConfig bf = BaseConfig.getInstance(getActivity());
         if (mLoction.size() <= 0) {
             handler2.removeCallbacks(runnable2);

@@ -105,7 +105,7 @@ public class MusicService extends Service {
         }
 
         public void setPatss(String paths, boolean ischange ,String namse) {
-            played(paths, ischange,namse);
+            played(paths, ischange);
         }
 
     }
@@ -113,12 +113,12 @@ public class MusicService extends Service {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(PlayEvent event) {
-        played(event.getPaths(), event.isHuan(),event.getPaths());
+        played(event.getPaths(), event.isHuan());
         Log.i("dddd", "onEvent");
     }
 
 
-    private void played(final String paths, boolean qiehuan,final String paname) {
+    private void played(final String paths, boolean qiehuan) {
         if (mPlayer == null) {
             mPlayer = new MediaPlayer();
         }
@@ -135,8 +135,6 @@ public class MusicService extends Service {
                 try {
                     mPlayer.setDataSource(paths);
                     Log.i("dddd", "setDataSource");
-                    BaseConfig bg=BaseConfig.getInstance(getApplicationContext());
-                    bg.setStringValue(Constants.NOW_PLAY,paths);
                     isHave = true;
                     mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
                     mPlayer.prepareAsync();

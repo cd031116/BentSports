@@ -196,7 +196,7 @@ public class PlayWebViewActivity extends BaseActivity {
                     public void onSuccess(int whichRequest, AddScoreEntity addScoreEntity) {
                         if (addScoreEntity.getBody().getAddStatus() == 1) {
                             dismissAlert();
-                            TaskCationManager.update(gameId + "", DataUtils.getlongs());
+//                            TaskCationManager.update(gameId + "", DataUtils.getlongs());
                             LoginBase user = (LoginBase) SaveObjectUtils.getInstance(PlayWebViewActivity.this).getObject(Constants.USER_INFO, null);
                             setScore(user, gameEntity);
                             EventBus.getDefault().post(new InfoEvent());

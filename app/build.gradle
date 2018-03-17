@@ -20,9 +20,9 @@ android {
         abortOnError false
     }
 
-    dexOptions {
-        javaMaxHeapSize "4g"
-    }
+//    dexOptions {
+//        javaMaxHeapSize "4g"
+//    }
     buildTypes {
         release {
             buildConfigField "boolean", "LOG_DEBUG", "false"

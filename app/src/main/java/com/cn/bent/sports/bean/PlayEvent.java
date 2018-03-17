@@ -16,7 +16,8 @@ private boolean isHuan;
         return paths;
     }
 
-    public  PlayEvent(String paths,boolean huan) {
+
+    public  PlayEvent(String paths, boolean huan) {
         this.paths = paths;
         this.isHuan = huan;
     }

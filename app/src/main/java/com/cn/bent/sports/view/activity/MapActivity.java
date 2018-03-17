@@ -9,7 +9,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
@@ -42,19 +41,14 @@ import com.amap.api.maps.AMap;
 import com.amap.api.maps.AMapUtils;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
-import com.amap.api.maps.model.BitmapDescriptor;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
-import com.amap.api.maps.model.MultiPointItem;
-import com.amap.api.maps.model.MultiPointOverlay;
-import com.amap.api.maps.model.MultiPointOverlayOptions;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.maps.model.Polyline;
 import com.amap.api.maps.model.PolylineOptions;
-import com.amap.api.maps.model.Tile;
 import com.amap.api.services.core.LatLonPoint;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
@@ -63,17 +57,16 @@ import com.cn.bent.sports.base.BaseConfig;
 import com.cn.bent.sports.bean.PlayBean;
 import com.cn.bent.sports.bean.PlayEvent;
 import com.cn.bent.sports.bean.PointsEntity;
-import com.cn.bent.sports.bean.RailBean;
 import com.cn.bent.sports.bean.ScenicSpotEntity;
 import com.cn.bent.sports.bean.StartEvent;
 import com.cn.bent.sports.database.QueueBean;
 import com.cn.bent.sports.database.QueueManager;
+import com.cn.bent.sports.database.TaskCationManager;
 import com.cn.bent.sports.evevt.DistanceEvent;
 import com.cn.bent.sports.evevt.ShowPoupEvent;
 import com.cn.bent.sports.evevt.ShowSubscriber;
 import com.cn.bent.sports.recyclebase.CommonAdapter;
 import com.cn.bent.sports.recyclebase.ViewHolder;
-import com.cn.bent.sports.scan.CaptureActivity;
 import com.cn.bent.sports.sensor.UpdateUiCallBack;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.DataUtils;
@@ -93,7 +86,6 @@ import com.minew.beacon.MinewBeacon;
 import com.minew.beacon.MinewBeaconManager;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
-import com.zhl.network.huiqu.HuiquRxFunction;
 import com.zhl.network.huiqu.ResponseRxFunction;
 
 import org.aisen.android.component.eventbus.NotificationCenter;
@@ -310,15 +302,9 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             }
             SaveObjectUtils.getInstance(getApplicationContext()).setObject(Constants.NOW_POION, null);
             yinp_bf.setBackgroundResource(R.drawable.tizhibf);
-            BaseConfig bg = BaseConfig.getInstance(getApplicationContext());
-            String nowpaths = bg.getStringValue(Constants.NOW_PLAY, "-1");
-            String hanepaths = QueueManager.getMp3();
-            Log.i("dddd", "nowpaths=" + nowpaths);
-            Log.i("dddd", "hanepaths=" + hanepaths);
-            if (!nowpaths.equals(hanepaths)) {
-                EventBus.getDefault().post(new PlayEvent(hanepaths, true));
-                QueueManager.clear();
-            }
+           if(TaskCationManager.getQuen()>=0){
+               chanVioce(TaskCationManager.getQuen());
+           }
         }
     }
 
@@ -331,7 +317,6 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
 
     private void getdot() {
         showAlert("......", true);
-
         BaseApi.getDefaultService(this).getscenicSpotData("1")
                 .map(new ResponseRxFunction<ScenicSpotEntity>())
                 .compose(RxSchedulers.<ScenicSpotEntity>io_main())
@@ -346,6 +331,9 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                         }
                         if (scenicSpotEntity != null && scenicSpotEntity.getPoints() != null && scenicSpotEntity.getPoints().size() > 0) {
                             mPointsList.addAll(scenicSpotEntity.getPoints());
+                            if(TaskCationManager.getSize()<=0){
+                                TaskCationManager.insert(scenicSpotEntity.getPoints());
+                            }
                             Log.w("dddd", "onSuccess size: " + scenicSpotEntity.getPoints().size());
                             for (PointsEntity pointsEntity : scenicSpotEntity.getPoints()) {
                                 mPointsEntityMap.put(pointsEntity.getPointId(), pointsEntity);
@@ -1084,9 +1072,13 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                                     if (jieguo.equals(majer)) {
                                         if (!TextUtils.isEmpty(mPointsList.get(i).getMp3())) {
                                             QueueManager.update(new QueueBean(mPointsList.get(i).getMp3()));
-                                            chanVioce(i);
+                                            if(TaskCationManager.isPlay(i)||TaskCationManager.isNow(i)){
+
+                                            }else {
+                                                chanVioce(i);
+                                            }
+                                            break;
                                         }
-                                        break;
                                     }
                                 }
                             }
@@ -1117,23 +1109,27 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     ExxitDialog mDialog;
 
     //------------------------切换语音
+    long sTime=0;
     private void chanVioce(final int positon) {
+        //没有播放过又不是当前播放的
         final String clickpath = mPointsList.get(positon).getMp3();
+      if(System.currentTimeMillis()-sTime<7000){
+        return;
+      }
+        sTime=System.currentTimeMillis();
         if (mycontrol.isPlay()) {
-            BaseConfig bg = BaseConfig.getInstance(getApplicationContext());
-            String nowpaths = bg.getStringValue(Constants.NOW_PLAY, "");
-            if (nowpaths.equals(clickpath)) {
-                return;
-            }
+            TaskCationManager.addQuen(positon);
             if (mDialog != null && mDialog.isShowing()) {
                 return;
             }
+
             mDialog = new ExxitDialog(MapActivity.this, R.style.dialog, "正在介绍当前景点,是否切换至下一个点?", new ExxitDialog.OnCloseListener() {
                 @Override
                 public void onClick(Dialog dialog, boolean confirm) {
                     if (confirm) {
                         mDialog.dismiss();
                         EventBus.getDefault().post(new PlayEvent(clickpath, true));
+                        TaskCationManager.updateNowPlay(positon);
                         QueueManager.clear();
                         mPointsEntity = mPointsList.get(positon);
                         tour_name.setText(mPointsEntity.getName());
@@ -1144,10 +1140,9 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                 }
             });
             mDialog.setPositiveButton("切换").show();
-
         } else {
             EventBus.getDefault().post(new PlayEvent(clickpath, true));
-            QueueManager.clear();
+            TaskCationManager.updateNowPlay(positon);
             mPointsEntity = mPointsList.get(positon);
             tour_name.setText(mPointsEntity.getName());
         }

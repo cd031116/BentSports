@@ -11,7 +11,8 @@ import java.util.List;
 
 public class PointsEntity implements Serializable{
 
-
+    public PointsEntity() {
+    }
     /**
      * pointId : 44
      * location : {"longitude":113.088348,"latitude":28.006678}
@@ -32,6 +33,33 @@ public class PointsEntity implements Serializable{
     private String pointImg;
     private List<IBeaconsBean> iBeacons;
     private boolean isShow;
+    private boolean isPlay;//以播放
+    private  boolean isNow;//当前播放点
+    private  boolean isQuen;//在队列
+
+    public boolean isQuen() {
+        return isQuen;
+    }
+
+    public void setQuen(boolean quen) {
+        isQuen = quen;
+    }
+
+    public boolean isPlay() {
+        return isPlay;
+    }
+
+    public void setPlay(boolean play) {
+        isPlay = play;
+    }
+
+    public boolean isNow() {
+        return isNow;
+    }
+
+    public void setNow(boolean now) {
+        isNow = now;
+    }
 
     public boolean isShow() {
         return isShow;
