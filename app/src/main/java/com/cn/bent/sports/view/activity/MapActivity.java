@@ -138,7 +138,6 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     RecyclerView tour_list;
 
     private boolean isFirstLoc = true; // 是否首次定位
-    private boolean isShowRec = true; // 是否显示列表
     private boolean isShowLuxian = true; // 是否显示路线
     float mCurrentZoom = 18f;//默认地图缩放比例值
 
@@ -413,9 +412,9 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             Log.d("dddd", "onCheckedChanged isChecked: " + isChecked + ",points.size():" + points.size());
             if (isChecked) {
                 isShowPolyLine = true;
-                //将points集合中的点绘制轨迹线条图层，显示在地图上
-                polyline = aMap.addPolyline(new PolylineOptions().
-                        addAll(points).width(15).color(0xAAD1D1D1));
+//                //将points集合中的点绘制轨迹线条图层，显示在地图上
+//                polyline = aMap.addPolyline(new PolylineOptions().
+//                        addAll(points).width(15).color(0xAAD1D1D1));
             } else {
                 isShowPolyLine = false;
                 if (polyline != null)
@@ -644,10 +643,10 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
         Window window = aroundDialog.getWindow();
         layoutParams.copyFrom(window.getAttributes());
-        if (isShowRec)
-            layoutParams.y = 448;
-        else
+        if (isShowLuxian)
             layoutParams.y = 188;
+        else
+            layoutParams.y = 448;
         layoutParams.gravity = Gravity.TOP;
         window.setAttributes(layoutParams);
         aroundDialog.show();
@@ -814,10 +813,13 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
 
             points.add(ll);//如果要运动完成后画整个轨迹，位置点都在这个集合中
             last = ll;
-//            if (isShowPolyLine)
-//                //将points集合中的点绘制轨迹线条图层，显示在地图上
-//                polyline = aMap.addPolyline(new PolylineOptions().
-//                        addAll(points).width(15).color(0xAAD1D1D1));
+            if (isShowPolyLine){
+                if (polyline != null)
+                    polyline.remove();
+                //将points集合中的点绘制轨迹线条图层，显示在地图上
+                polyline = aMap.addPolyline(new PolylineOptions().
+                        addAll(points).width(15).color(0xAAD1D1D1));
+            }
         }
     }
 
@@ -829,18 +831,14 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
      */
     private LatLng getMostAccuracyLocation(Location location) {
 
-        Log.d("dddd", "getMostAccuracyLocation getAccuracy: " + location.getAccuracy());
-        if (location.getAccuracy() > 40) {//gps位置精度大于40米的点直接弃用
+        LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
+        Log.d("dddd", "getMostAccuracyLocation getAccuracy: " + AMapUtils.calculateLineDistance(last, ll));
+
+        if (AMapUtils.calculateLineDistance(last, ll) > 20) {
+            last = ll;
+            points.clear();//有任意连续两点位置大于10，重新取点
             return null;
         }
-
-        LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
-
-//        if (AMapUtils.calculateLineDistance(last, ll) > 10) {
-//            last = ll;
-//            points.clear();//有任意连续两点位置大于10，重新取点
-//            return null;
-//        }
         points.add(ll);
         last = ll;
         return ll;

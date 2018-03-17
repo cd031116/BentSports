@@ -105,7 +105,7 @@ public class PointsEntity implements Serializable{
         this.iBeacons = iBeacons;
     }
 
-    public static class LocationBean {
+    public static class LocationBean implements Serializable{
         /**
          * longitude : 113.088348
          * latitude : 28.006678
@@ -131,7 +131,7 @@ public class PointsEntity implements Serializable{
         }
     }
 
-    public static class IBeaconsBean {
+    public static class IBeaconsBean implements Serializable{
         /**
          * major : 10003
          * minor : 1
