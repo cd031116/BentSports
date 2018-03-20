@@ -35,7 +35,6 @@ import com.cn.bent.sports.bean.MapDot;
 import com.cn.bent.sports.bean.PlayMapBean;
 import com.cn.bent.sports.bean.RailBean;
 import com.cn.bent.sports.bean.ReFreshEvent;
-import com.cn.bent.sports.scan.CaptureActivity;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.DataUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
@@ -47,11 +46,14 @@ import com.cn.bent.sports.view.activity.RuleActivity;
 import com.cn.bent.sports.view.activity.ZoomActivity;
 import com.cn.bent.sports.view.poupwindow.DoTaskPoupWindow;
 import com.cn.bent.sports.view.poupwindow.TalkPoupWindow;
+import com.google.zxing.Result;
 import com.minew.beacon.BeaconValueIndex;
 import com.minew.beacon.BluetoothState;
 import com.minew.beacon.MinewBeacon;
 import com.minew.beacon.MinewBeaconManager;
-import com.uuzuche.lib_zxing.activity.CodeUtils;
+import com.vondear.rxtools.RxActivityTool;
+import com.vondear.rxtools.activity.ActivityScanerCode;
+import com.vondear.rxtools.interfaces.OnRxScanerListener;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.HuiquRxFunction;
@@ -112,23 +114,6 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
     private TalkPoupWindow soundWindow;
     private boolean isGame = false;
     //---------------------
-//    AMapLocationListener mAMapLocationListener = new AMapLocationListener() {
-//        @Override
-//        public void onLocationChanged(AMapLocation aMapLocation) {
-//            if (aMapLocation != null) {
-//                if (aMapLocation.getErrorCode() == 0) {
-//                    //可在其中解析amapLocation获取相应内容。
-//                    latitude = String.valueOf(aMapLocation.getLatitude());
-//                    longitude = String.valueOf(aMapLocation.getLongitude());
-//                    mStartPoint = new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude());
-//                    addLocaToMap();
-//                } else {
-//                    //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
-//                    //ToastUtils.showShortToast(getActivity(), "获取位置信息失败!");
-//                }
-//            }
-//        }
-//    };
 
 
     @Override
@@ -166,21 +151,6 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
     @Override
     protected void initData() {
         addLocaToMap();
-//        mLocationClient = new AMapLocationClient(getActivity());
-////设置定位回调监听
-//        mLocationClient.setLocationListener(mAMapLocationListener);
-////初始化AMapLocationClientOption对象
-//        mLocationOption = new AMapLocationClientOption();
-//        //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。
-//        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-//        //设置定位模式为AMapLocationMode.Device_Sensors，仅设备模式。
-////        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Device_Sensors);
-//        mLocationOption.setInterval(1000 * 3);
-//        //给定位客户端对象设置定位参数
-//        mLocationClient.setLocationOption(mLocationOption);
-//        //启动定位
-//        mLocationOption.setOnceLocation(false);
-//        mLocationClient.startLocation();
     }
 
     @Override
@@ -280,8 +250,6 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
         myLocationStyle.radiusFillColor(Color.argb(100, 249, 222, 222));//
         aMap.setMyLocationStyle(myLocationStyle);
         aMap.setOnMyLocationChangeListener(this);
-//        aMap.setMyLocationType(MyLocationStyle.LOCATION_TYPE_MAP_ROTATE_NO_CENTER);
-//        aMap.setMyLocationType(MyLocationStyle.LOCATION_TYPE_FOLLOW_NO_CENTER);
     }
 
 
@@ -471,6 +439,20 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
 
     }
 
+    OnRxScanerListener listener=new OnRxScanerListener(){
+
+        @Override
+        public void onSuccess(String type, Result result) {
+
+        }
+
+        @Override
+        public void onFail(String type, String message) {
+
+        }
+    };
+
+
     private DoTaskPoupWindow.ItemInclick itemsOnClick = new DoTaskPoupWindow.ItemInclick() {
         @Override
         public void ItemClick(int index) {
@@ -482,8 +464,8 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
             }
             if (index == 1) {
                 if ("14".equals(place_list.get(t_ids).getGame_id())) {
-                    Intent intent = new Intent(getActivity(), CaptureActivity.class);
-                    startActivityForResult(intent, REQUEST_Scan);
+                    RxActivityTool.skipActivityForResult(getActivity(),ActivityScanerCode.class,REQUEST_Scan);
+
                 } else if ("15".equals(place_list.get(t_ids).getGame_id())) {
                     Intent intent = new Intent(getActivity(), ArActivity.class);
                     intent.putExtra("gameId", place_list.get(t_ids).getGame_id());
@@ -654,25 +636,17 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                     if (bundle == null) {
                         return;
                     }
-                    if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
-                        String result = bundle.getString(CodeUtils.RESULT_STRING);
-                        if ("B33832EF5EFF3EFF30B1B646B6F2410F".equals(result)) {
-                            Intent intent = new Intent(getActivity(), PlayWebViewActivity.class);
-                            intent.putExtra("gameId", place_list.get(t_ids).getGame_id());
-                            intent.putExtra("gameUrl", place_list.get(t_ids).getGame_url());
-                            startActivity(intent);
-                        } else {
-                            ToastUtils.showShortToast(getActivity(), "二维码不匹配");
-                        }
-                        t_ids = -1;
-                    } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
-                        ToastUtils.showShortToast(getActivity(), "二维码不匹配");
-                        t_ids = -1;
+                    String jieguo=data.getStringExtra("SCAN_RESULT");
+                    if ("B33832EF5EFF3EFF30B1B646B6F2410F".equals(jieguo)) {
+                        Intent intent = new Intent(getActivity(), PlayWebViewActivity.class);
+                        intent.putExtra("gameId", place_list.get(t_ids).getGame_id());
+                        intent.putExtra("gameUrl", place_list.get(t_ids).getGame_url());
+                        startActivity(intent);
+                    }else {
+                        ToastUtils.showShortToast(getActivity(),"二维码不匹配");
                     }
-                } else {
-                    ToastUtils.showShortToast(getActivity(), "无结果");
+                    break;
                 }
-                break;
         }
     }
 

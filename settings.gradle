@@ -1,1 +1,1 @@
-include ':app', ':network', ':library-release'
+include ':app', ':network', ':library-release', ':RxTools-library'

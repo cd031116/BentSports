@@ -16,41 +16,87 @@
             android:orientation="vertical"
             android:scrollbars="none">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="315px"
-                android:background="@drawable/bg_person"
-                android:gravity="center_vertical"
-                android:padding="43px">
+                android:layout_height="600px"
+                android:background="#FD7066"
+                android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/user_photo"
-                    android:layout_width="208px"
-                    android:layout_height="208px"
-                    android:background="@drawable/default_head"
-                    android:layout_centerVertical="true" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="315px"
+                    android:gravity="center_vertical"
+                    android:padding="43px">
+
+                    <TextView
+                        android:id="@+id/nick_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="100px"
+                        android:text="分享"
+                        android:textColor="#ffffff"
+                        android:textSize="48px" />
+
+
+                    <ImageView
+                        android:id="@+id/user_photo"
+                        android:layout_width="208px"
+                        android:layout_height="208px"
+                        android:layout_centerInParent="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/default_head" />
+
+
+                    <TextView
+                        android:id="@+id/setting"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="100px"
+                        android:text="消息"
+                        android:textColor="#ffffff"
+                        android:textSize="48px" />
+
+                </RelativeLayout>
 
                 <TextView
-                    android:id="@+id/nick_name"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="40px"
-                    android:layout_toRightOf="@+id/user_photo"
-                    android:textColor="#df4d4d"
-                    android:textSize="48px" />
+                    android:gravity="center_horizontal"
+                    android:text="钱多多"
+                    android:textColor="#ffffff"
+                    android:textSize="56px" />
 
 
-                <ImageView
-                    android:id="@+id/setting"
-                    android:layout_width="62px"
-                    android:layout_height="62px"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="51px"
-                    android:background="@drawable/shezhi" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="43px">
 
-            </RelativeLayout>
+                    <TextView
+                        android:id="@+id/scrore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="34234234"
+                        android:textColor="#ffffff"
+                        android:textSize="46px" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/scrore"
+                        android:text="34234234"
+                        android:textColor="#ffffff"
+                        android:textSize="46px" />
+
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -97,13 +143,13 @@
                 android:layout_marginTop="28px"
                 android:background="#ffffff"
                 android:gravity="center"
-                android:paddingTop="60px"
                 android:paddingBottom="96px"
+                android:paddingTop="60px"
                 android:text="收集到的卡片"
                 android:textColor="#df4d4d"
                 android:textSize="43px" />
 
-            <include layout="@layout/card_layout"/>
+            <include layout="@layout/card_layout" />
 
 
         </LinearLayout>

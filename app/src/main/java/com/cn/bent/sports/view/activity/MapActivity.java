@@ -1034,6 +1034,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                 break;
             default:
                 break;
+
         }
     }
 

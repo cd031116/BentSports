@@ -1,19 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipToPadding="true"
     android:fitsSystemWindows="true"
+    android:orientation="vertical"
     tools:context="com.cn.bent.sports.MainActivity">
 
    <FrameLayout
        android:id="@+id/id_content"
        android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       android:layout_marginBottom="150px"/>
+       android:layout_height="0dp"
+       android:layout_weight="1"/>
+
+   <com.ashokvarma.bottomnavigation.BottomNavigationBar
+       android:id="@+id/navigationBar"
+       android:layout_width="match_parent"
+       android:layout_height="150px"
+       android:layout_gravity="bottom"
+       android:layout_alignParentBottom="true"/>
 
 
-
-</RelativeLayout>
+</LinearLayout>

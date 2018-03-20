@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.cn.bent.sports.utils.SupportMultipleScreensUtil;
 import com.cn.bent.sports.widget.ShowMsgDialog;
+import com.vondear.rxtools.view.dialog.RxDialogLoading;
 
 import butterknife.ButterKnife;
 
@@ -23,7 +24,7 @@ import butterknife.ButterKnife;
 
 public abstract class BaseFragment extends Fragment {
 
-    private ShowMsgDialog progressDialog;
+    private RxDialogLoading progressDialog;
 
     protected Activity mActivity;
 
@@ -83,23 +84,12 @@ public abstract class BaseFragment extends Fragment {
      * @param txt
      */
     public void showAlert(String txt, final boolean isCancel) {
-        if (!"".equals(txt) && txt != null) {
-            if (progressDialog == null) {
-                progressDialog = new ShowMsgDialog(getActivity(), isCancel);
+        if(!"".equals(txt)&&txt!=null){
+            if(progressDialog==null){
+                progressDialog=new RxDialogLoading(getActivity(),isCancel);
             }
-            progressDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
-                @Override
-                public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-                    if (keyCode == KeyEvent.KEYCODE_BACK) {
-                        if (isCancel) {
-
-                        }
-                    }
-                    return false;
-                }
-            });
+            progressDialog.setLoadingText(txt);
             progressDialog.show();
-            progressDialog.showText(txt);
         }
     }
 

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="800px"
+        android:background="#60000000"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="200px"
+            android:text="石燕湖欢迎您!"
+            android:textColor="#ffffff"
+            android:textSize="56px" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="100px"
+            android:text="您今天走了"
+            android:textColor="#ffffff"
+            android:textSize="50px" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="40px"
+            android:text="324342步"
+            android:textColor="#ffffff"
+            android:textSize="70px" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="40px"
+            android:text="查看排行"
+            android:textColor="#ffffff"
+            android:textSize="50px" />
+
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/go_daolan"
+        android:layout_width="match_parent"
+        android:layout_height="140px"
+        android:layout_marginLeft="100px"
+        android:layout_marginRight="100px"
+        android:layout_marginTop="730px"
+        android:background="@drawable/continue_bg"
+        android:gravity="center"
+        android:text="进入智能手机导游"
+        android:textColor="#ffffff"
+        android:textSize="53px" />
+
+
+    <LinearLayout
+        android:id="@+id/line_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/go_daolan"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="43px">
+
+        <TextView
+            android:layout_width="300px"
+            android:layout_height="1px"
+            android:background="#e0e0e0" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100px"
+            android:layout_marginRight="100px"
+            android:text="景区活动" />
+
+
+        <TextView
+            android:layout_width="300px"
+            android:layout_height="1px"
+            android:background="#e0e0e0" />
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/line_title" />
+
+</RelativeLayout>

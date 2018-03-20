@@ -104,7 +104,7 @@ public class StartActivity extends BaseActivity {
 //            startActivity(new Intent(StartActivity.this,MainActivity.class));
 //            StartActivity.this.finish();
 //        }
-        startActivity(new Intent(StartActivity.this,MapActivity.class));
+        startActivity(new Intent(StartActivity.this,MainActivity.class));
         StartActivity.this.finish();
     }
 

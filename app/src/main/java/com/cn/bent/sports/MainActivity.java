@@ -4,23 +4,35 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 
+import com.ashokvarma.bottomnavigation.BottomNavigationBar;
+import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.base.BaseConfig;
 import com.cn.bent.sports.utils.Constants;
+import com.cn.bent.sports.view.fragment.CardFragment;
 import com.cn.bent.sports.view.fragment.IsMeFragment;
 import com.cn.bent.sports.view.fragment.MainTabFragment;
 import com.cn.bent.sports.view.fragment.PlayMainFragment;
+import com.cn.bent.sports.view.fragment.RecommendFragment;
+import com.cn.bent.sports.view.fragment.ShoppingFragment;
 import com.cn.bent.sports.view.poupwindow.MainPoupWindow;
 
-public class MainActivity extends BaseActivity {
+import java.util.ArrayList;
+
+import butterknife.Bind;
+
+public class MainActivity extends BaseActivity implements BottomNavigationBar.OnTabSelectedListener{
     int selected = 1;
     FragmentManager mFragmentMan;
     private MainPoupWindow ropupWindow;
-//e11818
+    //e11818
+    @Bind(R.id.navigationBar)
+    BottomNavigationBar navigationBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +48,16 @@ public class MainActivity extends BaseActivity {
     @Override
     public void initView() {
         super.initView();
+        navigationBar.setMode(BottomNavigationBar.MODE_FIXED);
+        navigationBar.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC);
+        navigationBar.addItem(new BottomNavigationItem(R.drawable.wode1, "推荐") .setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.wode2)))
+                .addItem(new BottomNavigationItem(R.mipmap.ic_book_white_24dp, "商店").setActiveColor("#e11818").setInActiveColor("#777777"))
+                .addItem(new BottomNavigationItem(R.mipmap.ic_music_note_white_24dp, "明信片").setActiveColor("#e11818").setInActiveColor("#777777"))
+                .addItem(new BottomNavigationItem(R.mipmap.ic_videogame_asset_white_24dp, "我的").setActiveColor("#e11818").setInActiveColor("#777777"))
+                .setFirstSelectedPosition(0)
+                .initialise();
+        switchContent(0);
+        navigationBar.setTabSelectedListener(this);
     }
 
     @Override
@@ -49,9 +71,29 @@ public class MainActivity extends BaseActivity {
         super.initData();
     }
 
+    /**
+     * 设置默认的
+     */
+    private void setDefaultFragment() {
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.replace(R.id.id_content, IsMeFragment.newInstance());
+        transaction.commit();
+    }
+
+    private ArrayList<Fragment> getFragments() {
+        ArrayList<Fragment> fragments = new ArrayList<>();
+        fragments.add(IsMeFragment.newInstance());
+        fragments.add(IsMeFragment.newInstance());
+        fragments.add(IsMeFragment.newInstance());
+        fragments.add(IsMeFragment.newInstance());
+        fragments.add(IsMeFragment.newInstance());
+        return fragments;
+    }
 
     // 3. 先进第二个或第三个的子模块，再返回首页
     private String lastFragmentTag = null;
+
     private void changeFrament(String tag, int index) {
         BaseConfig bg = BaseConfig.getInstance(MainActivity.this);
         if (mFragmentMan != null) {
@@ -68,12 +110,16 @@ public class MainActivity extends BaseActivity {
             if (mCurrentFragment == null) {
                 switch (index) {
                     case 0:
-                        mCurrentFragment = MainTabFragment.newInstance(0);
+                        mCurrentFragment = RecommendFragment.newInstance();
                         break;
                     case 1:
-                        mCurrentFragment = PlayMainFragment.newInstance();//子Fragment实例
+                        mCurrentFragment = ShoppingFragment.newInstance();//子Fragment实例
                         break;
                     case 2:
+                        mCurrentFragment = CardFragment.newInstance();
+                        ;//子Fragment实例
+                        break;
+                    case 3:
                         mCurrentFragment = IsMeFragment.newInstance();
                         ;//子Fragment实例
                         break;
@@ -95,26 +141,55 @@ public class MainActivity extends BaseActivity {
 
 
 
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_BACK) {
-            String index = BaseConfig.getInstance(MainActivity.this).getStringValue(Constants.IS_SHOWS, "1");
-            Log.i("gggg", "index=" + index);
-            if (index.endsWith("1")) {
-                return false;
-            } else {
-                MainActivity.this.finish();
-            }
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
-
     @Override
     public void onDestroy() {
         super.onDestroy();
     }
 
+    void switchContent(int select) {
+        if (select == 0) {
+            changeFrament("aFragment", 0);
+        } else if (select == 1) {
+            changeFrament("bFragment", 1);
+        } else if (select == 2) {
+            changeFrament("cFragment", 2);
+        } else if (select == 3) {
+            changeFrament("dFragment", 3);
+        }
+    }
+    @Override
+    public void onTabSelected(int position) {
+        switchContent(position);
+//        if (fragments != null) {
+//            if (position < fragments.size()) {
+//                FragmentManager fm = getSupportFragmentManager();
+//                FragmentTransaction ft = fm.beginTransaction();
+//                Fragment fragment = fragments.get(position);
+//                if (fragment.isAdded()) {
+//                    ft.replace(R.id.id_content, fragment);
+//                } else {
+//                    ft.add(R.id.id_content, fragment);
+//                }
+//                ft.commitAllowingStateLoss();
+//            }
+//        }
+    }
 
+    @Override
+    public void onTabUnselected(int position) {
+//        if (fragments != null) {
+//            if (position < fragments.size()) {
+//                FragmentManager fm = getSupportFragmentManager();
+//                FragmentTransaction ft = fm.beginTransaction();
+//                Fragment fragment = fragments.get(position);
+//                ft.remove(fragment);
+//                ft.commitAllowingStateLoss();
+//            }
+//        }
+    }
+
+    @Override
+    public void onTabReselected(int position) {
+
+    }
 }

@@ -42,8 +42,6 @@ public class MusicService extends Service {
     // 相同应用内部不同组件绑定，可以使用内部类以及Binder对象来返回。
     public class MusicController extends Binder {
 
-
-
         public boolean isPlay() {
             boolean isplay=false;
             try {
@@ -147,7 +145,6 @@ public class MusicService extends Service {
                             TaskCationManager.sethavePlay(paths);
                             EventBus.getDefault().post(new StartEvent(true));
                         }
-
                     });
                     mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                         @Override
@@ -168,8 +165,6 @@ public class MusicService extends Service {
 
             }
         }).start();
-
-
     }
 
 

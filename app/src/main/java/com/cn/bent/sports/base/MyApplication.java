@@ -8,7 +8,7 @@ import android.support.multidex.MultiDex;
 
 import com.cn.bent.sports.database.QueueManager;
 import com.cn.bent.sports.database.TaskCationManager;
-import com.uuzuche.lib_zxing.activity.ZXingLibrary;
+import com.vondear.rxtools.RxTool;
 
 import org.aisen.android.common.context.GlobalContext;
 
@@ -30,7 +30,7 @@ public class MyApplication extends GlobalContext{
         activityManager = ActivityManagerd.getScreenManager();
         TaskCationManager.setup(this);
         QueueManager.setup(this);
-        ZXingLibrary.initDisplayOpinion(this);
+        RxTool.init(this);
     }
 
     public ActivityManagerd getActivityManager() {

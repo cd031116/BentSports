@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.cn.bent.sports.utils.SupportMultipleScreensUtil;
 import com.cn.bent.sports.widget.ShowMsgDialog;
+import com.vondear.rxtools.view.dialog.RxDialogLoading;
 
 import butterknife.ButterKnife;
 
@@ -39,8 +40,7 @@ public class BaseActivity extends org.aisen.android.ui.activity.basic.BaseActivi
     private TextView msg;
      private boolean isActive=true;
     InputMethodManager manager;
-
-    private ShowMsgDialog progressDialog;
+    private RxDialogLoading progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -129,22 +129,10 @@ public class BaseActivity extends org.aisen.android.ui.activity.basic.BaseActivi
     public void showAlert(String txt,final boolean isCancel){
         if(!"".equals(txt)&&txt!=null){
             if(progressDialog==null){
-                progressDialog=new ShowMsgDialog(this,isCancel);
+                progressDialog=new RxDialogLoading(this,isCancel);
             }
-            progressDialog.setOnKeyListener(new DialogInterface.OnKeyListener(){
-                @Override
-                public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-                    if (keyCode == KeyEvent.KEYCODE_BACK) {
-                        progressDialog.dismiss();
-//                        if(isCancel){
-//                            progressDialog.dismiss();
-//                        }
-                    }
-                    return false;
-                }
-            });
+            progressDialog.setLoadingText(txt);
             progressDialog.show();
-            progressDialog.showText(txt);
         }
     }
     /**
