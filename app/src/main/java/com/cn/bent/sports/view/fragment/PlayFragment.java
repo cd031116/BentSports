@@ -38,7 +38,6 @@ import com.cn.bent.sports.bean.ReFreshEvent;
 import com.cn.bent.sports.database.TaskCationBean;
 import com.cn.bent.sports.database.TaskCationManager;
 import com.cn.bent.sports.overlay.AMapUtil;
-import com.cn.bent.sports.scan.CaptureActivity;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.DataUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
@@ -50,7 +49,6 @@ import com.cn.bent.sports.widget.GameDialog;
 import com.cn.bent.sports.widget.ToastDialog;
 import com.minew.beacon.BluetoothState;
 import com.minew.beacon.MinewBeaconManager;
-import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.HuiquRxTBFunction;
@@ -410,8 +408,8 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
                     go_task.setVisibility(View.GONE);
                     start_view.setVisibility(View.GONE);
                     if ("5".endsWith(t_ids)) {
-                        Intent intent = new Intent(getActivity(), CaptureActivity.class);
-                        startActivityForResult(intent, REQUEST_Scan);
+//                        Intent intent = new Intent(getActivity(), CaptureActivity.class);
+//                        startActivityForResult(intent, REQUEST_Scan);
                     } else {
                         Intent intent = new Intent(getActivity(), PlayWebViewActivity.class);
                         intent.putExtra("gameId", t_ids);
@@ -679,21 +677,21 @@ public class PlayFragment extends BaseFragment implements AMap.OnMarkerClickList
                     if (bundle == null) {
                         return;
                     }
-                    if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
-                        String result = bundle.getString(CodeUtils.RESULT_STRING);
-                        if ("B33832EF5EFF3EFF30B1B646B6F2410F".endsWith(result)) {
-                            Intent intent = new Intent(getActivity(), PlayWebViewActivity.class);
-                            intent.putExtra("gameId", t_ids);
-                            startActivity(intent);
-                        } else {
-                            ToastUtils.showShortToast(getActivity(), "二维码不匹配");
-                        }
-
-                    } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
-                        ToastUtils.showShortToast(getActivity(), "二维码不匹配");
-                    }
-                } else {
-                    ToastUtils.showShortToast(getActivity(), "无结果");
+//                    if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
+//                        String result = bundle.getString(CodeUtils.RESULT_STRING);
+//                        if ("B33832EF5EFF3EFF30B1B646B6F2410F".endsWith(result)) {
+//                            Intent intent = new Intent(getActivity(), PlayWebViewActivity.class);
+//                            intent.putExtra("gameId", t_ids);
+//                            startActivity(intent);
+//                        } else {
+//                            ToastUtils.showShortToast(getActivity(), "二维码不匹配");
+//                        }
+//
+//                    } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
+//                        ToastUtils.showShortToast(getActivity(), "二维码不匹配");
+//                    }
+//                } else {
+//                    ToastUtils.showShortToast(getActivity(), "无结果");
                 }
                 break;
         }

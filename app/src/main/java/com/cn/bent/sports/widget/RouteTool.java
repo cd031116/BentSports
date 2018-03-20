@@ -44,7 +44,7 @@ public class RouteTool  extends WalkRouteOverlay {
     /*修改起点marker样式*/
 
     @Override
-    protected BitmapDescriptor getStartBitmapDescriptor(int resId) {
+    public BitmapDescriptor getStartBitmapDescriptor(int resId) {
         BitmapDescriptor reBitmapDescriptor=new BitmapDescriptorFactory().fromResource(resId);
         return reBitmapDescriptor;
     }

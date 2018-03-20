@@ -1239,32 +1239,4 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         }
     }
 
-    private void ExitFunction() {
-        new ExxitDialog(MapActivity.this, R.style.dialog, "确定退出AI旅行?", new ExxitDialog.OnCloseListener() {
-            @Override
-            public void onClick(Dialog dialog, boolean confirm) {
-                if (confirm) {
-                    dialog.dismiss();
-                    MapActivity.this.finish();
-                } else {
-                    dialog.dismiss();
-                }
-            }
-        }).show();
-    }
-
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_BACK) {
-            if (mopupWindow != null && mopupWindow.isShowing()) {
-                mopupWindow.dismiss();
-                return false;
-            } else {
-                ExitFunction();
-                return true;
-            }
-        }
-        return super.onKeyDown(keyCode, event);
-    }
 }

@@ -6,12 +6,9 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
-import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.Chronometer;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -42,11 +39,9 @@ import com.cn.bent.sports.base.BaseFragment;
 import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.bean.ReFreshEvent;
 import com.cn.bent.sports.database.TaskCationBean;
-import com.cn.bent.sports.database.TaskCationManager;
 import com.cn.bent.sports.ibeacon.UserRssi;
 import com.cn.bent.sports.overlay.AMapUtil;
 import com.cn.bent.sports.overlay.WalkRouteOverlay;
-import com.cn.bent.sports.scan.CaptureActivity;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.DataUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
@@ -58,17 +53,13 @@ import com.cn.bent.sports.widget.GameDialog;
 import com.cn.bent.sports.widget.ToastDialog;
 import com.minew.beacon.BluetoothState;
 import com.minew.beacon.MinewBeaconManager;
-import com.uuzuche.lib_zxing.activity.CodeUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -389,8 +380,8 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
             public void onClick(Dialog dialog, boolean confirm) {
                 if (confirm) {
                     if ("5".endsWith(t_ids)) {
-                        Intent intent = new Intent(getActivity(), CaptureActivity.class);
-                        startActivityForResult(intent, REQUEST_Scan);
+//                        Intent intent = new Intent(getActivity(), CaptureActivity.class);
+//                        startActivityForResult(intent, REQUEST_Scan);
                     } else {
                         Intent intent = new Intent(getActivity(), PlayWebViewActivity.class);
                         intent.putExtra("gameId", t_ids);
@@ -672,22 +663,22 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                     if (bundle == null) {
                         return;
                     }
-                    if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
-                        String result = bundle.getString(CodeUtils.RESULT_STRING);
-                        if ("B33832EF5EFF3EFF30B1B646B6F2410F".endsWith(result)) {
-                            Intent intent = new Intent(getActivity(), PlayWebViewActivity.class);
-                            intent.putExtra("gameId", t_ids);
-                            startActivity(intent);
-                            mMinewBeaconManager.stopScan();
-                        } else {
-                            ToastUtils.showShortToast(getActivity(), "二维码不匹配");
-                        }
-
-                    } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
-                        ToastUtils.showShortToast(getActivity(), "二维码不匹配");
-                    }
-                } else {
-                    ToastUtils.showShortToast(getActivity(), "无结果");
+//                    if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
+//                        String result = bundle.getString(CodeUtils.RESULT_STRING);
+//                        if ("B33832EF5EFF3EFF30B1B646B6F2410F".endsWith(result)) {
+//                            Intent intent = new Intent(getActivity(), PlayWebViewActivity.class);
+//                            intent.putExtra("gameId", t_ids);
+//                            startActivity(intent);
+//                            mMinewBeaconManager.stopScan();
+//                        } else {
+//                            ToastUtils.showShortToast(getActivity(), "二维码不匹配");
+//                        }
+//
+//                    } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
+//                        ToastUtils.showShortToast(getActivity(), "二维码不匹配");
+//                    }
+//                } else {
+//                    ToastUtils.showShortToast(getActivity(), "无结果");
                 }
                 break;
         }

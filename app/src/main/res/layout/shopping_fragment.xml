@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#f0f0f0">
+
     <com.kennyc.view.MultiStateView
         android:id="@+id/multiStateView"
         android:layout_width="match_parent"
@@ -32,19 +33,18 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="400px">
 
                         <ImageView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent" />
 
                         <TextView
-                            android:layout_width="match_parent"
+                            android:layout_width="300px"
                             android:layout_height="wrap_content"
                             android:background="#20000000"
                             android:gravity="center"
-                            android:paddingLeft="43px"
-                            android:paddingRight="43px"
+                            android:layout_centerInParent="true"
                             android:textColor="#ffffff"
                             android:textSize="60px" />
                     </RelativeLayout>
@@ -91,9 +91,10 @@
                     </RelativeLayout>
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="43px"
+                        android:gravity="center"
                         android:text="抢购门票" />
 
 
@@ -103,13 +104,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
+                    android:background="#ffffff"
                     android:padding="10px"
                     android:text="游玩项目" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recycle"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:background="#ffffff"/>
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
     </com.kennyc.view.MultiStateView>

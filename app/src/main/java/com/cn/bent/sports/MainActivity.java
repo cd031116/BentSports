@@ -1,5 +1,6 @@
 package com.cn.bent.sports;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,25 +15,30 @@ import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.base.BaseConfig;
 import com.cn.bent.sports.utils.Constants;
+import com.cn.bent.sports.view.activity.MapActivity;
 import com.cn.bent.sports.view.fragment.CardFragment;
 import com.cn.bent.sports.view.fragment.IsMeFragment;
 import com.cn.bent.sports.view.fragment.MainTabFragment;
 import com.cn.bent.sports.view.fragment.PlayMainFragment;
 import com.cn.bent.sports.view.fragment.RecommendFragment;
 import com.cn.bent.sports.view.fragment.ShoppingFragment;
+import com.cn.bent.sports.view.poupwindow.LineListPoupWindow;
 import com.cn.bent.sports.view.poupwindow.MainPoupWindow;
+import com.cn.bent.sports.widget.ExxitDialog;
 
 import java.util.ArrayList;
 
 import butterknife.Bind;
 
-public class MainActivity extends BaseActivity implements BottomNavigationBar.OnTabSelectedListener{
+public class MainActivity extends BaseActivity implements BottomNavigationBar.OnTabSelectedListener {
     int selected = 1;
     FragmentManager mFragmentMan;
     private MainPoupWindow ropupWindow;
     //e11818
     @Bind(R.id.navigationBar)
     BottomNavigationBar navigationBar;
+    private LineListPoupWindow mopupWindow;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,19 +56,20 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         super.initView();
         navigationBar.setMode(BottomNavigationBar.MODE_FIXED);
         navigationBar.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC);
-        navigationBar.addItem(new BottomNavigationItem(R.drawable.wode1, "推荐") .setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.wode2)))
+        navigationBar.addItem(new BottomNavigationItem(R.drawable.wode1, "推荐").setInactiveIcon(ContextCompat.getDrawable(this, R.drawable.wode2)))
                 .addItem(new BottomNavigationItem(R.mipmap.ic_book_white_24dp, "商店").setActiveColor("#e11818").setInActiveColor("#777777"))
                 .addItem(new BottomNavigationItem(R.mipmap.ic_music_note_white_24dp, "明信片").setActiveColor("#e11818").setInActiveColor("#777777"))
                 .addItem(new BottomNavigationItem(R.mipmap.ic_videogame_asset_white_24dp, "我的").setActiveColor("#e11818").setInActiveColor("#777777"))
                 .setFirstSelectedPosition(0)
                 .initialise();
-        switchContent(0);
         navigationBar.setTabSelectedListener(this);
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        switchContent(0);
     }
 
 
@@ -140,7 +147,6 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     }
 
 
-
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -157,6 +163,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
             changeFrament("dFragment", 3);
         }
     }
+
     @Override
     public void onTabSelected(int position) {
         switchContent(position);
@@ -191,5 +198,28 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     @Override
     public void onTabReselected(int position) {
 
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_BACK) {
+            ExitFunction();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    private void ExitFunction() {
+        new ExxitDialog(MainActivity.this, R.style.dialog, "确定退出AI旅行?", new ExxitDialog.OnCloseListener() {
+            @Override
+            public void onClick(Dialog dialog, boolean confirm) {
+                if (confirm) {
+                    dialog.dismiss();
+                    MainActivity.this.finish();
+                } else {
+                    dialog.dismiss();
+                }
+            }
+        }).show();
     }
 }
