@@ -56,13 +56,14 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         super.initView();
         navigationBar.setMode(BottomNavigationBar.MODE_FIXED);
         navigationBar.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC);
-        navigationBar.addItem(new BottomNavigationItem(R.drawable.wode1, "推荐").setInactiveIcon(ContextCompat.getDrawable(this, R.drawable.wode2)))
+        navigationBar.addItem(new BottomNavigationItem(R.mipmap.ic_home_white_24dp, "推荐").setActiveColor("#e11818").setInActiveColor("#777777"))
                 .addItem(new BottomNavigationItem(R.mipmap.ic_book_white_24dp, "商店").setActiveColor("#e11818").setInActiveColor("#777777"))
                 .addItem(new BottomNavigationItem(R.mipmap.ic_music_note_white_24dp, "明信片").setActiveColor("#e11818").setInActiveColor("#777777"))
                 .addItem(new BottomNavigationItem(R.mipmap.ic_videogame_asset_white_24dp, "我的").setActiveColor("#e11818").setInActiveColor("#777777"))
                 .setFirstSelectedPosition(0)
                 .initialise();
         navigationBar.setTabSelectedListener(this);
+//new BottomNavigationItem(R.drawable.wode1, "推荐").setInactiveIcon(ContextCompat.getDrawable(this, R.drawable.wode2))
 
     }
 
