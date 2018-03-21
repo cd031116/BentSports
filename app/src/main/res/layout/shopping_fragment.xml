@@ -95,6 +95,7 @@
                         android:layout_height="wrap_content"
                         android:padding="43px"
                         android:gravity="center"
+                        android:background="@drawable/continue_bg"
                         android:text="抢购门票" />
 
 

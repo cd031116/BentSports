@@ -2,24 +2,19 @@ package com.cn.bent.sports;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.base.BaseConfig;
-import com.cn.bent.sports.utils.Constants;
-import com.cn.bent.sports.view.activity.MapActivity;
 import com.cn.bent.sports.view.fragment.CardFragment;
 import com.cn.bent.sports.view.fragment.IsMeFragment;
-import com.cn.bent.sports.view.fragment.MainTabFragment;
-import com.cn.bent.sports.view.fragment.PlayMainFragment;
 import com.cn.bent.sports.view.fragment.RecommendFragment;
 import com.cn.bent.sports.view.fragment.ShoppingFragment;
 import com.cn.bent.sports.view.poupwindow.LineListPoupWindow;
@@ -64,13 +59,18 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
                 .initialise();
         navigationBar.setTabSelectedListener(this);
 //new BottomNavigationItem(R.drawable.wode1, "推荐").setInactiveIcon(ContextCompat.getDrawable(this, R.drawable.wode2))
-
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                switchContent(0);
+            }
+        },500);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        switchContent(0);
+
     }
 
 

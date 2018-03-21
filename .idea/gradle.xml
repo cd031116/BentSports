@@ -14,7 +14,6 @@
             <option value="$PROJECT_DIR$/h_recy" />
             <option value="$PROJECT_DIR$/library-release" />
             <option value="$PROJECT_DIR$/network" />
-            <option value="$PROJECT_DIR$/picture_library" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

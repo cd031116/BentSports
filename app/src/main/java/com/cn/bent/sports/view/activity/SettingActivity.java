@@ -77,17 +77,19 @@ public class SettingActivity extends BaseActivity {
             }
         });
         user = SaveObjectUtils.getInstance(SettingActivity.this).getObject(Constants.USER_INFO, null);
-        if (TextUtils.isEmpty(user.getNickname())) {
-            name_t.setText("未设置");
-            name_t.setTextColor(Color.parseColor("#999999"));
-        } else {
-            name_t.setText(user.getNickname());
-            name_t.setTextColor(Color.parseColor("#333333"));
-            phone_t.setText(user.getMobile());
-            RequestOptions requestOptions = RequestOptions.circleCropTransform();
-            Glide.with(SettingActivity.this).load(user.getHeadimg())
-                    .apply(requestOptions)
-                    .into(user_photo);
+        if(user!=null){
+            if (TextUtils.isEmpty(user.getNickname())) {
+                name_t.setText("未设置");
+                name_t.setTextColor(Color.parseColor("#999999"));
+            } else {
+                name_t.setText(user.getNickname());
+                name_t.setTextColor(Color.parseColor("#333333"));
+                phone_t.setText(user.getMobile());
+                RequestOptions requestOptions = RequestOptions.circleCropTransform();
+                Glide.with(SettingActivity.this).load(user.getHeadimg())
+                        .apply(requestOptions)
+                        .into(user_photo);
+            }
         }
     }
 
@@ -177,9 +179,6 @@ public class SettingActivity extends BaseActivity {
             login(image);
         }
     }
-
-
-
 
 
     private void login(final String imag) {

@@ -51,9 +51,8 @@
         android:icon="@drawable/lo_go"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        >
-        <activity android:name=".view.activity.StartActivity">
+        android:theme="@style/AppTheme">
+        <activity android:name=".view.activity.VideoActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
