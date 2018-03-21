@@ -3,14 +3,12 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/BentSports.iml" filepath="$PROJECT_DIR$/BentSports.iml" />
-      <module fileurl="file://F:/da_work/BentSports/BentSports.iml" filepath="F:/da_work/BentSports/BentSports.iml" />
       <module fileurl="file://$PROJECT_DIR$/RxTools-library/RxTools-library.iml" filepath="$PROJECT_DIR$/RxTools-library/RxTools-library.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://F:/da_work/BentSports/app/app.iml" filepath="F:/da_work/BentSports/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/h_recy/h_recy.iml" filepath="$PROJECT_DIR$/h_recy/h_recy.iml" />
       <module fileurl="file://$PROJECT_DIR$/library-release/library-release.iml" filepath="$PROJECT_DIR$/library-release/library-release.iml" />
-      <module fileurl="file://F:/da_work/BentSports/library-release/library-release.iml" filepath="F:/da_work/BentSports/library-release/library-release.iml" />
       <module fileurl="file://$PROJECT_DIR$/network/network.iml" filepath="$PROJECT_DIR$/network/network.iml" />
-      <module fileurl="file://F:/da_work/BentSports/network/network.iml" filepath="F:/da_work/BentSports/network/network.iml" />
+      <module fileurl="file://$PROJECT_DIR$/picture_library/picture_library.iml" filepath="$PROJECT_DIR$/picture_library/picture_library.iml" />
     </modules>
   </component>
 </project>

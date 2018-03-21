@@ -7,6 +7,9 @@
     <string name="gpsNotifyMsg">当前应用需要打开定位功能。\n\n请点击\"设置\"-\"定位服务\"-打开定位功能。</string>
     <string name="setting">设置</string>
     <string name="cancel">取消</string>
+    <string name="is_choose">精选</string>
+    <string name="all">全部</string>
+    <string name="is_me">我的</string>
 
     <string name="scan_tips">将二维码图片对准扫描框即可自动扫描</string>
     <string name="cai_deng_mi">手机扫描周边二维码获取灯谜，每猜对一个灯谜将获得3积分，最高可得30分！</string>

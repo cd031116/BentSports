@@ -15,4 +15,14 @@
     <dimen name="grid_expected_size">120dp</dimen>
     <dimen name="item_margin_horizontal">24dp</dimen>
     <dimen name="item_margin_vertical">8dp</dimen>
+    <dimen name="t20">20px</dimen>
+    <dimen name="t30">30px</dimen>
+    <dimen name="t38">38px</dimen>
+    <dimen name="t40">40px</dimen>
+    <dimen name="t43">43px</dimen>
+    <dimen name="t62">62px</dimen>
+    <dimen name="t67">67px</dimen>
+    <dimen name="t69">69px</dimen>
+    <dimen name="t74">74px</dimen>
+    <dimen name="t130">130px</dimen>
 </resources>

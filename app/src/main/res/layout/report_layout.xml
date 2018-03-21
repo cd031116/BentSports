@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/info_header"
+        layout="@layout/layout_header" />
+
+    <EditText
+        android:id="@+id/et_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/info_header"
+        android:background="@null"
+        android:gravity="top"
+        android:hint="分享有趣的事"
+        android:paddingBottom="@dimen/t30"
+        android:paddingLeft="@dimen/t30"
+        android:paddingRight="@dimen/t30"
+        android:paddingTop="@dimen/t30"
+        android:textSize="@dimen/t43" />
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/report_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/et_content"
+        android:paddingLeft="@dimen/t43" />
+
+    <RelativeLayout
+        android:id="@+id/bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/t130"
+        android:layout_alignParentBottom="true"
+        android:background="@color/normal_bg">
+
+        <ImageView
+            android:id="@+id/jianpan"
+            android:layout_width="@dimen/t69"
+            android:layout_height="@dimen/t67"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/t43"
+            android:background="@drawable/jianpsq" />
+
+
+        <ImageView
+            android:id="@+id/tupian"
+            android:layout_width="@dimen/t67"
+            android:layout_height="@dimen/t62"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/t43"
+            android:background="@drawable/tupian" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/loc_text"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/t74"
+        android:layout_above="@id/bottom_layout"
+        android:layout_marginBottom="@dimen/t20"
+        android:background="@drawable/location_bg"
+        android:drawableLeft="@drawable/dingwei2"
+        android:drawablePadding="@dimen/t20"
+        android:gravity="center"
+        android:paddingLeft="@dimen/t30"
+        android:paddingRight="@dimen/t30"
+        android:text="长沙市"
+        android:textColor="@color/c_333333"
+        android:textSize="@dimen/t40" />
+</RelativeLayout>

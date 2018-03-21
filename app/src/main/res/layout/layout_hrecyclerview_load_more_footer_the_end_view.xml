@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tvTheEnd"
+    android:layout_width="match_parent"
+    android:layout_height="56px"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:text="没有更多数据了"
+    android:textColor="@color/c_333333"
+    android:textSize="@dimen/t38" />
