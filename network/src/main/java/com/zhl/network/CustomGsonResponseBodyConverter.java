@@ -36,6 +36,7 @@ public class CustomGsonResponseBodyConverter<T> implements Converter<ResponseBod
         HttpStatus httpStatus = gson.fromJson(response, HttpStatus.class);
         if (httpStatus.isCodeInvalid()) {
             value.close();
+            MyLog.d("code:" + httpStatus.getCode()+",msg:" + httpStatus.getCode());
             throw new ApiGsonException(httpStatus.getCode(),httpStatus.getMessage());
         }
 

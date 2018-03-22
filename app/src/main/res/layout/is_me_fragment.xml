@@ -13,33 +13,35 @@
         <LinearLayout
             android:id="@+id/top_line"
             android:layout_width="match_parent"
-            android:layout_height="700px"
-            android:background="#FD7066"
+            android:layout_height="806px"
+            android:background="@drawable/bg_person"
             android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="315px"
-                android:gravity="center_vertical"
-                android:padding="43px">
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/nick_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="100px"
+                    android:layout_marginLeft="170px"
+                    android:layout_marginTop="208px"
+                    android:drawablePadding="16px"
+                    android:drawableTop="@drawable/yaoqing"
                     android:text="分享"
                     android:textColor="#ffffff"
-                    android:textSize="48px" />
+                    android:textSize="34px" />
 
 
                 <ImageView
                     android:id="@+id/user_photo"
-                    android:layout_width="208px"
-                    android:layout_height="208px"
-                    android:layout_centerInParent="true"
+                    android:layout_width="250px"
+                    android:layout_height="250px"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="171px"
+                    android:layout_marginTop="208px"
+                    android:layout_toRightOf="@id/nick_name"
                     android:background="@drawable/default_head" />
 
 
@@ -47,54 +49,79 @@
                     android:id="@+id/setting"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="100px"
+                    android:layout_alignTop="@+id/nick_name"
+                    android:layout_marginStart="55dp"
+                    android:layout_toEndOf="@+id/user_photo"
+                    android:drawableTop="@drawable/xiaoxi"
                     android:text="消息"
                     android:textColor="#ffffff"
-                    android:textSize="48px" />
+                    android:textSize="34px" />
 
+                <ImageView
+                    android:id="@+id/xiaoxtx"
+                    android:layout_width="36px"
+                    android:layout_height="36px"
+                    android:layout_marginLeft="214px"
+                    android:layout_marginTop="198px"
+                    android:layout_toRightOf="@id/user_photo"
+                    android:background="@drawable/xiaoxtx" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/user_photo"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="38px"
+                    android:text="钱多多"
+                    android:textColor="#ffffff"
+                    android:textSize="57px"
+                    android:textStyle="bold" />
             </RelativeLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:text="钱多多"
-                android:textColor="#ffffff"
-                android:textSize="56px" />
 
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="43px">
+                android:layout_height="wrap_content">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_marginTop="50px"
+                    android:layout_marginRight="20px"
+                    android:layout_marginTop="86px"
                     android:orientation="horizontal">
 
 
                     <TextView
                         android:id="@+id/scrore"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="88px"
                         android:layout_alignParentRight="true"
+                        android:background="@drawable/is_me_bg"
+                        android:drawableLeft="@drawable/jifen"
+                        android:drawablePadding="12px"
+                        android:drawableRight="@drawable/into_1"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="30px"
+                        android:paddingRight="24px"
                         android:text="342342"
                         android:textColor="#ffffff"
-                        android:textSize="46px" />
+                        android:textSize="43px" />
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20px"
+                        android:layout_height="88px"
+                        android:layout_marginLeft="28px"
                         android:layout_toRightOf="@+id/scrore"
+                        android:background="@drawable/is_me_bg"
+                        android:drawableLeft="@drawable/yaoqr"
+                        android:drawablePadding="16px"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="30px"
+                        android:paddingRight="40px"
                         android:text="342342"
                         android:textColor="#ffffff"
-                        android:textSize="46px" />
+                        android:textSize="43px" />
                 </LinearLayout>
 
             </RelativeLayout>
@@ -104,10 +131,10 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="40px"
-            android:layout_marginRight="40px"
-            android:layout_marginTop="600px"
+            android:layout_height="1000px"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="25px"
+            android:layout_marginRight="25px"
             android:background="@drawable/bg_round_white"
             android:orientation="vertical">
 
@@ -115,115 +142,132 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="70px"
-                android:padding="43px"
+                android:layout_marginTop="98px"
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/lixian"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:drawableTop="@drawable/close_task"
+                    android:drawablePadding="26px"
+                    android:drawableTop="@drawable/lixianxz"
                     android:gravity="center"
                     android:text="离线下载"
-                    android:textColor="#333333"
-                    android:textSize="43px" />
+                    android:textColor="#999999"
+                    android:textSize="34px" />
 
                 <TextView
+                    android:id="@+id/quwan"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:drawableTop="@drawable/close_task"
+                    android:drawablePadding="26px"
+                    android:drawableTop="@drawable/qwluxian"
                     android:gravity="center"
                     android:text="趣玩线路"
-                    android:textColor="#333333"
-                    android:textSize="43px" />
+                    android:textColor="#999999"
+                    android:textSize="34px" />
 
                 <TextView
+                    android:id="@+id/menpiao"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:drawableTop="@drawable/close_task"
+                    android:drawablePadding="26px"
+                    android:drawableTop="@drawable/dingdan"
                     android:gravity="center"
                     android:text="门票订单"
-                    android:textColor="#333333"
-                    android:textSize="43px" />
+                    android:textColor="#999999"
+                    android:textSize="34px" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="43px"
+                android:layout_marginTop="116px"
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/duihuan"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:drawableTop="@drawable/close_task"
+                    android:drawablePadding="26px"
+                    android:drawableTop="@drawable/duihuanzx"
                     android:gravity="center"
                     android:text="兑换中心"
-                    android:textColor="#333333"
-                    android:textSize="43px" />
+                    android:textColor="#999999"
+                    android:textSize="34px" />
 
                 <TextView
+                    android:id="@+id/jifen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:drawableTop="@drawable/close_task"
+                    android:drawablePadding="26px"
+                    android:drawableTop="@drawable/jifensc"
                     android:gravity="center"
                     android:text="积分商城"
-                    android:textColor="#333333"
-                    android:textSize="43px" />
+                    android:textColor="#999999"
+                    android:textSize="34px" />
 
                 <TextView
+                    android:id="@+id/youhui"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:drawableTop="@drawable/close_task"
+                    android:drawablePadding="26px"
+                    android:drawableTop="@drawable/youhuiq"
                     android:gravity="center"
                     android:text="优惠券"
-                    android:textColor="#333333"
-                    android:textSize="43px" />
+                    android:textColor="#999999"
+                    android:textSize="34px" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="43px"
+                android:layout_marginTop="116px"
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/xitong"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:drawableTop="@drawable/close_task"
+                    android:drawablePadding="26px"
+                    android:drawableTop="@drawable/xtshezhi"
                     android:gravity="center"
                     android:text="系统设置"
-                    android:textColor="#333333"
-                    android:textSize="43px" />
+                    android:textColor="#999999"
+                    android:textSize="34px" />
 
                 <TextView
+                    android:id="@+id/changjian"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:drawableTop="@drawable/close_task"
+                    android:drawablePadding="26px"
+                    android:drawableTop="@drawable/changjianwt"
                     android:gravity="center"
                     android:text="常见问题"
-                    android:textColor="#333333"
-                    android:textSize="43px" />
+                    android:textColor="#999999"
+                    android:textSize="34px" />
 
                 <TextView
+                    android:id="@+id/zhuanqu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:drawableTop="@drawable/close_task"
+                    android:drawablePadding="26px"
+                    android:drawableTop="@drawable/zhuanqjf"
                     android:gravity="center"
                     android:text="赚取积分"
-                    android:textColor="#333333"
-                    android:textSize="43px" />
+                    android:textColor="#999999"
+                    android:textSize="34px" />
 
             </LinearLayout>
 

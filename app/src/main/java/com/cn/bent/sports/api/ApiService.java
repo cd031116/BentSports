@@ -3,22 +3,28 @@ package com.cn.bent.sports.api;
 
 import com.cn.bent.sports.bean.AddScoreEntity;
 import com.cn.bent.sports.bean.AllFinishEntity;
+import com.cn.bent.sports.bean.LinesPointsEntity;
 import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.bean.PhotoPath;
 import com.cn.bent.sports.bean.PlayMapBean;
 import com.cn.bent.sports.bean.RailBean;
 import com.cn.bent.sports.bean.RankEntity;
+import com.cn.bent.sports.bean.ScenicPointsEntity;
 import com.cn.bent.sports.bean.ScenicSpotEntity;
 import com.cn.bent.sports.bean.UserMsgEntity;
 import com.zhl.network.huiqu.HuiquResult;
 import com.zhl.network.huiqu.HuiquTBResult;
+import com.zhl.network.huiqu.JavaResult;
 import com.zhl.network.huiqu.ResponseResult;
+
+import java.util.List;
 
 import io.reactivex.Observable;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 /**
  * Created by necer on 2017/6/28.
@@ -37,7 +43,8 @@ public interface ApiService {
             @Field("mobile") String phone);
 
     /**
-     *  获取石燕湖数据
+     * 获取石燕湖数据
+     *
      * @param scenicSpotId
      * @return
      */
@@ -60,6 +67,23 @@ public interface ApiService {
 
     @GET("outdoor/map/getFenceAndDot")
     Observable<HuiquResult<RailBean>> getFenceAndDot();
+
+
+    /**
+     * 获取线路
+     * @param id
+     * @return
+     */
+    @GET("api/travel/scenic/noauth/{id}/lines")
+    Observable<JavaResult<List<LinesPointsEntity>>> getScenicLines(@Path("id") String id);
+
+    /**
+     * 获取点位
+     * @param id
+     * @return
+     */
+    @GET("api/travel/scenic/noauth/{id}/points")
+    Observable<JavaResult<ScenicPointsEntity>> getScenicPoints(@Path("id") String id);
 
     /**
      * @return
@@ -105,6 +129,7 @@ public interface ApiService {
             @Field("cur_user_id") String cur_user_id,
             @Field("type") String type,
             @Field("nickname") String nickname);
+
     /*
                 *
          *

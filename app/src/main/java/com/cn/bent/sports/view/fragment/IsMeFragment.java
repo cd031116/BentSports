@@ -7,21 +7,25 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.amap.api.services.core.LatLonPoint;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseFragment;
 import com.cn.bent.sports.bean.LoginBase;
+import com.cn.bent.sports.bean.ScenicPointsEntity;
 import com.cn.bent.sports.bean.UserMsgEntity;
 import com.cn.bent.sports.ibeacon.ScanActivity;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.SaveObjectUtils;
+import com.cn.bent.sports.view.activity.MapActivity;
 import com.cn.bent.sports.view.activity.PlayWebViewActivity;
 import com.cn.bent.sports.view.activity.SettingActivity;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.HuiquRxFunction;
+import com.zhl.network.huiqu.JavaRxFunction;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

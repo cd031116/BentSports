@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,14 +16,23 @@ import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.api.ConstantValues;
 import com.cn.bent.sports.base.BaseFragment;
+import com.cn.bent.sports.bean.LinesPointsEntity;
 import com.cn.bent.sports.widget.pull.LoadMoreFooterView;
 import com.lvr.library.holder.BaseViewHolder;
 import com.lvr.library.recyclerview.HRecyclerView;
 import com.lvr.library.recyclerview.OnLoadMoreListener;
 import com.lvr.library.recyclerview.OnRefreshListener;
+import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
+import com.zhl.network.huiqu.JavaRxFunction;
+
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by dawn on 2018/3/20.
@@ -64,6 +74,37 @@ public class CardNewsFragment extends BaseFragment implements OnLoadMoreListener
 
     @Override
     protected void initData() {
+
+//        BaseApi.getJavaDefaultService(getActivity()).getScenicLines("1")
+//                .map(new JavaRxFunction<List<LinesPointsEntity>>())
+//                .compose(RxSchedulers.<List<LinesPointsEntity>>io_main())
+//                .subscribe(new RxObserver<List<LinesPointsEntity>>(getActivity(), "getScenicLines", 1, false) {
+//                    @Override
+//                    public void onSuccess(int whichRequest, List<LinesPointsEntity> linesPointsEntityList) {
+//                        Log.d("dddd", "onSuccess: " + linesPointsEntityList.get(0).getPoints());
+//                        Log.d("dddd", "onSuccess: " + parseNoHeaderJArray(linesPointsEntityList.get(0).getPoints()).size());
+//                    }
+//
+//                    @Override
+//                    public void onError(int whichRequest, Throwable e) {
+//                        Log.d("dddd", "onError: " + e.getMessage());
+//                    }
+//                });
+    }
+
+    private List<List<Double>> parseNoHeaderJArray(String strByJso) {
+        List<List<Double>> lists = new ArrayList<>();
+        JSONArray json = JSONArray.fromObject(strByJso);
+        for (int i = 0; i < json.size(); i++) {
+            List<Double> doubleList = new ArrayList<>();
+            JSONArray job = json.getJSONArray(i);
+            for (int j = 0; j < job.size(); j++) {
+                double aDouble = job.getDouble(j);
+                doubleList.add(aDouble);
+            }
+            lists.add(doubleList);
+        }
+        return lists;
 
     }
 

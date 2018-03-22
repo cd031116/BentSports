@@ -19,6 +19,7 @@ public class ConstantValues {
     public static final int STATUS_ONLINE = 2;
     public static final int STATUS_KICK_OUT = 3;
     public static final String BASE_URL = "http://wxxcx.zhonghuilv.net/";
+    public static final String JAVA_URL = "http://192.168.19.22:8840/";
     public static final String KEY_HOME_ACTION = "key_home_action";
     public static final int ACTION_BACK_TO_HOME = 0;
     public static final int ACTION_RESTART_APP = 1;

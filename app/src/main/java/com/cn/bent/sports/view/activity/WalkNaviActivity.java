@@ -28,6 +28,7 @@ import com.amap.api.navi.model.NaviLatLng;
 import com.autonavi.tbt.TrafficFacilityInfo;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.bean.PointsEntity;
+import com.cn.bent.sports.bean.ScenicPointsEntity;
 import com.cn.bent.sports.utils.SupportMultipleScreensUtil;
 
 import butterknife.Bind;
@@ -39,12 +40,12 @@ public class WalkNaviActivity extends AppCompatActivity implements AMapNaviListe
     private NaviLatLng startPoints,endPoints;
     private AMapNavi mAMapNavi;
     private double slat,slong;
-    private  PointsEntity pEnty;
+    private ScenicPointsEntity.PointsBean pEnty;
     private LatLng mlatlng;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        pEnty = (PointsEntity) getIntent().getSerializableExtra("enty");
+        pEnty = (ScenicPointsEntity.PointsBean) getIntent().getSerializableExtra("enty");
         mlatlng= (LatLng) getIntent().getParcelableExtra("startLatlng");
         setContentView(R.layout.activity_walk_navi);
         View rootView=findViewById(android.R.id.content);
@@ -97,7 +98,7 @@ public class WalkNaviActivity extends AppCompatActivity implements AMapNaviListe
     @Override
     public void onInitNaviSuccess() {
         startPoints=new NaviLatLng(mlatlng.latitude,mlatlng.longitude);
-        endPoints=new NaviLatLng(pEnty.getLocation().getLatitude(),pEnty.getLocation().getLongitude());
+        endPoints=new NaviLatLng(pEnty.getLatitude(),pEnty.getLongitude());
         mAMapNavi.calculateWalkRoute(startPoints, endPoints);
     }
 

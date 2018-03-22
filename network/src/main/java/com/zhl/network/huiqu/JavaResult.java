@@ -1,23 +1,21 @@
 package com.zhl.network.huiqu;
 
-import com.google.gson.annotations.SerializedName;
-
 /**
  * Created by Administrator on 2017/8/29.
  */
 
-public class ResponseResult<T> {
+public class JavaResult<T> {
 
-    private String msg;
+    private String errmsg;
     private int code;
     private T data;
 
-    public String getMsg() {
-        return msg;
+    public String getErrmsg() {
+        return errmsg;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setErrmsg(String errmsg) {
+        this.errmsg = errmsg;
     }
 
     public int getCode() {

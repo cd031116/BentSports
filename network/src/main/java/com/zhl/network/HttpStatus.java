@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
 public class HttpStatus {
     @SerializedName("code")
     private int mCode;
-    @SerializedName("msg")
+    @SerializedName("errmsg")
     private String mMessage;
 
     public int getCode() {
@@ -26,6 +26,6 @@ public class HttpStatus {
      * @return 失败返回true, 成功返回false
      */
     public boolean isCodeInvalid() {
-        return mCode != 1;
+        return mCode != 0;
     }
 }

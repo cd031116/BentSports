@@ -16,6 +16,7 @@ import com.amap.api.maps.model.LatLng;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseConfig;
 import com.cn.bent.sports.bean.PointsEntity;
+import com.cn.bent.sports.bean.ScenicPointsEntity;
 import com.cn.bent.sports.recyclebase.CommonAdapter;
 import com.cn.bent.sports.recyclebase.ViewHolder;
 import com.cn.bent.sports.utils.Constants;
@@ -34,10 +35,10 @@ public class LineListPoupWindow extends PopupWindow {
     private RelativeLayout main_top;
     private RecyclerView r_list;
     private ItemInclick itemsOnClick;
-    private CommonAdapter<PointsEntity> mAdapter;
-    private List<PointsEntity> mList;
+    private CommonAdapter<ScenicPointsEntity.PointsBean> mAdapter;
+    private List<ScenicPointsEntity.PointsBean> mList;
     private LatLng mLatlng;
-    public LineListPoupWindow(Activity mContext,LatLng startLatlng, List<PointsEntity> mList, ItemInclick itemsOnClickd) {
+    public LineListPoupWindow(Activity mContext, LatLng startLatlng, List<ScenicPointsEntity.PointsBean> mList, ItemInclick itemsOnClickd) {
         this.mContext = mContext;
         this.mList=mList;
         this.mLatlng=startLatlng;
@@ -48,12 +49,12 @@ public class LineListPoupWindow extends PopupWindow {
         travel_all = (TextView) view.findViewById(R.id.travel_all);
         r_list = (RecyclerView) view.findViewById(R.id.r_list);
         main_top= (RelativeLayout) view.findViewById(R.id.main_top);
-        mAdapter=new CommonAdapter<PointsEntity>(mContext,R.layout.recycl_item_poup,mList) {
+        mAdapter=new CommonAdapter<ScenicPointsEntity.PointsBean>(mContext,R.layout.recycl_item_poup,mList) {
             @Override
-            protected void convert(ViewHolder holder, PointsEntity s,final int position) {
-                holder.setText(R.id.t_name,s.getName());
+            protected void convert(ViewHolder holder, ScenicPointsEntity.PointsBean s,final int position) {
+                holder.setText(R.id.t_name,s.getPointName());
                 if(mLatlng!=null){
-                    String julis = String.valueOf(AMapUtils.calculateLineDistance(mLatlng, new LatLng(s.getLocation().getLatitude(),s.getLocation().getLongitude())));
+                    String julis = String.valueOf(AMapUtils.calculateLineDistance(mLatlng, new LatLng(s.getLatitude(),s.getLongitude())));
                     holder.setText(R.id.distance,(int) (Double.parseDouble(julis)) +"M");
                 }
 

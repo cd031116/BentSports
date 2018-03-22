@@ -1,10 +1,8 @@
 package com.cn.bent.sports.database;
 
 import android.content.Context;
-import android.util.Log;
 
-import com.cn.bent.sports.bean.PointsEntity;
-import com.cn.bent.sports.utils.DataUtils;
+import com.cn.bent.sports.bean.ScenicPointsEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,24 +13,24 @@ import java.util.List;
  */
 
 public class TaskCationManager {
-    private static final List<PointsEntity> mTaskList = new ArrayList<>();
+    private static final List<ScenicPointsEntity.PointsBean> mTaskList = new ArrayList<>();
 
     public static void setup(Context context) {
         TaskCationDB.setup(context);
     }
 
     //获得所有
-    public static List<PointsEntity> getHistory() {
-        mTaskList.addAll(TaskCationDB.getDB().select(null, PointsEntity.class));
+    public static List<ScenicPointsEntity.PointsBean> getHistory() {
+        mTaskList.addAll(TaskCationDB.getDB().select(null, ScenicPointsEntity.PointsBean.class));
         return mTaskList;
     }
 
 
     //获得当前播放实体类
-    public static PointsEntity getIsNow() {
+    public static ScenicPointsEntity.PointsBean getIsNow() {
         boolean ismore = true;
-        List<PointsEntity> noMoreLists = TaskCationDB.getDB().select(null, PointsEntity.class);
-        for (PointsEntity bean : noMoreLists) {
+        List<ScenicPointsEntity.PointsBean> noMoreLists = TaskCationDB.getDB().select(null, ScenicPointsEntity.PointsBean.class);
+        for (ScenicPointsEntity.PointsBean bean : noMoreLists) {
             if (bean.isNow()) {
                 return bean;
             }
@@ -42,14 +40,14 @@ public class TaskCationManager {
 
 
     public static int getSize() {
-        List<PointsEntity> mTaskLists = TaskCationDB.getDB().select(null, PointsEntity.class);
+        List<ScenicPointsEntity.PointsBean> mTaskLists = TaskCationDB.getDB().select(null, ScenicPointsEntity.PointsBean.class);
         return mTaskLists.size();
     }
 
 
     //插入集合数据(初始一次)
-    public static void insert(List<PointsEntity> list) {
-        for (PointsEntity bean : list) {
+    public static void insert(List<ScenicPointsEntity.PointsBean> list) {
+        for (ScenicPointsEntity.PointsBean bean : list) {
             bean.setNow(false);
             bean.setPlay(false);
             bean.setQuen(false);
@@ -60,24 +58,24 @@ public class TaskCationManager {
     //删除所有
     public static void clear() {
         mTaskList.clear();
-        TaskCationDB.getDB().deleteAll(null, PointsEntity.class);
+        TaskCationDB.getDB().deleteAll(null, ScenicPointsEntity.PointsBean.class);
     }
 
     //查询已经播放
     public static boolean isPlay(int position) {
-        List<PointsEntity> mTaskLists = TaskCationDB.getDB().select(null, PointsEntity.class);
+        List<ScenicPointsEntity.PointsBean> mTaskLists = TaskCationDB.getDB().select(null, ScenicPointsEntity.PointsBean.class);
         return mTaskLists.get(position).isPlay();
     }
     //查询是不是当前播放
     public static boolean isNow(int position) {
-        List<PointsEntity> mTaskLists = TaskCationDB.getDB().select(null, PointsEntity.class);
+        List<ScenicPointsEntity.PointsBean> mTaskLists = TaskCationDB.getDB().select(null, ScenicPointsEntity.PointsBean.class);
         return mTaskLists.get(position).isNow();
     }
 
     //设置已经播放
     public static void sethavePlay(String paths) {
-        List<PointsEntity> mTaskLists = TaskCationDB.getDB().select(null, PointsEntity.class);
-        for (PointsEntity info : mTaskLists) {
+        List<ScenicPointsEntity.PointsBean> mTaskLists = TaskCationDB.getDB().select(null, ScenicPointsEntity.PointsBean.class);
+        for (ScenicPointsEntity.PointsBean info : mTaskLists) {
             if(info.getMp3().equals(paths)){
                 info.setPlay(true);
                 TaskCationDB.getDB().update(null,info);
@@ -88,21 +86,21 @@ public class TaskCationManager {
 
     //设置当前播放
     public static void updateNowPlay(int position) {
-        List<PointsEntity> mTaskLists = TaskCationDB.getDB().select(null, PointsEntity.class);
-        for (PointsEntity info : mTaskLists) {
+        List<ScenicPointsEntity.PointsBean> mTaskLists = TaskCationDB.getDB().select(null, ScenicPointsEntity.PointsBean.class);
+        for (ScenicPointsEntity.PointsBean info : mTaskLists) {
             info.setNow(false);
         }
         mTaskLists.get(position).setNow(true);
         mTaskLists.get(position).setQuen(false);
-        TaskCationDB.getDB().deleteAll(null, PointsEntity.class);
+        TaskCationDB.getDB().deleteAll(null, ScenicPointsEntity.PointsBean.class);
         TaskCationDB.getDB().insert(null, mTaskLists);
     }
 
 
     //重置所有播放
     public static void updatePlay(String paths) {
-        List<PointsEntity> mTaskLists = TaskCationDB.getDB().select(null, PointsEntity.class);
-        for (PointsEntity info : mTaskLists) {
+        List<ScenicPointsEntity.PointsBean> mTaskLists = TaskCationDB.getDB().select(null, ScenicPointsEntity.PointsBean.class);
+        for (ScenicPointsEntity.PointsBean info : mTaskLists) {
             if(info.getMp3().equals(paths)){
                 info.setNow(false);
                 TaskCationDB.getDB().update(null,info);
@@ -114,36 +112,36 @@ public class TaskCationManager {
 
     //重置所有播放
     public static void updatePlay() {
-        List<PointsEntity> mTaskLists = TaskCationDB.getDB().select(null, PointsEntity.class);
-        for (PointsEntity info : mTaskLists) {
+        List<ScenicPointsEntity.PointsBean> mTaskLists = TaskCationDB.getDB().select(null, ScenicPointsEntity.PointsBean.class);
+        for (ScenicPointsEntity.PointsBean info : mTaskLists) {
             info.setNow(false);
         }
-        TaskCationDB.getDB().deleteAll(null, PointsEntity.class);
+        TaskCationDB.getDB().deleteAll(null, ScenicPointsEntity.PointsBean.class);
         TaskCationDB.getDB().insert(null, mTaskLists);
     }
 
 
     //设置进入队列
     public static void addQuen(int position) {
-        List<PointsEntity> mTaskLists = TaskCationDB.getDB().select(null, PointsEntity.class);
-        for (PointsEntity info : mTaskLists) {
+        List<ScenicPointsEntity.PointsBean> mTaskLists = TaskCationDB.getDB().select(null, ScenicPointsEntity.PointsBean.class);
+        for (ScenicPointsEntity.PointsBean info : mTaskLists) {
             info.setQuen(false);
         }
         mTaskLists.get(position).setQuen(true);
-        TaskCationDB.getDB().deleteAll(null, PointsEntity.class);
+        TaskCationDB.getDB().deleteAll(null, ScenicPointsEntity.PointsBean.class);
         TaskCationDB.getDB().insert(null, mTaskLists);
     }
 
     //更新不在队列
     public static void deleteQuen(int position) {
-        List<PointsEntity> mTaskLists = TaskCationDB.getDB().select(null, PointsEntity.class);
+        List<ScenicPointsEntity.PointsBean> mTaskLists = TaskCationDB.getDB().select(null, ScenicPointsEntity.PointsBean.class);
         mTaskLists.get(position).setQuen(false);
-        TaskCationDB.getDB().deleteAll(null, PointsEntity.class);
+        TaskCationDB.getDB().deleteAll(null, ScenicPointsEntity.PointsBean.class);
         TaskCationDB.getDB().insert(null, mTaskLists);
     }
     //是否有队列
     public static int getQuen() {
-        List<PointsEntity> mTaskLists = TaskCationDB.getDB().select(null, PointsEntity.class);
+        List<ScenicPointsEntity.PointsBean> mTaskLists = TaskCationDB.getDB().select(null, ScenicPointsEntity.PointsBean.class);
        for(int i=0;i<mTaskLists.size();i++){
            if (mTaskLists.get(i).isQuen()){
             return i;

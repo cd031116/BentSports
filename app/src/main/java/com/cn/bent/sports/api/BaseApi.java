@@ -18,4 +18,10 @@ public class BaseApi {
         }
         return apiService;
     }
+    public static ApiService getJavaDefaultService(Context context) {
+        if (apiService == null) {
+            apiService = RxRetrofit.getRetrofit(ConstantValues.JAVA_URL,context).create(ApiService.class);
+        }
+        return apiService;
+    }
 }

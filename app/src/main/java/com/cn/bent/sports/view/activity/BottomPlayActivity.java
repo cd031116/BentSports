@@ -21,6 +21,7 @@ import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.PlayBean;
 import com.cn.bent.sports.bean.PlayEvent;
 import com.cn.bent.sports.bean.PointsEntity;
+import com.cn.bent.sports.bean.ScenicPointsEntity;
 import com.cn.bent.sports.bean.StartEvent;
 import com.cn.bent.sports.evevt.DistanceEvent;
 import com.cn.bent.sports.evevt.DistanceSubscriber;
@@ -57,7 +58,7 @@ public class BottomPlayActivity extends BaseActivity {
     private Handler mHandler;
     ServiceConnection serviceConnection;
     MusicService.MusicController mycontrol;
-    private  PointsEntity pEnty;
+    private ScenicPointsEntity.PointsBean pEnty;
     private LatLng mlatlng;
     @Override
     protected int getLayoutId() {
@@ -67,7 +68,7 @@ public class BottomPlayActivity extends BaseActivity {
     @Override
     public void initView() {
         super.initView();
-         pEnty = (PointsEntity) getIntent().getSerializableExtra("enty");
+         pEnty = (ScenicPointsEntity.PointsBean) getIntent().getSerializableExtra("enty");
         mlatlng= (LatLng) getIntent().getParcelableExtra("startLatlng");
         NotificationCenter.defaultCenter().subscriber(DistanceEvent.class, disevent);
         EventBus.getDefault().register(this);
@@ -126,7 +127,7 @@ public class BottomPlayActivity extends BaseActivity {
     public void initData() {
         super.initData();
         if(pEnty!=null){
-            name_t.setText(pEnty.getName());
+            name_t.setText(pEnty.getPointName());
         }
     }
 
@@ -148,7 +149,7 @@ public class BottomPlayActivity extends BaseActivity {
 
     private void checkPause() {
         if(pEnty!=null){
-            name_t.setText(pEnty.getName());
+            name_t.setText(pEnty.getPointName());
         }
         if (mycontrol != null && mycontrol.isPlay()) {
             Log.i("dddd", "checkPause");
