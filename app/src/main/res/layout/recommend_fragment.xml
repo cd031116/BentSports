@@ -1,100 +1,272 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="800px"
-        android:background="#60000000"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="200px"
-            android:text="石燕湖欢迎您!"
-            android:textColor="#ffffff"
-            android:textSize="56px" />
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="100px"
-            android:text="您今天走了"
-            android:textColor="#ffffff"
-            android:textSize="50px" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="40px"
-            android:text="324342步"
-            android:textColor="#ffffff"
-            android:textSize="70px" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="40px"
-            android:text="查看排行"
-            android:textColor="#ffffff"
-            android:textSize="50px" />
-
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/go_daolan"
-        android:layout_width="match_parent"
-        android:layout_height="140px"
-        android:layout_marginLeft="100px"
-        android:layout_marginRight="100px"
-        android:layout_marginTop="730px"
-        android:background="@drawable/continue_bg"
-        android:gravity="center"
-        android:text="进入智能手机导游"
-        android:textColor="#ffffff"
-        android:textSize="53px" />
-
-
-    <LinearLayout
-        android:id="@+id/line_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/go_daolan"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="43px">
-
-        <TextView
-            android:layout_width="300px"
-            android:layout_height="1px"
-            android:background="#e0e0e0" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="100px"
-            android:layout_marginRight="100px"
-            android:text="景区活动" />
-
-
-        <TextView
-            android:layout_width="300px"
-            android:layout_height="1px"
-            android:background="#e0e0e0" />
-    </LinearLayout>
-
-    <android.support.v7.widget.RecyclerView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/line_title" />
+        android:background="#f5f5f5"
+        android:paddingBottom="30px">
 
-</RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/top_line"
+            android:layout_width="match_parent"
+            android:layout_height="1000px"
+            android:background="@drawable/recomm_bg">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="1000px"
+                android:background="#50000000"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="230px"
+                    android:text="石燕湖欢迎您!"
+                    android:textColor="#ffffff"
+                    android:textSize="57px" />
+
+
+                <LinearLayout
+                    android:layout_width="460px"
+                    android:layout_height="460px"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="70px"
+                    android:background="@drawable/recomm_circle"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="55px"
+                        android:text="您今天走了"
+                        android:textColor="#ffffff"
+                        android:textSize="40px" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="50px"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:text="324342"
+                            android:textColor="#f6ff00"
+                            android:textSize="95px" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center_vertical"
+                            android:text="步"
+                            android:textColor="#ffffff"
+                            android:textSize="37px" />
+
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="查看排行"
+                        android:layout_marginTop="30px"
+                        android:layout_marginBottom="20px"
+                        android:textColor="#ffffff"
+                        android:textSize="50px" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:id="@+id/center_line"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/top_line"
+            android:background="#ffffff"
+            android:orientation="vertical"
+            android:paddingTop="106px">
+
+            <RelativeLayout
+                android:id="@+id/line_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#ffffff"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/play_icon"
+                    android:drawablePadding="12px"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="43px"
+                    android:text="趣玩路线" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:paddingRight="43px"
+                    android:text="查看更多"
+                    android:textColor="#aaaaaa"
+                    android:textSize="40px" />
+
+            </RelativeLayout>
+
+
+            <LinearLayout
+                android:id="@+id/luxian"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/line_title"
+                android:background="#ffffff"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="484px"
+                    android:layout_height="254px" />
+
+                <ImageView
+                    android:layout_width="484px"
+                    android:layout_height="254px"
+                    android:layout_marginLeft="28px" />
+
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/see_my"
+                android:layout_width="384px"
+                android:layout_height="102px"
+                android:layout_below="@+id/luxian"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="43px"
+                android:layout_marginTop="50px"
+                android:background="@drawable/red_round_bg"
+                android:gravity="center"
+                android:text="查看我的"
+                android:textColor="#fd7e6f" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/go_daolan"
+            android:layout_width="990px"
+            android:layout_height="212px"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="910px"
+            android:background="@drawable/input_btn"
+            android:gravity="center"
+            android:paddingBottom="30px"
+            android:text="进入智能手机导游"
+            android:textColor="#ffffff"
+            android:textSize="53px" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/center_line"
+            android:background="#ffffff"
+            android:paddingBottom="60px"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/line_gry"
+                android:layout_width="match_parent"
+                android:layout_height="28px"
+                android:background="#f5f5f5" />
+
+            <TextView
+                android:id="@+id/huodong"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/line_gry"
+                android:layout_marginTop="10px"
+                android:drawableLeft="@drawable/activity_icon"
+                android:drawablePadding="12px"
+                android:gravity="center_vertical"
+                android:paddingLeft="43px"
+                android:text="景区活动" />
+
+
+            <ImageView
+                android:id="@+id/activity_one"
+                android:layout_width="994px"
+                android:layout_height="236px"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/recoom_a" />
+
+            <ImageView
+                android:layout_width="994px"
+                android:layout_height="236px"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="28px"
+                android:background="@drawable/recoom_a2" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/scan_t"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="64px"
+            android:layout_marginTop="90px"
+            android:drawableTop="@drawable/recomm_scan"
+            android:text="扫一扫"
+            android:textColor="#ffffff"
+            android:textSize="34px" />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:layout_width="299px"
+                android:layout_height="151px"
+                android:layout_marginTop="66px"
+                android:background="@drawable/message_box"
+                android:visibility="gone"
+                android:textColor="#ffffff"
+                android:text="#cccccc"
+                android:textSize="34px" />
+
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="40px"
+                android:background="@drawable/recomm_message"
+                android:textColor="#ffffff"
+                android:textSize="34px" />
+
+
+
+        </LinearLayout>
+
+
+
+    </RelativeLayout>
+</android.support.v4.widget.NestedScrollView>

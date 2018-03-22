@@ -2,11 +2,18 @@ package com.cn.bent.sports.view.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseFragment;
+import com.cn.bent.sports.utils.ToastUtils;
 import com.cn.bent.sports.view.activity.MapActivity;
+import com.cn.bent.sports.view.activity.PlayFunActivity;
+import com.cn.bent.sports.view.activity.PlayWebViewActivity;
+import com.minew.beacon.BluetoothState;
+import com.vondear.rxtools.RxActivityTool;
+import com.vondear.rxtools.activity.ActivityScanerCode;
 
 import butterknife.OnClick;
 
@@ -22,7 +29,7 @@ public class RecommendFragment extends BaseFragment {
 //        fragment.setArguments(bundle);
         return fragment;
     }
-
+    private static final int REQUEST_Scan = 12;
 
     @Override
     protected int getLayoutId() {
@@ -39,12 +46,36 @@ public class RecommendFragment extends BaseFragment {
 
     }
 
-    @OnClick({R.id.go_daolan})
+    @OnClick({R.id.go_daolan,R.id.scan_t,R.id.line_title})
     void onclick(View view){
         switch (view.getId()){
             case R.id.go_daolan:
                 startActivity(new Intent(getActivity(), MapActivity.class));
                 break;
+            case R.id.scan_t:
+                RxActivityTool.skipActivityForResult(getActivity(),ActivityScanerCode.class,REQUEST_Scan);
+                break;
+            case R.id.line_title:
+                startActivity(new Intent(getActivity(), PlayFunActivity.class));
+                break;
         }
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case REQUEST_Scan:
+                if (null != data) {
+                    Bundle bundle = data.getExtras();
+                    if (bundle == null) {
+                        return;
+                    }
+                    String jieguo=data.getStringExtra("SCAN_RESULT");
+
+                    break;
+                }
+        }
+    }
+
 }

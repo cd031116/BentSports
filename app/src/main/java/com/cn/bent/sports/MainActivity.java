@@ -64,7 +64,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
             public void run() {
                 switchContent(0);
             }
-        },500);
+        },50);
     }
 
     @Override

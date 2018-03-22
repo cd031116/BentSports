@@ -20,9 +20,9 @@ android {
         abortOnError false
     }
 
-    dexOptions {
-        javaMaxHeapSize "4g"
-    }
+//    dexOptions {
+//        javaMaxHeapSize "4g"
+//    }
     buildTypes {
         release {
             buildConfigField "boolean", "LOG_DEBUG", "false"
@@ -69,6 +69,7 @@ dependencies {
     compile files('libs/minewBeaconScan.jar')
     compile files('libs/EasyAR.jar')
     compile files('libs/lite-orm-1.7.0.jar')
+    compile project(':h_recy')
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.github.bumptech.glide:glide:4.0.0'
     compile 'com.amap.api:navi-3dmap:latest.integration'
@@ -80,13 +81,7 @@ dependencies {
     compile 'com.github.Kennyc1012:MultiStateView:1.3.2'
     compile 'com.ashokvarma.android:bottom-navigation-bar:2.0.4'
     compile 'com.jwenfeng.pulltorefresh:library:1.0.3'
-    compile 'com.dou361.ijkplayer:jjdxm-ijkplayer:1.0.6'
-    compile 'com.dou361.ijkplayer-armv7a:jjdxm-ijkplayer-armv7a:1.0.0'
-    compile 'com.dou361.ijkplayer-armv5:jjdxm-ijkplayer-armv5:1.0.0'
-    compile 'com.dou361.ijkplayer-arm64:jjdxm-ijkplayer-arm64:1.0.0'
-    compile 'com.dou361.ijkplayer-x86:jjdxm-ijkplayer-x86:1.0.0'
-    compile 'com.dou361.ijkplayer-x86_64:jjdxm-ijkplayer-x86_64:1.0.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.github.crosswall:Android-Coverflow:release-v1.0.4'
     testCompile 'junit:junit:4.12'
-    compile project(':h_recy')
 }

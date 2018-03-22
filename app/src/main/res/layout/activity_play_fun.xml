@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true"
+    android:background="#ffffff"
+    android:orientation="vertical"
+    tools:context="com.cn.bent.sports.view.activity.PlayFunActivity">
+    <include layout="@layout/view_top"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#ededed"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:background="#ffffff"
+            android:padding="43px"
+            android:layout_marginTop="52px"
+            android:textSize="69px"
+            android:text="趣玩路线"/>
+
+    <me.crosswall.lib.coverflow.core.PagerContainer
+        android:id="@+id/pager_container"
+        android:layout_width="match_parent"
+        android:layout_height="1225px">
+
+        <android.support.v4.view.ViewPager
+            android:layout_width="880px"
+            android:layout_height="1225px"
+            android:layout_gravity="center"/>
+
+    </me.crosswall.lib.coverflow.core.PagerContainer>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffff"
+            android:layout_marginTop="43px"
+            android:paddingBottom="40px"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/now_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="69px"
+                android:textColor="#3fcfe4"
+                android:text="1"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="69px"
+                android:textColor="#333333"
+                android:text="/"/>
+            <TextView
+                android:id="@+id/total_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="69px"
+                android:textColor="#333333"
+                android:text="4"/>
+        </LinearLayout>
+
+
+</LinearLayout>
