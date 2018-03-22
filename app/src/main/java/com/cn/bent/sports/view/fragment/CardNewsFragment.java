@@ -27,9 +27,6 @@ import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.JavaRxFunction;
 
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -90,22 +87,6 @@ public class CardNewsFragment extends BaseFragment implements OnLoadMoreListener
 //                        Log.d("dddd", "onError: " + e.getMessage());
 //                    }
 //                });
-    }
-
-    private List<List<Double>> parseNoHeaderJArray(String strByJso) {
-        List<List<Double>> lists = new ArrayList<>();
-        JSONArray json = JSONArray.fromObject(strByJso);
-        for (int i = 0; i < json.size(); i++) {
-            List<Double> doubleList = new ArrayList<>();
-            JSONArray job = json.getJSONArray(i);
-            for (int j = 0; j < job.size(); j++) {
-                double aDouble = job.getDouble(j);
-                doubleList.add(aDouble);
-            }
-            lists.add(doubleList);
-        }
-        return lists;
-
     }
 
     @Override
