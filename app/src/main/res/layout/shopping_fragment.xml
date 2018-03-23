@@ -1,127 +1,133 @@
-<com.jwenfeng.library.pulltorefresh.PullToRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/refresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#f0f0f0"
     android:clipToPadding="true"
     android:fitsSystemWindows="true"
-    android:background="#f0f0f0">
+    android:orientation="vertical">
 
-    <com.kennyc.view.MultiStateView
-        android:id="@+id/multiStateView"
+    <include layout="@layout/view_top" />
+
+    <com.jwenfeng.library.pulltorefresh.PullToRefreshLayout
+        android:id="@+id/refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:msv_emptyView="@layout/empty_view"
-        app:msv_errorView="@layout/error_view"
-        app:msv_loadingView="@layout/loading_view"
-        app:msv_viewState="loading">
+        android:layout_height="match_parent">
 
-        <android.support.v4.widget.NestedScrollView
+        <com.kennyc.view.MultiStateView
+            android:id="@+id/multiStateView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="none">
+            app:msv_emptyView="@layout/empty_view"
+            app:msv_errorView="@layout/error_view"
+            app:msv_loadingView="@layout/loading_view"
+            app:msv_viewState="loading">
 
-            <LinearLayout
+            <android.support.v4.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
-
-
-                <include layout="@layout/view_top"/>
+                android:scrollbars="none">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="43px"
-                    android:padding="43px"
-                    android:background="@drawable/bg_round_white"
                     android:orientation="vertical">
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="400px">
 
-                        <ImageView
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="43px"
+                        android:background="@drawable/bg_round_white"
+                        android:orientation="vertical"
+                        android:padding="43px">
+
+                        <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
+                            android:layout_height="400px">
 
-                        <TextView
-                            android:layout_width="300px"
-                            android:layout_height="wrap_content"
-                            android:background="#20000000"
-                            android:gravity="center"
-                            android:layout_centerInParent="true"
-                            android:textColor="#ffffff"
-                            android:textSize="60px" />
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:id="@+id/name_t"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="国家AAAAA景区"
-                            android:textColor="#999999"
-                            android:textSize="43px" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/name_t"
-                            android:text="库存   ：34"
-                            android:textColor="#999999"
-                            android:textSize="43px" />
-
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:orientation="horizontal">
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" />
 
                             <TextView
-                                android:layout_width="wrap_content"
+                                android:layout_width="300px"
                                 android:layout_height="wrap_content"
-                                android:text="￥" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="125"
+                                android:layout_centerInParent="true"
+                                android:background="#20000000"
+                                android:gravity="center"
+                                android:textColor="#ffffff"
                                 android:textSize="60px" />
+                        </RelativeLayout>
 
-                        </LinearLayout>
-                    </RelativeLayout>
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/name_t"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="国家AAAAA景区"
+                                android:textColor="#999999"
+                                android:textSize="43px" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/name_t"
+                                android:text="库存   ：34"
+                                android:textColor="#999999"
+                                android:textSize="43px" />
+
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="￥" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="125"
+                                    android:textSize="60px" />
+
+                            </LinearLayout>
+                        </RelativeLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20px"
+                            android:background="@drawable/continue_bg"
+                            android:gravity="center"
+                            android:padding="43px"
+                            android:text="抢购门票" />
+
+
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="43px"
-                        android:layout_marginTop="20px"
-                        android:gravity="center"
-                        android:background="@drawable/continue_bg"
-                        android:text="抢购门票" />
+                        android:background="#ffffff"
+                        android:gravity="center_vertical"
+                        android:padding="10px"
+                        android:text="游玩项目" />
 
-
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycle"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#ffffff" />
                 </LinearLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:background="#ffffff"
-                    android:padding="10px"
-                    android:text="游玩项目" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recycle"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="#ffffff"/>
-            </LinearLayout>
-        </android.support.v4.widget.NestedScrollView>
-    </com.kennyc.view.MultiStateView>
-</com.jwenfeng.library.pulltorefresh.PullToRefreshLayout>
+            </android.support.v4.widget.NestedScrollView>
+        </com.kennyc.view.MultiStateView>
+    </com.jwenfeng.library.pulltorefresh.PullToRefreshLayout>
+</LinearLayout>

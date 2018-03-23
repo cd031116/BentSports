@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: "com.mob.sdk"
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
     buildToolsVersion rootProject.ext.android.buildToolsVersion
@@ -84,4 +84,24 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.github.crosswall:Android-Coverflow:release-v1.0.4'
     testCompile 'junit:junit:4.12'
+}
+
+MobSDK {
+    appKey "24d14d9fc48b6"
+    appSecret "5375e5e203f8c0edc7e2b075b083e200"
+
+    ShareSDK {
+        //平台配置信息
+        devInfo {
+            Wechat {
+                appId "wx0a94f9a104d1d9ff"
+                appSecret "64020361b8ec4c99936c0e3999a9f249"
+            }
+            QQ {
+                appId "100371282"
+                appKey "aed9b0303e3ed1e27bae87c33761161d"
+            }
+        }
+    }
+
 }

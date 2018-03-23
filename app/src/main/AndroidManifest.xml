@@ -51,6 +51,7 @@
         android:icon="@drawable/lo_go"
         android:label="@string/app_name"
         android:supportsRtl="true"
+        tools:replace="android:name"
         android:theme="@style/AppTheme">
         <activity android:name=".view.activity.StartActivity">
             <intent-filter>
@@ -178,8 +179,11 @@
             android:name=".view.activity.BottomPlayActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoTitleTranslucentTheme" />
-        <activity android:name=".view.activity.PlayFunActivity"
+        <activity
+            android:name=".view.activity.PlayFunActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".view.activity.play.OrganizeActivity" />
+        <activity android:name=".view.activity.play.PrepareActivity"></activity>
     </application>
 
 </manifest>

@@ -1,6 +1,5 @@
 package com.cn.bent.sports.base;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -8,6 +7,7 @@ import android.support.multidex.MultiDex;
 
 import com.cn.bent.sports.database.QueueManager;
 import com.cn.bent.sports.database.TaskCationManager;
+import com.mob.MobSDK;
 import com.vondear.rxtools.RxTool;
 
 import org.aisen.android.common.context.GlobalContext;
@@ -31,6 +31,7 @@ public class MyApplication extends GlobalContext{
         TaskCationManager.setup(this);
         QueueManager.setup(this);
         RxTool.init(this);
+        MobSDK.init(this);
     }
 
     public ActivityManagerd getActivityManager() {

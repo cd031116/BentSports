@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_top"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#10000000">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="950px"
+        android:orientation="vertical"
+        android:background="@drawable/bg_white"
+        android:layout_alignParentBottom="true">
+        <ImageView
+            android:id="@+id/mIvQrCode"
+            android:layout_width="500px"
+            android:layout_height="500px"
+            android:layout_marginTop="100px"
+            android:layout_gravity="center_horizontal"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100px"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:text="队员用app扫描上方二维码\n即可扫描"/>
+
+    </LinearLayout>
+
+</RelativeLayout>
