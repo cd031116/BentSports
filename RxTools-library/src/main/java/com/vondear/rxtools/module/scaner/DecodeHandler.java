@@ -151,8 +151,13 @@ final class DecodeHandler extends Handler {
             //Log.d(TAG, "Sending decode succeeded message...");
             message.sendToTarget();
         } else {
-            Message message = Message.obtain(activity.getHandler(), R.id.decode_failed);
-            message.sendToTarget();
+            try {
+                Message message = Message.obtain(activity.getHandler(), R.id.decode_failed);
+                message.sendToTarget();
+            }catch (Exception e){
+
+            }
+
         }
     }
 

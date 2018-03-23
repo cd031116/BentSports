@@ -8,19 +8,97 @@
         android:layout_width="880px"
         android:layout_height="1225px"
         android:layout_centerInParent="true"
-        app:cardCornerRadius="4dp"
-        app:cardElevation="2dp"
-        app:cardUseCompatPadding="false"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="5dp"
+        app:cardUseCompatPadding="true"
         app:cardPreventCornerOverlap="false">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+        <ImageView
+            android:id="@+id/image_cover"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="462px"
+            android:background="@drawable/recomm_bg"
+            android:scaleType="centerCrop"
+            android:visibility="visible"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/play_fun_red_bg">
+
+                <TextView
+                    android:id="@+id/p_num"
+                    android:layout_width="213px"
+                    android:layout_height="138px"
+                    android:layout_marginLeft="64px"
+                    android:textColor="#3fcfe4"
+                    android:text="1人/组"
+                    android:gravity="center"
+                    android:paddingBottom="5px"
+                    android:background="@drawable/label_rute"/>
+
+                <TextView
+                    android:id="@+id/name_p"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:padding="43px"
+                    android:textColor="#ffffff"
+                    android:textSize="57px"
+                    android:layout_below="@+id/p_num"
+                    android:text="寻找教堂密码"/>
+
+                <LinearLayout
+                    android:id="@+id/shoum_p"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_horizontal"
+                    android:layout_below="@+id/name_p">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:textColor="#ffffff"
+                        android:textSize="57px"
+                        android:layout_below="@+id/p_num"
+                        android:text="一次穿越"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:textColor="#ffffff"
+                        android:layout_marginLeft="70px"
+                        android:textSize="57px"
+                        android:layout_below="@+id/p_num"
+                        android:text="12个点标"/>
+
+                </LinearLayout>
 
 
-    <ImageView
-        android:id="@+id/image_cover"
-        android:layout_gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/recomm_bg"
-        android:scaleType="centerCrop"
-        android:visibility="visible"/>
+                <TextView
+                    android:id="@+id/go_task"
+                    android:layout_width="720px"
+                    android:layout_height="142px"
+                    android:text="马上开跑"
+                    android:textSize="57px"
+                    android:gravity="center"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="110px"
+                    android:textColor="#fd7d6f"
+                    android:background="@drawable/white_fun_bg"
+                    android:layout_below="@+id/shoum_p"/>
+
+            </RelativeLayout>
+        </LinearLayout>
     </android.support.v7.widget.CardView>
+
+
 </RelativeLayout>

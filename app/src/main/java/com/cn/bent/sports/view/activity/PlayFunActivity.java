@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseActivity;
+import com.cn.bent.sports.utils.ToastUtils;
 import com.cn.bent.sports.widget.ZoomOutPageTransformer;
 
 import java.util.ArrayList;
@@ -74,7 +75,7 @@ public class PlayFunActivity extends BaseActivity {
                 .scale(0f)
                 .pagerMargin(0f)
                 .spaceSize(0f)
-                .rotationY(10f)
+                .rotationY(0f)
                 .build();
     }
 
@@ -89,10 +90,18 @@ public class PlayFunActivity extends BaseActivity {
             this.mList=mdata;
         }
         @Override
-        public Object instantiateItem(ViewGroup container, int position) {
+        public Object instantiateItem(ViewGroup container,final int position) {
 
             View view = LayoutInflater.from(PlayFunActivity.this).inflate(R.layout.item_cover,null);
             ImageView imageView = (ImageView) view.findViewById(R.id.image_cover);
+            TextView go_task=(TextView) view.findViewById(R.id.go_task);
+            go_task.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ToastUtils.showShortToast(PlayFunActivity.this,"position"+position+"");
+                }
+            });
+
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             container.addView(view);
             return view;

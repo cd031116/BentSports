@@ -3,6 +3,8 @@
     android:id="@+id/refresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true"
     android:background="#f0f0f0">
 
     <com.kennyc.view.MultiStateView
@@ -24,10 +26,14 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
+
+                <include layout="@layout/view_top"/>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="43px"
+                    android:padding="43px"
                     android:background="@drawable/bg_round_white"
                     android:orientation="vertical">
 
@@ -94,6 +100,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="43px"
+                        android:layout_marginTop="20px"
                         android:gravity="center"
                         android:background="@drawable/continue_bg"
                         android:text="抢购门票" />

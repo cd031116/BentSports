@@ -43,12 +43,12 @@ public class ShoppingFragment extends BaseFragment {
         refresh.setRefreshListener(new BaseRefreshListener() {
             @Override
             public void refresh() {
-
+                refresh.finishRefresh();
             }
 
             @Override
             public void loadMore() {
-
+                refresh.finishLoadMore();
             }
         });
     }

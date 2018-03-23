@@ -74,13 +74,13 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
                 .setFirstSelectedPosition(0)
                 .initialise();
         navigationBar.setTabSelectedListener(this);
-//new BottomNavigationItem(R.drawable.wode1, "推荐").setInactiveIcon(ContextCompat.getDrawable(this, R.drawable.wode2))
+    //new BottomNavigationItem(R.drawable.wode1, "推荐").setInactiveIcon(ContextCompat.getDrawable(this, R.drawable.wode2))
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 switchContent(0);
             }
-        },50);
+        },20);
     }
 
     @Override
