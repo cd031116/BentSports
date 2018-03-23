@@ -15,6 +15,7 @@ import com.amap.api.maps.AMapUtils;
 import com.amap.api.maps.model.LatLng;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseConfig;
+import com.cn.bent.sports.bean.LinesPointsEntity;
 import com.cn.bent.sports.bean.PointsEntity;
 import com.cn.bent.sports.bean.ScenicPointsEntity;
 import com.cn.bent.sports.recyclebase.CommonAdapter;
@@ -35,25 +36,25 @@ public class XianluPoupWindow extends PopupWindow {
     private LinearLayout line_s;
     private RecyclerView r_list;
     private ItemInclick itemsOnClick;
-    private CommonAdapter<List<ScenicPointsEntity.PointsBean>> mAdapter;
-    private List<List<ScenicPointsEntity.PointsBean>> mList;
+    private CommonAdapter<LinesPointsEntity> mAdapter;
+    private List<LinesPointsEntity> mList;
 
-    public XianluPoupWindow(Activity mContext, List<List<ScenicPointsEntity.PointsBean>> mList, ItemInclick itemsOnClickd) {
+    public XianluPoupWindow(Activity mContext, List<LinesPointsEntity> mList, ItemInclick itemsOnClickd) {
         this.mContext = mContext;
         this.mList=mList;
         this.itemsOnClick = itemsOnClickd;
         this.view = LayoutInflater.from(mContext).inflate(R.layout.luxian_poup_item, null);
         SupportMultipleScreensUtil.scale(view);
         r_list = (RecyclerView) view.findViewById(R.id.luxian_list);
-        mAdapter=new CommonAdapter<List<ScenicPointsEntity.PointsBean>>(mContext,R.layout.luxian_list_item,mList) {
+        mAdapter=new CommonAdapter<LinesPointsEntity>(mContext,R.layout.luxian_list_item,mList) {
             @Override
-            protected void convert(ViewHolder holder, List<ScenicPointsEntity.PointsBean> pointsEntityList,final int position) {
-                holder.setText(R.id.xianlu_name,(position+1)+"、石燕湖线路");
-                holder.setText(R.id.xianlu_num,pointsEntityList.size()+"");
+            protected void convert(ViewHolder holder, final LinesPointsEntity linesPointsEntity,  int position) {
+                holder.setText(R.id.xianlu_name,linesPointsEntity.getLineName());
+                holder.setText(R.id.xianlu_num,linesPointsEntity.getPointCount()+"");
                 holder.getConvertView().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        itemsOnClick.ItemClick(position);
+                        itemsOnClick.ItemClick(linesPointsEntity.getId());
                     }
                 });
             }

@@ -12,11 +12,13 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.PlayBean;
 import com.cn.bent.sports.bean.PlayEvent;
 import com.cn.bent.sports.bean.PointsEntity;
+import com.cn.bent.sports.bean.ScenicPointsEntity;
 import com.cn.bent.sports.bean.StartEvent;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.NiceUtil;
@@ -41,11 +43,13 @@ public class DetailDotActivity extends BaseActivity {
     ImageView paly_t;
     @Bind(R.id.title)
     TextView mtitle;
+    @Bind(R.id.bg_top)
+    ImageView bg_top;
 
     private Handler mHandler;
     ServiceConnection serviceConnection;
     MusicService.MusicController mycontrol;
-    private  PointsEntity pEnty;
+    private  ScenicPointsEntity.PointsBean pEnty;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_detail_dot;
@@ -54,7 +58,7 @@ public class DetailDotActivity extends BaseActivity {
     @Override
     public void initView() {
         super.initView();
-        pEnty = (PointsEntity) getIntent().getSerializableExtra("enty");
+        pEnty = (ScenicPointsEntity.PointsBean) getIntent().getSerializableExtra("enty");
         EventBus.getDefault().register(this);
         mHandler = new Handler();
         Intent intent = new Intent(this, MusicService.class);
@@ -129,7 +133,8 @@ public class DetailDotActivity extends BaseActivity {
         super.onResume();
             pEnty=SaveObjectUtils.getInstance(getApplicationContext()).getObject(Constants.NOW_POION, null);
         if(pEnty!=null){
-            mtitle.setText(pEnty.getName());
+            mtitle.setText(pEnty.getPointName());
+            Glide.with(this).load(pEnty.getImagesUrl()).into(bg_top);
         }
     }
 
@@ -196,7 +201,8 @@ public class DetailDotActivity extends BaseActivity {
     public void initData() {
         super.initData();
         if(pEnty!=null){
-            mtitle.setText(pEnty.getName());
+            mtitle.setText(pEnty.getPointName());
+            Glide.with(this).load(pEnty.getImagesUrl()).into(bg_top);
         }
 
     }

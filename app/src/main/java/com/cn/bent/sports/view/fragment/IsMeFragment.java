@@ -1,9 +1,13 @@
 package com.cn.bent.sports.view.fragment;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -92,8 +96,8 @@ public class IsMeFragment extends BaseFragment {
     }
 
     private void setView(UserMsgEntity userMsgEntity) {
-        if(getActivity()==null)
-        return;
+        if (getActivity() == null)
+            return;
         nick_name.setText(userMsgEntity.getUserMsg().getNickname());
         RequestOptions requestOptions = RequestOptions.circleCropTransform();
         Glide.with(user_photo.getContext()).load(userMsgEntity.getUserMsg().getHeadimg())
@@ -101,35 +105,35 @@ public class IsMeFragment extends BaseFragment {
                 .into(user_photo);
         if (userMsgEntity.getCard_num() != null && userMsgEntity.getCard_num().size() > 0) {
             for (UserMsgEntity.CardNumBean cardBean : userMsgEntity.getCard_num()) {
-                Log.d("tttt", "getGame_id: "+cardBean.getGame_id());
+                Log.d("tttt", "getGame_id: " + cardBean.getGame_id());
                 switch (cardBean.getGame_id()) {
                     case 1:
                         if (cardBean.getStatus() == 1)
-                        break;
+                            break;
                     case 12:
                         if (cardBean.getStatus() == 1)
-                        break;
+                            break;
                     case 13:
                         if (cardBean.getStatus() == 1)
-                        break;
+                            break;
                     case 14:
                         if (cardBean.getStatus() == 1)
-                        break;
+                            break;
                     case 15:
                         if (cardBean.getStatus() == 1)
-                        break;
+                            break;
                     case 16:
                         if (cardBean.getStatus() == 1)
-                        break;
+                            break;
                     case 17:
                         if (cardBean.getStatus() == 1)
-                        break;
+                            break;
                 }
             }
         }
     }
 
-    @OnClick({R.id.setting,R.id.user_photo})
+    @OnClick({R.id.setting, R.id.user_photo})
     void conlick(View view) {
         switch (view.getId()) {
             case R.id.setting:

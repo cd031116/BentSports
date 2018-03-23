@@ -63,6 +63,7 @@ import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.base.BaseConfig;
+import com.cn.bent.sports.bean.LinesPointsDetailEntity;
 import com.cn.bent.sports.bean.LinesPointsEntity;
 import com.cn.bent.sports.bean.PlayBean;
 import com.cn.bent.sports.bean.PlayEvent;
@@ -348,14 +349,19 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                             lp = new LatLonPoint(scenicPointsEntity.getLatitude(), scenicPointsEntity.getLatitude());
                         if (scenicPointsEntity != null && scenicPointsEntity.getPoints() != null && scenicPointsEntity.getPoints().size() > 0) {
                             Log.d("dddd", "onSuccess: " + scenicPointsEntity.getPoints().get(0).getPointName());
-                            mPointsList.addAll(scenicPointsEntity.getPoints());
-                            if (TaskCationManager.getSize() <= 0) {
-                                TaskCationManager.insert(scenicPointsEntity.getPoints());
-                            }
+
                             for (ScenicPointsEntity.PointsBean pointsBean : scenicPointsEntity.getPoints()) {
+                                pointsBean.setMp3(Constants.JAVA_YUN_URL+pointsBean.getMp3());
+                                pointsBean.setImagesUrl(Constants.JAVA_YUN_URL+pointsBean.getImagesUrl());
+                                mPointsList.add(pointsBean);
                                 mPointsEntityMap.put(pointsBean.getId(), pointsBean);
                                 setOverLay(pointsBean.getType(), pointsBean);
                             }
+                            if (TaskCationManager.getSize() <= 0) {
+                                TaskCationManager.insert(scenicPointsEntity.getPoints());
+                            }
+                            mPointsEntityList.add(mPointsList);
+                            mPointsEntityList.add(mPointsList);
                         }
                     }
 
@@ -412,7 +418,27 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                 .subscribe(new RxObserver<List<LinesPointsEntity>>(this, "getScenicLines", 1, false) {
                     @Override
                     public void onSuccess(int whichRequest, List<LinesPointsEntity> linesPointsEntityList) {
+                        shouLuxianPoup(linesPointsEntityList);
+                    }
 
+                    @Override
+                    public void onError(int whichRequest, Throwable e) {
+                        Log.d("dddd", "onError: " + e.getMessage());
+                    }
+                });
+    }
+
+    /**
+     * 获取线路详情数据
+     */
+    private void getXianluDetailData(int linesId) {
+                BaseApi.getJavaDefaultService(this).getScenicLinesDetail(linesId)
+                .map(new JavaRxFunction<LinesPointsDetailEntity>())
+                .compose(RxSchedulers.<LinesPointsDetailEntity>io_main())
+                .subscribe(new RxObserver<LinesPointsDetailEntity>(this, "getScenicLines", 1, false) {
+                    @Override
+                    public void onSuccess(int whichRequest, LinesPointsDetailEntity linesPointsDetailEntity) {
+                        Log.d("dddd", "onSuccess: "+linesPointsDetailEntity.getPoints().size());
                     }
 
                     @Override
@@ -467,9 +493,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                 if (polyline != null)
                     polyline.remove();
                 if (isShowLuxian) {
-                    shouLuxianPoup();
-                    tour_list.setVisibility(View.VISIBLE);
-                    isShowLuxian = false;
+                    getXianluData();
                 } else {
                     polyline = null;
                     tour_list.setVisibility(View.GONE);
@@ -505,8 +529,8 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         }
     }
 
-    private void shouLuxianPoup() {
-        xlWindow = new XianluPoupWindow(MapActivity.this, mPointsEntityList, luxianItemsOnClick);
+    private void shouLuxianPoup(List<LinesPointsEntity> linesPointsEntityList) {
+        xlWindow = new XianluPoupWindow(MapActivity.this, linesPointsEntityList, luxianItemsOnClick);
         xlWindow.showAtLocation(this.findViewById(R.id.mapView),
                 Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
     }
@@ -515,6 +539,9 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         @Override
         public void ItemClick(final int index) {
             xlWindow.dismiss();
+            getXianluDetailData(index);
+            tour_list.setVisibility(View.VISIBLE);
+            isShowLuxian = false;
             pointLatLngs = new ArrayList<>();
             for (ScenicPointsEntity.PointsBean pointsBean : mPointsEntityList.get(index)) {
                 if (pointsBean.getType() == 4)

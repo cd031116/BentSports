@@ -3,6 +3,7 @@ package com.cn.bent.sports.api;
 
 import com.cn.bent.sports.bean.AddScoreEntity;
 import com.cn.bent.sports.bean.AllFinishEntity;
+import com.cn.bent.sports.bean.LinesPointsDetailEntity;
 import com.cn.bent.sports.bean.LinesPointsEntity;
 import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.bean.PhotoPath;
@@ -76,6 +77,14 @@ public interface ApiService {
      */
     @GET("api/travel/scenic/noauth/{id}/lines")
     Observable<JavaResult<List<LinesPointsEntity>>> getScenicLines(@Path("id") String id);
+
+    /**
+     * 获取线路
+     * @param id
+     * @return
+     */
+    @GET("api/travel/line/noauth/{id}/detail")
+    Observable<JavaResult<LinesPointsDetailEntity>> getScenicLinesDetail(@Path("id") int id);
 
     /**
      * 获取点位

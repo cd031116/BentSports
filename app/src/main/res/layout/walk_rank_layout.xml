@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/top_layout"
+        android:layout_width="match_parent"
+        android:layout_height="500px"
+        android:background="@drawable/bg_person">
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="40px"
+            android:src="@drawable/fanhui" />
+
+        <TextView
+            android:id="@+id/walk_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="100px"
+            android:text="20000"
+            android:textColor="@color/c_ffffff"
+            android:textSize="@dimen/t130" />
+
+        <TextView
+            android:id="@+id/walk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/walk_num"
+            android:layout_toRightOf="@id/walk_num"
+            android:text="步"
+            android:textColor="@color/c_ffffff"
+            android:textSize="@dimen/t38" />
+
+        <TextView
+            android:id="@+id/walk_rank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/walk_num"
+            android:layout_centerHorizontal="true"
+            android:text="今日第4名"
+            android:textColor="@color/c_ffffff"
+            android:textSize="@dimen/t38" />
+
+        <TextView
+            android:id="@+id/walk_stop_fresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/walk_rank"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/t62"
+            android:text="今日第4名"
+            android:textColor="@color/c_ffffff"
+            android:textSize="@dimen/t38" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/bushu"
+        android:layout_width="match_parent"
+        android:layout_height="90px"
+        android:layout_below="@id/top_layout"
+        android:background="@color/normal_bg"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/t43"
+        android:text="步数前20paiming"
+        android:textColor="@color/color_666666"
+        android:textSize="@dimen/t38" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/walk_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/bushu"
+        android:background="@color/white" />
+
+    <TextView
+        android:id="@+id/fuli_text"
+        android:layout_width="match_parent"
+        android:layout_height="90px"
+        android:layout_alignParentBottom="true"
+        android:background="@color/normal_bg"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/t43"
+        android:text="步数前20paiming"
+        android:textColor="@color/color_666666"
+        android:textSize="@dimen/t38" />
+</RelativeLayout>
