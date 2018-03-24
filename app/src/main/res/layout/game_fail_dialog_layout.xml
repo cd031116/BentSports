@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/t936"
+    android:layout_height="@dimen/t936"
+    android:gravity="center_horizontal"
+    android:background="@drawable/bg_round_white"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/t56"
+        android:textColor="@color/c_fd7d6f"
+        android:layout_marginTop="@dimen/t130"
+        android:text="30分"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/t51"
+        android:textColor="@color/c_fd7d6f"
+        android:layout_marginTop="@dimen/t110"
+        android:text="很遗憾,您未通关"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/t100"
+        android:text="极限脑风暴"
+        android:textColor="@color/color_666666"
+        android:textSize="@dimen/t51" />
+
+
+    <View
+        android:id="@+id/dotted_line"
+        android:layout_width="632px"
+        android:layout_height="@dimen/t1"
+        android:layout_marginTop="@dimen/t100"
+        android:background="@drawable/soft_line"
+        android:layerType="software" />
+    <TextView
+        android:id="@+id/know_complete"
+        android:layout_width="720px"
+        android:layout_height="145px"
+        android:background="@drawable/complete_commit"
+        android:gravity="center"
+        android:text="知道了"
+        android:layout_marginTop="@dimen/t100"
+        android:textColor="@color/c_ffffff"
+        android:textSize="51px" />
+</LinearLayout>
