@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="936px"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:id="@+id/view_finish"
+        android:layout_width="match_parent"
+        android:layout_height="1128px"
+        android:layout_marginTop="@dimen/t218"
+        android:background="@drawable/bg_round_white"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="354px"
+            android:text="恭喜你,任务完成"
+            android:textColor="@color/c_fd7d6f"
+            android:textSize="@dimen/t51" />
+
+        <View
+            android:id="@+id/dotted_line"
+            android:layout_width="632px"
+            android:layout_height="@dimen/t1"
+            android:layout_marginTop="@dimen/t70"
+            android:background="@drawable/soft_line"
+            android:layerType="software" />
+
+
+        <LinearLayout
+            android:layout_width="@dimen/t632"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/t85"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal">
+
+                <ImageView
+                    android:id="@+id/time_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/task_time" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/t20"
+                    android:layout_toRightOf="@id/time_img"
+                    android:text="用时"
+                    android:textColor="@color/color_666666"
+                    android:textSize="@dimen/t40" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/time_img"
+                    android:layout_marginTop="@dimen/t60"
+                    android:text="01:10:10"
+                    android:textColor="@color/c_fd7d6f"
+                    android:textSize="@dimen/t48" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal">
+
+                <ImageView
+                    android:id="@+id/score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/score" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/t20"
+                    android:layout_toRightOf="@id/score"
+                    android:text="用时"
+                    android:textColor="@color/color_666666"
+                    android:textSize="@dimen/t40" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/score"
+                    android:layout_marginTop="@dimen/t60"
+                    android:paddingLeft="40px"
+                    android:text="200分"
+                    android:textColor="@color/c_fd7d6f"
+                    android:textSize="@dimen/t48" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/look_rank"
+            android:layout_width="720px"
+            android:layout_height="145px"
+            android:layout_marginTop="@dimen/t106"
+            android:background="@drawable/complete_commit"
+            android:gravity="center"
+            android:text="查看排行"
+            android:textColor="@color/c_ffffff"
+            android:textSize="51px" />
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/task_complete_icon" />
+    <ImageView
+        android:id="@+id/task_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/view_finish"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/task_close" />
+</RelativeLayout>

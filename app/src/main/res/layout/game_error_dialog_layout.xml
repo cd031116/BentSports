@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="936px"
+    android:layout_height="765px"
+    android:gravity="center_horizontal"
+    android:background="@drawable/bg_round_white"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/t56"
+        android:textColor="@color/color_666666"
+        android:layout_marginTop="@dimen/t74"
+        android:text="提示"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/t100"
+        android:background="@drawable/caution" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/t56"
+        android:text="回答错误"
+        android:textColor="@color/c_fd7d6f"
+        android:textSize="@dimen/t43" />
+
+
+    <TextView
+        android:id="@+id/know_complete"
+        android:layout_width="720px"
+        android:layout_height="145px"
+        android:background="@drawable/complete_commit"
+        android:gravity="center"
+        android:text="知道了"
+        android:layout_marginTop="@dimen/t100"
+        android:textColor="@color/c_ffffff"
+        android:textSize="51px" />
+</LinearLayout>

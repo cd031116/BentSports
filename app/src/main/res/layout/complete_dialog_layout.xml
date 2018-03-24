@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="936px"
+    android:layout_height="1268px"
+    android:gravity="center_horizontal"
+    android:background="@drawable/bg_round_white"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="86px"
+        android:background="@drawable/one_task_complete" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/t60"
+        android:text="极限脑风暴"
+        android:textColor="@color/color_666666"
+        android:textSize="@dimen/t51" />
+
+    <View
+        android:id="@+id/dotted_line"
+        android:layout_width="632px"
+        android:layout_height="@dimen/t1"
+        android:layout_marginTop="@dimen/t70"
+        android:background="@drawable/soft_line"
+        android:layerType="software" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/score" />
+
+        <TextView
+            android:id="@+id/score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/t28"
+            android:text="+ 30分"
+            android:textColor="@color/c_fd7d6f"
+            android:textSize="@dimen/t48" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/know_complete"
+        android:layout_width="720px"
+        android:layout_height="145px"
+        android:background="@drawable/complete_commit"
+        android:gravity="center"
+        android:text="知道了"
+        android:layout_marginTop="@dimen/t106"
+        android:textColor="@color/c_ffffff"
+        android:textSize="51px" />
+</LinearLayout>
