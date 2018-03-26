@@ -36,9 +36,9 @@
         android:layout_width="215px"
         android:layout_height="229px"
         android:layout_gravity="center_horizontal"
-        android:background="@drawable/logo"
         android:layout_marginBottom="165px"
-        android:layout_marginTop="165px" />
+        android:layout_marginTop="165px"
+        android:background="@drawable/logo" />
 
     <EditText
         android:id="@+id/edit_photo"
@@ -46,11 +46,11 @@
         android:layout_height="157px"
         android:layout_gravity="center_horizontal"
         android:background="@drawable/edit_bg"
-        android:inputType="number"
         android:hint="请输入手机号"
+        android:inputType="number"
+        android:paddingBottom="10px"
         android:paddingLeft="57px"
         android:paddingTop="10px"
-        android:paddingBottom="10px"
         android:textColor="#333333"
         android:textColorHint="#dbdbdb"
         android:textSize="43px" />
@@ -71,9 +71,9 @@
             android:hint="验证码"
             android:inputType="number"
             android:maxLength="11"
-            android:paddingTop="10px"
             android:paddingBottom="10px"
             android:paddingLeft="57px"
+            android:paddingTop="10px"
             android:textColor="#333333"
             android:textColorHint="#dbdbdb"
             android:textSize="43px" />
@@ -103,4 +103,18 @@
         android:text="登陆"
         android:textColor="#ffffff"
         android:textSize="51px" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center_horizontal|bottom">
+
+        <TextView
+            android:id="@+id/wechat_sign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/t57"
+            android:background="@drawable/wechat_sign_in"/>
+    </LinearLayout>
 </LinearLayout>
