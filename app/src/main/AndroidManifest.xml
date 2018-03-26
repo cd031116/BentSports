@@ -51,8 +51,8 @@
         android:icon="@drawable/lo_go"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        tools:replace="android:name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:replace="android:name">
         <activity android:name=".view.activity.StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -183,7 +183,9 @@
             android:name=".view.activity.PlayFunActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".view.activity.play.OrganizeActivity" />
-        <activity android:name=".view.activity.play.PrepareActivity"></activity>
+        <activity android:name=".view.activity.play.PrepareActivity" />
+        <activity android:name=".view.activity.play.DetailPlayActivity" />
+        <activity android:name=".view.activity.play.OrderDetailActivity"></activity>
     </application>
 
 </manifest>

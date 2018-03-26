@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="950px"
         android:orientation="vertical"
-        android:background="@drawable/bg_white"
+        android:background="@drawable/bg_pop"
         android:layout_alignParentBottom="true">
         <ImageView
             android:id="@+id/mIvQrCode"

@@ -12,8 +12,9 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@+id/top_layout"
+        android:layout_marginBottom="519px"
         android:orientation="vertical"
         android:padding="43px">
 
@@ -29,58 +30,61 @@
             android:layout_width="match_parent"
             android:layout_height="500px"
             android:layout_marginTop="43px"
-            android:background="@drawable/recomm_bg"/>
+            android:background="@drawable/recomm_bg" />
 
-
-        <TextView
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#333333"
-            android:layout_marginTop="43px"
-            android:text="有一个人叫真咯嗦，娶了个老婆叫要你管，生了个儿子叫麻烦。有一天麻烦不见了！夫妻俩就去报案。警察问爸爸：请问这位男士你叫啥名字？爸爸说:真咯嗦。警察很生气，然后 他又问妈妈叫啥名字。妈妈说:要你管。警察非常生气的说:你们要干什么?夫妻俩说：找麻烦"
-            android:textSize="53px"/>
+            android:scrollbars="none">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="43px"
+                android:text="有一个人叫真咯嗦，娶了个老婆叫要你管，生了个儿子叫麻烦。有一天麻烦不见了！夫妻俩就去报案。警察问爸爸：请问这位男士你叫啥名字？爸爸说:真咯嗦。警察很生气，然后 他又问妈妈叫啥名字。妈妈说:要你管。警察非常生气的说:你们要干什么?夫妻俩说：找麻烦"
+                android:textColor="#333333"
+                android:textSize="53px" />
+        </android.support.v4.widget.NestedScrollView>
     </LinearLayout>
-
-
-
 
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="519px"
         android:layout_alignParentBottom="true"
-        android:orientation="vertical">
+        android:background="@drawable/half_circle_bg"
+        android:orientation="vertical"
+        android:paddingTop="60px">
 
-    <TextView
-        android:id="@+id/start_t"
-        android:layout_width="250px"
-        android:layout_height="250px"
-        android:text="开始"
-        android:textSize="70px"
-        android:gravity="center"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/re_circle_bg"
-        android:textColor="#ffffff"/>
+        <TextView
+            android:id="@+id/start_t"
+            android:layout_width="338px"
+            android:layout_height="338px"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/s_start"
+            android:gravity="center"
+            android:paddingBottom="42px"
+            android:text="开始"
+            android:textColor="#ffffff"
+            android:textSize="72px" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="#999999"
-        android:padding="43px"
-        android:layout_below="@+id/start_t"
-        android:layout_marginBottom="20px"
-        android:layout_centerHorizontal="true"
-        android:text="请确保所有队员已准备好哦"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/start_t"
+            android:layout_centerHorizontal="true"
+            android:text="请确保所有队员已准备好哦"
+            android:textColor="#999999" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:background="@drawable/wc"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="58px"
             android:layout_marginRight="43px"
-            android:layout_below="@+id/start_t"/>
-
+            android:background="@drawable/teammate_enter" />
 
 
     </RelativeLayout>

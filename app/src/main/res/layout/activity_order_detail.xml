@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.kennyc.view.MultiStateView
+        android:id="@+id/multiStateView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:msv_emptyView="@layout/empty_view"
+        app:msv_errorView="@layout/error_view"
+        app:msv_loadingView="@layout/loading_view"
+        app:msv_viewState="loading">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <com.cn.bent.sports.widget.MyScroview
+                android:id="@+id/myscroview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/top_layout"
+                android:layout_marginBottom="143px"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#F5F5F5"
+                    android:orientation="vertical"
+                    android:paddingBottom="30px">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="540px"
+                        android:background="#ffffff">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="570px" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="43px"
+                            android:layout_marginTop="150px"
+                            android:src="@drawable/d_return" />
+                    </RelativeLayout>
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#ffffff"
+                        android:gravity="bottom"
+                        android:orientation="horizontal"
+                        android:padding="42px">
+
+                        <TextView
+                            android:id="@+id/name_t"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:gravity="bottom"
+                            android:text="石燕湖寻宝"
+                            android:textColor="#333333"
+                            android:textSize="57px" />
+
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="30px"
+                                android:text="￥"
+                                android:textColor="#fd7d6f"
+                                android:textSize="43px" />
+
+                            <TextView
+                                android:id="@+id/group_price"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="30"
+                                android:textColor="#fd7d6f"
+                                android:textSize="69px" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="/"
+                                android:textColor="#999999"
+                                android:textSize="69px" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="组"
+                                android:textColor="#999999"
+                                android:textSize="37px" />
+                        </LinearLayout>
+                    </RelativeLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#ffffff"
+                        android:orientation="horizontal"
+                        android:paddingLeft="43px">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/detail_red_rund_bg"
+                            android:paddingBottom="20px"
+                            android:paddingLeft="43px"
+                            android:paddingRight="43px"
+                            android:paddingTop="20px"
+                            android:text="一次穿越"
+                            android:textColor="@color/red_text" />
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="15px"
+                            android:background="@drawable/detail_blue_rund_bg"
+                            android:paddingBottom="20px"
+                            android:paddingLeft="43px"
+                            android:paddingRight="43px"
+                            android:paddingTop="20px"
+                            android:text="12个点标"
+                            android:textColor="@color/blue_text" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#ffffff"
+                        android:orientation="vertical"
+                        android:padding="43px">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="30px"
+                                android:src="@drawable/d_people" />
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="2人"
+                                android:textColor="@color/red_text"
+                                android:textSize="43px" />
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="/组"
+                                android:textColor="@color/color_666666"
+                                android:textSize="43px" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10px"
+                                android:text="(只需队长付款)"
+                                android:textColor="@color/color_666666"
+                                android:textSize="43px" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12px"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="30px"
+                                android:src="@drawable/d_time" />
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="2018-02-01 9:00-17:00"
+                                android:textColor="@color/color_666666"
+                                android:textSize="43px" />
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12px"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingBottom="26px">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="30px"
+                                android:src="@drawable/d_address" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="长沙石燕湖生态公园"
+                                android:textColor="@color/color_666666"
+                                android:textSize="43px" />
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/search02"
+                        android:layout_width="match_parent"
+                        android:layout_height="120px"
+                        android:layout_marginTop="30px"
+                        android:background="#ffffff"
+                        android:orientation="vertical">
+
+                        <include layout="@layout/team_tab_detail" />
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:id="@+id/detail_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#ffffff"
+                        android:lineSpacingExtra="5dp"
+                        android:padding="43px"
+                        android:textColor="@color/c_333333" />
+
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="260px"
+                        android:padding="43px" />
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#ffffff"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical"
+                        android:padding="42px">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="游戏规则:"
+                            android:textColor="@color/c_333333"
+                            android:textSize="43px" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="30px"
+                            android:lineSpacingExtra="5dp"
+                            android:textColor="#333333"
+                            android:textSize="43px" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30px"
+                        android:background="#ffffff"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical"
+                        android:paddingLeft="42px">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="费用需知:"
+                            android:textColor="@color/c_333333"
+                            android:textSize="43px" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="30px"
+                            android:lineSpacingExtra="5dp"
+                            android:textColor="#333333"
+                            android:textSize="43px" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30px"
+                        android:background="#ffffff"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical"
+                        android:paddingLeft="42px">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="温馨提示:"
+                            android:textColor="@color/c_333333"
+                            android:textSize="43px" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="30px"
+                            android:lineSpacingExtra="5dp"
+                            android:textColor="#333333"
+                            android:textSize="43px" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </com.cn.bent.sports.widget.MyScroview>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="160px"
+                android:layout_alignParentBottom="true"
+                android:background="#ffffff"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/collect_layout"
+                    android:layout_width="404px"
+                    android:layout_height="match_parent"
+                    android:background="#3fcfe4"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/collect_ima"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="40px"
+                        android:drawableLeft="@drawable/d_rank"
+                        android:drawablePadding="23px"
+                        android:text="排行"
+                        android:textColor="#ffffff"
+                        android:textSize="51px" />
+
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/submit"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#fd7d6f"
+                    android:gravity="center"
+                    android:text="购买"
+                    android:textColor="#ffffff"
+                    android:textSize="51px" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/search01"
+                android:layout_width="match_parent"
+                android:layout_height="120px"
+                android:layout_below="@+id/top_layout"
+                android:orientation="vertical"></LinearLayout>
+        </RelativeLayout>
+    </com.kennyc.view.MultiStateView>
+
+</RelativeLayout>
