@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/t995"
+    android:layout_height="@dimen/t146"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true"
+    android:layout_marginBottom="@dimen/t28"
+    android:background="@drawable/map_bottom_bg"
+    android:gravity="center_vertical">
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/t48"
+        android:drawableLeft="@drawable/task_time"
+        android:drawablePadding="@dimen/t15"
+        android:text="00:00:00"
+        android:textColor="@color/color_666666"
+        android:textSize="@dimen/t43" />
+
+    <TextView
+        android:id="@+id/score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/t400"
+        android:drawableLeft="@drawable/score"
+        android:drawablePadding="@dimen/t15"
+        android:text="120分"
+        android:textColor="@color/color_666666"
+        android:textSize="@dimen/t43" />
+
+
+    <TextView
+        android:id="@+id/all_task"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/t92"
+        android:text="/12" />
+
+    <TextView
+        android:id="@+id/finish_task"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/all_task"
+        android:drawableLeft="@drawable/map_task"
+        android:text="6"
+        android:textColor="@color/c_fd7d6f"
+        android:textSize="@dimen/t43" />
+</RelativeLayout>

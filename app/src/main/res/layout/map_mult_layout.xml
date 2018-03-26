@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.amap.api.maps.MapView
+        android:id="@+id/mapView"
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+    <ImageView
+        android:id="@+id/map_return"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/t43"
+        android:background="@drawable/map_return" />
+
+    <ImageView
+        android:id="@+id/map_scan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/t28"
+        android:background="@drawable/map_scan" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/map_scan"
+        android:layout_marginRight="@dimen/t28"
+        android:layout_marginTop="@dimen/t12"
+        android:background="@drawable/map_more" />
+
+    <include
+        android:id="@+id/map_game_ms_layout"
+        layout="@layout/map_game_ms_layout"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/task_finish_layout"
+        layout="@layout/task_finish_mult_layout"
+        android:visibility="gone"/>
+</RelativeLayout>

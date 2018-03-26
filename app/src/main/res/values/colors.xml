@@ -10,7 +10,10 @@
     <color name="c_000000">#000000</color>
     <color name="c_333333">#333333</color>
     <color name="c_999999">#999999</color>
+    <color name="c_aaaaaa">#aaaaaa</color>
+    <color name="c_cccccc">#cccccc</color>
     <color name="c_ffffff">#ffffff</color>
+    <color name="c_ffbfb7">#ffbfb7</color>
     <color name="c_fd7d6f">#fd7d6f</color>
     <color name="c_3fcfe4">#3fcfe4</color>
     <color name="red_text">#fd7d6f</color>

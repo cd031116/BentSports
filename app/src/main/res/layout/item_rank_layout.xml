@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/t160"
     android:paddingLeft="@dimen/t43"
     android:paddingRight="@dimen/t43">
 
@@ -11,8 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:gravity="center"
-        android:text="4"
-        android:textColor="@color/color_666666" />
+        android:background="@drawable/gold"
+        android:textColor="@color/c_aaaaaa" />
 
     <ImageView
         android:id="@+id/rank_img"
@@ -31,7 +31,7 @@
         android:layout_toRightOf="@id/rank_img"
         android:gravity="center"
         android:text="4"
-        android:textColor="@color/color_666666"
+        android:textColor="@color/c_aaaaaa"
         android:textSize="@dimen/t38" />
 
 
@@ -43,7 +43,8 @@
         android:layout_centerVertical="true"
         android:gravity="bottom"
         android:text="4"
-        android:textColor="@color/color_666666" />
+        android:textSize="@dimen/t38"
+        android:textColor="@color/c_aaaaaa" />
 
     <TextView
         android:id="@+id/walk_rank_num"
@@ -51,8 +52,8 @@
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@id/rank_bu"
         android:gravity="center"
-        android:textSize="@dimen/t62"
+        android:textSize="@dimen/t51"
         android:layout_centerVertical="true"
         android:text="4"
-        android:textColor="@color/color_666666" />
+        android:textColor="@color/c_aaaaaa" />
 </RelativeLayout>

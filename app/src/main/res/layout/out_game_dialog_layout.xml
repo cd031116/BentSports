@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/t346"
+    android:background="@drawable/bg_round_white"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/out_game"
+        android:layout_width="@dimen/t520"
+        android:layout_height="@dimen/t116"
+        android:background="@drawable/bg_out_game"
+        android:layout_marginTop="@dimen/t43"
+        android:layout_marginBottom="@dimen/t43"
+        android:gravity="center"
+        android:text="退出比赛"
+        android:textColor="@color/c_fd7d6f"
+        android:textSize="@dimen/t56" />
+
+   <View
+       android:layout_width="match_parent"
+       android:layout_height="@dimen/t1"
+       android:background="@color/normal_bg"/>
+
+    <TextView
+        android:id="@+id/quxiao"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:layout_height="0dp"
+        android:text="取消"
+        android:textColor="@color/c_cccccc"
+        android:textSize="@dimen/t43" />
+
+
+</LinearLayout>

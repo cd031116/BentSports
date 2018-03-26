@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true">
 
     <RelativeLayout
         android:id="@+id/top_layout"
         android:layout_width="match_parent"
-        android:layout_height="500px"
-        android:background="@drawable/bg_person">
+        android:layout_height="wrap_content"
+        android:background="@drawable/foot_bg">
 
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="40px"
+            android:paddingLeft="@dimen/t43"
+            android:paddingRight="@dimen/t43"
+            android:layout_marginTop="@dimen/t92"
             android:src="@drawable/fanhui" />
 
         <TextView
@@ -21,10 +25,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="100px"
+            android:layout_marginTop="200px"
             android:text="20000"
             android:textColor="@color/c_ffffff"
-            android:textSize="@dimen/t130" />
+            android:textSize="@dimen/t103" />
 
         <TextView
             android:id="@+id/walk"
@@ -41,10 +45,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/walk_num"
+            android:layout_marginTop="@dimen/t51"
             android:layout_centerHorizontal="true"
             android:text="今日第4名"
             android:textColor="@color/c_ffffff"
-            android:textSize="@dimen/t38" />
+            android:textSize="@dimen/t40" />
 
         <TextView
             android:id="@+id/walk_stop_fresh"
@@ -52,17 +57,17 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/walk_rank"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/t62"
+            android:layout_marginTop="@dimen/t80"
             android:text="今日第4名"
-            android:textColor="@color/c_ffffff"
-            android:textSize="@dimen/t38" />
+            android:textColor="@color/c_ffbfb7"
+            android:textSize="@dimen/t40" />
 
     </RelativeLayout>
 
     <TextView
         android:id="@+id/bushu"
         android:layout_width="match_parent"
-        android:layout_height="90px"
+        android:layout_height="110px"
         android:layout_below="@id/top_layout"
         android:background="@color/normal_bg"
         android:gravity="center_vertical"
