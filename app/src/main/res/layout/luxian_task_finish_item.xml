@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/t170">
+
+
+    <TextView
+        android:id="@+id/task_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:text="任务一"
+        android:textColor="@color/color_666666" />
+
+    <LinearLayout
+        android:id="@+id/member_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/t170"
+        android:layout_toRightOf="@id/task_num"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/img_head"
+            android:layout_width="@dimen/t108"
+            android:layout_height="@dimen/t108" />
+
+        <TextView
+            android:id="@+id/m_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/t43"
+            android:text="小拓"
+            android:textColor="@color/color_666666"
+            android:textSize="@dimen/t43" />
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/m_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/t43"
+        android:text="小拓"
+        android:textColor="@color/c_fd7d6f"
+        android:textSize="@dimen/t43" />
+</RelativeLayout>

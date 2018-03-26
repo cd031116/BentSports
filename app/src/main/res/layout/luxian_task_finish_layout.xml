@@ -91,12 +91,51 @@
             android:textSize="@dimen/t34" />
     </LinearLayout>
 
+    <RelativeLayout
+        android:id="@+id/task_ms"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/m_finish"
+        android:layout_marginBottom="@dimen/t46"
+        android:layout_marginTop="@dimen/t80">
+
+        <TextView
+            android:id="@+id/task_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/t116"
+            android:text="任务名称"
+            android:textColor="@color/c_333333"
+            android:textSize="@dimen/t43" />
+
+        <TextView
+            android:id="@+id/task_member"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/t170"
+            android:layout_toRightOf="@id/task_name"
+            android:text="得分成员"
+            android:textColor="@color/c_333333"
+            android:textSize="@dimen/t43" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/t188"
+            android:layout_toRightOf="@id/task_member"
+            android:text="最高分"
+            android:textColor="@color/c_fd7d6f"
+            android:textSize="@dimen/t43" />
+    </RelativeLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/member_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/m_finish"
-        android:layout_marginTop="@dimen/t136"
+        android:layout_below="@id/task_ms"
+        android:scrollbarSize="@dimen/t15"
+        android:saveEnabled="true"
+        android:scrollbars="vertical"
         android:paddingLeft="@dimen/t136"
         android:paddingRight="@dimen/t56" />
 </RelativeLayout>
