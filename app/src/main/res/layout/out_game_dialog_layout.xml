@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="1080px"
     android:layout_height="@dimen/t346"
     android:background="@drawable/bg_round_white"
-    android:gravity="center_horizontal"
     android:orientation="vertical">
 
     <TextView
@@ -13,6 +12,7 @@
         android:background="@drawable/bg_out_game"
         android:layout_marginTop="@dimen/t43"
         android:layout_marginBottom="@dimen/t43"
+        android:layout_gravity="center_horizontal"
         android:gravity="center"
         android:text="退出比赛"
         android:textColor="@color/c_fd7d6f"

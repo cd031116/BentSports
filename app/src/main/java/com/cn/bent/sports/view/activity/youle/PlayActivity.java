@@ -1,9 +1,13 @@
 package com.cn.bent.sports.view.activity.youle;
 
 import android.app.Dialog;
+import android.bluetooth.BluetoothAdapter;
+import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -11,6 +15,7 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdateFactory;
@@ -22,7 +27,27 @@ import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseActivity;
+import com.cn.bent.sports.bean.LoginBase;
+import com.cn.bent.sports.bean.MajorBean;
+import com.cn.bent.sports.database.QueueBean;
+import com.cn.bent.sports.database.QueueManager;
+import com.cn.bent.sports.database.TaskCationManager;
+import com.cn.bent.sports.utils.Constants;
+import com.cn.bent.sports.utils.DataUtils;
+import com.cn.bent.sports.utils.SaveObjectUtils;
+import com.cn.bent.sports.utils.ToastUtils;
+import com.cn.bent.sports.view.poupwindow.DoTaskPoupWindow;
+import com.cn.bent.sports.view.poupwindow.TalkPoupWindow;
 import com.cn.bent.sports.widget.OutGameDialog;
+import com.minew.beacon.BeaconValueIndex;
+import com.minew.beacon.BluetoothState;
+import com.minew.beacon.MinewBeacon;
+import com.minew.beacon.MinewBeaconManager;
+import com.vondear.rxtools.RxActivityTool;
+import com.vondear.rxtools.activity.ActivityScanerCode;
+import com.vondear.rxtools.view.RxToast;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -51,6 +76,13 @@ public class PlayActivity extends BaseActivity implements AMap.OnMyLocationChang
 
     private AMap aMap;
     private float mCurrentZoom = 18f;
+    private static final int SCAN_CODE = 101;
+    private MinewBeaconManager mMinewBeaconManager;
+    private DoTaskPoupWindow mopupWindow;
+    private TalkPoupWindow soundWindow;
+    private LoginBase user;
+    private boolean isBlue = false;
+    private static final int REQUEST_ENABLE_BT = 2;
 
 
     @Override
@@ -68,6 +100,9 @@ public class PlayActivity extends BaseActivity implements AMap.OnMyLocationChang
     public void initView() {
         super.initView();
         task_finish_layout.setVisibility(View.GONE);
+        user = SaveObjectUtils.getInstance(this).getObject(Constants.USER_INFO, null);
+        mMinewBeaconManager = MinewBeaconManager.getInstance(this);
+        checkBluetooth();
         if (aMap == null) {
             aMap = mapView.getMap();
         }
@@ -79,13 +114,14 @@ public class PlayActivity extends BaseActivity implements AMap.OnMyLocationChang
 
     @Override
     public void initData() {
-
+        startLocation();
     }
 
     @OnClick({R.id.map_scan, R.id.map_more})
     void onClick(View view) {
         switch (view.getId()) {
             case R.id.map_scan:
+                RxActivityTool.skipActivityForResult(this, ActivityScanerCode.class, SCAN_CODE);
                 break;
             case R.id.map_more:
                 OpenOutDialog();
@@ -143,10 +179,107 @@ public class PlayActivity extends BaseActivity implements AMap.OnMyLocationChang
     };
 
     /**
+     * check Bluetooth state
+     */
+    private void checkBluetooth() {
+        BluetoothState bluetoothState = mMinewBeaconManager.checkBluetoothState();
+        switch (bluetoothState) {
+            case BluetoothStateNotSupported:
+                ToastUtils.showShortToast(this, "手机不支持蓝牙");
+                break;
+            case BluetoothStatePowerOff:
+                showBLEDialog();
+                break;
+            case BluetoothStatePowerOn:
+                initListener();
+                break;
+        }
+    }
+
+    private void initListener() {
+        if (DataUtils.isBlue(this)) {
+            mMinewBeaconManager.startScan();
+        }
+        mMinewBeaconManager.setDeviceManagerDelegateListener(new com.minew.beacon.MinewBeaconManagerListener() {
+            /**
+             *   if the manager find some new beacon, it will call back this method.
+             *
+             *  @param minewBeacons  new beacons the manager scanned
+             */
+            @Override
+            public void onAppearBeacons(List<MinewBeacon> minewBeacons) {
+
+            }
+
+            /**
+             *  if a beacon didn't update data in 10 seconds, we think this beacon is out of rang, the manager will call back this method.
+             *
+             *  @param minewBeacons beacons out of range
+             */
+            @Override
+            public void onDisappearBeacons(List<com.minew.beacon.MinewBeacon> minewBeacons) {
+            }
+
+            /**
+             *  the manager calls back this method every 1 seconds, you can get all scanned beacons.
+             *
+             *  @param minewBeacons all scanned beacons
+             */
+            @Override
+            public void onRangeBeacons(List<MinewBeacon> minewBeacons) {
+                if (minewBeacons != null && minewBeacons.size() > 0) {
+//                    String distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
+                    for (MinewBeacon beacon : minewBeacons) {
+                        String majer = beacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Major).getStringValue();
+//                        for (int i = 0; i < mPointsList.size(); i++) {
+//                            String jieguo = String.valueOf(mPointsList.get(i).getMajor());
+//                            if (jieguo.equals(majer)) {
+//                                if (!TextUtils.isEmpty(mPointsList.get(i).getMp3())) {
+//                                    QueueManager.update(new QueueBean(mPointsList.get(i).getMp3()));
+//                                    if (TaskCationManager.isPlay(i) || TaskCationManager.isNow(i)) {
+//
+//                                    } else {
+//                                        chanVioce(i);
+//                                    }
+//                                    break;
+//                                }
+//                            }
+//                        }
+                    }
+                }
+            }
+
+            /**
+             *  the manager calls back this method when BluetoothStateChanged.
+             *
+             *  @param state BluetoothState
+             */
+            @Override
+            public void onUpdateState(com.minew.beacon.BluetoothState state) {
+                switch (state) {
+                    case BluetoothStatePowerOn:
+                        RxToast.info("蓝牙打开");
+                        break;
+                    case BluetoothStatePowerOff:
+                        RxToast.info("蓝牙关闭");
+                        break;
+                }
+            }
+        });
+    }
+
+    private void showBLEDialog() {
+        if (!isBlue) {
+            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
+        }
+    }
+
+    /**
      * 退出dialog
      */
     private void OpenOutDialog() {
-        OutGameDialog outGameDialog= new OutGameDialog(PlayActivity.this, R.style.dialog, new OutGameDialog.OnClickListener() {
+        OutGameDialog outGameDialog = new OutGameDialog(PlayActivity.this, R.style.dialog, new OutGameDialog.OnClickListener() {
             @Override
             public void onClick(Dialog dialog, int confirm) {
                 dialog.dismiss();
@@ -163,4 +296,25 @@ public class PlayActivity extends BaseActivity implements AMap.OnMyLocationChang
         outGameDialog.show();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case REQUEST_ENABLE_BT:
+                Log.d("dddd", "onActivityResult: " + mMinewBeaconManager.checkBluetoothState());
+                if (mMinewBeaconManager.checkBluetoothState().equals(BluetoothState.BluetoothStatePowerOn)) {
+                    isBlue = true;
+                    initListener();
+                }
+                if (mMinewBeaconManager.checkBluetoothState().equals(BluetoothState.BluetoothStatePowerOff)) {
+                    isBlue = false;
+                    checkBluetooth();
+                }
+                break;
+            case SCAN_CODE:
+                RxToast.success("扫描成功");
+                break;
+        }
+
+    }
 }
