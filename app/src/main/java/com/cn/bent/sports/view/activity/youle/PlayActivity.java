@@ -1,4 +1,4 @@
-package com.cn.bent.sports.view.activity;
+package com.cn.bent.sports.view.activity.youle;
 
 import android.app.Dialog;
 import android.graphics.Color;
@@ -22,7 +22,6 @@ import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseActivity;
-import com.cn.bent.sports.base.BaseFragment;
 import com.cn.bent.sports.widget.OutGameDialog;
 
 import butterknife.Bind;
