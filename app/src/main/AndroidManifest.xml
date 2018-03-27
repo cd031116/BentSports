@@ -191,7 +191,8 @@
         <activity android:name=".view.activity.play.OrganizeActivity" />
         <activity android:name=".view.activity.play.PrepareActivity" />
         <activity android:name=".view.activity.play.DetailPlayActivity" />
-        <activity android:name=".view.activity.play.OrderDetailActivity"></activity>
+        <activity android:name=".view.activity.play.OrderDetailActivity" />
+        <activity android:name=".view.activity.person.PointsRecordActivity"></activity>
     </application>
 
 </manifest>

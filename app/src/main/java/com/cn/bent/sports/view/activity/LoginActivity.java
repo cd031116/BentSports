@@ -3,12 +3,16 @@ package com.cn.bent.sports.view.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Message;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cn.bent.sports.MainActivity;
 import com.cn.bent.sports.R;
@@ -29,10 +33,16 @@ import com.zhl.network.huiqu.HuiquTBResult;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.HashMap;
+
 import butterknife.Bind;
 import butterknife.OnClick;
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.PlatformActionListener;
+import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.wechat.friends.Wechat;
 
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends BaseActivity implements Handler.Callback {
     @Bind(R.id.edit_photo)
     EditText edit_photo;
     @Bind(R.id.code_photo)
@@ -43,7 +53,10 @@ public class LoginActivity extends BaseActivity {
     TextView t_code;
     TimerCount timerCount;
     boolean isPhone = false, isCode = false;
-
+    private Handler handler;
+    private static final int MSG_AUTH_CANCEL = 1;
+    private static final int MSG_AUTH_COMPLETE = 3;
+    private static final int MSG_AUTH_ERROR= 2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +72,7 @@ public class LoginActivity extends BaseActivity {
     @Override
     public void initView() {
         super.initView();
+        handler = new Handler();
         timerCount = new TimerCount(60000, 1000, t_code);
         commit_btn.setEnabled(false);
         edit_photo.addTextChangedListener(new TextWatcher() {
@@ -162,8 +176,6 @@ public class LoginActivity extends BaseActivity {
     }
 
 
-
-
     private void getcode() {
         BaseApi.getDefaultService(LoginActivity.this)
                 .getcode(edit_photo.getText().toString())
@@ -198,7 +210,7 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.tcode, R.id.commit_btn})
+    @OnClick({R.id.tcode, R.id.commit_btn, R.id.wechat_sign})
     void conlick(View view) {
         switch (view.getId()) {
             case R.id.tcode:
@@ -212,8 +224,84 @@ public class LoginActivity extends BaseActivity {
             case R.id.commit_btn:
                 login(edit_photo.getText().toString(), code_photo.getText().toString());
                 break;
+            case R.id.wechat_sign:
+                Platform wechat = ShareSDK.getPlatform(Wechat.NAME);
+                if (wechat.isAuthValid()) {
+                    wechat.removeAccount(true);
+                }
+                wechat.SSOSetting(false);
+                wechat.setPlatformActionListener(paListener);
+                wechat.authorize();
+                wechat.showUser(null);
+                break;
         }
     }
+
+
+    PlatformActionListener paListener=new PlatformActionListener() {
+        @Override
+        public void onComplete(Platform platform, int action, HashMap<String, Object> hashMap) {
+            if (action == Platform.ACTION_USER_INFOR) {
+                Message msg = new Message();
+                msg.what = MSG_AUTH_COMPLETE;
+                msg.arg2 = action;
+                msg.obj =  new Object[] {platform.getName(), hashMap};
+                handler.sendMessage(msg);
+            }
+        }
+
+        @Override
+        public void onError(Platform platform, int action, Throwable throwable) {
+            if (action == Platform.ACTION_USER_INFOR) {
+                Message msg = new Message();
+                msg.what = MSG_AUTH_ERROR;
+                msg.arg2 = action;
+                msg.obj =throwable;
+                handler.sendMessage(msg);
+            }
+            throwable.printStackTrace();
+        }
+
+        @Override
+        public void onCancel(Platform platform, int action) {
+            if (action == Platform.ACTION_USER_INFOR) {
+                Message msg = new Message();
+                msg.what = MSG_AUTH_CANCEL;
+                msg.arg2 = action;
+                msg.obj = platform;
+                handler.sendMessage(msg);
+            }
+        }
+    };
+
+    /**处理操作结果*/
+    public boolean handleMessage(Message msg) {
+        switch(msg.what) {
+            case MSG_AUTH_CANCEL: {
+                // 取消
+                ToastUtils.showShortToast(LoginActivity.this,"取消");
+             }
+            break;
+            case MSG_AUTH_ERROR: {
+                // 失败
+                Throwable t = (Throwable) msg.obj;
+                String text = "caught error: " + t.getMessage();
+                ToastUtils.showShortToast(LoginActivity.this,""+text);
+                t.printStackTrace();
+            } break;
+            case MSG_AUTH_COMPLETE: {
+                // 成功
+                Object[] objs = (Object[]) msg.obj;
+                String plat = (String) objs[0];
+                Platform platform = ShareSDK.getPlatform(plat);
+              Log.i("tttt","getUserName"+platform.getDb().getUserName());
+            }
+            break;
+        }
+        return false;
+    }
+
+
 
     public class TimerCount extends CountDownTimer {
         private TextView bnt;

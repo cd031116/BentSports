@@ -104,10 +104,9 @@
         android:textColor="#ffffff"
         android:textSize="51px" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="match_parent"
         android:gravity="center_horizontal|bottom">
 
         <TextView
@@ -115,6 +114,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/t57"
+          android:layout_alignParentBottom="true"
             android:background="@drawable/wechat_sign_in"/>
-    </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>
