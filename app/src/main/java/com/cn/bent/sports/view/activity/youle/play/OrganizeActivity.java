@@ -1,14 +1,10 @@
-package com.cn.bent.sports.view.activity.play;
+package com.cn.bent.sports.view.activity.youle.play;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseActivity;
-import com.cn.bent.sports.view.activity.MapActivity;
-import com.cn.bent.sports.view.poupwindow.LineListPoupWindow;
 import com.cn.bent.sports.view.poupwindow.ScanPoupWindow;
 
 import butterknife.OnClick;

@@ -1,14 +1,11 @@
 package com.cn.bent.sports.view.activity;
 
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -19,8 +16,6 @@ import com.amap.api.maps.model.LatLng;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.PlayBean;
-import com.cn.bent.sports.bean.PlayEvent;
-import com.cn.bent.sports.bean.PointsEntity;
 import com.cn.bent.sports.bean.ScenicPointsEntity;
 import com.cn.bent.sports.bean.StartEvent;
 import com.cn.bent.sports.evevt.DistanceEvent;
@@ -29,9 +24,8 @@ import com.cn.bent.sports.evevt.ShowPoupEvent;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.NiceUtil;
 import com.cn.bent.sports.utils.SaveObjectUtils;
-import com.cn.bent.sports.utils.SupportMultipleScreensUtil;
-import com.cn.bent.sports.utils.ToastUtils;
 import com.cn.bent.sports.view.service.MusicService;
+import com.vondear.rxtools.view.RxToast;
 
 import org.aisen.android.component.eventbus.NotificationCenter;
 import org.greenrobot.eventbus.EventBus;
@@ -39,7 +33,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class BottomPlayActivity extends BaseActivity {
@@ -190,7 +183,7 @@ public class BottomPlayActivity extends BaseActivity {
                 break;
             case R.id.go_daohang:
                 if(pEnty==null){
-                    ToastUtils.showShortToast(BottomPlayActivity.this,"请选择目的地");
+                    RxToast.warning("请选择目的地");
                 }else {
                     if(mycontrol!=null&&mycontrol.isPlay()){
                         mycontrol.pause();

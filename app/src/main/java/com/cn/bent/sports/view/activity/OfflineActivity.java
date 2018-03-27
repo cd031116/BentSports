@@ -18,8 +18,8 @@ import com.cn.bent.sports.bean.ReFreshEvent;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.DataUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
-import com.cn.bent.sports.utils.ToastUtils;
 import com.cn.bent.sports.widget.GameDialog;
+import com.vondear.rxtools.view.RxToast;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.HuiquRxTBFunction;
@@ -93,7 +93,7 @@ public class OfflineActivity extends BaseActivity {
                 if ("syh".equals(commit_edit.getText().toString().trim())) {
                     commitScore();
                 } else {
-                    ToastUtils.showShortToast(this, "游戏失败，再玩一次");
+                    RxToast.normal("游戏失败，再玩一次");
                 }
                 break;
         }
@@ -135,7 +135,7 @@ public class OfflineActivity extends BaseActivity {
                             EventBus.getDefault().post(new ReFreshEvent());
                             startActivity(new Intent(OfflineActivity.this, LastActivity.class));
                         } else {
-                            ToastUtils.showShortToast(OfflineActivity.this, addScoreEntity.getMsg());
+                            RxToast.normal(addScoreEntity.getMsg());
                             dismissAlert();
                         }
                         isRequestNum = 1;
@@ -146,10 +146,10 @@ public class OfflineActivity extends BaseActivity {
                         dismissAlert();
                         if (isRequestNum < MAX_REQUEST) {
                             isRequestNum++;
-                            ToastUtils.showShortToast(OfflineActivity.this, "积分上传失败,正在重新上传积分");
+                            RxToast.warning("积分上传失败,正在重新上传积分");
                             commitScore();
                         } else {
-                            ToastUtils.showShortToast(OfflineActivity.this, "网络异常，积分上传失败，请重新提交成绩");
+                            RxToast.error( "网络异常，积分上传失败，请重新提交成绩");
                         }
                     }
                 });

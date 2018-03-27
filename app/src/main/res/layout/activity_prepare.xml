@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:clipToPadding="true"
     android:fitsSystemWindows="true"
-    tools:context="com.cn.bent.sports.view.activity.play.PrepareActivity">
+    tools:context="com.cn.bent.sports.view.activity.youle.play.PrepareActivity">
 
     <include layout="@layout/view_top" />
 

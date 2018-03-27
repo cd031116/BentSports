@@ -12,7 +12,7 @@ import com.amap.api.location.AMapLocationListener;
 import com.amap.api.services.core.LatLonPoint;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseActivity;
-import com.cn.bent.sports.utils.ToastUtils;
+import com.vondear.rxtools.view.RxToast;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -42,7 +42,7 @@ public class GetLocationActivity extends BaseActivity {
 
                 } else {
                     //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
-                    ToastUtils.showShortToast(GetLocationActivity.this, "获取位置信息失败!");
+                    RxToast.warning("获取位置信息失败!");
                 }
             }
         }

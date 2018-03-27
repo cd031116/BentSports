@@ -6,18 +6,14 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.cn.bent.sports.R;
-//import com.cn.bent.sports.ar.GLView;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.ar.GLView;
 import com.cn.bent.sports.base.BaseActivity;
@@ -29,8 +25,8 @@ import com.cn.bent.sports.bean.ReFreshEvent;
 import com.cn.bent.sports.bean.VideoEvent;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.SaveObjectUtils;
-import com.cn.bent.sports.utils.ToastUtils;
 import com.cn.bent.sports.widget.GameDialog;
+import com.vondear.rxtools.view.RxToast;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.HuiquRxTBFunction;
@@ -44,7 +40,8 @@ import java.util.HashMap;
 import butterknife.Bind;
 import butterknife.OnClick;
 import cn.easyar.engine.EasyAR;
-import cn.easyar.Engine;
+
+//import com.cn.bent.sports.ar.GLView;
 
 /**
  * Created by dawn on 2018/2/26.
@@ -215,7 +212,7 @@ public class ArActivity extends BaseActivity {
                             EventBus.getDefault().post(new ReFreshEvent());
                             toContinue();
                         } else {
-                            ToastUtils.showShortToast(ArActivity.this, addScoreEntity.getMsg());
+                            RxToast.normal( addScoreEntity.getMsg());
                             dismissAlert();
                         }
                         isRequestNum = 1;
@@ -232,10 +229,10 @@ public class ArActivity extends BaseActivity {
                         dismissAlert();
                         if (isRequestNum < MAX_REQUEST) {
                             isRequestNum++;
-                            ToastUtils.showShortToast(ArActivity.this, "积分上传失败,正在重新上传积分");
+                            RxToast.warning("积分上传失败,正在重新上传积分");
                             commitScore(gameEntity);
                         } else {
-                            ToastUtils.showShortToast(ArActivity.this, "网络异常，积分上传失败，请重新提交成绩");
+                            RxToast.error("网络异常，积分上传失败，请重新提交成绩");
                         }
                     }
                 });

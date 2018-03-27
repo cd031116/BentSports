@@ -1,4 +1,4 @@
-package com.cn.bent.sports.view.activity.play;
+package com.cn.bent.sports.view.activity.youle.play;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

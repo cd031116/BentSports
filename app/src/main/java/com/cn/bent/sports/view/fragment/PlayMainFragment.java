@@ -54,6 +54,7 @@ import com.minew.beacon.MinewBeaconManager;
 import com.vondear.rxtools.RxActivityTool;
 import com.vondear.rxtools.activity.ActivityScanerCode;
 import com.vondear.rxtools.interfaces.OnRxScanerListener;
+import com.vondear.rxtools.view.RxToast;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.HuiquRxFunction;
@@ -100,7 +101,6 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
     //----------------
     private LatLng mStartPoint;//起点，116.335891,39.942295
     private LatLng mEndPoint;//终点，116.481288,39.995576
-    private Marker noMarker;
     private static final int REQUEST_ENABLE_BT = 2;
     private static final int REQUEST_Scan = 12;
     private MinewBeaconManager mMinewBeaconManager;
@@ -258,7 +258,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
         switch (v.getId()) {
             case R.id.qiehuan:
                 if (daodan.isSelected()) {
-                    ToastUtils.showShortToast(getActivity(), "语音导览关闭");
+                    RxToast.normal("语音导览关闭");
                     daodan.setSelected(false);
                     aMap.clear();
                     PlayMapBean beans = SaveObjectUtils.getInstance(getActivity()).getObject(Constants.DOT_LIST, null);
@@ -270,7 +270,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                     }
                     addMarkersToMap();
                 } else {
-                    ToastUtils.showShortToast(getActivity(), "语音导览打开");
+                    RxToast.normal("语音导览打开");
                     daodan.setSelected(true);
                     aMap.clear();
                     RailBean railBean = SaveObjectUtils.getInstance(getActivity()).getObject(Constants.DOT_INFO, null);
@@ -528,7 +528,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
         BluetoothState bluetoothState = mMinewBeaconManager.checkBluetoothState();
         switch (bluetoothState) {
             case BluetoothStateNotSupported:
-                ToastUtils.showShortToast(getActivity(), "手机不支持蓝牙");
+                RxToast.normal("手机不支持蓝牙");
                 break;
             case BluetoothStatePowerOff:
                 showBLEDialog();
@@ -643,7 +643,7 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                         intent.putExtra("gameUrl", place_list.get(t_ids).getGame_url());
                         startActivity(intent);
                     }else {
-                        ToastUtils.showShortToast(getActivity(),"二维码不匹配");
+                        RxToast.warning("二维码不匹配");
                     }
                     break;
                 }

@@ -7,7 +7,7 @@
     android:background="#f5f5f5"
     android:clipToPadding="true"
     android:fitsSystemWindows="true"
-    tools:context="com.cn.bent.sports.view.activity.play.OrganizeActivity">
+    tools:context="com.cn.bent.sports.view.activity.youle.play.OrganizeActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

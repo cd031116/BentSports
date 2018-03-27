@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.webkit.JavascriptInterface;
@@ -22,14 +21,13 @@ import com.cn.bent.sports.bean.GameEntity;
 import com.cn.bent.sports.bean.InfoEvent;
 import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.bean.ReFreshEvent;
-import com.cn.bent.sports.database.TaskCationManager;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.DataUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
-import com.cn.bent.sports.utils.ToastUtils;
 import com.cn.bent.sports.widget.GameDialog;
 import com.cn.bent.sports.widget.ToastDialog;
 import com.google.gson.Gson;
+import com.vondear.rxtools.view.RxToast;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.HuiquRxTBFunction;
@@ -202,7 +200,7 @@ public class PlayWebViewActivity extends BaseActivity {
                             EventBus.getDefault().post(new ReFreshEvent());
                             toContinue();
                         } else {
-                            ToastUtils.showShortToast(PlayWebViewActivity.this, addScoreEntity.getMsg());
+                            RxToast.normal(addScoreEntity.getMsg());
                             dismissAlert();
                         }
                         isRequestNum = 1;
@@ -219,10 +217,10 @@ public class PlayWebViewActivity extends BaseActivity {
                         dismissAlert();
                         if (isRequestNum < MAX_REQUEST) {
                             isRequestNum++;
-                            ToastUtils.showShortToast(PlayWebViewActivity.this, "积分上传失败,正在重新上传积分");
+                            RxToast.warning("积分上传失败,正在重新上传积分");
                             addScroe(gameEntity);
                         } else {
-                            ToastUtils.showShortToast(PlayWebViewActivity.this, "网络异常，积分上传失败，请重新提交成绩");
+                            RxToast.error("网络异常，积分上传失败，请重新提交成绩");
                         }
                     }
                 });

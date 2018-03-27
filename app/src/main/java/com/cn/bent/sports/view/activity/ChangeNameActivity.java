@@ -1,25 +1,19 @@
 package com.cn.bent.sports.view.activity;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 
-import com.cn.bent.sports.MainActivity;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.InfoEvent;
 import com.cn.bent.sports.bean.LoginBase;
-import com.cn.bent.sports.bean.ReFreshEvent;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.SaveObjectUtils;
-import com.cn.bent.sports.utils.ToastUtils;
+import com.vondear.rxtools.view.RxToast;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
-import com.zhl.network.huiqu.HuiquRxFunction;
 import com.zhl.network.huiqu.HuiquRxTBFunction;
 import com.zhl.network.huiqu.HuiquTBResult;
 
@@ -59,7 +53,7 @@ public class ChangeNameActivity extends BaseActivity {
             case R.id.top_right_text:
                 String nickmane = name_t.getText().toString();
                 if (TextUtils.isEmpty(nickmane)) {
-                    ToastUtils.showShortToast(ChangeNameActivity.this, "请输入昵称");
+                    RxToast.warning("请输入昵称");
                     return;
                 }
                 login(nickmane);
@@ -82,7 +76,7 @@ public class ChangeNameActivity extends BaseActivity {
                         dismissAlert();
                         user.setNickname(nickname);
                         SaveObjectUtils.getInstance(ChangeNameActivity.this).setObject(Constants.USER_INFO, user);
-                        ToastUtils.showLongToast(ChangeNameActivity.this, info.getMsg());
+                        RxToast.success(info.getMsg());
                         EventBus.getDefault().post(new InfoEvent());
                         finish();
                     }
@@ -90,7 +84,7 @@ public class ChangeNameActivity extends BaseActivity {
                     @Override
                     public void onError(int whichRequest, Throwable e) {
                         dismissAlert();
-                        ToastUtils.showLongToast(ChangeNameActivity.this, e.getMessage());
+                        RxToast.error(e.getMessage());
                     }
                 });
     }

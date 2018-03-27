@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.utils.ToastUtils;
-import com.cn.bent.sports.widget.ZoomOutPageTransformer;
 
 import java.util.ArrayList;
 import java.util.List;

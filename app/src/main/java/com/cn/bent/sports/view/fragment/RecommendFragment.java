@@ -2,17 +2,13 @@ package com.cn.bent.sports.view.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseFragment;
-import com.cn.bent.sports.utils.ToastUtils;
 import com.cn.bent.sports.view.activity.MapActivity;
-import com.cn.bent.sports.view.activity.PlayActivity;
+import com.cn.bent.sports.view.activity.youle.PlayActivity;
 import com.cn.bent.sports.view.activity.PlayFunActivity;
-import com.cn.bent.sports.view.activity.PlayWebViewActivity;
-import com.minew.beacon.BluetoothState;
 import com.vondear.rxtools.RxActivityTool;
 import com.vondear.rxtools.activity.ActivityScanerCode;
 

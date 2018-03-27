@@ -34,7 +34,7 @@ public class RxToast {
     private static final int DEFAULT_TEXT_COLOR = Color.parseColor("#FFFFFF");
 
     @ColorInt
-    private static final int ERROR_COLOR = Color.parseColor("#FD4C5B");
+    private static final int ERROR_COLOR = Color.parseColor("#fd7d6f");
 
     @ColorInt
     private static final int INFO_COLOR = Color.parseColor("#3F51B5");

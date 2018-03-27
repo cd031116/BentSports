@@ -22,16 +22,14 @@ import com.cn.bent.sports.bean.PhotoPath;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.ImageUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
-import com.cn.bent.sports.utils.ToastUtils;
 import com.cn.bent.sports.widget.ToastDialog;
+import com.vondear.rxtools.view.RxToast;
 import com.yuyh.library.imgsel.ISNav;
 import com.yuyh.library.imgsel.common.ImageLoader;
 import com.yuyh.library.imgsel.config.ISListConfig;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.HuiquRxFunction;
-import com.zhl.network.huiqu.HuiquRxTBFunction;
-import com.zhl.network.huiqu.HuiquTBResult;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -198,14 +196,14 @@ public class SettingActivity extends BaseActivity {
                         Glide.with(SettingActivity.this).load(info.getHeadimgurl())
                                 .apply(requestOptions)
                                 .into(user_photo);
-                        ToastUtils.showShortToast(SettingActivity.this,"图像更改成功");
+                        RxToast.success("图像更改成功");
                         EventBus.getDefault().post(new InfoEvent());
                     }
 
                     @Override
                     public void onError(int whichRequest, Throwable e) {
                         dismissAlert();
-                        ToastUtils.showLongToast(SettingActivity.this, e.getMessage());
+                        RxToast.error( e.getMessage());
                     }
                 });
     }

@@ -53,6 +53,7 @@ import com.cn.bent.sports.widget.GameDialog;
 import com.cn.bent.sports.widget.ToastDialog;
 import com.minew.beacon.BluetoothState;
 import com.minew.beacon.MinewBeaconManager;
+import com.vondear.rxtools.view.RxToast;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -449,7 +450,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
      */
     public void searchRouteResult(int routeType, int mode) {
         if (mStartPoint == null) {
-            ToastUtils.showShortToast(getActivity(), "定位中，稍后再试...");
+            RxToast.normal("定位中，稍后再试...");
             return;
         }
         final RouteSearch.FromAndTo fromAndTo = new RouteSearch.FromAndTo(
@@ -493,13 +494,13 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
                     int dis = (int) walkPath.getDistance();
                     setview(dis);
                 } else if (result != null && result.getPaths() == null) {
-                    ToastUtils.showShortToast(getActivity(), "路线规划失败");
+                    RxToast.normal("路线规划失败");
                 }
             } else {
-                ToastUtils.showShortToast(getActivity(), "路线规划失败");
+                RxToast.normal("路线规划失败");
             }
         } else {
-            ToastUtils.showShortToast(getActivity(), "路线规划失败");
+            RxToast.normal("路线规划失败");
         }
     }
 
@@ -574,7 +575,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
         BluetoothState bluetoothState = mMinewBeaconManager.checkBluetoothState();
         switch (bluetoothState) {
             case BluetoothStateNotSupported:
-                ToastUtils.showShortToast(getActivity(), "手机不支持蓝牙");
+                RxToast.normal("手机不支持蓝牙");
                 break;
             case BluetoothStatePowerOff:
                 showBLEDialog();
@@ -643,7 +644,7 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
     }
 
     private void showBLEDialog() {
-        ToastUtils.showShortToast(getActivity(), "已到达目的地附近,请打开蓝牙");
+        RxToast.normal("已到达目的地附近,请打开蓝牙");
         Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
         startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
     }

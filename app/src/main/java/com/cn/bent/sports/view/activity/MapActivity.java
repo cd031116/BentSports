@@ -84,7 +84,6 @@ import com.cn.bent.sports.sensor.UpdateUiCallBack;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.DataUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
-import com.cn.bent.sports.utils.ToastUtils;
 import com.cn.bent.sports.view.poupwindow.LineListPoupWindow;
 import com.cn.bent.sports.view.poupwindow.XianluPoupWindow;
 import com.cn.bent.sports.view.service.MusicService;
@@ -98,6 +97,7 @@ import com.minew.beacon.BeaconValueIndex;
 import com.minew.beacon.BluetoothState;
 import com.minew.beacon.MinewBeacon;
 import com.minew.beacon.MinewBeaconManager;
+import com.vondear.rxtools.view.RxToast;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.JavaRxFunction;
@@ -368,7 +368,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                     @Override
                     public void onError(int whichRequest, Throwable e) {
                         dismissAlert();
-                        ToastUtils.showLongToast(MapActivity.this, e.getMessage());
+                        RxToast.error(e.getMessage());
                     }
                 });
 
@@ -1132,7 +1132,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         BluetoothState bluetoothState = mMinewBeaconManager.checkBluetoothState();
         switch (bluetoothState) {
             case BluetoothStateNotSupported:
-                ToastUtils.showShortToast(MapActivity.this, "手机不支持蓝牙");
+                RxToast.warning("手机不支持蓝牙");
                 break;
             case BluetoothStatePowerOff:
                 showBLEDialog();

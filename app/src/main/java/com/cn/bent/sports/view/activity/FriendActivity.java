@@ -21,9 +21,7 @@ import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.SaveObjectUtils;
-import com.cn.bent.sports.utils.ToastUtils;
-import com.zhl.network.RxSchedulers;
-import com.zhl.network.huiqu.HuiquRxFunction;
+import com.vondear.rxtools.view.RxToast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -279,7 +277,7 @@ public class FriendActivity extends BaseActivity {
     }
 
     private void loginBefore() {
-        ToastUtils.showShortToast(FriendActivity.this, "请先登录");
+        RxToast.warning("请先登录");
         startActivity(new Intent(FriendActivity.this, LoginActivity.class));
     }
 

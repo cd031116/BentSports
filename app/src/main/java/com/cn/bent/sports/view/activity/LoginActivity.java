@@ -24,7 +24,7 @@ import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.bean.RailBean;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.SaveObjectUtils;
-import com.cn.bent.sports.utils.ToastUtils;
+import com.vondear.rxtools.view.RxToast;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.HuiquRxFunction;
@@ -148,7 +148,7 @@ public class LoginActivity extends BaseActivity implements Handler.Callback {
                     @Override
                     public void onError(int whichRequest, Throwable e) {
                         dismissAlert();
-                        ToastUtils.showLongToast(LoginActivity.this, e.getMessage());
+                        RxToast.error(e.getMessage());
                     }
                 });
     }
@@ -170,7 +170,7 @@ public class LoginActivity extends BaseActivity implements Handler.Callback {
                     @Override
                     public void onError(int whichRequest, Throwable e) {
                         dismissAlert();
-                        ToastUtils.showLongToast(LoginActivity.this, e.getMessage());
+                        RxToast.error(e.getMessage());
                     }
                 });
     }
@@ -185,7 +185,7 @@ public class LoginActivity extends BaseActivity implements Handler.Callback {
                     @Override
                     public void onSuccess(int whichRequest, HuiquTBResult result) {
                         if (!"1".equals(result.getCode())) {
-                            ToastUtils.showShortToast(LoginActivity.this, "" + result.getMsg());
+                            RxToast.success(result.getMsg());
                         } else {
 
                         }
@@ -194,7 +194,7 @@ public class LoginActivity extends BaseActivity implements Handler.Callback {
 
                     @Override
                     public void onError(int whichRequest, Throwable e) {
-                        ToastUtils.showShortToast(LoginActivity.this, "" + e.getMessage());
+                        RxToast.error(e.getMessage());
                     }
                 });
 
@@ -216,7 +216,7 @@ public class LoginActivity extends BaseActivity implements Handler.Callback {
             case R.id.tcode:
                 String sd = edit_photo.getText().toString();
                 if (TextUtils.isEmpty(sd)) {
-                    ToastUtils.showShortToast(LoginActivity.this, "请输入手机号");
+                    RxToast.warning("请输入手机号");
                     break;
                 }
                 getcode();
@@ -279,14 +279,14 @@ public class LoginActivity extends BaseActivity implements Handler.Callback {
         switch(msg.what) {
             case MSG_AUTH_CANCEL: {
                 // 取消
-                ToastUtils.showShortToast(LoginActivity.this,"取消");
+                RxToast.normal("取消");
              }
             break;
             case MSG_AUTH_ERROR: {
                 // 失败
                 Throwable t = (Throwable) msg.obj;
                 String text = "caught error: " + t.getMessage();
-                ToastUtils.showShortToast(LoginActivity.this,""+text);
+                RxToast.info(text);
                 t.printStackTrace();
             } break;
             case MSG_AUTH_COMPLETE: {
