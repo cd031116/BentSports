@@ -4,7 +4,10 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -144,7 +147,7 @@ public class PlayActivity extends BaseActivity implements AMap.OnMyLocationChang
      * 退出dialog
      */
     private void OpenOutDialog() {
-        new OutGameDialog(PlayActivity.this, R.style.dialog, new OutGameDialog.OnClickListener() {
+        OutGameDialog outGameDialog= new OutGameDialog(PlayActivity.this, R.style.dialog, new OutGameDialog.OnClickListener() {
             @Override
             public void onClick(Dialog dialog, int confirm) {
                 dialog.dismiss();
@@ -152,7 +155,13 @@ public class PlayActivity extends BaseActivity implements AMap.OnMyLocationChang
                     //TODO 退出比赛接口
                 }
             }
-        }).show();
+        });
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+        Window window = outGameDialog.getWindow();
+        layoutParams.copyFrom(window.getAttributes());
+        layoutParams.gravity = Gravity.BOTTOM;
+        window.setAttributes(layoutParams);
+        outGameDialog.show();
     }
 
 }
