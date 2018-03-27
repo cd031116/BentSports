@@ -2,10 +2,8 @@ package com.cn.bent.sports.view.activity.youle.play;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -117,13 +115,13 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
                 search02.removeView(tab_mian);
                 search01.addView(tab_mian);
             }
-            changeview(1);
-            if (scrollY >= journeyHeight && scrollY <= payknowHeight) {
-                changeview(2);
-            }
-            if (scrollY >= payknowHeight) {
-                changeview(3);
-            }
+//            changeview(1);
+//            if (scrollY >= journeyHeight && scrollY <= payknowHeight) {
+//                changeview(2);
+//            }
+//            if (scrollY >= payknowHeight) {
+//                changeview(3);
+//            }
         } else {
             if (tab_mian.getParent() != search02) {
                 search01.removeView(tab_mian);
@@ -147,11 +145,20 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
     }
 
 
-    @OnClick({R.id.submit})
+    @OnClick({R.id.submit,R.id.tab1_mian,R.id.tab2_mian,R.id.tab3_mian})
     void onclick(View v){
         switch (v.getId()){
             case R.id.submit:
                 startActivity(new Intent(OrderDetailActivity.this,OrganizeActivity.class));
+                break;
+            case R.id.tab1_mian:
+                changeview(1);
+                break;
+            case R.id.tab2_mian:
+                changeview(2);
+                break;
+            case R.id.tab3_mian:
+                changeview(3);
                 break;
         }
     }

@@ -40,6 +40,7 @@ import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.DataUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.view.activity.ArActivity;
+import com.cn.bent.sports.view.activity.MapActivity;
 import com.cn.bent.sports.view.activity.OfflineActivity;
 import com.cn.bent.sports.view.activity.PlayWebViewActivity;
 import com.cn.bent.sports.view.activity.youle.play.CompleteInfoActivity;
@@ -141,14 +142,14 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         String path = this.getFilesDir() + "/bent/sport.data";
         aMap.setCustomMapStylePath(path);
         aMap.setMapCustomEnable(true);//true 开启; false 关闭
-        RailBean railBean = SaveObjectUtils.getInstance(this).getObject(Constants.DOT_INFO, null);
-        LatLng southwestLatLng = new LatLng(Double.valueOf(railBean.getFence().getDot_lat()).doubleValue(), Double.valueOf(railBean.getFence().getDot_long()).doubleValue());
-        LatLng northeastLatLng = new LatLng(Double.valueOf(railBean.getFence().getOther_dot_lat()).doubleValue(), Double.valueOf(railBean.getFence().getOther_dot_long()).doubleValue());
+//        RailBean railBean = SaveObjectUtils.getInstance(this).getObject(Constants.DOT_INFO, null);
+//        LatLng southwestLatLng = new LatLng(Double.valueOf(railBean.getFence().getDot_lat()).doubleValue(), Double.valueOf(railBean.getFence().getDot_long()).doubleValue());
+//        LatLng northeastLatLng = new LatLng(Double.valueOf(railBean.getFence().getOther_dot_lat()).doubleValue(), Double.valueOf(railBean.getFence().getOther_dot_long()).doubleValue());
 //        LatLng southwestLatLng = new LatLng(28.084042,112.956461);
 //        LatLng northeastLatLng = new LatLng(28.157773,113.019118);
-        LatLngBounds latLngBounds = new LatLngBounds(southwestLatLng, northeastLatLng);
-        aMap.setMapStatusLimits(latLngBounds);
-        aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds, 50));
+//        LatLngBounds latLngBounds = new LatLngBounds(southwestLatLng, northeastLatLng);
+//        aMap.setMapStatusLimits(latLngBounds);
+//        aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds, 50));
         // 绑定 Marker 被点击事件
         aMap.setOnMarkerClickListener(this);
     }
@@ -259,12 +260,46 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     }
 
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (DataUtils.isBlue(PlayMultActivity.this) && mMinewBeaconManager != null) {
+            mMinewBeaconManager.startScan();
+        }
+        //在activity执行onResume时执行mMapView.onResume ()，重新绘制加载地图
+        mapView.onResume();
+    }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        //在activity执行onPause时执行mMapView.onPause ()，暂停地图的绘制
+        mapView.onPause();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //在activity执行onSaveInstanceState时执行mMapView.onSaveInstanceState (outState)，保存地图当前的状态
+        mapView.onSaveInstanceState(outState);
+    }
     /**
      * 方法必须重写
      */
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if(DataUtils.isBlue(PlayMultActivity.this) && mMinewBeaconManager != null){
+            mMinewBeaconManager.stopScan();
+        }
+        mapView.onDestroy();
+        // 关闭定位图层
+        aMap.setMyLocationEnabled(false);
+        mapView.getMap().clear();
+        mapView.onDestroy();
+        mapView = null;
+
         EventBus.getDefault().unregister(this);
     }
 
