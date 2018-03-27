@@ -182,6 +182,12 @@
         <activity
             android:name=".view.activity.PlayFunActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.PlayActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.PlayMultActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".view.activity.play.OrganizeActivity" />
         <activity android:name=".view.activity.play.PrepareActivity" />
         <activity android:name=".view.activity.play.DetailPlayActivity" />

@@ -25,6 +25,7 @@
         android:background="@drawable/map_scan" />
 
     <ImageView
+        android:id="@+id/map_more"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -33,13 +34,8 @@
         android:layout_marginTop="@dimen/t12"
         android:background="@drawable/map_more" />
 
-    <include
-        android:id="@+id/map_game_ms_layout"
-        layout="@layout/map_game_ms_layout"
-        android:visibility="gone" />
+    <include layout="@layout/map_game_ms_layout" />
 
     <include
-        android:id="@+id/task_finish_layout"
-        layout="@layout/task_finish_layout"
-        android:visibility="gone" />
+        layout="@layout/task_finish_layout" />
 </RelativeLayout>

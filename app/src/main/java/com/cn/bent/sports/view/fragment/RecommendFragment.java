@@ -9,6 +9,7 @@ import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseFragment;
 import com.cn.bent.sports.utils.ToastUtils;
 import com.cn.bent.sports.view.activity.MapActivity;
+import com.cn.bent.sports.view.activity.PlayActivity;
 import com.cn.bent.sports.view.activity.PlayFunActivity;
 import com.cn.bent.sports.view.activity.PlayWebViewActivity;
 import com.minew.beacon.BluetoothState;
@@ -46,7 +47,7 @@ public class RecommendFragment extends BaseFragment {
 
     }
 
-    @OnClick({R.id.go_daolan,R.id.scan_t,R.id.line_title})
+    @OnClick({R.id.go_daolan,R.id.scan_t,R.id.line_title,R.id.activity_one})
     void onclick(View view){
         switch (view.getId()){
             case R.id.go_daolan:
@@ -57,6 +58,9 @@ public class RecommendFragment extends BaseFragment {
                 break;
             case R.id.line_title:
                 startActivity(new Intent(getActivity(), PlayFunActivity.class));
+                break;
+            case R.id.activity_one:
+                startActivity(new Intent(getActivity(), PlayActivity.class));
                 break;
         }
     }

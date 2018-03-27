@@ -17,7 +17,7 @@ public class OutGameDialog extends Dialog implements View.OnClickListener {
     private TextView out_game;
     private TextView quxiao;
     private Context mContext;
-    private OnCloseListener listener;
+    private OnClickListener listener;
 
 
     public OutGameDialog(Context context) {
@@ -31,7 +31,7 @@ public class OutGameDialog extends Dialog implements View.OnClickListener {
         this.mContext = context;
     }
 
-    public OutGameDialog(Context context, int themeResId, OnCloseListener listener) {
+    public OutGameDialog(Context context, int themeResId, OnClickListener listener) {
         super(context, themeResId);
         this.mContext = context;
         this.listener = listener;
@@ -62,16 +62,16 @@ public class OutGameDialog extends Dialog implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.out_game:
-                listener.onClick(this, "");
+                listener.onClick(this, 1);
                 break;
             case R.id.quxiao:
-                listener.onClick(this, "");
+                listener.onClick(this, 2);
                 break;
         }
     }
 
-    public interface OnCloseListener {
-        void onClick(Dialog dialog, String confirm);
+    public interface OnClickListener {
+        void onClick(Dialog dialog, int confirm);
     }
 }
 
