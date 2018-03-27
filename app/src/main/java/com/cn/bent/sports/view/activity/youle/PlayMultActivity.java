@@ -1,4 +1,4 @@
-package com.cn.bent.sports.view.activity;
+package com.cn.bent.sports.view.activity.youle;
 
 import android.app.Dialog;
 import android.graphics.Color;

@@ -183,15 +183,14 @@
             android:name=".view.activity.PlayFunActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.activity.PlayActivity"
+            android:name=".view.activity.youle.PlayActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.activity.PlayMultActivity"
+            android:name=".view.activity.youle.PlayMultActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".view.activity.play.OrganizeActivity" />
-        <activity android:name=".view.activity.play.PrepareActivity" />
-        <activity android:name=".view.activity.play.DetailPlayActivity" />
-        <activity android:name=".view.activity.play.OrderDetailActivity" />
+        <activity android:name=".view.activity.youle.play.OrganizeActivity" />
+        <activity android:name=".view.activity.youle.play.PrepareActivity" />
+        <activity android:name=".view.activity.youle.play.OrderDetailActivity" />
         <activity android:name=".view.activity.person.PointsRecordActivity"></activity>
     </application>
 
