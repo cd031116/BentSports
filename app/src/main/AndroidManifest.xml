@@ -191,7 +191,11 @@
         <activity android:name=".view.activity.youle.play.OrganizeActivity" />
         <activity android:name=".view.activity.youle.play.PrepareActivity" />
         <activity android:name=".view.activity.youle.play.OrderDetailActivity" />
-        <activity android:name=".view.activity.person.PointsRecordActivity"></activity>
+        <activity android:name=".view.activity.person.PointsRecordActivity" />
+        <activity android:name=".view.activity.youle.RankingListActivity" />
+        <activity android:name=".view.activity.youle.play.CompleteInfoActivity" />
+        <activity android:name=".view.activity.WalkRankListActivity" />
+        <activity android:name=".view.activity.youle.MyRouteListActivity"></activity>
     </application>
 
 </manifest>

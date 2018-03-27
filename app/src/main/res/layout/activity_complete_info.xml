@@ -62,34 +62,6 @@
         android:textSize="@dimen/t51" />
 
 
-    <LinearLayout
-        android:id="@+id/m_edit"
-        android:layout_width="@dimen/t299"
-        android:layout_height="@dimen/t167"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/member_head"
-        android:layout_marginTop="@dimen/t43"
-        android:background="@drawable/member_edit_bg"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/t10"
-            android:layout_marginLeft="@dimen/t85"
-            android:src="@drawable/m_people_icon" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/t10"
-            android:layout_marginLeft="@dimen/t20"
-            android:paddingRight="@dimen/t60"
-            android:text="编辑"
-            android:textColor="@color/c_ffffff"
-            android:textSize="@dimen/t34" />
-    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/task_ms"

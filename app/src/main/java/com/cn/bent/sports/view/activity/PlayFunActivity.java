@@ -1,5 +1,6 @@
 package com.cn.bent.sports.view.activity;
 
+import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -11,6 +12,8 @@ import android.widget.TextView;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.utils.ToastUtils;
+import com.cn.bent.sports.view.activity.youle.PlayMultActivity;
+import com.cn.bent.sports.view.activity.youle.play.OrderDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +22,10 @@ import butterknife.Bind;
 import me.crosswall.lib.coverflow.CoverFlow;
 import me.crosswall.lib.coverflow.core.PageItemClickListener;
 import me.crosswall.lib.coverflow.core.PagerContainer;
-
+/**
+*aunthor lyj
+* create 2018/3/27/027 15:24   趣玩线路列表
+**/
 public class PlayFunActivity extends BaseActivity {
     @Bind(R.id.pager_container)
     PagerContainer mContainer;
@@ -44,7 +50,7 @@ public class PlayFunActivity extends BaseActivity {
         total_num.setText(minfo.size()+"");
         viewPager = mContainer.getViewPager();
         viewPager.setAdapter(new MyPagerAdapter(minfo));
-        viewPager.setOffscreenPageLimit(4);
+        viewPager.setOffscreenPageLimit(3);
         viewPager.setClipChildren(false);
 
         mContainer.setPageItemClickListener(new PageItemClickListener() {
@@ -97,7 +103,7 @@ public class PlayFunActivity extends BaseActivity {
             go_task.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ToastUtils.showShortToast(PlayFunActivity.this,"position"+position+"");
+                    startActivity(new Intent(PlayFunActivity.this,OrderDetailActivity.class));
                 }
             });
 

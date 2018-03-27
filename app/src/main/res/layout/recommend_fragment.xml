@@ -16,19 +16,20 @@
             android:layout_height="1000px"
             android:background="@drawable/recomm_bg">
 
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="1000px"
                 android:background="#50000000"
-                android:orientation="vertical">
+                android:orientation="vertical"/>
 
                 <TextView
+                    android:id="@+id/title_t"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="230px"
                     android:text="石燕湖欢迎您!"
+                    android:layout_centerHorizontal="true"
                     android:textColor="#ffffff"
                     android:textSize="57px" />
 
@@ -37,6 +38,8 @@
                     android:layout_width="460px"
                     android:layout_height="460px"
                     android:layout_gravity="center_horizontal"
+                    android:layout_below="@+id/title_t"
+                    android:layout_centerHorizontal="true"
                     android:layout_marginTop="70px"
                     android:background="@drawable/recomm_circle"
                     android:orientation="vertical">
@@ -78,6 +81,7 @@
 
 
                     <TextView
+                        android:id="@+id/seek_rank"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
@@ -88,7 +92,7 @@
                         android:textSize="50px" />
                 </LinearLayout>
 
-            </LinearLayout>
+
         </RelativeLayout>
 
 
@@ -262,11 +266,7 @@
                 android:textColor="#ffffff"
                 android:textSize="34px" />
 
-
-
         </LinearLayout>
-
-
 
     </RelativeLayout>
 </android.support.v4.widget.NestedScrollView>

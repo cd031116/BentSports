@@ -7,12 +7,20 @@
 
 
         <ProgressBar
-            android:layout_width="120px"
-            android:layout_height="120px"
+            android:id="@+id/progress"
+            android:layout_width="90px"
+            android:layout_height="90px"
             android:layout_centerInParent="true"
             android:indeterminateDrawable="@drawable/progressbar_bg"
             android:indeterminateOnly="true"
             android:indeterminateBehavior="repeat"
             />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#999999"
+            android:layout_below="@+id/progress"
+            android:layout_centerHorizontal="true"
+            android:text=".加载中."/>
 
 </RelativeLayout>

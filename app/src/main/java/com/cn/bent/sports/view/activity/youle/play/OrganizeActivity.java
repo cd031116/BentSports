@@ -1,5 +1,6 @@
 package com.cn.bent.sports.view.activity.youle.play;
 
+import android.content.Intent;
 import android.view.Gravity;
 import android.view.View;
 
@@ -8,7 +9,10 @@ import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.view.poupwindow.ScanPoupWindow;
 
 import butterknife.OnClick;
-
+/**
+*aunthor lyj
+* create 2018/3/27/027 15:39   组队界面
+**/
 public class OrganizeActivity extends BaseActivity {
 
     private ScanPoupWindow mopupWindow;
@@ -27,11 +31,14 @@ public class OrganizeActivity extends BaseActivity {
         super.initData();
     }
 
-    @OnClick({R.id.creat_scan})
+    @OnClick({R.id.creat_scan,R.id.sure_start})
     void onclick(View v){
         switch (v.getId()){
             case R.id.creat_scan:
                 shouPoup("组队口令");
+                break;
+            case R.id.sure_start:
+                 startActivity(new Intent(OrganizeActivity.this,PrepareActivity.class));
                 break;
         }
     }

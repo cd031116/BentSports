@@ -16,7 +16,6 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.AMapUtils;
@@ -36,13 +35,14 @@ import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.bean.MajorBean;
 import com.cn.bent.sports.bean.MapDot;
 import com.cn.bent.sports.bean.RailBean;
+import com.cn.bent.sports.bean.ReFreshEvent;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.DataUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
-import com.cn.bent.sports.utils.ToastUtils;
 import com.cn.bent.sports.view.activity.ArActivity;
 import com.cn.bent.sports.view.activity.OfflineActivity;
 import com.cn.bent.sports.view.activity.PlayWebViewActivity;
+import com.cn.bent.sports.view.activity.youle.play.CompleteInfoActivity;
 import com.cn.bent.sports.view.poupwindow.DoTaskPoupWindow;
 import com.cn.bent.sports.view.poupwindow.TalkPoupWindow;
 import com.cn.bent.sports.widget.OutGameDialog;
@@ -55,6 +55,8 @@ import com.vondear.rxtools.activity.ActivityScanerCode;
 import com.vondear.rxtools.view.RxToast;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +65,7 @@ import butterknife.Bind;
 import butterknife.OnClick;
 
 /**
- * Created by dawn on 2018/3/27.
+ * Created by dawn on 2018/3/27.  多人游玩界面
  */
 
 public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClickListener, AMap.OnMyLocationChangeListener {
@@ -78,10 +80,13 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     TextView all_task;
     @Bind(R.id.finish_task)
     TextView finish_task;
-    @Bind(R.id.task_finish_layout)
-    LinearLayout task_finish_layout;
-    @Bind(R.id.map_game_ms_layout)
-    RelativeLayout map_game_ms_layout;
+    @Bind(R.id.line_one)
+    RelativeLayout line_one;
+    @Bind(R.id.line_two)
+    RelativeLayout line_two;
+    @Bind(R.id.time_two)
+    TextView timing;//底部计时器
+
 
     private AMap aMap;
     private float mCurrentZoom = 18f;
@@ -111,14 +116,14 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        mapView.onCreate(savedInstanceState);
         super.onCreate(savedInstanceState);
+        mapView.onCreate(savedInstanceState);
     }
 
     @Override
     public void initView() {
         super.initView();
-        task_finish_layout.setVisibility(View.GONE);
+        line_two.setVisibility(View.GONE);
         if (aMap == null) {
             aMap = mapView.getMap();
         }
@@ -155,17 +160,30 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         startLocation();
     }
 
-    @OnClick({R.id.map_scan, R.id.map_more,R.id.map_return})
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ReFreshEvent event) {
+
+
+    }
+
+
+    @OnClick({R.id.map_scan,R.id.map_return,R.id.look_rank,R.id.finish_situation,R.id.exit_game})
     void onClick(View view) {
         switch (view.getId()) {
             case R.id.map_scan:
                 RxActivityTool.skipActivityForResult(this,ActivityScanerCode.class,REQUEST_SCANS);
                 break;
-            case R.id.map_more:
-                OpenOutDialog();
-                break;
             case R.id.map_return:
                 PlayMultActivity.this.finish();
+                break;
+            case R.id.look_rank:
+               startActivity(new Intent(PlayMultActivity.this,RankingListActivity.class));
+                break;
+            case R.id.finish_situation:
+                startActivity(new Intent(PlayMultActivity.this,CompleteInfoActivity.class));
+                break;
+            case R.id.exit_game:
+                OpenOutDialog();
                 break;
         }
     }
@@ -240,6 +258,15 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         }
     }
 
+
+    /**
+     * 方法必须重写
+     */
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 
     private void addMarkersToMap() {
         aMap.clear();

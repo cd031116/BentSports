@@ -7,6 +7,8 @@ import android.view.View;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseFragment;
 import com.cn.bent.sports.view.activity.MapActivity;
+import com.cn.bent.sports.view.activity.WalkRankListActivity;
+import com.cn.bent.sports.view.activity.youle.MyRouteListActivity;
 import com.cn.bent.sports.view.activity.youle.PlayActivity;
 import com.cn.bent.sports.view.activity.PlayFunActivity;
 import com.vondear.rxtools.RxActivityTool;
@@ -43,7 +45,7 @@ public class RecommendFragment extends BaseFragment {
 
     }
 
-    @OnClick({R.id.go_daolan,R.id.scan_t,R.id.line_title,R.id.activity_one})
+    @OnClick({R.id.go_daolan,R.id.scan_t,R.id.line_title,R.id.activity_one,R.id.seek_rank,R.id.see_my})
     void onclick(View view){
         switch (view.getId()){
             case R.id.go_daolan:
@@ -57,6 +59,12 @@ public class RecommendFragment extends BaseFragment {
                 break;
             case R.id.activity_one:
                 startActivity(new Intent(getActivity(), PlayActivity.class));
+                break;
+            case R.id.seek_rank:
+                startActivity(new Intent(getActivity(), WalkRankListActivity.class));
+                break;
+            case R.id.see_my:
+                startActivity(new Intent(getActivity(), MyRouteListActivity.class));
                 break;
         }
     }

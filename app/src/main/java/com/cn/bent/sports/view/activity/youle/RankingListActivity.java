@@ -1,29 +1,24 @@
-package com.cn.bent.sports.view.fragment;
+package com.cn.bent.sports.view.activity.youle;
 
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.cn.bent.sports.MainActivity;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
-import com.cn.bent.sports.base.BaseFragment;
+import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.LoginBase;
-import com.cn.bent.sports.bean.RangeEntity;
 import com.cn.bent.sports.bean.RankEntity;
 import com.cn.bent.sports.bean.ReFreshEvent;
 import com.cn.bent.sports.recyclebase.CommonAdapter;
 import com.cn.bent.sports.recyclebase.ViewHolder;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.SaveObjectUtils;
-import com.cn.bent.sports.view.activity.ZoomActivity;
-import com.cn.bent.sports.view.poupwindow.MainPoupWindow;
 import com.cn.bent.sports.widget.DividerItemDecoration;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
@@ -33,21 +28,11 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.OnClick;
 
-/**
- * Created by lyj on 2018/1/29 0029.
- * description
- */
-
-public class MainTabFragment extends BaseFragment {
+public class RankingListActivity extends BaseActivity {
     @Bind(R.id.range_list)
     RecyclerView range_list;
     @Bind(R.id.head_1)
@@ -80,34 +65,39 @@ public class MainTabFragment extends BaseFragment {
     private LoginBase user;
 
 
-    public static MainTabFragment newInstance(int type) {
-        MainTabFragment fragment = new MainTabFragment();
-        Bundle bundle = new Bundle();
-        bundle.putInt("type", type);
-        fragment.setArguments(bundle);
-        return fragment;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     @Override
     protected int getLayoutId() {
-        return R.layout.main_fragment;
+        return R.layout.activity_ranking_list;
     }
 
     @Override
-    protected void initView(View view, Bundle savedInstanceState) {
+    public void initView() {
+        super.initView();
         EventBus.getDefault().register(this);
-        range_list.setLayoutManager(new LinearLayoutManager(getActivity()));
-        user = (LoginBase) SaveObjectUtils.getInstance(getActivity()).getObject(Constants.USER_INFO, null);
+        range_list.setLayoutManager(new LinearLayoutManager(this));
+        user = (LoginBase) SaveObjectUtils.getInstance(this).getObject(Constants.USER_INFO, null);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(ReFreshEvent event) {
+    @Override
+    public void initData() {
+        super.initData();
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
         getRankData();
     }
 
     private void setRecyclerView(List<RankEntity.RankListBean> rankListBeen) {
 
-        CommonAdapter<RankEntity.RankListBean> mAdapter = new CommonAdapter<RankEntity.RankListBean>(getActivity(), R.layout.item_range, rankListBeen) {
+        CommonAdapter<RankEntity.RankListBean> mAdapter = new CommonAdapter<RankEntity.RankListBean>(this, R.layout.item_range, rankListBeen) {
             @Override
             protected void convert(ViewHolder holder, RankEntity.RankListBean rangeEntity, int position) {
 
@@ -124,24 +114,21 @@ public class MainTabFragment extends BaseFragment {
         };
         range_list.setNestedScrollingEnabled(false);
         range_list.setAdapter(mAdapter);
-        range_list.addItemDecoration(new DividerItemDecoration(getActivity(), R.drawable.list_divider));
+        range_list.addItemDecoration(new DividerItemDecoration(this, R.drawable.list_divider));
     }
 
-    @Override
-    protected void initData() {
-    }
 
-    @Override
-    public void onResume() {
-        super.onResume();
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ReFreshEvent event) {
         getRankData();
     }
 
     private void getRankData() {
-        BaseApi.getDefaultService(getActivity()).getRankList()
+        BaseApi.getDefaultService(this).getRankList()
                 .map(new HuiquRxFunction<RankEntity>())
                 .compose(RxSchedulers.<RankEntity>io_main())
-                .subscribe(new RxObserver<RankEntity>(getActivity(), "getRankList", 1, false) {
+                .subscribe(new RxObserver<RankEntity>(this, "getRankList", 1, false) {
                     @Override
                     public void onSuccess(int whichRequest, RankEntity rankEntity) {
                         if (rankEntity != null && rankEntity.getRankList() != null && rankEntity.getRankList().size() > 0) {

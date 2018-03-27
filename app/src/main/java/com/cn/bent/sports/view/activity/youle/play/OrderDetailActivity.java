@@ -1,8 +1,10 @@
 package com.cn.bent.sports.view.activity.youle.play;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -13,7 +15,12 @@ import com.cn.bent.sports.widget.MyScroview;
 import com.kennyc.view.MultiStateView;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
+/**
+*aunthor lyj
+* create 2018/3/27/027 15:36   路线详情
+**/
 public class OrderDetailActivity extends BaseActivity implements MyScroview.OnScrollListener {
     @Bind(R.id.myscroview)
     MyScroview myscroview;
@@ -59,6 +66,7 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
     @Override
     public void initData() {
         super.initData();
+        multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
     }
 
     @Override
@@ -136,5 +144,15 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
     public void onStop() {
         super.onStop();
         //结束轮播
+    }
+
+
+    @OnClick({R.id.submit})
+    void onclick(View v){
+        switch (v.getId()){
+            case R.id.submit:
+                startActivity(new Intent(OrderDetailActivity.this,OrganizeActivity.class));
+                break;
+        }
     }
 }
