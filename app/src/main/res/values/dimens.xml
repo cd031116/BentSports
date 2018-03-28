@@ -16,6 +16,7 @@
     <dimen name="item_margin_horizontal">24dp</dimen>
     <dimen name="item_margin_vertical">8dp</dimen>
     <dimen name="t1">1px</dimen>
+    <dimen name="t5">5px</dimen>
     <dimen name="t10">10px</dimen>
     <dimen name="t12">12px</dimen>
     <dimen name="t15">15px</dimen>
@@ -23,11 +24,13 @@
     <dimen name="t28">28px</dimen>
     <dimen name="t30">30px</dimen>
     <dimen name="t34">34px</dimen>
+    <dimen name="t36">36px</dimen>
     <dimen name="t38">38px</dimen>
     <dimen name="t40">40px</dimen>
     <dimen name="t43">43px</dimen>
     <dimen name="t46">46px</dimen>
     <dimen name="t48">48px</dimen>
+    <dimen name="t50">50px</dimen>
     <dimen name="t51">51px</dimen>
     <dimen name="t54">54px</dimen>
     <dimen name="t56">56px</dimen>
@@ -39,9 +42,11 @@
     <dimen name="t67">67px</dimen>
     <dimen name="t69">69px</dimen>
     <dimen name="t70">70px</dimen>
+    <dimen name="t72">72px</dimen>
     <dimen name="t74">74px</dimen>
     <dimen name="t78">78px</dimen>
     <dimen name="t80">80px</dimen>
+    <dimen name="t82">82px</dimen>
     <dimen name="t85">85px</dimen>
     <dimen name="t92">92px</dimen>
     <dimen name="t98">98px</dimen>
@@ -52,6 +57,7 @@
     <dimen name="t110">110px</dimen>
     <dimen name="t116">116px</dimen>
     <dimen name="t119">119px</dimen>
+    <dimen name="t121">121px</dimen>
     <dimen name="t130">130px</dimen>
     <dimen name="t134">134px</dimen>
     <dimen name="t136">136px</dimen>

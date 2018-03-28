@@ -21,9 +21,12 @@ import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseConfig;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.SupportMultipleScreensUtil;
+import com.cn.bent.sports.widget.OneTaskFinishDialog;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by lyj on 2018/2/26 0026.
@@ -33,12 +36,13 @@ import java.io.InputStream;
 public class DoTaskPoupWindow extends PopupWindow {
     private Activity mContext;
     private View view;
-    private ImageView image_bg, close_ima;
-    private TextView name_game, go_task,juli;
+    private ImageView image_bg, close_ima, wancheng;
+    private TextView name_game, go_task, juli;
     private LinearLayout line_s;
     private ItemInclick itemsOnClick;
     private MediaPlayer mPlayer;
-    public DoTaskPoupWindow(Activity mContext, String names, boolean isDo, String path,String sound_path, String distance,ItemInclick itemsOnClickd) {
+
+    public DoTaskPoupWindow(final Activity mContext, String names, boolean isDo, String path, String sound_path, String distance, ItemInclick itemsOnClickd) {
         this.mContext = mContext;
         this.itemsOnClick = itemsOnClickd;
         this.view = LayoutInflater.from(mContext).inflate(R.layout.do_task_window, null);
@@ -51,6 +55,7 @@ public class DoTaskPoupWindow extends PopupWindow {
         go_task = (TextView) view.findViewById(R.id.go_task);
         close_ima = (ImageView) view.findViewById(R.id.close_ima);
         juli = (TextView) view.findViewById(R.id.juli);
+        wancheng = (ImageView) view.findViewById(R.id.wancheng);
         if (isDo) {
             go_task.setVisibility(View.VISIBLE);
             line_s.setVisibility(View.GONE);
@@ -81,6 +86,21 @@ public class DoTaskPoupWindow extends PopupWindow {
                 itemsOnClick.ItemClick(1);
             }
         });
+        wancheng.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<String> mlist = new ArrayList<>();
+                mlist.add("xiao");
+                mlist.add("拖");
+                mlist.add("坨");
+                mlist.add("拓");
+                OneTaskFinishDialog oneTaskFinishDialog = new OneTaskFinishDialog(mContext, R.style.dialog)
+                        .setListData(mlist);
+                oneTaskFinishDialog.setCanceledOnTouchOutside(true);
+                oneTaskFinishDialog .show();
+            }
+        });
+        mContext.setFinishOnTouchOutside(true);
 
         try {
             InputStream inputStreamF = mContext.getAssets().open(path + ".jpg");
@@ -109,7 +129,7 @@ public class DoTaskPoupWindow extends PopupWindow {
         this.setHeight(RelativeLayout.LayoutParams.MATCH_PARENT);
         this.setWidth(RelativeLayout.LayoutParams.MATCH_PARENT);
         this.setContentView(view);
-        BaseConfig.getInstance(mContext).setStringValue(Constants.IS_SHOWS,"1");
+        BaseConfig.getInstance(mContext).setStringValue(Constants.IS_SHOWS, "1");
         // 设置弹出窗体可点击
         SupportMultipleScreensUtil.scale(view);
 //        this.setOutsideTouchable(true);
@@ -133,12 +153,15 @@ public class DoTaskPoupWindow extends PopupWindow {
             line_s.setVisibility(View.VISIBLE);
         }
     }
+
     public void setDistance(String istrue) {
-            juli.setText(istrue);
+        juli.setText(istrue);
     }
+
     public interface ItemInclick {
         void ItemClick(int position);
     }
+
     private void playSund(final String paths) {
         new Thread(new Runnable() {
             @Override
@@ -155,7 +178,7 @@ public class DoTaskPoupWindow extends PopupWindow {
         }).start();
     }
 
-    public void setclose(){
+    public void setclose() {
         if (mPlayer != null) {
             mPlayer.stop();
             mPlayer.release();

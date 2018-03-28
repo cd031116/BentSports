@@ -59,13 +59,13 @@ public class GameErrorDialog extends Dialog implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.know_complete:
-                listener.onClick(this, "");
+                listener.onClick(this, 1);
                 break;
         }
     }
 
     public interface OnCloseListener {
-        void onClick(Dialog dialog, String confirm);
+        void onClick(Dialog dialog, int confirm);
     }
 }
 

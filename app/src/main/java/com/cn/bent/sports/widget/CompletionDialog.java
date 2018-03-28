@@ -16,10 +16,11 @@ import com.cn.bent.sports.utils.SupportMultipleScreensUtil;
 
 public class CompletionDialog extends Dialog implements View.OnClickListener {
     private TextView know_complete;
-    private TextView score;
+    private String score;
     private Context mContext;
     private OnCloseListener listener;
     private int c_index = 0;
+    private String name;
 
 
     public CompletionDialog(Context context) {
@@ -39,6 +40,16 @@ public class CompletionDialog extends Dialog implements View.OnClickListener {
         this.listener = listener;
     }
 
+    public CompletionDialog setScore(String score) {
+        this.score = score;
+        return this;
+    }
+
+    public CompletionDialog setName(String name) {
+
+        this.name = name;
+        return this;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +65,10 @@ public class CompletionDialog extends Dialog implements View.OnClickListener {
 
     private void initView() {
         know_complete = (TextView) findViewById(R.id.know_complete);
-        score = (TextView) findViewById(R.id.score);
+        TextView score_text = (TextView) findViewById(R.id.score);
+        TextView game_name_text = (TextView) findViewById(R.id.game_name);
+        score_text.setText(score);
+        game_name_text.setText(name);
         know_complete.setOnClickListener(this);
 
     }

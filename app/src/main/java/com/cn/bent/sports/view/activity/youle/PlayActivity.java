@@ -24,7 +24,9 @@ import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
+import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
+import com.amap.api.services.core.LatLonPoint;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.LoginBase;
@@ -35,9 +37,13 @@ import com.cn.bent.sports.database.TaskCationManager;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.DataUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
+import com.cn.bent.sports.utils.SupportMultipleScreensUtil;
 import com.cn.bent.sports.utils.ToastUtils;
+import com.cn.bent.sports.view.activity.BitmapManager;
+import com.cn.bent.sports.view.activity.MapActivity;
 import com.cn.bent.sports.view.poupwindow.DoTaskPoupWindow;
 import com.cn.bent.sports.view.poupwindow.TalkPoupWindow;
+import com.cn.bent.sports.widget.OneTaskFinishDialog;
 import com.cn.bent.sports.widget.OutGameDialog;
 import com.minew.beacon.BeaconValueIndex;
 import com.minew.beacon.BluetoothState;
@@ -47,6 +53,7 @@ import com.vondear.rxtools.RxActivityTool;
 import com.vondear.rxtools.activity.ActivityScanerCode;
 import com.vondear.rxtools.view.RxToast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -78,6 +85,7 @@ public class PlayActivity extends BaseActivity implements AMap.OnMyLocationChang
     private float mCurrentZoom = 18f;
     private static final int SCAN_CODE = 101;
     private MinewBeaconManager mMinewBeaconManager;
+    private LatLonPoint lp = new LatLonPoint(28.008977, 113.088063);//
     private DoTaskPoupWindow mopupWindow;
     private TalkPoupWindow soundWindow;
     private LoginBase user;
@@ -109,12 +117,50 @@ public class PlayActivity extends BaseActivity implements AMap.OnMyLocationChang
         aMap.getUiSettings().setZoomControlsEnabled(false);//去掉高德地图右下角隐藏的缩放按钮
         aMap.setOnMarkerClickListener(mMarkerClickListener);
         aMap.setOnCameraChangeListener(onCameraChangeListener);
+
+        time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<String> mlist = new ArrayList<>();
+                mlist.add("xiao");
+                mlist.add("拖");
+                mlist.add("坨");
+                mlist.add("拓");
+                DialogManager.getInstance(PlayActivity.this).showTaskOneFinishDialog("极限挑战","28");
+            }
+        });
+
+        score.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogManager.getInstance(PlayActivity.this).showTaskAllFinishDialog("09:09:09","300");
+            }
+        });
+
     }
 
 
     @Override
     public void initData() {
-        startLocation();
+//        startLocation();
+        setMarker();
+    }
+
+    private void setMarker() {
+        View view = this.getLayoutInflater().inflate(R.layout.marker_dedai, null);
+        TextView textView = (TextView) view.findViewById(R.id.text_num);
+        textView.setText("8");
+        SupportMultipleScreensUtil.init(this);
+        SupportMultipleScreensUtil.scale(view);
+        MarkerOptions markerOption = new MarkerOptions();
+        markerOption.position(new LatLng(lp.getLatitude(), lp.getLongitude()));
+        markerOption.draggable(true);//设置Marker可拖动
+        markerOption.icon(BitmapManager.getInstance().getBitmapDescriptor4View(view));
+        // 将Marker设置为贴地显示，可以双指下拉地图查看效果
+        markerOption.setFlat(true);//设置marker平贴地图效果
+        Marker marker = aMap.addMarker(markerOption);
+        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lp.getLatitude(), lp.getLongitude()), mCurrentZoom));
+
     }
 
     @OnClick({R.id.map_scan, R.id.map_more})
@@ -316,5 +362,37 @@ public class PlayActivity extends BaseActivity implements AMap.OnMyLocationChang
                 break;
         }
 
+    }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        //在activity执行onPause时执行mMapView.onPause ()，暂停地图的绘制
+        mapView.onPause();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //在activity执行onSaveInstanceState时执行mMapView.onSaveInstanceState (outState)，保存地图当前的状态
+        mapView.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onDestroy() {
+        if (DataUtils.isBlue(PlayActivity.this) && mMinewBeaconManager != null) {
+            mMinewBeaconManager.stopScan();
+        }
+        mapView.onDestroy();
+        // 关闭定位图层
+        aMap.setMyLocationEnabled(false);
+        mapView.getMap().clear();
+        mapView.onDestroy();
+        mapView = null;
+        if (mopupWindow != null && mopupWindow.isShowing()) {
+            mopupWindow.dismiss();
+        }
+        super.onDestroy();
     }
 }

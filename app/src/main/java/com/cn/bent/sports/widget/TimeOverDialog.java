@@ -10,6 +10,8 @@ import android.widget.TextView;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.utils.SupportMultipleScreensUtil;
 
+import java.util.List;
+
 /**
  * Created by dawn on 2018/3/24.
  */
@@ -22,6 +24,8 @@ public class TimeOverDialog extends Dialog implements View.OnClickListener {
     private Context mContext;
     private OnCloseListener listener;
     private int c_index = 0;
+    private String time;
+    private String score;
 
 
     public TimeOverDialog(Context context) {
@@ -42,6 +46,15 @@ public class TimeOverDialog extends Dialog implements View.OnClickListener {
     }
 
 
+    public TimeOverDialog setTime(String time) {
+        this.time = time;
+        return this;
+    }
+    public TimeOverDialog setScore(String score) {
+        this.score = score;
+        return this;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,23 +74,24 @@ public class TimeOverDialog extends Dialog implements View.OnClickListener {
         score_text = (TextView) findViewById(R.id.score_text);
         look_rank.setOnClickListener(this);
         task_close.setOnClickListener(this);
-
+        time_text.setText(time);
+        score_text.setText(score);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.look_rank:
-                listener.onClick(this, "");
+                listener.onClick(this, 1);
                 break;
             case R.id.task_close:
-                listener.onClick(this, "");
+                listener.onClick(this, 2);
                 break;
         }
     }
 
     public interface OnCloseListener {
-        void onClick(Dialog dialog, String confirm);
+        void onClick(Dialog dialog, int confirm);
     }
 }
 

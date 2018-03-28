@@ -1,36 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/t936"
-    android:layout_height="@dimen/t1139"
-    android:background="@drawable/bg_round_white"
-    android:orientation="vertical">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="1080px"
+    android:layout_height="1920px"
+    android:id="@+id/dialog_layout"
+    android:gravity="center">
 
-    <TextView
-        android:id="@+id/game_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/t57"
-        android:layout_marginLeft="@dimen/t67"
-        android:textColor="@color/c_000000"
-        android:layout_marginTop="@dimen/t62"
-        android:text="极限脑风暴"/>
-    <TextView
-        android:id="@+id/game_finish_num"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/t38"
-        android:layout_marginRight="@dimen/t65"
-        android:textColor="@color/c_999999"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="@dimen/t80"
-        android:text="极限脑风暴"/>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="@dimen/t936"
+        android:layout_height="@dimen/t1139"
+        android:id="@+id/white_layout"
+        android:background="@drawable/bg_round_white"
+        android:orientation="vertical">
 
-   <android.support.v7.widget.RecyclerView
-       android:id="@+id/game_list"
-       android:layout_width="match_parent"
-       android:layout_below="@id/game_name"
-       android:paddingLeft="@dimen/t66"
-       android:paddingRight="@dimen/t66"
-       android:layout_height="wrap_content"
-       android:layout_marginTop="@dimen/t110"/>
-</RelativeLayout>
+        <TextView
+            android:id="@+id/game_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/t67"
+            android:layout_marginTop="@dimen/t62"
+            android:text="极限脑风暴"
+            android:textColor="@color/c_000000"
+            android:textSize="@dimen/t57" />
+
+        <TextView
+            android:id="@+id/game_finish_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/t65"
+            android:layout_marginTop="@dimen/t80"
+            android:text="极限脑风暴"
+            android:textColor="@color/c_999999"
+            android:textSize="@dimen/t38" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/game_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/game_name"
+            android:layout_marginTop="@dimen/t110"
+            android:paddingLeft="@dimen/t66"
+            android:paddingRight="@dimen/t66" />
+    </RelativeLayout>
+</LinearLayout>

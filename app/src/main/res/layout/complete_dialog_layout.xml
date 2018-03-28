@@ -13,6 +13,7 @@
         android:background="@drawable/one_task_complete" />
 
     <TextView
+        android:id="@+id/game_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/t60"
@@ -23,14 +24,15 @@
     <View
         android:id="@+id/dotted_line"
         android:layout_width="632px"
-        android:layout_height="@dimen/t1"
-        android:layout_marginTop="@dimen/t70"
+        android:layout_height="@dimen/t5"
+        android:layout_marginTop="@dimen/t60"
         android:background="@drawable/soft_line"
         android:layerType="software" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/t60"
         android:orientation="horizontal">
 
         <ImageView
@@ -55,7 +57,7 @@
         android:background="@drawable/complete_commit"
         android:gravity="center"
         android:text="知道了"
-        android:layout_marginTop="@dimen/t106"
+        android:layout_marginTop="@dimen/t85"
         android:textColor="@color/c_ffffff"
         android:textSize="51px" />
 </LinearLayout>

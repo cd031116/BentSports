@@ -17,10 +17,11 @@ import com.cn.bent.sports.utils.SupportMultipleScreensUtil;
 public class TaskFinishDialog extends Dialog implements View.OnClickListener {
     private TextView look_rank;
     private ImageView task_close;
-    private TextView score;
+    private String score;
     private Context mContext;
     private OnCloseListener listener;
     private int c_index = 0;
+    private String time;
 
 
     public TaskFinishDialog(Context context) {
@@ -41,6 +42,17 @@ public class TaskFinishDialog extends Dialog implements View.OnClickListener {
     }
 
 
+    public TaskFinishDialog setScore(String score) {
+        this.score = score;
+        return this;
+    }
+
+    public TaskFinishDialog setTime(String time) {
+
+        this.time = time;
+        return this;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +68,10 @@ public class TaskFinishDialog extends Dialog implements View.OnClickListener {
     private void initView() {
         look_rank = (TextView) findViewById(R.id.look_rank);
         task_close = (ImageView) findViewById(R.id.task_close);
-        score = (TextView) findViewById(R.id.score);
+        TextView score_text = (TextView) findViewById(R.id.score_text);
+        TextView time_text = (TextView) findViewById(R.id.time_text);
+        score_text.setText(score);
+        time_text.setText(time);
         look_rank.setOnClickListener(this);
         task_close.setOnClickListener(this);
 

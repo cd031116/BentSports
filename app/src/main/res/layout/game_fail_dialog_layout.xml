@@ -7,6 +7,7 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/t56"
@@ -22,6 +23,7 @@
         android:text="很遗憾,您未通关"/>
 
     <TextView
+        android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/t100"
@@ -33,7 +35,7 @@
     <View
         android:id="@+id/dotted_line"
         android:layout_width="632px"
-        android:layout_height="@dimen/t1"
+        android:layout_height="@dimen/t5"
         android:layout_marginTop="@dimen/t100"
         android:background="@drawable/soft_line"
         android:layerType="software" />
