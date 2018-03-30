@@ -354,6 +354,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                             for (ScenicPointsEntity.PointsBean pointsBean : scenicPointsEntity.getPoints()) {
                                 pointsBean.setMp3(Constants.JAVA_YUN_URL + pointsBean.getMp3());
                                 pointsBean.setImagesUrl(Constants.JAVA_YUN_URL + pointsBean.getImagesUrl());
+                                pointsBean.setPointImg(Constants.JAVA_YUN_URL + pointsBean.getImagesUrl());
                                 mPointsList.add(pointsBean);
                                 mPointsEntityMap.put(pointsBean.getId(), pointsBean);
                                 setOverLay(pointsBean.getType(), pointsBean);

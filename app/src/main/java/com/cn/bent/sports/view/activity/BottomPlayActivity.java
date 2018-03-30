@@ -13,6 +13,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.amap.api.maps.model.LatLng;
+import com.bumptech.glide.Glide;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.PlayBean;
@@ -38,6 +39,8 @@ import butterknife.OnClick;
 public class BottomPlayActivity extends BaseActivity {
     @Bind(R.id.name_t)
     TextView name_t;
+    @Bind(R.id.point_img)
+    ImageView point_img;
     @Bind(R.id.play_t)
     ImageView play_t;
     @Bind(R.id.curent_time)
@@ -121,6 +124,7 @@ public class BottomPlayActivity extends BaseActivity {
         super.initData();
         if(pEnty!=null){
             name_t.setText(pEnty.getPointName());
+            Glide.with(this).load(pEnty.getPointImg()).into(point_img);
         }
     }
 
@@ -143,6 +147,7 @@ public class BottomPlayActivity extends BaseActivity {
     private void checkPause() {
         if(pEnty!=null){
             name_t.setText(pEnty.getPointName());
+
         }
         if (mycontrol != null && mycontrol.isPlay()) {
             Log.i("dddd", "checkPause");

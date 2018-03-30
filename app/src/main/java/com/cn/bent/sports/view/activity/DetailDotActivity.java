@@ -44,8 +44,14 @@ public class DetailDotActivity extends BaseActivity {
     TextView total_time;
     @Bind(R.id.curent_time)
     TextView curent_time;
+    @Bind(R.id.title_c)
+    TextView title_c;
+    @Bind(R.id.title_dot)
+    TextView title_dot;
     @Bind(R.id.paly_t)
     ImageView paly_t;
+    @Bind(R.id.di_bg)
+    ImageView di_bg;
     @Bind(R.id.title)
     TextView mtitle;
     @Bind(R.id.bg_top)
@@ -64,6 +70,12 @@ public class DetailDotActivity extends BaseActivity {
     public void initView() {
         super.initView();
         pEnty = (ScenicPointsEntity.PointsBean) getIntent().getSerializableExtra("enty");
+        if (pEnty!=null){
+            getPointsDetailData();
+            title_dot.setText(pEnty.getPointName());
+            Glide.with(this).load(pEnty.getPointImg()).into(di_bg);
+            Glide.with(this).load(pEnty.getImagesUrl()).into(bg_top);
+        }
         EventBus.getDefault().register(this);
         mHandler = new Handler();
         Intent intent = new Intent(this, MusicService.class);
@@ -139,7 +151,7 @@ public class DetailDotActivity extends BaseActivity {
                 .subscribe(new RxObserver<PointsDetailEntity>(this,TAG,1,false) {
                     @Override
                     public void onSuccess(int whichRequest, PointsDetailEntity pointsDetailEntity) {
-
+                        title_c.setText(pointsDetailEntity.getDetails());
                     }
 
                     @Override

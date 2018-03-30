@@ -39,6 +39,7 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
+                    android:id="@+id/point_img"
                     android:layout_width="200px"
                     android:layout_height="200px"
                     android:background="#000000" />
