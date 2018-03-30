@@ -372,41 +372,6 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                         RxToast.error(e.getMessage());
                     }
                 });
-
-//        BaseApi.getDefaultService(this).getscenicSpotData("1")
-//                .map(new ResponseRxFunction<ScenicSpotEntity>())
-//                .compose(RxSchedulers.<ScenicSpotEntity>io_main())
-//                .subscribe(new RxObserver<ScenicSpotEntity>(MapActivity.this, "getscenicSpotData", 2, false) {
-//                    @Override
-//                    public void onSuccess(int whichRequest, ScenicSpotEntity scenicSpotEntity) {
-//                        dismissAlert();
-//                        if (scenicSpotEntity != null && scenicSpotEntity.getCenterPoint() != null) {
-//                            lp = new LatLonPoint(Double.parseDouble(scenicSpotEntity.getCenterPoint().getLatitude()),
-//                                    Double.parseDouble(scenicSpotEntity.getCenterPoint().getLatitude()));
-//                            Log.w("dddd", "onSuccess getLatitude: " + scenicSpotEntity.getCenterPoint().getLatitude());
-//                        }
-//                        if (scenicSpotEntity != null && scenicSpotEntity.getPoints() != null && scenicSpotEntity.getPoints().size() > 0) {
-//                            mPointsList.addAll(scenicSpotEntity.getPoints());
-//                            if (TaskCationManager.getSize() <= 0) {
-//                                TaskCationManager.insert(scenicSpotEntity.getPoints());
-//                            }
-//                            Log.w("dddd", "onSuccess size: " + scenicSpotEntity.getPoints().size());
-//                            for (PointsEntity pointsEntity : scenicSpotEntity.getPoints()) {
-//                                mPointsEntityMap.put(pointsEntity.getPointId(), pointsEntity);
-//                                setOverLay(pointsEntity.getType(), pointsEntity);
-//                            }
-//                        }
-//                        mPointsEntityList.add(mPointsList);
-//                        mPointsEntityList.add(mPointsList);
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(int whichRequest, Throwable e) {
-//                        dismissAlert();
-//                        ToastUtils.showLongToast(MapActivity.this, e.getMessage());
-//                    }
-//                });
     }
 
     /**
