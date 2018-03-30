@@ -3,6 +3,8 @@ package com.cn.bent.sports.api;
 
 import com.cn.bent.sports.bean.AddScoreEntity;
 import com.cn.bent.sports.bean.AllFinishEntity;
+import com.cn.bent.sports.bean.GameDetail;
+import com.cn.bent.sports.bean.GameInfo;
 import com.cn.bent.sports.bean.LinesPointsDetailEntity;
 import com.cn.bent.sports.bean.LinesPointsEntity;
 import com.cn.bent.sports.bean.LoginBase;
@@ -27,6 +29,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * Created by necer on 2017/6/28.
@@ -73,15 +76,34 @@ public interface ApiService {
             @Field("scenicSpotId") String scenicSpotId);
 
     /**
-     * 新闻评论
+     * 登录
      *
      * @return
      */
     @FormUrlEncoded
-    @POST("outdoor/user/insertMemberInfo")
-    Observable<HuiquResult<LoginBase>> Loging(
-            @Field("mobile") String mobile,
-            @Field("code") String code);
+    @POST("se/oauth/token")
+    Observable<LoginResult> Loging(
+            @Field("grant_type") String grant_type,
+            @Field("username") String username,
+             @Field("password") String password);
+
+    /**
+     * 获取景区游戏列表
+     *
+     * @return
+     */
+    @GET("api/travel/game/")
+    Observable<JavaResult<List<GameInfo>>> getGameList(
+            @Query("scenicId") String scenicId);
+
+    /**
+     * 获取游戏详情
+     *
+     * @return
+     */
+    @GET("api/travel/game/{id}")
+    Observable<JavaResult<GameDetail>> getGameDetail(
+            @Query("id") String id);
 
 
     @GET("outdoor/map/getFenceAndDot")

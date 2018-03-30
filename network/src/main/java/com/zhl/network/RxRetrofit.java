@@ -144,6 +144,7 @@ public class RxRetrofit {
 
         return retrofit;
     }
+
     public static Retrofit getLoginRetrofit(String baseUrl, Context context, final String access_token) {
 
         Log.d("loginWithPass", "intercept: "+access_token);

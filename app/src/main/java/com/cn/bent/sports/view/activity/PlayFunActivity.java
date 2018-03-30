@@ -9,11 +9,23 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.cn.bent.sports.MainActivity;
 import com.cn.bent.sports.R;
+import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
+import com.cn.bent.sports.bean.GameInfo;
+import com.cn.bent.sports.bean.LoginResult;
+import com.cn.bent.sports.utils.Constants;
+import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.utils.ToastUtils;
 import com.cn.bent.sports.view.activity.youle.PlayMultActivity;
 import com.cn.bent.sports.view.activity.youle.play.OrderDetailActivity;
+import com.vondear.rxtools.view.RxToast;
+import com.zhl.network.RxObserver;
+import com.zhl.network.RxSchedulers;
+import com.zhl.network.huiqu.HuiquRxTBFunction;
+import com.zhl.network.huiqu.JavaRxFunction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +47,10 @@ public class PlayFunActivity extends BaseActivity {
     @Bind(R.id.total_num)
     TextView total_num;
      ViewPager viewPager ;
-    private List<String> minfo=new ArrayList<>();
+    MyPagerAdapter myPagerAdapter;
+    private List<GameInfo> minfo=new ArrayList<>();
+
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_play_fun;
@@ -44,12 +59,10 @@ public class PlayFunActivity extends BaseActivity {
     @Override
     public void initView() {
         super.initView();
-        for (int i=0;i<8;i++){
-            minfo.add(i+"");
-        }
         total_num.setText(minfo.size()+"");
         viewPager = mContainer.getViewPager();
-        viewPager.setAdapter(new MyPagerAdapter(minfo));
+        myPagerAdapter=new MyPagerAdapter(minfo);
+        viewPager.setAdapter(myPagerAdapter);
         viewPager.setOffscreenPageLimit(3);
         viewPager.setClipChildren(false);
 
@@ -75,6 +88,7 @@ public class PlayFunActivity extends BaseActivity {
 
             }
         });
+
         new CoverFlow.Builder()
                 .with(viewPager)
                 .scale(0f)
@@ -87,11 +101,12 @@ public class PlayFunActivity extends BaseActivity {
     @Override
     public void initData() {
         super.initData();
+        getGameList();
     }
 
     private class MyPagerAdapter extends PagerAdapter {
-        private List<String> mList=new ArrayList<>();
-        public  MyPagerAdapter(List<String> mdata){
+        private List<GameInfo> mList=new ArrayList<>();
+        public  MyPagerAdapter(List<GameInfo> mdata){
             this.mList=mdata;
         }
         @Override
@@ -100,14 +115,28 @@ public class PlayFunActivity extends BaseActivity {
             View view = LayoutInflater.from(PlayFunActivity.this).inflate(R.layout.item_cover,null);
             ImageView imageView = (ImageView) view.findViewById(R.id.image_cover);
             TextView go_task=(TextView) view.findViewById(R.id.go_task);
+            TextView name_p=(TextView) view.findViewById(R.id.name_p);
+            TextView p_num=(TextView) view.findViewById(R.id.p_num);
+            TextView num_dot=(TextView) view.findViewById(R.id.num_dot);
+            TextView type_t=(TextView) view.findViewById(R.id.type_t);
+
+            type_t.setText("依次穿越");
+
+            num_dot.setText(mList.get(position).getPointCount()+"个点标");
+            name_p.setText(mList.get(position).getTitle());
+            p_num.setText(mList.get(position).getMaxPeople()+"人/组");
             go_task.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(PlayFunActivity.this,OrderDetailActivity.class));
+
+                    Intent intent=new Intent(PlayFunActivity.this,OrderDetailActivity.class);
+                    intent.putExtra("gameId",mList.get(position).getId());
+                    startActivity(intent);
                 }
             });
-
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            Glide.with(PlayFunActivity.this)
+                    .load(mList.get(position).getCover())
+                    .into(imageView);
             container.addView(view);
             return view;
         }
@@ -127,4 +156,30 @@ public class PlayFunActivity extends BaseActivity {
             return (view == object);
         }
     }
+
+
+    private void getGameList() {
+        showAlert("正在获取...", true);
+        BaseApi.getJavaLoginDefaultService(PlayFunActivity.this,user.getAccess_token()).getGameList("1")
+                .map(new JavaRxFunction<List<GameInfo>>())
+                .compose(RxSchedulers.<List<GameInfo>>io_main())
+                .subscribe(new RxObserver<List<GameInfo>>(PlayFunActivity.this, "login", 1, false) {
+                    @Override
+                    public void onSuccess(int whichRequest, List<GameInfo> info) {
+
+                        dismissAlert();
+                        minfo.addAll(info);
+                        myPagerAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onError(int whichRequest, Throwable e) {
+                        dismissAlert();
+                        RxToast.error(e.getMessage());
+                    }
+                });
+    }
+
+
+
 }

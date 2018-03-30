@@ -4,13 +4,25 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.cn.bent.sports.R;
+import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
+import com.cn.bent.sports.bean.GameDetail;
+import com.cn.bent.sports.bean.GameInfo;
+import com.cn.bent.sports.view.activity.PlayFunActivity;
 import com.cn.bent.sports.widget.MyScroview;
 import com.kennyc.view.MultiStateView;
+import com.vondear.rxtools.view.RxToast;
+import com.zhl.network.RxObserver;
+import com.zhl.network.RxSchedulers;
+import com.zhl.network.huiqu.JavaRxFunction;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -42,6 +54,19 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
     TextView tab3_v;
     @Bind(R.id.multiStateView)
     MultiStateView multiStateView;
+    @Bind(R.id.image_cover)
+    ImageView image_cover;
+    @Bind(R.id.name_t)
+    TextView name_t;
+    @Bind(R.id.group_price)
+    TextView group_price;
+    @Bind(R.id.type_t)
+    TextView type_t;
+    @Bind(R.id.num_dot)
+    TextView num_dot;
+    @Bind(R.id.p_num)
+    TextView p_num;
+
     private int select = 1;
     private int topHeight;
     private int journeyHeight;
@@ -50,6 +75,8 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
     private String deviceId;
     private String memberId;
     private String title;
+    private String gameId;
+    private GameDetail gameInfo;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_order_detail;
@@ -58,13 +85,14 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
     @Override
     public void initView() {
         super.initView();
+        gameId=getIntent().getExtras().getString("gameId");
         myscroview.setOnScrollListener(this);
     }
 
     @Override
     public void initData() {
         super.initData();
-        multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+        getGameDetail();
     }
 
     @Override
@@ -149,6 +177,9 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
     void onclick(View v){
         switch (v.getId()){
             case R.id.submit:
+
+
+
                 startActivity(new Intent(OrderDetailActivity.this,OrganizeActivity.class));
                 break;
             case R.id.tab1_mian:
@@ -161,5 +192,39 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
                 changeview(3);
                 break;
         }
+    }
+
+    private void getGameDetail() {
+        showAlert("正在获取...", true);
+        BaseApi.getJavaLoginDefaultService(OrderDetailActivity.this,user.getAccess_token()).getGameDetail(gameId)
+                .map(new JavaRxFunction<GameDetail>())
+                .compose(RxSchedulers.<GameDetail>io_main())
+                .subscribe(new RxObserver<GameDetail>(OrderDetailActivity.this, "login", 1, false) {
+                    @Override
+                    public void onSuccess(int whichRequest, GameDetail info) {
+                        dismissAlert();
+                        gameInfo=info;
+                        multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+                        setview(info);
+                    }
+
+                    @Override
+                    public void onError(int whichRequest, Throwable e) {
+                        dismissAlert();
+                        multiStateView.setViewState(MultiStateView.VIEW_STATE_ERROR);
+                        RxToast.error(e.getMessage());
+                    }
+                });
+    }
+
+    private void  setview(GameDetail info){
+        Glide.with(OrderDetailActivity.this)
+                .load(info.getCover())
+                .into(image_cover);
+        name_t.setText(info.getTitle());
+        group_price.setText(info.getPrice());
+        type_t.setText("依次穿越");
+        num_dot.setText("12个点标");
+        p_num.setText(info.getMaxPeople()+"人");
     }
 }

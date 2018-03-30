@@ -41,6 +41,7 @@
                         android:background="#ffffff">
 
                         <ImageView
+                            android:id="@+id/image_cover"
                             android:layout_width="match_parent"
                             android:layout_height="570px" />
 
@@ -121,6 +122,7 @@
                         android:paddingLeft="43px">
 
                         <TextView
+                            android:id="@+id/type_t"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@drawable/detail_red_rund_bg"
@@ -133,6 +135,7 @@
 
 
                         <TextView
+                            android:id="@+id/num_dot"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="15px"
@@ -167,6 +170,7 @@
 
 
                             <TextView
+                                android:id="@+id/p_num"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="2人"

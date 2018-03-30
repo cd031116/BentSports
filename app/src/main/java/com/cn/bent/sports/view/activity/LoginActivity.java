@@ -19,6 +19,7 @@ import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.LoginBase;
+import com.cn.bent.sports.bean.LoginResult;
 import com.cn.bent.sports.bean.RailBean;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.SaveObjectUtils;
@@ -28,6 +29,7 @@ import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.HuiquRxFunction;
 import com.zhl.network.huiqu.HuiquRxTBFunction;
 import com.zhl.network.huiqu.HuiquTBResult;
+import com.zhl.network.huiqu.JavaRxFunction;
 
 import java.util.HashMap;
 
@@ -151,15 +153,16 @@ public class LoginActivity extends BaseActivity implements Handler.Callback {
 
     private void login(String account, String code) {
         showAlert("正在登录...", true);
-        BaseApi.getDefaultService(this).Loging(account, code)
-                .map(new HuiquRxFunction<LoginBase>())
-                .compose(RxSchedulers.<LoginBase>io_main())
-                .subscribe(new RxObserver<LoginBase>(LoginActivity.this, "login", 1, false) {
+        BaseApi.getJavaLoginService(this).Loging("password","mdzz2" ,"123456")
+                .map(new HuiquRxTBFunction<LoginResult>())
+                .compose(RxSchedulers.<LoginResult>io_main())
+                .subscribe(new RxObserver<LoginResult>(LoginActivity.this, "login", 1, false) {
                     @Override
-                    public void onSuccess(int whichRequest, LoginBase info) {
+                    public void onSuccess(int whichRequest, LoginResult info) {
                         SaveObjectUtils.getInstance(LoginActivity.this).setObject(Constants.USER_INFO, info);
                         dismissAlert();
-                        getdot();
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+//                        getdot();
                     }
 
                     @Override
@@ -289,7 +292,6 @@ public class LoginActivity extends BaseActivity implements Handler.Callback {
                     Object[] objs = (Object[]) msg.obj;
                     String plat = (String) objs[0];
                     Platform platform = ShareSDK.getPlatform(plat);
-
                 }
                 break;
             }

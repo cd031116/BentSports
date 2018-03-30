@@ -20,7 +20,11 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.cn.bent.sports.bean.LoginResult;
+import com.cn.bent.sports.utils.Constants;
+import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.utils.SupportMultipleScreensUtil;
+import com.cn.bent.sports.view.activity.PlayFunActivity;
 import com.cn.bent.sports.widget.ShowMsgDialog;
 import com.vondear.rxtools.view.dialog.RxDialogLoading;
 
@@ -41,11 +45,13 @@ public class BaseActivity extends org.aisen.android.ui.activity.basic.BaseActivi
      private boolean isActive=true;
     InputMethodManager manager;
     private RxDialogLoading progressDialog;
+   public LoginResult user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MyApplication.instance.getActivityManager().pushActivity(this);
         manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        user= SaveObjectUtils.getInstance(this).getObject(Constants.USER_INFO, null);
 
         if (getLayoutId()!= 0){
 

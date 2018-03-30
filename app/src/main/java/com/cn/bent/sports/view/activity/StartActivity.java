@@ -44,6 +44,7 @@ public class StartActivity extends BaseActivity {
             @Override
             public void onAnimationEnd(Animation arg0) {
                 redirectTo();
+
             }
 
             @Override
@@ -61,6 +62,12 @@ public class StartActivity extends BaseActivity {
     @Override
     public void initData() {
         super.initData();
+
+
+
+    }
+
+    private void redirectTo() {
         BaseConfig bg = BaseConfig.getInstance(StartActivity.this);
         final int isFirst = bg.getIntValue(Constants.IS_FIRST, 0);
         if (isFirst == 1) {
@@ -74,8 +81,8 @@ public class StartActivity extends BaseActivity {
                     @Override
                     public void doAction() {
                         if (isFirst == 0) {
-//                            MAsyncTask asyncTask = new MAsyncTask();
-//                            asyncTask.execute();//开始执行
+                            MAsyncTask asyncTask = new MAsyncTask();
+                            asyncTask.execute();//开始执行
                         }
                     }
                 }.run();
@@ -93,19 +100,9 @@ public class StartActivity extends BaseActivity {
             }.run();
         }
 
-    }
 
-    private void redirectTo() {
-//        LoginBase user = SaveObjectUtils.getInstance(StartActivity.this).getObject(Constants.USER_INFO, null);
-//        if(user==null){
-//            startActivity(new Intent(StartActivity.this,LoginActivity.class));
-//            StartActivity.this.finish();
-//        }else {
-//            startActivity(new Intent(StartActivity.this,MainActivity.class));
-//            StartActivity.this.finish();
-//        }
-        startActivity(new Intent(StartActivity.this,MainActivity.class));
-        StartActivity.this.finish();
+
+
     }
 
 
@@ -125,10 +122,17 @@ public class StartActivity extends BaseActivity {
         protected void onPostExecute(String s) {
             BaseConfig bg = BaseConfig.getInstance(StartActivity.this);
             bg.setIntValue(Constants.IS_FIRST, 1);
-            redirectTo();
             super.onPostExecute(s);
         }
 
 
     }
+
+
+            private  void getAccesToken(){
+
+                startActivity(new Intent(StartActivity.this,MainActivity.class));
+                StartActivity.this.finish();
+            }
+
 }

@@ -64,6 +64,7 @@
                     android:layout_below="@+id/name_p">
 
                     <TextView
+                        android:id="@+id/type_t"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
@@ -73,6 +74,7 @@
                         android:text="一次穿越"/>
 
                     <TextView
+                        android:id="@+id/num_dot"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"

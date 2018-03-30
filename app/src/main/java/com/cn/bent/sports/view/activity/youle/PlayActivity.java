@@ -132,6 +132,7 @@ public class PlayActivity extends BaseActivity implements AMap.OnMyLocationChang
         score.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 BaseApi.getJavaLoginDefaultService(PlayActivity.this,asd).getWebSocket()
                         .map(new JavaRxFunction<String>())
                         .compose(RxSchedulers.<String>io_main())
