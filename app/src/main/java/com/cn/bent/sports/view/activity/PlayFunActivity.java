@@ -59,7 +59,6 @@ public class PlayFunActivity extends BaseActivity {
     @Override
     public void initView() {
         super.initView();
-        total_num.setText(minfo.size()+"");
         viewPager = mContainer.getViewPager();
         myPagerAdapter=new MyPagerAdapter(minfo);
         viewPager.setAdapter(myPagerAdapter);
@@ -72,7 +71,9 @@ public class PlayFunActivity extends BaseActivity {
 
             }
         });
+
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -170,6 +171,7 @@ public class PlayFunActivity extends BaseActivity {
                         dismissAlert();
                         minfo.addAll(info);
                         myPagerAdapter.notifyDataSetChanged();
+                        total_num.setText(info.size()+"");
                     }
 
                     @Override

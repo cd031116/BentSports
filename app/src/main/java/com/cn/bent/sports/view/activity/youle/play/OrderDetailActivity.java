@@ -210,7 +210,6 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
                         multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
                         setview(info);
                     }
-
                     @Override
                     public void onError(int whichRequest, Throwable e) {
                         dismissAlert();

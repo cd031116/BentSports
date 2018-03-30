@@ -64,7 +64,6 @@ public class StartActivity extends BaseActivity {
         super.initData();
 
 
-
     }
 
     private void redirectTo() {

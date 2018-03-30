@@ -72,7 +72,6 @@ public class OrganizeActivity extends BaseActivity {
                 Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
     }
 
-
     private void getPoints() {
         showAlert("正在获取...", true);
         BaseApi.getJavaLoginDefaultService(OrganizeActivity.this).getTeamGame(gameLineId)
