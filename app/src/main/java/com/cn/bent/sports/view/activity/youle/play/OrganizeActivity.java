@@ -5,8 +5,18 @@ import android.view.Gravity;
 import android.view.View;
 
 import com.cn.bent.sports.R;
+import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
+import com.cn.bent.sports.bean.GamePotins;
+import com.cn.bent.sports.bean.TeamGame;
+import com.cn.bent.sports.view.activity.youle.PlayMultActivity;
 import com.cn.bent.sports.view.poupwindow.ScanPoupWindow;
+import com.vondear.rxtools.view.RxToast;
+import com.zhl.network.RxObserver;
+import com.zhl.network.RxSchedulers;
+import com.zhl.network.huiqu.JavaRxFunction;
+
+import java.util.List;
 
 import butterknife.OnClick;
 /**
@@ -16,6 +26,9 @@ import butterknife.OnClick;
 public class OrganizeActivity extends BaseActivity {
 
     private ScanPoupWindow mopupWindow;
+    private String gameLineId;
+    private String id;
+    TeamGame teamGame;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_organize;
@@ -24,6 +37,9 @@ public class OrganizeActivity extends BaseActivity {
     @Override
     public void initView() {
         super.initView();
+        gameLineId=getIntent().getExtras().getString("gameLineId");
+        id=getIntent().getExtras().getString("id");
+        getPoints();
     }
 
     @Override
@@ -35,10 +51,14 @@ public class OrganizeActivity extends BaseActivity {
     void onclick(View v){
         switch (v.getId()){
             case R.id.creat_scan:
-                shouPoup("组队口令");
+                shouPoup(teamGame.getId()+"");
                 break;
             case R.id.sure_start:
-                 startActivity(new Intent(OrganizeActivity.this,PrepareActivity.class));
+
+                Intent intent=new Intent(OrganizeActivity.this,PrepareActivity.class);
+                intent.putExtra("id",id);
+                intent.putExtra("gameLineId",gameLineId);
+                startActivity(intent);
                 break;
         }
     }
@@ -48,4 +68,29 @@ public class OrganizeActivity extends BaseActivity {
         mopupWindow.showAtLocation(this.findViewById(R.id.top_view),
                 Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
     }
+
+
+    private void getPoints() {
+        showAlert("正在获取...", true);
+        BaseApi.getJavaLoginDefaultService(OrganizeActivity.this,user.getAccess_token()).getTeamGame(gameLineId)
+                .map(new JavaRxFunction<TeamGame>())
+                .compose(RxSchedulers.<TeamGame>io_main())
+                .subscribe(new RxObserver<TeamGame>(OrganizeActivity.this, "getTeamGame", 1, false) {
+                    @Override
+                    public void onSuccess(int whichRequest,TeamGame info) {
+                        dismissAlert();
+                        teamGame=info;
+                    }
+
+                    @Override
+                    public void onError(int whichRequest, Throwable e) {
+                        dismissAlert();
+
+                        RxToast.error(e.getMessage());
+                    }
+                });
+    }
+
+
+
 }

@@ -16,7 +16,8 @@ import butterknife.OnClick;
  * create 2018/3/27/027 15:41   准备页面  根据队员和队长区分界面
  **/
 public class PrepareActivity extends BaseActivity {
-
+    private String gameLineId;
+    private String id;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_prepare;
@@ -25,6 +26,8 @@ public class PrepareActivity extends BaseActivity {
     @Override
     public void initView() {
         super.initView();
+        gameLineId=getIntent().getExtras().getString("gameLineId");
+        id=getIntent().getExtras().getString("id");
     }
 
     @Override
@@ -36,7 +39,10 @@ public class PrepareActivity extends BaseActivity {
     void onclick(View v) {
         switch (v.getId()) {
             case R.id.start_t:
-                startActivity(new Intent(PrepareActivity.this, PlayMultActivity.class));
+                Intent intent=new Intent(PrepareActivity.this,PlayMultActivity.class);
+                intent.putExtra("id",id);
+                intent.putExtra("gameLineId",gameLineId);
+                startActivity(intent);
                 break;
         }
     }

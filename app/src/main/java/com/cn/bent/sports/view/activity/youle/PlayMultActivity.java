@@ -29,9 +29,13 @@ import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.cn.bent.sports.R;
+import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.base.BaseConfig;
+import com.cn.bent.sports.bean.GameDetail;
+import com.cn.bent.sports.bean.GamePotins;
 import com.cn.bent.sports.bean.LoginBase;
+import com.cn.bent.sports.bean.LoginResult;
 import com.cn.bent.sports.bean.MajorBean;
 import com.cn.bent.sports.bean.MapDot;
 import com.cn.bent.sports.bean.RailBean;
@@ -44,9 +48,11 @@ import com.cn.bent.sports.view.activity.MapActivity;
 import com.cn.bent.sports.view.activity.OfflineActivity;
 import com.cn.bent.sports.view.activity.PlayWebViewActivity;
 import com.cn.bent.sports.view.activity.youle.play.CompleteInfoActivity;
+import com.cn.bent.sports.view.activity.youle.play.OrderDetailActivity;
 import com.cn.bent.sports.view.poupwindow.DoTaskPoupWindow;
 import com.cn.bent.sports.view.poupwindow.TalkPoupWindow;
 import com.cn.bent.sports.widget.OutGameDialog;
+import com.kennyc.view.MultiStateView;
 import com.minew.beacon.BeaconValueIndex;
 import com.minew.beacon.BluetoothState;
 import com.minew.beacon.MinewBeacon;
@@ -54,6 +60,9 @@ import com.minew.beacon.MinewBeaconManager;
 import com.vondear.rxtools.RxActivityTool;
 import com.vondear.rxtools.activity.ActivityScanerCode;
 import com.vondear.rxtools.view.RxToast;
+import com.zhl.network.RxObserver;
+import com.zhl.network.RxSchedulers;
+import com.zhl.network.huiqu.JavaRxFunction;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -102,13 +111,13 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     private int t_ids = -1;
     private long times_s = 0;
     private Handler handler2;
-    private LoginBase user;
     private boolean isBlue = false;
     private List<MapDot> place_list = new ArrayList<>();
     private DoTaskPoupWindow mopupWindow;
     private TalkPoupWindow soundWindow;
     private boolean isGame = false;
-
+    private String gameLineId;
+    private String id;
     //-------------------------------------------------
     @Override
     protected int getLayoutId() {
@@ -119,20 +128,24 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mapView.onCreate(savedInstanceState);
+
     }
 
     @Override
     public void initView() {
         super.initView();
+        getPoints();
         line_two.setVisibility(View.GONE);
         if (aMap == null) {
             aMap = mapView.getMap();
         }
+        gameLineId=getIntent().getExtras().getString("gameLineId");
+        id=getIntent().getExtras().getString("id");
         aMap.getUiSettings().setZoomControlsEnabled(false);//去掉高德地图右下角隐藏的缩放按钮
         aMap.setOnMarkerClickListener(this);
         aMap.setOnCameraChangeListener(onCameraChangeListener);
         EventBus.getDefault().register(this);
-        user = SaveObjectUtils.getInstance(this).getObject(Constants.USER_INFO, null);
+
         handler2 = new Handler();
         mMinewBeaconManager = MinewBeaconManager.getInstance(this);
         checkBluetooth();
@@ -616,5 +629,29 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         window.setAttributes(layoutParams);
         outGameDialog.show();
     }
+
+
+
+    private void getPoints() {
+        showAlert("正在获取...", true);
+        BaseApi.getJavaLoginDefaultService(PlayMultActivity.this,user.getAccess_token()).getPoints(id,gameLineId)
+                .map(new JavaRxFunction<List<GamePotins>>())
+                .compose(RxSchedulers.<List<GamePotins>>io_main())
+                .subscribe(new RxObserver<List<GamePotins>>(PlayMultActivity.this, "login", 1, false) {
+                    @Override
+                    public void onSuccess(int whichRequest, List<GamePotins> info) {
+                        dismissAlert();
+
+                    }
+
+                    @Override
+                    public void onError(int whichRequest, Throwable e) {
+                        dismissAlert();
+
+                        RxToast.error(e.getMessage());
+                    }
+                });
+    }
+
 
 }

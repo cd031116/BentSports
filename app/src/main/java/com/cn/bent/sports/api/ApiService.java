@@ -5,6 +5,7 @@ import com.cn.bent.sports.bean.AddScoreEntity;
 import com.cn.bent.sports.bean.AllFinishEntity;
 import com.cn.bent.sports.bean.GameDetail;
 import com.cn.bent.sports.bean.GameInfo;
+import com.cn.bent.sports.bean.GamePotins;
 import com.cn.bent.sports.bean.LinesPointsDetailEntity;
 import com.cn.bent.sports.bean.LinesPointsEntity;
 import com.cn.bent.sports.bean.LoginBase;
@@ -15,6 +16,7 @@ import com.cn.bent.sports.bean.RailBean;
 import com.cn.bent.sports.bean.RankEntity;
 import com.cn.bent.sports.bean.ScenicPointsEntity;
 import com.cn.bent.sports.bean.ScenicSpotEntity;
+import com.cn.bent.sports.bean.TeamGame;
 import com.cn.bent.sports.bean.UserMsgEntity;
 import com.zhl.network.huiqu.HuiquResult;
 import com.zhl.network.huiqu.HuiquTBResult;
@@ -104,6 +106,26 @@ public interface ApiService {
     @GET("api/travel/game/{id}")
     Observable<JavaResult<GameDetail>> getGameDetail(
             @Query("id") String id);
+
+
+
+    /**
+     * 获取游戏点标
+     *
+     * @return
+     */
+    @GET("api/travel/game/{id}/game_points")
+    Observable<JavaResult<List<GamePotins>>> getPoints(
+            @Path("id") String id, @Query("gameLineId") String gameLineId);
+
+
+    /**
+     * 创建组队
+     *
+     * @return
+     */
+    @GET("api/travel/game_team")
+    Observable<JavaResult<TeamGame>> getTeamGame(@Query("gameId") String gameId);
 
 
     @GET("outdoor/map/getFenceAndDot")
