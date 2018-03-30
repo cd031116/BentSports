@@ -45,6 +45,7 @@ import com.minew.beacon.MinewBeaconManager;
 import com.vondear.rxtools.RxActivityTool;
 import com.vondear.rxtools.activity.ActivityScanerCode;
 import com.vondear.rxtools.view.RxToast;
+import com.zhl.network.RxManager;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.HuiquRxTBFunction;
@@ -132,7 +133,7 @@ public class PlayActivity extends BaseActivity implements AMap.OnMyLocationChang
         score.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Log.d("getWebSocket", "onClick: "+asd);
                 BaseApi.getJavaLoginDefaultService(PlayActivity.this,asd).getWebSocket()
                         .map(new JavaRxFunction<String>())
                         .compose(RxSchedulers.<String>io_main())
