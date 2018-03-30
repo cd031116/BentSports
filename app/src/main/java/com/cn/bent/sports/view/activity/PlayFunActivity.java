@@ -50,7 +50,7 @@ public class PlayFunActivity extends BaseActivity {
     MyPagerAdapter myPagerAdapter;
     private List<GameInfo> minfo=new ArrayList<>();
 
-
+    public LoginResult user;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_play_fun;
@@ -160,7 +160,7 @@ public class PlayFunActivity extends BaseActivity {
 
     private void getGameList() {
         showAlert("正在获取...", true);
-        BaseApi.getJavaLoginDefaultService(PlayFunActivity.this,user.getAccess_token()).getGameList("1")
+        BaseApi.getJavaLoginDefaultService(PlayFunActivity.this).getGameList("1")
                 .map(new JavaRxFunction<List<GameInfo>>())
                 .compose(RxSchedulers.<List<GameInfo>>io_main())
                 .subscribe(new RxObserver<List<GameInfo>>(PlayFunActivity.this, "login", 1, false) {

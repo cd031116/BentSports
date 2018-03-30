@@ -634,7 +634,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 
     private void getPoints() {
         showAlert("正在获取...", true);
-        BaseApi.getJavaLoginDefaultService(PlayMultActivity.this,user.getAccess_token()).getPoints(id,gameLineId)
+        BaseApi.getJavaLoginDefaultService(PlayMultActivity.this).getPoints(id,gameLineId)
                 .map(new JavaRxFunction<List<GamePotins>>())
                 .compose(RxSchedulers.<List<GamePotins>>io_main())
                 .subscribe(new RxObserver<List<GamePotins>>(PlayMultActivity.this, "login", 1, false) {

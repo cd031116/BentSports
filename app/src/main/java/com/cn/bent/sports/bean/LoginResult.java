@@ -1,10 +1,12 @@
 package com.cn.bent.sports.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by dawn on 2018/3/29.
  */
 
-public class LoginResult {
+public class LoginResult implements Serializable{
     private String access_token;
     private String token_type;
     private String refresh_token;

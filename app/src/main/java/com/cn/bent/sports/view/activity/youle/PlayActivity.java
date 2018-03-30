@@ -134,7 +134,7 @@ public class PlayActivity extends BaseActivity implements AMap.OnMyLocationChang
             @Override
             public void onClick(View v) {
                 Log.d("getWebSocket", "onClick: "+asd);
-                BaseApi.getJavaLoginDefaultService(PlayActivity.this,asd).getWebSocket()
+                BaseApi.getJavaLoginDefaultService(PlayActivity.this).getWebSocket()
                         .map(new JavaRxFunction<String>())
                         .compose(RxSchedulers.<String>io_main())
                         .subscribe(new RxObserver<String>(PlayActivity.this, "getWebSocket", 2, false) {

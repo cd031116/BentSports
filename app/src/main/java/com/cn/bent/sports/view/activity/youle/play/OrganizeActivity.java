@@ -8,7 +8,10 @@ import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.GamePotins;
+import com.cn.bent.sports.bean.LoginResult;
 import com.cn.bent.sports.bean.TeamGame;
+import com.cn.bent.sports.utils.Constants;
+import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.view.activity.youle.PlayMultActivity;
 import com.cn.bent.sports.view.poupwindow.ScanPoupWindow;
 import com.vondear.rxtools.view.RxToast;
@@ -72,7 +75,7 @@ public class OrganizeActivity extends BaseActivity {
 
     private void getPoints() {
         showAlert("正在获取...", true);
-        BaseApi.getJavaLoginDefaultService(OrganizeActivity.this,user.getAccess_token()).getTeamGame(gameLineId)
+        BaseApi.getJavaLoginDefaultService(OrganizeActivity.this).getTeamGame(gameLineId)
                 .map(new JavaRxFunction<TeamGame>())
                 .compose(RxSchedulers.<TeamGame>io_main())
                 .subscribe(new RxObserver<TeamGame>(OrganizeActivity.this, "getTeamGame", 1, false) {
@@ -84,6 +87,7 @@ public class OrganizeActivity extends BaseActivity {
 
                     @Override
                     public void onError(int whichRequest, Throwable e) {
+
                         dismissAlert();
 
                         RxToast.error(e.getMessage());

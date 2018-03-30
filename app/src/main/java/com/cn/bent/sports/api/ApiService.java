@@ -89,6 +89,23 @@ public interface ApiService {
             @Field("username") String username,
              @Field("password") String password);
 
+
+    /**
+     * 微信登录
+     *
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("se/oauth/token")
+    Observable<LoginResult> weichatLogin(
+            @Field("grant_type") String grant_type,
+            @Field("username") String unicid,
+            @Field("password") String password,
+             @Field("source") String source,
+            @Field("nickName") String nickName,
+            @Field("avatarUrl") String avatarUrl
+            );
+
     /**
      * 获取景区游戏列表
      *

@@ -3,7 +3,9 @@ package com.cn.bent.sports.api;
 import android.content.Context;
 
 import com.cn.bent.sports.base.BaseConfig;
+import com.cn.bent.sports.bean.LoginResult;
 import com.cn.bent.sports.utils.Constants;
+import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.yuyh.library.imgsel.common.Constant;
 import com.zhl.network.RxRetrofit;
 
@@ -33,8 +35,9 @@ public class BaseApi {
         }
         return apiService;
     }
-    public static ApiService getJavaLoginDefaultService(Context context,String access_token) {
-            apiService = RxRetrofit.getLoginRetrofit(ConstantValues.JAVA_URL,context,access_token).create(ApiService.class);
+    public static ApiService getJavaLoginDefaultService(Context context) {
+            LoginResult user= SaveObjectUtils.getInstance(context).getObject(Constants.USER_INFO, null);
+            apiService = RxRetrofit.getLoginRetrofit(ConstantValues.JAVA_URL,context,user.getAccess_token()).create(ApiService.class);
         return apiService;
     }
 }

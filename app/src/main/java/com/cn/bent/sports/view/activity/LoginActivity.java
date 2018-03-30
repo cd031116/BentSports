@@ -150,6 +150,27 @@ public class LoginActivity extends BaseActivity implements Handler.Callback {
                 });
     }
 
+    private void weiChatLogin( Platform platform) {
+
+        showAlert("正在登录...", true);
+        BaseApi.getJavaLoginService(this).weichatLogin("password", platform.getDb().get("unionid"),"1","ANDROID",platform.getDb().getUserName(),platform.getDb().getUserIcon())
+                .map(new HuiquRxTBFunction<LoginResult>())
+                .compose(RxSchedulers.<LoginResult>io_main())
+                .subscribe(new RxObserver<LoginResult>(LoginActivity.this, "login", 1, false) {
+                    @Override
+                    public void onSuccess(int whichRequest, LoginResult info) {
+                        SaveObjectUtils.getInstance(LoginActivity.this).setObject(Constants.USER_INFO, info);
+                        dismissAlert();
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    }
+
+                    @Override
+                    public void onError(int whichRequest, Throwable e) {
+                        dismissAlert();
+                        RxToast.error(e.getMessage());
+                    }
+                });
+    }
 
     private void login(String account, String code) {
         showAlert("正在登录...", true);
@@ -292,6 +313,7 @@ public class LoginActivity extends BaseActivity implements Handler.Callback {
                     Object[] objs = (Object[]) msg.obj;
                     String plat = (String) objs[0];
                     Platform platform = ShareSDK.getPlatform(plat);
+                    weiChatLogin(platform);
                 }
                 break;
             }

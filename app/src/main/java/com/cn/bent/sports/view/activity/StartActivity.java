@@ -71,7 +71,7 @@ public class StartActivity extends BaseActivity {
         BaseConfig bg = BaseConfig.getInstance(StartActivity.this);
         final int isFirst = bg.getIntValue(Constants.IS_FIRST, 0);
         if (isFirst == 1) {
-
+            startActivity(new Intent(StartActivity.this,MainActivity.class));
         } else {
             if (this instanceof org.aisen.android.ui.activity.basic.BaseActivity) {
                 org.aisen.android.ui.activity.basic.BaseActivity aisenBaseActivity =
@@ -123,16 +123,12 @@ public class StartActivity extends BaseActivity {
             BaseConfig bg = BaseConfig.getInstance(StartActivity.this);
             bg.setIntValue(Constants.IS_FIRST, 1);
             super.onPostExecute(s);
+            startActivity(new Intent(StartActivity.this,LoginActivity.class));
+            StartActivity.this.finish();
         }
-
 
     }
 
 
-            private  void getAccesToken(){
-
-                startActivity(new Intent(StartActivity.this,MainActivity.class));
-                StartActivity.this.finish();
-            }
 
 }

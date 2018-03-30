@@ -14,6 +14,9 @@ import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.GameDetail;
 import com.cn.bent.sports.bean.GameInfo;
+import com.cn.bent.sports.bean.LoginResult;
+import com.cn.bent.sports.utils.Constants;
+import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.view.activity.PlayFunActivity;
 import com.cn.bent.sports.widget.MyScroview;
 import com.kennyc.view.MultiStateView;
@@ -196,7 +199,7 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
 
     private void getGameDetail() {
         showAlert("正在获取...", true);
-        BaseApi.getJavaLoginDefaultService(OrderDetailActivity.this,user.getAccess_token()).getGameDetail(gameId)
+        BaseApi.getJavaLoginDefaultService(OrderDetailActivity.this).getGameDetail(gameId)
                 .map(new JavaRxFunction<GameDetail>())
                 .compose(RxSchedulers.<GameDetail>io_main())
                 .subscribe(new RxObserver<GameDetail>(OrderDetailActivity.this, "login", 1, false) {
