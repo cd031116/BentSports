@@ -13,6 +13,7 @@ import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.bean.LoginResult;
 import com.cn.bent.sports.bean.PhotoPath;
 import com.cn.bent.sports.bean.PlayMapBean;
+import com.cn.bent.sports.bean.PointsDetailEntity;
 import com.cn.bent.sports.bean.RailBean;
 import com.cn.bent.sports.bean.RankEntity;
 import com.cn.bent.sports.bean.ScenicPointsEntity;
@@ -176,6 +177,15 @@ public interface ApiService {
      */
     @GET("api/travel/scenic/noauth/{id}/points")
     Observable<JavaResult<ScenicPointsEntity>> getScenicPoints(@Path("id") String id);
+
+    /**
+     * 获取当前点位详情
+     *
+     * @param id
+     * @return
+     */
+    @GET("api/travel/point/noauth/vo/{id}")
+    Observable<JavaResult<PointsDetailEntity>> getPointsDetailData(@Path("id") String id);
 
     /**
      * @return

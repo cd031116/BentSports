@@ -14,9 +14,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.cn.bent.sports.R;
+import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.PlayBean;
 import com.cn.bent.sports.bean.PlayEvent;
+import com.cn.bent.sports.bean.PointsDetailEntity;
 import com.cn.bent.sports.bean.PointsEntity;
 import com.cn.bent.sports.bean.ScenicPointsEntity;
 import com.cn.bent.sports.bean.StartEvent;
@@ -24,6 +26,9 @@ import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.NiceUtil;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.view.service.MusicService;
+import com.zhl.network.RxObserver;
+import com.zhl.network.RxSchedulers;
+import com.zhl.network.huiqu.JavaRxFunction;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -127,6 +132,22 @@ public class DetailDotActivity extends BaseActivity {
         }
     }
 
+    private void getPointsDetailData(){
+        BaseApi.getJavaDefaultService(this).getPointsDetailData(pEnty.getId()+"")
+                .map(new JavaRxFunction<PointsDetailEntity>())
+                .compose(RxSchedulers.<PointsDetailEntity>io_main())
+                .subscribe(new RxObserver<PointsDetailEntity>(this,"getPointsDetailData",1,false) {
+                    @Override
+                    public void onSuccess(int whichRequest, PointsDetailEntity pointsDetailEntity) {
+
+                    }
+
+                    @Override
+                    public void onError(int whichRequest, Throwable e) {
+
+                    }
+                });
+    }
 
     @Override
     public void onResume() {

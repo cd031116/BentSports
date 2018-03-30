@@ -27,6 +27,7 @@ import com.cn.bent.sports.utils.SupportMultipleScreensUtil;
 import com.cn.bent.sports.view.activity.PlayFunActivity;
 import com.cn.bent.sports.widget.ShowMsgDialog;
 import com.vondear.rxtools.view.dialog.RxDialogLoading;
+import com.zhl.network.RxManager;
 
 import butterknife.ButterKnife;
 
@@ -45,6 +46,7 @@ public class BaseActivity extends org.aisen.android.ui.activity.basic.BaseActivi
      private boolean isActive=true;
     InputMethodManager manager;
     private RxDialogLoading progressDialog;
+    private String TAG;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,7 @@ public class BaseActivity extends org.aisen.android.ui.activity.basic.BaseActivi
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
+        TAG = getPackageName() + "." + getClass().getSimpleName();
         initView();
         initData();
     }
@@ -73,6 +76,7 @@ public class BaseActivity extends org.aisen.android.ui.activity.basic.BaseActivi
     public void onDestroy(){
         super.onDestroy();
         MyApplication.instance.getActivityManager().popActivity(this);
+        RxManager.getInstance().clear(TAG);
 //        if (EventBus.getDefault().isRegistered(this)){
 //            EventBus.getDefault().unregister(this);
 //        }

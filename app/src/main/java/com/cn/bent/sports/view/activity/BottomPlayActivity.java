@@ -196,7 +196,9 @@ public class BottomPlayActivity extends BaseActivity {
                 break;
             case R.id.go_detail:
             case R.id.name_line:
-                startActivity(new Intent(this, DetailDotActivity.class));
+                Intent intent=new Intent(this, DetailDotActivity.class);
+                intent.putExtra("enty",pEnty);
+                startActivity(intent);
                 break;
             case R.id.main_top:
                 BottomPlayActivity.this.finish();
