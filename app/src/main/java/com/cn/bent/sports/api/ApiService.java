@@ -6,6 +6,7 @@ import com.cn.bent.sports.bean.AllFinishEntity;
 import com.cn.bent.sports.bean.GameDetail;
 import com.cn.bent.sports.bean.GameInfo;
 import com.cn.bent.sports.bean.GamePotins;
+import com.cn.bent.sports.bean.LinesDetailEntity;
 import com.cn.bent.sports.bean.LinesPointsDetailEntity;
 import com.cn.bent.sports.bean.LinesPointsEntity;
 import com.cn.bent.sports.bean.LoginBase;
@@ -151,6 +152,7 @@ public interface ApiService {
 
     /**
      * 获取线路
+     *
      * @param id
      * @return
      */
@@ -158,15 +160,17 @@ public interface ApiService {
     Observable<JavaResult<List<LinesPointsEntity>>> getScenicLines(@Path("id") String id);
 
     /**
-     * 获取线路
+     * 获取线路详情
+     *
      * @param id
      * @return
      */
     @GET("api/travel/line/noauth/{id}/detail")
-    Observable<JavaResult<LinesPointsDetailEntity>> getScenicLinesDetail(@Path("id") int id);
+    Observable<JavaResult<LinesDetailEntity>> getScenicLinesDetail(@Path("id") int id);
 
     /**
      * 获取点位
+     *
      * @param id
      * @return
      */

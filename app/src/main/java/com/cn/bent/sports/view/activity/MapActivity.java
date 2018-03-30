@@ -63,6 +63,7 @@ import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.base.BaseConfig;
+import com.cn.bent.sports.bean.LinesDetailEntity;
 import com.cn.bent.sports.bean.LinesPointsDetailEntity;
 import com.cn.bent.sports.bean.LinesPointsEntity;
 import com.cn.bent.sports.bean.PlayBean;
@@ -158,7 +159,6 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     private Map<Integer, ScenicPointsEntity.PointsBean> mPointsEntityMap = new HashMap<>();
     private Map<Integer, Marker> mMarkerMap = new HashMap<>();
     private List<List<ScenicPointsEntity.PointsBean>> mPointsEntityList = new ArrayList<List<ScenicPointsEntity.PointsBean>>();
-    private int chooseItem = 10000;
     ServiceConnection serviceConnection;
     MusicService.MusicController mycontrol;
     private boolean isBind = false;
@@ -176,6 +176,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     private XianluPoupWindow xlWindow;
     private CommonAdapter<ScenicPointsEntity.PointsBean> mAdapter;
     private RouteSearch routeSearch;
+    private List<ScenicPointsEntity.PointsBean> voicePoints=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -351,8 +352,8 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                             Log.d("dddd", "onSuccess: " + scenicPointsEntity.getPoints().get(0).getPointName());
 
                             for (ScenicPointsEntity.PointsBean pointsBean : scenicPointsEntity.getPoints()) {
-                                pointsBean.setMp3(Constants.JAVA_YUN_URL+pointsBean.getMp3());
-                                pointsBean.setImagesUrl(Constants.JAVA_YUN_URL+pointsBean.getImagesUrl());
+                                pointsBean.setMp3(Constants.JAVA_YUN_URL + pointsBean.getMp3());
+                                pointsBean.setImagesUrl(Constants.JAVA_YUN_URL + pointsBean.getImagesUrl());
                                 mPointsList.add(pointsBean);
                                 mPointsEntityMap.put(pointsBean.getId(), pointsBean);
                                 setOverLay(pointsBean.getType(), pointsBean);
@@ -412,7 +413,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
      * 获取线路数据
      */
     private void getXianluData() {
-                BaseApi.getJavaDefaultService(this).getScenicLines("1")
+        BaseApi.getJavaDefaultService(this).getScenicLines("1")
                 .map(new JavaRxFunction<List<LinesPointsEntity>>())
                 .compose(RxSchedulers.<List<LinesPointsEntity>>io_main())
                 .subscribe(new RxObserver<List<LinesPointsEntity>>(this, "getScenicLines", 1, false) {
@@ -432,13 +433,67 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
      * 获取线路详情数据
      */
     private void getXianluDetailData(int linesId) {
-                BaseApi.getJavaDefaultService(this).getScenicLinesDetail(linesId)
-                .map(new JavaRxFunction<LinesPointsDetailEntity>())
-                .compose(RxSchedulers.<LinesPointsDetailEntity>io_main())
-                .subscribe(new RxObserver<LinesPointsDetailEntity>(this, "getScenicLines", 1, false) {
+        tour_list.setVisibility(View.VISIBLE);
+        isShowLuxian = false;
+        if (polyline != null)
+            polyline.remove();
+        BaseApi.getJavaDefaultService(this).getScenicLinesDetail(linesId)
+                .map(new JavaRxFunction<LinesDetailEntity>())
+                .compose(RxSchedulers.<LinesDetailEntity>io_main())
+                .subscribe(new RxObserver<LinesDetailEntity>(this, "getScenicLines", 1, false) {
                     @Override
-                    public void onSuccess(int whichRequest, LinesPointsDetailEntity linesPointsDetailEntity) {
-                        Log.d("dddd", "onSuccess: "+linesPointsDetailEntity.getPoints().size());
+                    public void onSuccess(int whichRequest, final LinesDetailEntity linesPointsDetailEntity) {
+                        Log.d("dddd", "onSuccess: " + linesPointsDetailEntity.getPoints().size());
+                        if (linesPointsDetailEntity.getPoints() != null && linesPointsDetailEntity.getPoints().size() > 0) {
+                            aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                                    new LatLng(linesPointsDetailEntity.getPoints().get(0).get(0), linesPointsDetailEntity.getPoints().get(0).get(1)), mCurrentZoom));
+                            List<LatLng> latLngs = new ArrayList<LatLng>();
+                            for (List<Double> doubles : linesPointsDetailEntity.getPoints()) {
+                                latLngs.add(new LatLng(doubles.get(0), doubles.get(1)));
+                            }
+                            polyline = aMap.addPolyline(new PolylineOptions().
+                                    addAll(latLngs).width(10).color(Color.argb(255, 1, 1, 1)));
+                        }
+                        if (linesPointsDetailEntity.getVoicePoints() != null && linesPointsDetailEntity.getVoicePoints().size() > 0) {
+                            voicePoints = linesPointsDetailEntity.getVoicePoints();
+                            mAdapter = new CommonAdapter<ScenicPointsEntity.PointsBean>(MapActivity.this, R.layout.tour_line_item, linesPointsDetailEntity.getVoicePoints()) {
+                                @Override
+                                protected void convert(final ViewHolder holder, final ScenicPointsEntity.PointsBean pointsBean, final int position) {
+                                    holder.setText(R.id.tour_num, (position + 1) + "");
+                                    holder.setText(R.id.tour_name, pointsBean.getPointName());
+
+                                    holder.getConvertView().setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            mPointsEntity = pointsBean;
+                                            for (ScenicPointsEntity.PointsBean entity : linesPointsDetailEntity.getVoicePoints()) {
+                                                entity.setShow(false);
+                                            }
+                                            pointsBean.setShow(true);
+                                            aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(pointsBean.getLatitude(),
+                                                    pointsBean.getLongitude()), mCurrentZoom));
+                                            mAdapter.notifyDataSetChanged();
+                                        }
+                                    });
+                                    if (pointsBean.isShow()) {
+                                        if (pointsBean.getType() == 2 && !TextUtils.isEmpty(pointsBean.getMp3())) {
+                                            addAnimMarker(pointsBean);
+                                            playMarkerAudio(pointsBean);
+                                        }
+                                        holder.getView(R.id.tour_num).setBackground(MapActivity.this.getResources().getDrawable(R.drawable.tour_choose_item_bg));
+                                        ((TextView) holder.getView(R.id.tour_name)).setTextColor(MapActivity.this.getResources().getColor(R.color.color_fd7d6f));
+                                    } else {
+                                        holder.getView(R.id.tour_num).setBackground(MapActivity.this.getResources().getDrawable(R.drawable.tour_item_bg));
+                                        TextView textView = (TextView) holder.getView(R.id.tour_name);
+                                        textView.setTextColor(MapActivity.this.getResources().getColor(R.color.color_666666));
+                                    }
+                                }
+                            };
+                            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MapActivity.this);
+                            linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+                            tour_list.setLayoutManager(linearLayoutManager);
+                            tour_list.setAdapter(mAdapter);
+                        }
                     }
 
                     @Override
@@ -540,79 +595,11 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         public void ItemClick(final int index) {
             xlWindow.dismiss();
             getXianluDetailData(index);
-            tour_list.setVisibility(View.VISIBLE);
-            isShowLuxian = false;
-            pointLatLngs = new ArrayList<>();
-            for (ScenicPointsEntity.PointsBean pointsBean : mPointsEntityList.get(index)) {
-                if (pointsBean.getType() == 4)
-                    pointLatLngs.add(new LatLng(pointsBean.getLatitude(), pointsBean.getLongitude()));
-            }
             aMap.clear();
             for (int i = 0; i < mPointsEntityList.get(index).size(); i++) {
                 setMarkerLay(mPointsEntityList.get(index).get(i).getType());
             }
-            if (polyline != null)
-                polyline.remove();
-            LatLng oneLatlng = null;
-            LatLng startLatlng = null;
-            for (int num = 0; num < pointLatLngs.size(); num++) {
-                if (num == 0) {
-                    oneLatlng = pointLatLngs.get(num);
-                    startLatlng = pointLatLngs.get(num);
-                } else {
-                    RouteSearch.WalkRouteQuery query = new RouteSearch.WalkRouteQuery(
-                            new RouteSearch.FromAndTo(new LatLonPoint(startLatlng.latitude, startLatlng.longitude),
-                                    new LatLonPoint(pointLatLngs.get(num).latitude, pointLatLngs.get(num).longitude)),
-                            RouteSearch.WalkDefault);
-                    routeSearch.calculateWalkRouteAsyn(query);
-                    startLatlng = pointLatLngs.get(num);
-                }
-            }
-            if (oneLatlng != null)
-                aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(oneLatlng, mCurrentZoom));
-
-//                    polyline = aMap.addPolyline(new PolylineOptions().
-//                    addAll(pointLatLngs).width(14).color(0xAA0000FF));
-            chooseItem = index;
-            mAdapter = new CommonAdapter<ScenicPointsEntity.PointsBean>(MapActivity.this, R.layout.tour_line_item, mPointsEntityList.get(index)) {
-                @Override
-                protected void convert(final ViewHolder holder, final ScenicPointsEntity.PointsBean pointsBean, final int position) {
-                    holder.setText(R.id.tour_num, (position + 1) + "");
-                    holder.setText(R.id.tour_name, pointsBean.getPointName());
-
-                    holder.getConvertView().setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            mPointsEntity = pointsBean;
-                            for (ScenicPointsEntity.PointsBean entity : mPointsEntityList.get(index)) {
-                                entity.setShow(false);
-                            }
-                            pointsBean.setShow(true);
-                            aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(pointsBean.getLatitude(),
-                                    pointsBean.getLongitude()), mCurrentZoom));
-                            mAdapter.notifyDataSetChanged();
-                        }
-                    });
-                    if (pointsBean.isShow()) {
-                        if (pointsBean.getType() == 2 && !TextUtils.isEmpty(pointsBean.getMp3())) {
-                            addAnimMarker(pointsBean);
-                            playMarkerAudio(pointsBean);
-                        }
-                        holder.getView(R.id.tour_num).setBackground(MapActivity.this.getResources().getDrawable(R.drawable.tour_choose_item_bg));
-                        ((TextView) holder.getView(R.id.tour_name)).setTextColor(MapActivity.this.getResources().getColor(R.color.color_fd7d6f));
-                    } else {
-                        holder.getView(R.id.tour_num).setBackground(MapActivity.this.getResources().getDrawable(R.drawable.tour_item_bg));
-                        TextView textView = (TextView) holder.getView(R.id.tour_name);
-                        textView.setTextColor(MapActivity.this.getResources().getColor(R.color.color_666666));
-                    }
-                }
-            };
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MapActivity.this);
-            linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-            tour_list.setLayoutManager(linearLayoutManager);
-            tour_list.setAdapter(mAdapter);
-            aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mPointsEntityList.get(index).get(0).getLatitude(),
-                    mPointsEntityList.get(index).get(0).getLongitude()), mCurrentZoom));
+//            chooseItem = index;
         }
     };
 
@@ -953,19 +940,18 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             if (mPointsEntity.getType() == 2 && !TextUtils.isEmpty(mPointsEntity.getMp3())) {
                 addAnimMarker(mPointsEntity);
                 playMarkerAudio(mPointsEntity);
+                notifyRecyChanged();
             }
-            notifyRecyChanged();
             return true;
         }
     };
 
     private void notifyRecyChanged() {
-        if (chooseItem != 10000) {
-            List<ScenicPointsEntity.PointsBean> pointsEntities = mPointsEntityList.get(chooseItem);
-            for (int i = 0; i < pointsEntities.size(); i++) {
-                mPointsEntityList.get(chooseItem).get(i).setShow(false);
-                if (mPointsEntity.getId() == pointsEntities.get(i).getId()) {
-                    mPointsEntityList.get(chooseItem).get(i).setShow(true);
+        if (voicePoints != null && voicePoints.size() > 0) {
+            for (int i = 0; i < voicePoints.size(); i++) {
+                voicePoints.get(i).setShow(false);
+                if (mPointsEntity.getId() == voicePoints.get(i).getId()) {
+                    voicePoints.get(i).setShow(true);
                     tour_list.smoothScrollToPosition(i);
                 }
             }
