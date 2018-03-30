@@ -15,6 +15,7 @@ import java.net.UnknownHostException;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
+import retrofit2.HttpException;
 
 /**
  * Created by necer on 2017/6/28.
@@ -30,6 +31,14 @@ public abstract class RxObserver<T> implements Observer<T> {
     private boolean isShowDialog;
     private Dialog mDialog;
     private Context mContext;
+    private static final int UNAUTHORIZED = 401;
+    private static final int FORBIDDEN = 403;
+    private static final int NOT_FOUND = 404;
+    private static final int REQUEST_TIMEOUT = 408;
+    private static final int INTERNAL_SERVER_ERROR = 500;
+    private static final int BAD_GATEWAY = 502;
+    private static final int SERVICE_UNAVAILABLE = 503;
+    private static final int GATEWAY_TIMEOUT = 504;
 
 
     public RxObserver(Context context, String key, int whichRequest, boolean isShowDialog) {
@@ -62,6 +71,23 @@ public abstract class RxObserver<T> implements Observer<T> {
         Log.e("ssss", "onError: " + e.getMessage());
         if (mDialog.isShowing()) {
             mDialog.dismiss();
+        }
+        if (e instanceof HttpException) {
+            HttpException httpException = (HttpException) e;
+            switch (httpException.code()) {
+                case UNAUTHORIZED:
+                case FORBIDDEN:
+                case NOT_FOUND:
+                case REQUEST_TIMEOUT:
+                case GATEWAY_TIMEOUT:
+                case INTERNAL_SERVER_ERROR:
+                case BAD_GATEWAY:
+                case SERVICE_UNAVAILABLE:
+                default:
+                    //ex.code = httpException.code();
+                    onError(mWhichRequest, e);
+                    break;
+            }
         }
         if (e instanceof EOFException || e instanceof ConnectException || e instanceof SocketException || e instanceof BindException || e instanceof SocketTimeoutException || e instanceof UnknownHostException) {
             Toast.makeText(mContext, "网络异常，请稍后重试！", Toast.LENGTH_SHORT).show();

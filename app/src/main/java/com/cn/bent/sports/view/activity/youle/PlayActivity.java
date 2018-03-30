@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -15,7 +14,6 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdateFactory;
@@ -28,22 +26,17 @@ import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.services.core.LatLonPoint;
 import com.cn.bent.sports.R;
+import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.LoginBase;
-import com.cn.bent.sports.bean.MajorBean;
-import com.cn.bent.sports.database.QueueBean;
-import com.cn.bent.sports.database.QueueManager;
-import com.cn.bent.sports.database.TaskCationManager;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.DataUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.utils.SupportMultipleScreensUtil;
 import com.cn.bent.sports.utils.ToastUtils;
 import com.cn.bent.sports.view.activity.BitmapManager;
-import com.cn.bent.sports.view.activity.MapActivity;
 import com.cn.bent.sports.view.poupwindow.DoTaskPoupWindow;
 import com.cn.bent.sports.view.poupwindow.TalkPoupWindow;
-import com.cn.bent.sports.widget.OneTaskFinishDialog;
 import com.cn.bent.sports.widget.OutGameDialog;
 import com.minew.beacon.BeaconValueIndex;
 import com.minew.beacon.BluetoothState;
@@ -52,6 +45,11 @@ import com.minew.beacon.MinewBeaconManager;
 import com.vondear.rxtools.RxActivityTool;
 import com.vondear.rxtools.activity.ActivityScanerCode;
 import com.vondear.rxtools.view.RxToast;
+import com.zhl.network.RxObserver;
+import com.zhl.network.RxSchedulers;
+import com.zhl.network.huiqu.HuiquRxTBFunction;
+import com.cn.bent.sports.bean.LoginResult;
+import com.zhl.network.huiqu.JavaRxFunction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,6 +89,7 @@ public class PlayActivity extends BaseActivity implements AMap.OnMyLocationChang
     private LoginBase user;
     private boolean isBlue = false;
     private static final int REQUEST_ENABLE_BT = 2;
+    private String asd;
 
 
     @Override
@@ -126,14 +125,48 @@ public class PlayActivity extends BaseActivity implements AMap.OnMyLocationChang
                 mlist.add("拖");
                 mlist.add("坨");
                 mlist.add("拓");
-                DialogManager.getInstance(PlayActivity.this).showTaskOneFinishDialog("极限挑战","28");
+                DialogManager.getInstance(PlayActivity.this).showTaskOneFinishDialog("极限挑战", "28");
             }
         });
 
         score.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogManager.getInstance(PlayActivity.this).showTaskAllFinishDialog("09:09:09","300");
+                BaseApi.getJavaLoginDefaultService(PlayActivity.this,asd).getWebSocket()
+                        .map(new JavaRxFunction<String>())
+                        .compose(RxSchedulers.<String>io_main())
+                        .subscribe(new RxObserver<String>(PlayActivity.this, "getWebSocket", 2, false) {
+                            @Override
+                            public void onSuccess(int whichRequest, String s) {
+                                Log.d("loginWithPass", " getWebSocket onSuccess: "+s);
+                            }
+
+                            @Override
+                            public void onError(int whichRequest, Throwable e) {
+                                Log.d("loginWithPass", "getWebSocket onError: " + e.getMessage());
+                            }
+                        });
+            }
+        });
+        finish_task.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BaseApi.getJavaLoginService(PlayActivity.this).loginWithPass("password", "mdzz1", "123456")
+                        .map(new HuiquRxTBFunction<LoginResult>())
+                        .compose(RxSchedulers.<LoginResult>io_main())
+                        .subscribe(new RxObserver<LoginResult>(PlayActivity.this, "loginWithPass", 1, false) {
+                            @Override
+                            public void onSuccess(int whichRequest, LoginResult loginResult) {
+                                Log.d("loginWithPass", "onSuccess: " + loginResult.getAccess_token() + ",getRefresh_token:" + loginResult.getRefresh_token());
+                               asd= loginResult.getAccess_token();
+
+                            }
+
+                            @Override
+                            public void onError(int whichRequest, Throwable e) {
+                                Log.d("loginWithPass", "onError: " + e.getMessage());
+                            }
+                        });
             }
         });
 

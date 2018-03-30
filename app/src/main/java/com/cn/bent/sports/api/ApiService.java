@@ -6,6 +6,7 @@ import com.cn.bent.sports.bean.AllFinishEntity;
 import com.cn.bent.sports.bean.LinesPointsDetailEntity;
 import com.cn.bent.sports.bean.LinesPointsEntity;
 import com.cn.bent.sports.bean.LoginBase;
+import com.cn.bent.sports.bean.LoginResult;
 import com.cn.bent.sports.bean.PhotoPath;
 import com.cn.bent.sports.bean.PlayMapBean;
 import com.cn.bent.sports.bean.RailBean;
@@ -38,6 +39,23 @@ public interface ApiService {
      *
      * @return
      */
+    @FormUrlEncoded
+    @POST("se/oauth/token")
+    Observable<LoginResult> loginWithPass(
+            @Field("grant_type") String grant_type,
+            @Field("username") String username,
+            @Field("password") String password);
+
+    @FormUrlEncoded
+    @POST("se/oauth/token")
+    Observable<LoginResult> loginWithRefreshToken(
+            @Field("grant_type") String grant_type,
+            @Field("refresh_token") String refresh_token);
+
+
+    @GET("api/travel/applcations")
+    Observable<JavaResult<String>> getWebSocket();
+
     @FormUrlEncoded
     @POST("outdoor/user/getCheckCode")
     Observable<HuiquTBResult> getcode(

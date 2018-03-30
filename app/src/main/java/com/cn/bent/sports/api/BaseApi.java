@@ -24,4 +24,16 @@ public class BaseApi {
         }
         return apiService;
     }
+    public static ApiService getJavaLoginService(Context context) {
+        if (apiService == null) {
+            apiService = RxRetrofit.getLoginRetrofit(ConstantValues.JAVA_URL,context).create(ApiService.class);
+        }
+        return apiService;
+    }
+    public static ApiService getJavaLoginDefaultService(Context context,String access_token) {
+        if (apiService == null) {
+            apiService = RxRetrofit.getLoginRetrofit(ConstantValues.JAVA_URL,context,access_token).create(ApiService.class);
+        }
+        return apiService;
+    }
 }
