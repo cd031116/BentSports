@@ -631,7 +631,6 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     }
 
 
-
     private void getPoints() {
         showAlert("正在获取...", true);
         BaseApi.getJavaLoginDefaultService(PlayMultActivity.this).getPoints(id,gameLineId)
