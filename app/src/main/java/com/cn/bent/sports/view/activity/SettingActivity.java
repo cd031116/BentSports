@@ -96,7 +96,7 @@ public class SettingActivity extends BaseActivity {
         super.initData();
     }
 
-    @OnClick({R.id.top_left, R.id.top_image, R.id.ni_ceng, R.id.login,R.id.user_photo,R.id.gai_photo})
+    @OnClick({R.id.top_left, R.id.top_image, R.id.ni_ceng, R.id.login,R.id.user_photo,R.id.gai_photo,R.id.ni_info})
     void conlick(View view) {
         switch (view.getId()) {
             case R.id.ni_ceng:
@@ -139,6 +139,9 @@ public class SettingActivity extends BaseActivity {
                         .maxNum(1)
                         .build();
                 ISNav.getInstance().toListActivity(this, config, REQUEST_CAMERA_CODE);
+                break;
+            case R.id.ni_info:
+
                 break;
         }
     }

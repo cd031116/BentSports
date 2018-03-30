@@ -90,12 +90,14 @@ MobSDK {
     appKey "24d14d9fc48b6"
     appSecret "5375e5e203f8c0edc7e2b075b083e200"
 
+
+
     ShareSDK {
         //平台配置信息
         devInfo {
             Wechat {
                 appId "wx0a94f9a104d1d9ff"
-                appSecret "64020361b8ec4c99936c0e3999a9f249"
+                appSecret "972a21674cc94f188b9e57565222faf5"
             }
             QQ {
                 appId "100371282"

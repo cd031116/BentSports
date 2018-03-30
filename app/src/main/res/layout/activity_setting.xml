@@ -146,6 +146,35 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/ni_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_marginTop="1px"
+        android:background="#ffffff"
+        android:padding="43px">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="43px"
+            android:textColor="#333333"
+            android:text="常用出行人信息"
+            android:layout_centerVertical="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="40px"
+            android:layout_alignParentRight="true"
+            android:drawablePadding="28px"
+            android:drawableRight="@drawable/jinru_hui"
+            android:textColor="#aaaaaa"
+            android:textSize="43px" />
+
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/login"

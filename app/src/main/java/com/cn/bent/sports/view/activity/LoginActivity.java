@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -12,14 +13,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cn.bent.sports.MainActivity;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
-import com.cn.bent.sports.base.BaseConfig;
-import com.cn.bent.sports.bean.InfoEvent;
 import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.bean.RailBean;
 import com.cn.bent.sports.utils.Constants;
@@ -30,8 +28,6 @@ import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.HuiquRxFunction;
 import com.zhl.network.huiqu.HuiquRxTBFunction;
 import com.zhl.network.huiqu.HuiquTBResult;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 
@@ -60,7 +56,7 @@ public class LoginActivity extends BaseActivity implements Handler.Callback {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+            handler=new Handler(Looper.getMainLooper(),this);
     }
 
 
@@ -72,7 +68,6 @@ public class LoginActivity extends BaseActivity implements Handler.Callback {
     @Override
     public void initView() {
         super.initView();
-        handler = new Handler();
         timerCount = new TimerCount(60000, 1000, t_code);
         commit_btn.setEnabled(false);
         edit_photo.addTextChangedListener(new TextWatcher() {
@@ -226,9 +221,7 @@ public class LoginActivity extends BaseActivity implements Handler.Callback {
                 break;
             case R.id.wechat_sign:
                 Platform wechat = ShareSDK.getPlatform(Wechat.NAME);
-                if (wechat.isAuthValid()) {
-                    wechat.removeAccount(true);
-                }
+                wechat.removeAccount(true);
                 wechat.SSOSetting(false);
                 wechat.setPlatformActionListener(paListener);
                 wechat.authorize();
@@ -247,6 +240,7 @@ public class LoginActivity extends BaseActivity implements Handler.Callback {
                 msg.arg2 = action;
                 msg.obj =  new Object[] {platform.getName(), hashMap};
                 handler.sendMessage(msg);
+                Log.i("tttt","onComplete="+platform.getName());
             }
         }
 
@@ -259,7 +253,6 @@ public class LoginActivity extends BaseActivity implements Handler.Callback {
                 msg.obj =throwable;
                 handler.sendMessage(msg);
             }
-            throwable.printStackTrace();
         }
 
         @Override
@@ -274,33 +267,34 @@ public class LoginActivity extends BaseActivity implements Handler.Callback {
         }
     };
 
-    /**处理操作结果*/
+    @Override
     public boolean handleMessage(Message msg) {
-        switch(msg.what) {
-            case MSG_AUTH_CANCEL: {
-                // 取消
-                RxToast.normal("取消");
-             }
-            break;
-            case MSG_AUTH_ERROR: {
-                // 失败
-                Throwable t = (Throwable) msg.obj;
-                String text = "caught error: " + t.getMessage();
-                RxToast.info(text);
-                t.printStackTrace();
-            } break;
-            case MSG_AUTH_COMPLETE: {
-                // 成功
-                Object[] objs = (Object[]) msg.obj;
-                String plat = (String) objs[0];
-                Platform platform = ShareSDK.getPlatform(plat);
-              Log.i("tttt","getUserName"+platform.getDb().getUserName());
-            }
-            break;
-        }
-        return false;
-    }
+        /**处理操作结果*/
+            switch(msg.what) {
+                case MSG_AUTH_CANCEL: {
+                    // 取消
+                    RxToast.normal("取消");
+                }
+                break;
+                case MSG_AUTH_ERROR: {
 
+                    // 失败
+                    Throwable t = (Throwable) msg.obj;
+                    String text = "caught error: " + t.getMessage();
+                    RxToast.info(text);
+                    t.printStackTrace();
+                } break;
+                case MSG_AUTH_COMPLETE: {
+                    // 成功
+                    Object[] objs = (Object[]) msg.obj;
+                    String plat = (String) objs[0];
+                    Platform platform = ShareSDK.getPlatform(plat);
+
+                }
+                break;
+            }
+            return false;
+        }
 
 
     public class TimerCount extends CountDownTimer {

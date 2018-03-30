@@ -288,6 +288,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
      * 方法必须重写
      */
     @Override
+
     public void onDestroy() {
         super.onDestroy();
         if(DataUtils.isBlue(PlayMultActivity.this) && mMinewBeaconManager != null){
@@ -299,7 +300,6 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         mapView.getMap().clear();
         mapView.onDestroy();
         mapView = null;
-
         EventBus.getDefault().unregister(this);
     }
 
