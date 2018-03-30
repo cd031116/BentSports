@@ -71,6 +71,7 @@ public class StartActivity extends BaseActivity {
         final int isFirst = bg.getIntValue(Constants.IS_FIRST, 0);
         if (isFirst == 1) {
             startActivity(new Intent(StartActivity.this,MainActivity.class));
+            finish();
         } else {
             if (this instanceof org.aisen.android.ui.activity.basic.BaseActivity) {
                 org.aisen.android.ui.activity.basic.BaseActivity aisenBaseActivity =

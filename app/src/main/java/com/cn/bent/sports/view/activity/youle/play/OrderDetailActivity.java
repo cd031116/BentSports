@@ -9,6 +9,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.Options;
+import com.bumptech.glide.request.RequestOptions;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
@@ -181,8 +183,7 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
         switch (v.getId()){
             case R.id.submit:
                 Intent intent=new Intent(OrderDetailActivity.this,OrganizeActivity.class);
-                intent.putExtra("id",gameInfo.getId());
-                intent.putExtra("gameLineId",gameInfo.getGameLineId());
+                 intent.putExtra("gameInfo",gameInfo);
                 startActivity(intent);
                 break;
             case R.id.tab1_mian:
@@ -202,7 +203,7 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
         BaseApi.getJavaLoginDefaultService(OrderDetailActivity.this).getGameDetail(gameId)
                 .map(new JavaRxFunction<GameDetail>())
                 .compose(RxSchedulers.<GameDetail>io_main())
-                .subscribe(new RxObserver<GameDetail>(OrderDetailActivity.this, "login", 1, false) {
+                .subscribe(new RxObserver<GameDetail>(OrderDetailActivity.this, TAG, 1, false) {
                     @Override
                     public void onSuccess(int whichRequest, GameDetail info) {
                         dismissAlert();
@@ -220,11 +221,14 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
     }
 
     private void  setview(GameDetail info){
+        RequestOptions myOptions = new RequestOptions()
+                .centerCrop();
         Glide.with(OrderDetailActivity.this)
                 .load(info.getCover())
+                .apply(myOptions)
                 .into(image_cover);
         name_t.setText(info.getTitle());
-        group_price.setText(info.getPrice());
+        group_price.setText(info.getPrice()+"");
         type_t.setText("依次穿越");
         num_dot.setText("12个点标");
         p_num.setText(info.getMaxPeople()+"人");

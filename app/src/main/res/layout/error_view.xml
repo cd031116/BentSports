@@ -24,7 +24,7 @@
             android:layout_marginTop="24px"
             android:textSize="43px"
             android:textColor="#999999"
-            android:text="加载失败,请检查您的网络..." />
+            android:text="...加载失败..." />
     </LinearLayout>
 
 </RelativeLayout>

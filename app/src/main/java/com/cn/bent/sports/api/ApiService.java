@@ -124,7 +124,7 @@ public interface ApiService {
      */
     @GET("api/travel/game/{id}")
     Observable<JavaResult<GameDetail>> getGameDetail(
-            @Query("id") String id);
+            @Path("id") String id);
 
 
 
@@ -135,7 +135,7 @@ public interface ApiService {
      */
     @GET("api/travel/game/{id}/game_points")
     Observable<JavaResult<List<GamePotins>>> getPoints(
-            @Path("id") String id, @Query("gameLineId") String gameLineId);
+            @Path("id") long id, @Query("gameLineId") long gameLineId);
 
 
     /**
@@ -143,8 +143,9 @@ public interface ApiService {
      *
      * @return
      */
-    @GET("api/travel/game_team")
-    Observable<JavaResult<TeamGame>> getTeamGame(@Query("gameId") String gameId);
+    @FormUrlEncoded
+    @POST("api/travel/game_team")
+    Observable<JavaResult<TeamGame>> getTeamGame(@Field("gameId") String gameId);
 
 
     @GET("outdoor/map/getFenceAndDot")

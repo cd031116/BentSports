@@ -162,6 +162,7 @@ public class LoginActivity extends BaseActivity implements Handler.Callback {
                         SaveObjectUtils.getInstance(LoginActivity.this).setObject(Constants.USER_INFO, info);
                         dismissAlert();
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        finish();
                     }
 
                     @Override
@@ -183,6 +184,7 @@ public class LoginActivity extends BaseActivity implements Handler.Callback {
                         SaveObjectUtils.getInstance(LoginActivity.this).setObject(Constants.USER_INFO, info);
                         dismissAlert();
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        finish();
 //                        getdot();
                     }
 

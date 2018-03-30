@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseActivity;
+import com.cn.bent.sports.bean.GameDetail;
 import com.cn.bent.sports.view.activity.youle.PlayMultActivity;
 
 import butterknife.OnClick;
@@ -16,8 +17,7 @@ import butterknife.OnClick;
  * create 2018/3/27/027 15:41   准备页面  根据队员和队长区分界面
  **/
 public class PrepareActivity extends BaseActivity {
-    private String gameLineId;
-    private String id;
+    private GameDetail gameInfo;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_prepare;
@@ -26,8 +26,7 @@ public class PrepareActivity extends BaseActivity {
     @Override
     public void initView() {
         super.initView();
-        gameLineId=getIntent().getExtras().getString("gameLineId");
-        id=getIntent().getExtras().getString("id");
+        gameInfo=(GameDetail) getIntent().getSerializableExtra("gameInfo");
     }
 
     @Override
@@ -40,8 +39,7 @@ public class PrepareActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.start_t:
                 Intent intent=new Intent(PrepareActivity.this,PlayMultActivity.class);
-                intent.putExtra("id",id);
-                intent.putExtra("gameLineId",gameLineId);
+                intent.putExtra("gameInfo",gameInfo);
                 startActivity(intent);
                 break;
         }

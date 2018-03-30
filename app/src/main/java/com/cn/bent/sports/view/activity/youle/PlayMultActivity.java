@@ -116,8 +116,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     private DoTaskPoupWindow mopupWindow;
     private TalkPoupWindow soundWindow;
     private boolean isGame = false;
-    private String gameLineId;
-    private String id;
+    private GameDetail gameInfo;
     //-------------------------------------------------
     @Override
     protected int getLayoutId() {
@@ -128,7 +127,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mapView.onCreate(savedInstanceState);
-
+        gameInfo=(GameDetail) getIntent().getSerializableExtra("gameInfo");
     }
 
     @Override
@@ -139,8 +138,6 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         if (aMap == null) {
             aMap = mapView.getMap();
         }
-        gameLineId=getIntent().getExtras().getString("gameLineId");
-        id=getIntent().getExtras().getString("id");
         aMap.getUiSettings().setZoomControlsEnabled(false);//去掉高德地图右下角隐藏的缩放按钮
         aMap.setOnMarkerClickListener(this);
         aMap.setOnCameraChangeListener(onCameraChangeListener);
@@ -633,10 +630,10 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 
     private void getPoints() {
         showAlert("正在获取...", true);
-        BaseApi.getJavaLoginDefaultService(PlayMultActivity.this).getPoints(id,gameLineId)
+        BaseApi.getJavaLoginDefaultService(PlayMultActivity.this).getPoints((long)gameInfo.getId(),(long)gameInfo.getGameLineId())
                 .map(new JavaRxFunction<List<GamePotins>>())
                 .compose(RxSchedulers.<List<GamePotins>>io_main())
-                .subscribe(new RxObserver<List<GamePotins>>(PlayMultActivity.this, "login", 1, false) {
+                .subscribe(new RxObserver<List<GamePotins>>(PlayMultActivity.this, TAG, 1, false) {
                     @Override
                     public void onSuccess(int whichRequest, List<GamePotins> info) {
                         dismissAlert();

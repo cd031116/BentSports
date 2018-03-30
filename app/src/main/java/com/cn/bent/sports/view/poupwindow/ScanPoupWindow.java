@@ -87,7 +87,7 @@ public class ScanPoupWindow  extends PopupWindow {
         RxQRCode.builder(stars).
                 backColor(mContext.getResources().getColor(R.color.white)).
                 codeColor(mContext.getResources().getColor(R.color.black)).
-                codeSide(600).
+                codeSide(800).
                 into(mIvQrCode);
     }
 }

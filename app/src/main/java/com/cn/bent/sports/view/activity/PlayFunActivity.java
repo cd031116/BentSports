@@ -164,7 +164,7 @@ public class PlayFunActivity extends BaseActivity {
         BaseApi.getJavaLoginDefaultService(PlayFunActivity.this).getGameList("1")
                 .map(new JavaRxFunction<List<GameInfo>>())
                 .compose(RxSchedulers.<List<GameInfo>>io_main())
-                .subscribe(new RxObserver<List<GameInfo>>(PlayFunActivity.this, "login", 1, false) {
+                .subscribe(new RxObserver<List<GameInfo>>(PlayFunActivity.this, TAG, 1, false) {
                     @Override
                     public void onSuccess(int whichRequest, List<GameInfo> info) {
 
