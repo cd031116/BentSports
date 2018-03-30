@@ -46,7 +46,7 @@ public class BaseActivity extends org.aisen.android.ui.activity.basic.BaseActivi
      private boolean isActive=true;
     InputMethodManager manager;
     private RxDialogLoading progressDialog;
-    private String TAG;
+    public String TAG;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

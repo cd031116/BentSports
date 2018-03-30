@@ -136,7 +136,7 @@ public class DetailDotActivity extends BaseActivity {
         BaseApi.getJavaDefaultService(this).getPointsDetailData(pEnty.getId()+"")
                 .map(new JavaRxFunction<PointsDetailEntity>())
                 .compose(RxSchedulers.<PointsDetailEntity>io_main())
-                .subscribe(new RxObserver<PointsDetailEntity>(this,"getPointsDetailData",1,false) {
+                .subscribe(new RxObserver<PointsDetailEntity>(this,TAG,1,false) {
                     @Override
                     public void onSuccess(int whichRequest, PointsDetailEntity pointsDetailEntity) {
 
