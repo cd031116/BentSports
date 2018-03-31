@@ -188,6 +188,9 @@
         <activity
             android:name=".view.activity.youle.PlayMultActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.youle.play.MemberEditActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".view.activity.youle.play.OrganizeActivity" />
         <activity android:name=".view.activity.youle.play.PrepareActivity" />
         <activity android:name=".view.activity.youle.play.OrderDetailActivity" />
