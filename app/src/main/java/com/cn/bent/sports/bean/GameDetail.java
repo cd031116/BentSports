@@ -29,7 +29,7 @@ public class GameDetail implements Serializable {
      */
 
     private int id;
-    private int gameLineId;
+    private int gameLineId;//线路id ,
     private int scenicId;
     private String title;
     private String address;
@@ -174,7 +174,7 @@ public class GameDetail implements Serializable {
          */
 
         private int id;
-        private int gameId;
+        private int gameId;//游戏id ,
         private String detail;
         private String tip;
         private String notice;

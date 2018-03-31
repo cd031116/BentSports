@@ -28,6 +28,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import retrofit2.http.PUT;
 
 /**
  * aunthor lyj
@@ -70,8 +71,9 @@ public class OrganizeActivity extends BaseActivity {
                 break;
             case R.id.sure_start:
                 Intent intent = new Intent(OrganizeActivity.this, PrepareActivity.class);
-                intent.putExtra("gameInfo", gameInfo);
+                intent.putExtra("teamGame", teamGame);
                 startActivity(intent);
+                finish();
                 break;
             case R.id.top_left:
             case R.id.top_image:
@@ -87,7 +89,7 @@ public class OrganizeActivity extends BaseActivity {
     }
 
     private void getPoints() {
-        showAlert("正在获取...", true);
+        showAlert("正在创建队伍...", true);
         BaseApi.getJavaLoginDefaultService(OrganizeActivity.this).getTeamGame(gameInfo.getGameDetail().getGameId() + "")
                 .map(new JavaRxFunction<TeamGame>())
                 .compose(RxSchedulers.<TeamGame>io_main())

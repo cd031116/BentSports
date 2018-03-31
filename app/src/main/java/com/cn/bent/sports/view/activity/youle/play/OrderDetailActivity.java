@@ -185,6 +185,7 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
                 Intent intent=new Intent(OrderDetailActivity.this,OrganizeActivity.class);
                  intent.putExtra("gameInfo",gameInfo);
                 startActivity(intent);
+                finish();
                 break;
             case R.id.tab1_mian:
                 changeview(1);

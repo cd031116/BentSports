@@ -129,10 +129,10 @@ public class PlayFunActivity extends BaseActivity {
             go_task.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     Intent intent=new Intent(PlayFunActivity.this,OrderDetailActivity.class);
                     intent.putExtra("gameId",mList.get(position).getId());
                     startActivity(intent);
+                    finish();
                 }
             });
             Glide.with(PlayFunActivity.this)

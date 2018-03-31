@@ -5,14 +5,21 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.cn.bent.sports.R;
+import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseFragment;
 import com.cn.bent.sports.view.activity.MapActivity;
 import com.cn.bent.sports.view.activity.WalkRankListActivity;
 import com.cn.bent.sports.view.activity.youle.MyRouteListActivity;
 import com.cn.bent.sports.view.activity.youle.PlayActivity;
 import com.cn.bent.sports.view.activity.PlayFunActivity;
+import com.cn.bent.sports.view.activity.youle.bean.JoinTeam;
+import com.cn.bent.sports.view.activity.youle.play.TeamMemberActivity;
 import com.vondear.rxtools.RxActivityTool;
 import com.vondear.rxtools.activity.ActivityScanerCode;
+import com.vondear.rxtools.view.RxToast;
+import com.zhl.network.RxObserver;
+import com.zhl.network.RxSchedulers;
+import com.zhl.network.huiqu.JavaRxFunction;
 
 import butterknife.OnClick;
 
@@ -80,10 +87,35 @@ public class RecommendFragment extends BaseFragment {
                         return;
                     }
                     String jieguo=data.getStringExtra("SCAN_RESULT");
-
+                    getJoinTeam("");
                     break;
                 }
         }
     }
+
+
+    private void getJoinTeam(final  String gameId ) {
+        showAlert("正在加入组队...", true);
+        BaseApi.getJavaLoginDefaultService(getActivity()).joinTeamGame(gameId )
+                .map(new JavaRxFunction<JoinTeam>())
+                .compose(RxSchedulers.<JoinTeam>io_main())
+                .subscribe(new RxObserver<JoinTeam>(getActivity(), TAG, 1, false) {
+                    @Override
+                    public void onSuccess(int whichRequest, JoinTeam info) {
+                        dismissAlert();
+                        Intent intent=new Intent(getActivity(),TeamMemberActivity.class);
+                        intent.putExtra("gameId",gameId);
+                        startActivity(intent);
+
+                    }
+
+                    @Override
+                    public void onError(int whichRequest, Throwable e) {
+                        dismissAlert();
+                        RxToast.error(e.getMessage());
+                    }
+                });
+    }
+
 
 }

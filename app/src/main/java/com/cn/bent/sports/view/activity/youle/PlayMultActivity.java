@@ -40,6 +40,7 @@ import com.cn.bent.sports.bean.MajorBean;
 import com.cn.bent.sports.bean.MapDot;
 import com.cn.bent.sports.bean.RailBean;
 import com.cn.bent.sports.bean.ReFreshEvent;
+import com.cn.bent.sports.bean.TeamGame;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.DataUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
@@ -79,7 +80,6 @@ import butterknife.OnClick;
  */
 
 public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClickListener, AMap.OnMyLocationChangeListener {
-
     @Bind(R.id.mapView)
     MapView mapView;
     @Bind(R.id.time)
@@ -116,7 +116,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     private DoTaskPoupWindow mopupWindow;
     private TalkPoupWindow soundWindow;
     private boolean isGame = false;
-    private GameDetail gameInfo;
+    private TeamGame teamGame;
     //-------------------------------------------------
     @Override
     protected int getLayoutId() {
@@ -127,7 +127,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mapView.onCreate(savedInstanceState);
-        gameInfo=(GameDetail) getIntent().getSerializableExtra("gameInfo");
+        teamGame=(TeamGame) getIntent().getSerializableExtra("teamGame");
     }
 
     @Override
@@ -630,7 +630,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 
     private void getPoints() {
         showAlert("正在获取...", true);
-        BaseApi.getJavaLoginDefaultService(PlayMultActivity.this).getPoints((long)gameInfo.getId(),(long)gameInfo.getGameLineId())
+        BaseApi.getJavaLoginDefaultService(PlayMultActivity.this).getPoints(teamGame.getGameId()+"",teamGame.getGameLineId()+"")
                 .map(new JavaRxFunction<List<GamePotins>>())
                 .compose(RxSchedulers.<List<GamePotins>>io_main())
                 .subscribe(new RxObserver<List<GamePotins>>(PlayMultActivity.this, TAG, 1, false) {

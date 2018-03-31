@@ -20,6 +20,8 @@ import com.cn.bent.sports.bean.ScenicPointsEntity;
 import com.cn.bent.sports.bean.ScenicSpotEntity;
 import com.cn.bent.sports.bean.TeamGame;
 import com.cn.bent.sports.bean.UserMsgEntity;
+import com.cn.bent.sports.view.activity.youle.bean.JoinTeam;
+import com.cn.bent.sports.view.activity.youle.bean.UserInfo;
 import com.zhl.network.huiqu.HuiquResult;
 import com.zhl.network.huiqu.HuiquTBResult;
 import com.zhl.network.huiqu.JavaResult;
@@ -79,6 +81,11 @@ public interface ApiService {
     Observable<ResponseResult<ScenicSpotEntity>> getscenicSpotData(
             @Field("scenicSpotId") String scenicSpotId);
 
+    /*获取用户信息
+    * */
+    @GET("api/basic/user")
+    Observable<JavaResult<UserInfo>> getUserInfo();
+
     /**
      * 登录
      *
@@ -135,8 +142,17 @@ public interface ApiService {
      */
     @GET("api/travel/game/{id}/game_points")
     Observable<JavaResult<List<GamePotins>>> getPoints(
-            @Path("id") long id, @Query("gameLineId") long gameLineId);
+            @Path("id") String id, @Query("gameLineId") String gameLineId);
 
+
+    /**
+     * 开始游戏
+     *
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("api/travel/game_team/{teamId}/_start")
+    Observable<JavaResult<Boolean>> startTeamGame(@Field("teamId") String teamId);
 
     /**
      * 创建组队
@@ -146,6 +162,14 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("api/travel/game_team")
     Observable<JavaResult<TeamGame>> getTeamGame(@Field("gameId") String gameId);
+
+
+    /*teamId 加入组队
+    * */
+    @FormUrlEncoded
+    @POST("api/travel/game_team/{teamId}/_join")
+    Observable<JavaResult<JoinTeam>> joinTeamGame(@Path("teamId") String teamId);
+
 
 
     @GET("outdoor/map/getFenceAndDot")

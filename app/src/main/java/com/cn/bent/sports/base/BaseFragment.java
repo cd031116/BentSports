@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.cn.bent.sports.utils.SupportMultipleScreensUtil;
 import com.cn.bent.sports.widget.ShowMsgDialog;
 import com.vondear.rxtools.view.dialog.RxDialogLoading;
+import com.zhl.network.RxManager;
 
 import butterknife.ButterKnife;
 
@@ -27,7 +28,7 @@ public abstract class BaseFragment extends Fragment {
     private RxDialogLoading progressDialog;
 
     protected Activity mActivity;
-
+    public String TAG;
     /**
      * 获得全局的，防止使用getActivity()为空
      *
@@ -37,12 +38,14 @@ public abstract class BaseFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         this.mActivity = (Activity) context;
+
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container
             , Bundle savedInstanceState) {
+        TAG = getActivity().getPackageName() + "." + getClass().getSimpleName();
         View view = LayoutInflater.from(mActivity)
                 .inflate(getLayoutId(), container, false);
         ButterKnife.bind(this,view);
@@ -102,4 +105,9 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RxManager.getInstance().clear(TAG);
+    }
 }

@@ -23,6 +23,7 @@ import com.cn.bent.sports.bean.LoginResult;
 import com.cn.bent.sports.bean.RailBean;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.SaveObjectUtils;
+import com.cn.bent.sports.view.activity.youle.bean.UserInfo;
 import com.vondear.rxtools.view.RxToast;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
@@ -161,8 +162,7 @@ public class LoginActivity extends BaseActivity implements Handler.Callback {
                     public void onSuccess(int whichRequest, LoginResult info) {
                         SaveObjectUtils.getInstance(LoginActivity.this).setObject(Constants.USER_INFO, info);
                         dismissAlert();
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                        finish();
+                        getUserInfo();
                     }
 
                     @Override
@@ -183,8 +183,7 @@ public class LoginActivity extends BaseActivity implements Handler.Callback {
                     public void onSuccess(int whichRequest, LoginResult info) {
                         SaveObjectUtils.getInstance(LoginActivity.this).setObject(Constants.USER_INFO, info);
                         dismissAlert();
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                        finish();
+                        getUserInfo();
 //                        getdot();
                     }
 
@@ -196,6 +195,27 @@ public class LoginActivity extends BaseActivity implements Handler.Callback {
                 });
     }
 
+    private void getUserInfo() {
+        showAlert("正在获取用户信息...", true);
+        BaseApi.getJavaLoginDefaultService(LoginActivity.this)
+                .getUserInfo()
+                .map(new JavaRxFunction<UserInfo>())
+                .compose(RxSchedulers.<UserInfo>io_main())
+                .subscribe(new RxObserver<UserInfo>(LoginActivity.this, "getcode", 1, false) {
+                    @Override
+                    public void onSuccess(int whichRequest, UserInfo result) {
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        SaveObjectUtils.getInstance(LoginActivity.this).setObject(Constants.USER_BASE, result);
+                        finish();
+                    }
+
+                    @Override
+                    public void onError(int whichRequest, Throwable e) {
+                        RxToast.error(e.getMessage());
+                    }
+                });
+
+    }
 
     private void getcode() {
         BaseApi.getDefaultService(LoginActivity.this)

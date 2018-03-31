@@ -27,9 +27,11 @@
             android:textSize="70px" />
 
         <ImageView
+            android:id="@+id/image_cover"
             android:layout_width="match_parent"
             android:layout_height="500px"
             android:layout_marginTop="43px"
+            android:scaleType="fitXY"
             android:background="@drawable/recomm_bg" />
 
         <android.support.v4.widget.NestedScrollView
@@ -61,11 +63,10 @@
             android:layout_width="338px"
             android:layout_height="338px"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/s_start"
             android:gravity="center"
             android:paddingBottom="42px"
-            android:text="开始"
-            android:textColor="#ffffff"
+            android:text="等待..."
+            android:textColor="@color/red_text"
             android:textSize="72px" />
 
         <TextView
@@ -73,8 +74,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/start_t"
             android:layout_centerHorizontal="true"
-            android:text="请确保所有队员已准备好哦"
-            android:textColor="#999999" />
+            android:text="等待队长开始任务"
+            android:textColor="@color/c" />
 
         <ImageView
             android:id="@+id/look_peo"

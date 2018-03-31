@@ -198,7 +198,8 @@
         <activity android:name=".view.activity.youle.RankingListActivity" />
         <activity android:name=".view.activity.youle.play.CompleteInfoActivity" />
         <activity android:name=".view.activity.WalkRankListActivity" />
-        <activity android:name=".view.activity.youle.MyRouteListActivity"></activity>
+        <activity android:name=".view.activity.youle.MyRouteListActivity" />
+        <activity android:name=".view.activity.youle.play.TeamMemberActivity"></activity>
     </application>
 
 </manifest>

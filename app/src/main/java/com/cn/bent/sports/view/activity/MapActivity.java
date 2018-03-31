@@ -273,6 +273,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         }
 
         /**
+         *
          * 当与Service之间的连接丢失的时候会调用该方法，
          * 这种情况经常发生在Service所在的进程崩溃或者被Kill的时候调用，
          * 此方法不会移除与Service的连接，当服务重新启动的时候仍然会调用 onServiceConnected()。

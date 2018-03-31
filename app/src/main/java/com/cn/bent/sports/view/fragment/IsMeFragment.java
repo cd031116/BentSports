@@ -18,6 +18,7 @@ import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseFragment;
 import com.cn.bent.sports.bean.LoginBase;
+import com.cn.bent.sports.bean.LoginResult;
 import com.cn.bent.sports.bean.ScenicPointsEntity;
 import com.cn.bent.sports.bean.UserMsgEntity;
 import com.cn.bent.sports.ibeacon.ScanActivity;
@@ -48,7 +49,7 @@ public class IsMeFragment extends BaseFragment {
     @Bind(R.id.nick_name)
     TextView nick_name;
 
-    private LoginBase user;
+    private LoginResult user;
 
 
     public static IsMeFragment newInstance() {
@@ -65,30 +66,14 @@ public class IsMeFragment extends BaseFragment {
 
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
-        user = (LoginBase) SaveObjectUtils.getInstance(getActivity()).getObject(Constants.USER_INFO, null);
+        user = (LoginResult) SaveObjectUtils.getInstance(getActivity()).getObject(Constants.USER_INFO, null);
 
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (user != null) {
-            BaseApi.getDefaultService(getActivity())
-                    .getUserMsg(user.getMember_id())
-                    .map(new HuiquRxFunction<UserMsgEntity>())
-                    .compose(RxSchedulers.<UserMsgEntity>io_main())
-                    .subscribe(new RxObserver<UserMsgEntity>(getActivity(), "getUserMsg", 1, false) {
-                        @Override
-                        public void onSuccess(int whichRequest, UserMsgEntity userMsgEntity) {
-                            setView(userMsgEntity);
-                        }
 
-                        @Override
-                        public void onError(int whichRequest, Throwable e) {
-
-                        }
-                    });
-        }
     }
 
     @Override

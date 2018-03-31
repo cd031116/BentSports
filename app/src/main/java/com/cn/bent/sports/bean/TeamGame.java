@@ -24,16 +24,16 @@ public class TeamGame implements Serializable {
      * startTime : 2018-03-30T10:29:34.71
      */
 
-    private int id;
-    private int gameId;
-    private int gameLineId;
-    private int leaderId;
-    private int score;
-    private int timing;
+    private int id;//组队id
+    private int gameId;//游戏id
+    private int gameLineId;//游戏线路id ,
+    private int leaderId;//队长id
+    private int score;//最终得分 ,
+    private int timing;//耗时
     private String teamName;
     private String avatar;
     private int teamMemberMax;
-    private int teamMemberReal;
+    private int teamMemberReal;//实际队员数量 ,
     private int state;
     private String startTime;
 
