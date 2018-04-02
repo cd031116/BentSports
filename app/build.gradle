@@ -92,7 +92,6 @@ MobSDK {
     appSecret "5375e5e203f8c0edc7e2b075b083e200"
 
 
-
     ShareSDK {
         //平台配置信息
         devInfo {
