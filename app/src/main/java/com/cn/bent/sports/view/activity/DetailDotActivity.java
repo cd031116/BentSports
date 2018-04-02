@@ -145,7 +145,7 @@ public class DetailDotActivity extends BaseActivity {
     }
 
     private void getPointsDetailData(){
-        BaseApi.getJavaDefaultService(this).getPointsDetailData(pEnty.getId()+"")
+        BaseApi.getJavaLoginDefaultService(this).getPointsDetailData(pEnty.getId()+"")
                 .map(new JavaRxFunction<PointsDetailEntity>())
                 .compose(RxSchedulers.<PointsDetailEntity>io_main())
                 .subscribe(new RxObserver<PointsDetailEntity>(this,TAG,1,false) {

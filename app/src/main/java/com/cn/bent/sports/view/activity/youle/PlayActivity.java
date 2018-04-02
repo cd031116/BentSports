@@ -133,21 +133,6 @@ public class PlayActivity extends BaseActivity implements AMap.OnMyLocationChang
         score.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("getWebSocket", "onClick: "+asd);
-                BaseApi.getJavaLoginDefaultService(PlayActivity.this).getWebSocket()
-                        .map(new JavaRxFunction<String>())
-                        .compose(RxSchedulers.<String>io_main())
-                        .subscribe(new RxObserver<String>(PlayActivity.this, "getWebSocket", 2, false) {
-                            @Override
-                            public void onSuccess(int whichRequest, String s) {
-                                Log.d("loginWithPass", " getWebSocket onSuccess: "+s);
-                            }
-
-                            @Override
-                            public void onError(int whichRequest, Throwable e) {
-                                Log.d("loginWithPass", "getWebSocket onError: " + e.getMessage());
-                            }
-                        });
             }
         });
         finish_task.setOnClickListener(new View.OnClickListener() {

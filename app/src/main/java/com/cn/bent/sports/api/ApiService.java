@@ -6,11 +6,13 @@ import com.cn.bent.sports.bean.AllFinishEntity;
 import com.cn.bent.sports.bean.GameDetail;
 import com.cn.bent.sports.bean.GameInfo;
 import com.cn.bent.sports.bean.GamePotins;
+import com.cn.bent.sports.bean.GameTeamScoreEntity;
 import com.cn.bent.sports.bean.LinesDetailEntity;
 import com.cn.bent.sports.bean.LinesPointsDetailEntity;
 import com.cn.bent.sports.bean.LinesPointsEntity;
 import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.bean.LoginResult;
+import com.cn.bent.sports.bean.MemberDataEntity;
 import com.cn.bent.sports.bean.PhotoPath;
 import com.cn.bent.sports.bean.PlayMapBean;
 import com.cn.bent.sports.bean.PointsDetailEntity;
@@ -96,7 +98,7 @@ public interface ApiService {
     Observable<LoginResult> Loging(
             @Field("grant_type") String grant_type,
             @Field("username") String username,
-             @Field("password") String password);
+            @Field("password") String password);
 
 
     /**
@@ -110,10 +112,10 @@ public interface ApiService {
             @Field("grant_type") String grant_type,
             @Field("username") String unicid,
             @Field("password") String password,
-             @Field("source") String source,
+            @Field("source") String source,
             @Field("nickName") String nickName,
             @Field("avatarUrl") String avatarUrl
-            );
+    );
 
     /**
      * 获取景区游戏列表
@@ -134,7 +136,6 @@ public interface ApiService {
             @Path("id") String id);
 
 
-
     /**
      * 获取游戏点标
      *
@@ -144,6 +145,33 @@ public interface ApiService {
     Observable<JavaResult<List<GamePotins>>> getPoints(
             @Path("id") String id, @Query("gameLineId") String gameLineId);
 
+    /**
+     * 获取团队积分情况
+     *
+     * @return
+     */
+    @GET("api/travel/game_team/{teamId}/score")
+    Observable<JavaResult<List<GameTeamScoreEntity>>> getTeamScore(
+            @Path("id") String id, @Path("teamId") String teamId);
+
+    /**
+     * 获取某个游戏点的完成情况
+     *
+     * @return
+     */
+    @GET("api/travel/game_team/{teamId}/task/{gamePointId}")
+    Observable<JavaResult<List<GameTeamScoreEntity>>> getPointTask(
+            @Path("teamId") String id, @Path("gamePointId") String gamePointId);
+
+
+    /**
+     * 强制退赛
+     *
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("api/travel/game_team/{teamId}/task")
+    Observable<JavaResult<Boolean>> outTeamGame(@Path("teamId") String teamId, @Field("timing") String timing);
 
     /**
      * 开始游戏
@@ -169,7 +197,6 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("api/travel/game_team/{teamId}/_join")
     Observable<JavaResult<JoinTeam>> joinTeamGame(@Path("teamId") String teamId);
-
 
 
     @GET("outdoor/map/getFenceAndDot")
@@ -211,6 +238,15 @@ public interface ApiService {
      */
     @GET("api/travel/point/noauth/vo/{id}")
     Observable<JavaResult<PointsDetailEntity>> getPointsDetailData(@Path("id") String id);
+
+    /**
+     * 获取队员信息（后面的接口都只有id 头像等信息前端需要存起来）
+     *
+     * @param teamId
+     * @return
+     */
+    @GET("api/travel//game_team/{teamId}/members")
+    Observable<JavaResult<List<MemberDataEntity>>> getMemberDetailData(@Path("teamId") int teamId);
 
     /**
      * @return

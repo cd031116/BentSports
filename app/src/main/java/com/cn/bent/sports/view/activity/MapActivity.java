@@ -340,7 +340,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
      */
     private void getdot() {
         showAlert("......", true);
-        BaseApi.getJavaDefaultService(this).getScenicPoints("1")
+        BaseApi.getJavaLoginDefaultService(this).getScenicPoints("1")
                 .map(new JavaRxFunction<ScenicPointsEntity>())
                 .compose(RxSchedulers.<ScenicPointsEntity>io_main())
                 .subscribe(new RxObserver<ScenicPointsEntity>(MapActivity.this, "getScenicPoints", 1, false) {
@@ -380,7 +380,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
      * 获取线路数据
      */
     private void getXianluData() {
-        BaseApi.getJavaDefaultService(this).getScenicLines("1")
+        BaseApi.getJavaLoginDefaultService(this).getScenicLines("1")
                 .map(new JavaRxFunction<List<LinesPointsEntity>>())
                 .compose(RxSchedulers.<List<LinesPointsEntity>>io_main())
                 .subscribe(new RxObserver<List<LinesPointsEntity>>(this, "getScenicLines", 1, false) {
@@ -404,7 +404,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         isShowLuxian = false;
         if (polyline != null)
             polyline.remove();
-        BaseApi.getJavaDefaultService(this).getScenicLinesDetail(linesId)
+        BaseApi.getJavaLoginDefaultService(this).getScenicLinesDetail(linesId)
                 .map(new JavaRxFunction<LinesDetailEntity>())
                 .compose(RxSchedulers.<LinesDetailEntity>io_main())
                 .subscribe(new RxObserver<LinesDetailEntity>(this, "getScenicLines", 1, false) {
