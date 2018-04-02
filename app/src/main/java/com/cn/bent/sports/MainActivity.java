@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -16,8 +17,11 @@ import android.view.WindowManager;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
+import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.base.BaseConfig;
+import com.cn.bent.sports.utils.Constants;
+import com.cn.bent.sports.view.activity.youle.play.TeamMemberActivity;
 import com.cn.bent.sports.view.fragment.CardFragment;
 import com.cn.bent.sports.view.fragment.IsMeFragment;
 import com.cn.bent.sports.view.fragment.RecommendFragment;
@@ -25,6 +29,10 @@ import com.cn.bent.sports.view.fragment.ShoppingFragment;
 import com.cn.bent.sports.view.poupwindow.LineListPoupWindow;
 import com.cn.bent.sports.view.poupwindow.MainPoupWindow;
 import com.cn.bent.sports.widget.ExxitDialog;
+import com.vondear.rxtools.view.RxToast;
+import com.zhl.network.RxObserver;
+import com.zhl.network.RxSchedulers;
+import com.zhl.network.huiqu.JavaRxFunction;
 
 import java.util.ArrayList;
 
@@ -42,6 +50,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getGameDetail();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -239,4 +248,25 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
             }
         }).show();
     }
+
+    //获取websocket连接
+    private void getGameDetail() {
+        BaseApi.getJavaLoginDefaultService(MainActivity.this).getWebSocket()
+                .map(new JavaRxFunction<String>())
+                .compose(RxSchedulers.<String>io_main())
+                .subscribe(new RxObserver<String>(MainActivity.this, TAG, 1, false) {
+                    @Override
+                    public void onSuccess(int whichRequest, String info) {
+                        dismissAlert();
+                        BaseConfig.getInstance(MainActivity.this).setStringValue(Constants.SOKET_PATH,info);
+                        Log.i("tttt","info="+info);
+                    }
+                    @Override
+                    public void onError(int whichRequest, Throwable e) {
+                        dismissAlert();
+                        RxToast.error(e.getMessage());
+                    }
+                });
+    }
+
 }

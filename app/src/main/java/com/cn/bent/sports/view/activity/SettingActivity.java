@@ -22,6 +22,7 @@ import com.cn.bent.sports.bean.PhotoPath;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.ImageUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
+import com.cn.bent.sports.view.activity.youle.bean.UserInfo;
 import com.cn.bent.sports.widget.ToastDialog;
 import com.vondear.rxtools.view.RxToast;
 import com.yuyh.library.imgsel.ISNav;
@@ -46,7 +47,7 @@ public class SettingActivity extends BaseActivity {
     @Bind(R.id.user_photo)
     ImageView user_photo;
 
-    private LoginBase user;
+    private UserInfo user;
     private int REQUEST_CAMERA_CODE=102;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +75,7 @@ public class SettingActivity extends BaseActivity {
                 Glide.with(context).load(path).into(imageView);
             }
         });
-        user = SaveObjectUtils.getInstance(SettingActivity.this).getObject(Constants.USER_INFO, null);
+        user = SaveObjectUtils.getInstance(SettingActivity.this).getObject(Constants.USER_BASE, null);
         if(user!=null){
             if (TextUtils.isEmpty(user.getNickname())) {
                 name_t.setText("未设置");
@@ -82,9 +83,9 @@ public class SettingActivity extends BaseActivity {
             } else {
                 name_t.setText(user.getNickname());
                 name_t.setTextColor(Color.parseColor("#333333"));
-                phone_t.setText(user.getMobile());
+                phone_t.setText(user.getPhone());
                 RequestOptions requestOptions = RequestOptions.circleCropTransform();
-                Glide.with(SettingActivity.this).load(user.getHeadimg())
+                Glide.with(SettingActivity.this).load(user.getAvatar())
                         .apply(requestOptions)
                         .into(user_photo);
             }
@@ -184,7 +185,7 @@ public class SettingActivity extends BaseActivity {
 
     private void login(final String imag) {
         showAlert("正在提交...", true);
-        BaseApi.getDefaultService(this).modifyUserPhoto(user.getMember_id(), "2", imag)
+        BaseApi.getDefaultService(this).modifyUserPhoto(user.getId()+"", "2", imag)
                 .map(new HuiquRxFunction<PhotoPath>())
                 .compose(RxSchedulers.<PhotoPath>io_main())
                 .subscribe(new RxObserver<PhotoPath>(SettingActivity.this, "changeName", 1, false) {

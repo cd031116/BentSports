@@ -135,6 +135,14 @@ public interface ApiService {
     Observable<JavaResult<GameDetail>> getGameDetail(
             @Path("id") String id);
 
+    /**
+     * 准备页面
+     *
+     * @return
+     */
+    @GET("api/travel/game/{id}/prepare")
+    Observable<JavaResult<String>> getGamePrapre(
+            @Path("id") String id);
 
     /**
      * 获取游戏点标

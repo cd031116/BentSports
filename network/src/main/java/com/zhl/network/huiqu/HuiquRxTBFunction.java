@@ -1,6 +1,7 @@
 package com.zhl.network.huiqu;
 
-import io.reactivex.annotations.NonNull;
+import android.support.annotation.NonNull;
+
 import io.reactivex.functions.Function;
 
 /**

@@ -94,9 +94,9 @@ public class RecommendFragment extends BaseFragment {
     }
 
 
-    private void getJoinTeam(final  String gameId ) {
+    private void getJoinTeam(final  String teamId ) {
         showAlert("正在加入组队...", true);
-        BaseApi.getJavaLoginDefaultService(getActivity()).joinTeamGame(gameId )
+        BaseApi.getJavaLoginDefaultService(getActivity()).joinTeamGame(teamId )
                 .map(new JavaRxFunction<JoinTeam>())
                 .compose(RxSchedulers.<JoinTeam>io_main())
                 .subscribe(new RxObserver<JoinTeam>(getActivity(), TAG, 1, false) {
@@ -104,7 +104,7 @@ public class RecommendFragment extends BaseFragment {
                     public void onSuccess(int whichRequest, JoinTeam info) {
                         dismissAlert();
                         Intent intent=new Intent(getActivity(),TeamMemberActivity.class);
-                        intent.putExtra("gameId",gameId);
+                        intent.putExtra("teamId",teamId);
                         startActivity(intent);
 
                     }
