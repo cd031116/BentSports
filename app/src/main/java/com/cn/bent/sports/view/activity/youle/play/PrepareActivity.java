@@ -21,6 +21,8 @@ import com.zhl.network.huiqu.JavaRxFunction;
 
 
 import org.java_websocket.WebSocket;
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,6 +30,8 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.OnClick;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import ua.naiksoftware.stomp.LifecycleEvent;
 import ua.naiksoftware.stomp.Stomp;
@@ -145,28 +149,12 @@ public class PrepareActivity extends BaseActivity {
         mStompClient.lifecycle().subscribe(new Consumer<LifecycleEvent>() {
             @Override
             public void accept(LifecycleEvent lifecycleEvent) throws Exception {
-                Log.d("tttt", "lifecycleEvent="+lifecycleEvent.getType());
-                switch (lifecycleEvent.getType()) {
-                    case OPENED:
-                        Log.d("tttt", "Stomp connection opened");
 
-//                        getMsg();
-                        break;
-
-                    case ERROR:
-                        Log.e("tttt", "Stomp Error", lifecycleEvent.getException());
-
-                        break;
-                    case CLOSED:
-                        Log.d("tttt", "Stomp connection closed");
-
-                        break;
-                }
             }
         });
     }
 
-//    //接受消息
+    //    //接受消息
     private void getMsg() {
         mStompClient.topic("api/travel/topic/+" + teamGame.getId() + "" + "/join_team").subscribe(new Consumer<StompMessage>() {
             @Override

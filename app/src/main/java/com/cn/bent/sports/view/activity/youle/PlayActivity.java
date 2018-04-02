@@ -28,7 +28,10 @@ import com.amap.api.services.core.LatLonPoint;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
+import com.cn.bent.sports.bean.GamePotins;
+import com.cn.bent.sports.bean.GameTeamScoreEntity;
 import com.cn.bent.sports.bean.LoginBase;
+import com.cn.bent.sports.bean.TeamGame;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.DataUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
@@ -37,6 +40,7 @@ import com.cn.bent.sports.utils.ToastUtils;
 import com.cn.bent.sports.view.activity.BitmapManager;
 import com.cn.bent.sports.view.poupwindow.DoTaskPoupWindow;
 import com.cn.bent.sports.view.poupwindow.TalkPoupWindow;
+import com.cn.bent.sports.widget.OneTaskFinishDialog;
 import com.cn.bent.sports.widget.OutGameDialog;
 import com.minew.beacon.BeaconValueIndex;
 import com.minew.beacon.BluetoothState;
@@ -91,6 +95,7 @@ public class PlayActivity extends BaseActivity implements AMap.OnMyLocationChang
     private boolean isBlue = false;
     private static final int REQUEST_ENABLE_BT = 2;
     private String asd;
+    private TeamGame teamGame;
 
 
     @Override
@@ -109,6 +114,8 @@ public class PlayActivity extends BaseActivity implements AMap.OnMyLocationChang
         super.initView();
         task_finish_layout.setVisibility(View.GONE);
         user = SaveObjectUtils.getInstance(this).getObject(Constants.USER_INFO, null);
+
+        teamGame = (TeamGame) getIntent().getSerializableExtra("teamGame");
         mMinewBeaconManager = MinewBeaconManager.getInstance(this);
         checkBluetooth();
         if (aMap == null) {
@@ -121,11 +128,26 @@ public class PlayActivity extends BaseActivity implements AMap.OnMyLocationChang
         time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<String> mlist = new ArrayList<>();
-                mlist.add("xiao");
-                mlist.add("拖");
-                mlist.add("坨");
-                mlist.add("拓");
+                BaseApi.getJavaLoginDefaultService(PlayActivity.this).getPointTask(16, 15)
+                        .map(new JavaRxFunction<List<GameTeamScoreEntity>>())
+                        .compose(RxSchedulers.<List<GameTeamScoreEntity>>io_main())
+                        .subscribe(new RxObserver<List<GameTeamScoreEntity>>(PlayActivity.this, TAG, 1, false) {
+                            @Override
+                            public void onSuccess(int whichRequest, List<GameTeamScoreEntity> gameTeamScoreEntities) {
+                                Log.d(TAG, "onSuccess: " + gameTeamScoreEntities.size());
+                                new OneTaskFinishDialog(PlayActivity.this, R.style.dialog, new OneTaskFinishDialog.OnClickListener() {
+                                    @Override
+                                    public void onClick(Dialog dialog, int index) {
+                                        dialog.dismiss();
+                                    }
+                                }).setListData(gameTeamScoreEntities).show();
+                            }
+
+                            @Override
+                            public void onError(int whichRequest, Throwable e) {
+                                RxToast.error(e.getMessage());
+                            }
+                        });
                 DialogManager.getInstance(PlayActivity.this).showTaskOneFinishDialog("极限挑战", "28");
             }
         });
@@ -145,7 +167,7 @@ public class PlayActivity extends BaseActivity implements AMap.OnMyLocationChang
                             @Override
                             public void onSuccess(int whichRequest, LoginResult loginResult) {
                                 Log.d("loginWithPass", "onSuccess: " + loginResult.getAccess_token() + ",getRefresh_token:" + loginResult.getRefresh_token());
-                               asd= loginResult.getAccess_token();
+                                asd = loginResult.getAccess_token();
 
                             }
 
@@ -350,7 +372,7 @@ public class PlayActivity extends BaseActivity implements AMap.OnMyLocationChang
             public void onClick(Dialog dialog, int confirm) {
                 dialog.dismiss();
                 if (confirm == 1) {
-                    //TODO 退出比赛接口
+                    outGameApi();
                 }
             }
         });
@@ -361,6 +383,48 @@ public class PlayActivity extends BaseActivity implements AMap.OnMyLocationChang
         window.setAttributes(layoutParams);
         outGameDialog.show();
     }
+
+    /**
+     * 退出比赛接口
+     */
+    private void outGameApi() {
+        BaseApi.getJavaLoginDefaultService(PlayActivity.this).outTeamGame(1, 15000)
+                .map(new JavaRxFunction<Boolean>())
+                .compose(RxSchedulers.<Boolean>io_main())
+                .subscribe(new RxObserver<Boolean>(PlayActivity.this, TAG, 2, false) {
+                    @Override
+                    public void onSuccess(int whichRequest, Boolean aBoolean) {
+
+                    }
+
+                    @Override
+                    public void onError(int whichRequest, Throwable e) {
+                        Log.d(TAG, "onError: " + e.getMessage());
+                    }
+                });
+    }
+
+    private void getPoints() {
+        showAlert("正在获取...", true);
+        BaseApi.getJavaLoginDefaultService(PlayActivity.this).getPoints(teamGame.getGameId() + "", teamGame.getGameLineId() + "")
+                .map(new JavaRxFunction<List<GamePotins>>())
+                .compose(RxSchedulers.<List<GamePotins>>io_main())
+                .subscribe(new RxObserver<List<GamePotins>>(PlayActivity.this, TAG, 1, false) {
+                    @Override
+                    public void onSuccess(int whichRequest, List<GamePotins> info) {
+                        dismissAlert();
+
+                    }
+
+                    @Override
+                    public void onError(int whichRequest, Throwable e) {
+                        dismissAlert();
+
+                        RxToast.error(e.getMessage());
+                    }
+                });
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

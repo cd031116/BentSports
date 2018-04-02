@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cn.bent.sports.R;
+import com.cn.bent.sports.bean.GameTeamScoreEntity;
 import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.recyclebase.CommonAdapter;
 import com.cn.bent.sports.recyclebase.ViewHolder;
@@ -31,8 +32,8 @@ public class OneTaskFinishDialog extends Dialog implements View.OnClickListener{
     private TextView game_name;
     private TextView game_finish_num;
     private Context mContext;
-    private List<String> list;
     private LinearLayout dialog_layout;
+    private List<GameTeamScoreEntity> gameTeamScoreEntityList;
 
 
     public OneTaskFinishDialog(Context context) {
@@ -52,8 +53,8 @@ public class OneTaskFinishDialog extends Dialog implements View.OnClickListener{
     }
 
 
-    public OneTaskFinishDialog setListData(List<String> list) {
-        this.list = list;
+    public OneTaskFinishDialog setListData(List<GameTeamScoreEntity> gameTeamScoreEntityList) {
+        this.gameTeamScoreEntityList = gameTeamScoreEntityList;
         return this;
     }
 
@@ -82,11 +83,11 @@ public class OneTaskFinishDialog extends Dialog implements View.OnClickListener{
 
         game_list.setLayoutManager(new LinearLayoutManager(mContext));
 
-        if (list != null&&list.size()>0) {
-            CommonAdapter mAdapter = new CommonAdapter<String>(mContext, R.layout.one_task_finish_item, list) {
+        if (gameTeamScoreEntityList != null&&gameTeamScoreEntityList.size()>0) {
+            CommonAdapter mAdapter = new CommonAdapter<GameTeamScoreEntity>(mContext, R.layout.one_task_finish_item, gameTeamScoreEntityList) {
                 @Override
-                protected void convert(ViewHolder holder, String s, int position) {
-                    holder.setText(R.id.item_name, s);
+                protected void convert(ViewHolder holder, GameTeamScoreEntity s, int position) {
+                    holder.setText(R.id.item_name, s.getScore()+"");
                 }
             };
             game_list.setAdapter(mAdapter);

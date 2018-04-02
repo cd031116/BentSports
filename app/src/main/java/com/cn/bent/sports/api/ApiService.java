@@ -169,9 +169,20 @@ public interface ApiService {
      */
     @GET("api/travel/game_team/{teamId}/task/{gamePointId}")
     Observable<JavaResult<List<GameTeamScoreEntity>>> getPointTask(
-            @Path("teamId") String id, @Path("gamePointId") String gamePointId);
+            @Path("teamId") long teamId, @Path("gamePointId") long gamePointId);
 
 
+    /**
+     * 完成线上任务
+     *
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("api/travel/game_team/{teamId}/_pass_online")
+    Observable<JavaResult<Boolean>> finishOfflineGame(@Path("teamId") long teamId,
+                                                @Query("gamePointId") long gamePointId,
+                                                @Query("score") int score,
+                                                @Query("timing") int timing );
     /**
      * 强制退赛
      *
@@ -179,7 +190,18 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST("api/travel/game_team/{teamId}/task")
-    Observable<JavaResult<Boolean>> outTeamGame(@Path("teamId") String teamId, @Field("timing") String timing);
+    Observable<JavaResult<Boolean>> finishOnlineGame(@Path("teamId") long teamId,
+                                                     @Query("gamePointId") long gamePointId,
+                                                     @Query("score") int score,
+                                                     @Query("timing") int timing );
+    /**
+     * 强制退赛
+     *
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("api/travel/game_team/{teamId}/task")
+    Observable<JavaResult<Boolean>> outTeamGame(@Path("teamId") long teamId, @Field("timing") int timing);
 
     /**
      * 开始游戏

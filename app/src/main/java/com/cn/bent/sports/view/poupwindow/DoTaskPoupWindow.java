@@ -89,15 +89,7 @@ public class DoTaskPoupWindow extends PopupWindow {
         wancheng.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<String> mlist = new ArrayList<>();
-                mlist.add("xiao");
-                mlist.add("拖");
-                mlist.add("坨");
-                mlist.add("拓");
-                OneTaskFinishDialog oneTaskFinishDialog = new OneTaskFinishDialog(mContext, R.style.dialog)
-                        .setListData(mlist);
-                oneTaskFinishDialog.setCanceledOnTouchOutside(true);
-                oneTaskFinishDialog .show();
+
             }
         });
         mContext.setFinishOnTouchOutside(true);

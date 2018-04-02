@@ -10,18 +10,18 @@ public class GamePotins implements Serializable {
 
 
     /**
-     * alias : string
-     * description : string
-     * expires : 0
-     * gameLineId : 0
-     * hasQuestion : false
-     * hasTask : false
+     * alias : string  别名 ,
+     * description : string  导引描述 ,
+     * expires : 0  超时时间 秒 ,
+     * gameLineId : 0  线路ID ,
+     * hasQuestion : false  是否有题目 ,
+     * hasTask : false  是否有线下任务 ,
      * id : 0
      * major : 0
      * offlineTask : {"description":"string","fileUrl":"string","gamePointId":0,"id":0,"score":0,"taskType":0}
      * orderNo : 0
      * pointId : 0
-     * state : false
+     * state : false 状态 ,
      * tipImage : string
      */
 

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.cn.bent.sports.R;
+import com.cn.bent.sports.bean.GameTeamScoreEntity;
 import com.cn.bent.sports.view.activity.StartActivity;
 import com.cn.bent.sports.widget.CompletionDialog;
 import com.cn.bent.sports.widget.GameErrorDialog;
@@ -41,7 +42,7 @@ public class DialogManager {
     /**
      * 路线单任务完成
      */
-    public void showOneFinishDialog(List<String> mlist) {
+    public void showOneFinishDialog(List<GameTeamScoreEntity> mlist) {
         new OneTaskFinishDialog(mContext, R.style.dialog, new OneTaskFinishDialog.OnClickListener() {
             @Override
             public void onClick(Dialog dialog, int index) {
