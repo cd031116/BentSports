@@ -17,7 +17,7 @@ public class GameFailDialog extends Dialog implements View.OnClickListener {
     private TextView know_complete;
     private Context mContext;
     private OnCloseListener listener;
-    private String score;
+    private int score;
     private String name;
 
 
@@ -38,7 +38,7 @@ public class GameFailDialog extends Dialog implements View.OnClickListener {
         this.listener = listener;
     }
 
-    public GameFailDialog setScore(String score) {
+    public GameFailDialog setScore(int score) {
         this.score = score;
         return this;
     }
@@ -68,7 +68,7 @@ public class GameFailDialog extends Dialog implements View.OnClickListener {
         TextView name_text = (TextView) findViewById(R.id.name);
         know_complete = (TextView) findViewById(R.id.know_complete);
         know_complete.setOnClickListener(this);
-        score_text.setText(score);
+        score_text.setText("+ "+score);
         name_text.setText(name);
 
     }

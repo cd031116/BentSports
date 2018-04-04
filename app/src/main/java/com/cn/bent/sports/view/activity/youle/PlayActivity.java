@@ -148,7 +148,7 @@ public class PlayActivity extends BaseActivity implements AMap.OnMyLocationChang
                                 RxToast.error(e.getMessage());
                             }
                         });
-                DialogManager.getInstance(PlayActivity.this).showTaskOneFinishDialog("极限挑战", "28");
+                DialogManager.getInstance(PlayActivity.this).showTaskOneFinishDialog("极限挑战", 28);
             }
         });
 

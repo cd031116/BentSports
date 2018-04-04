@@ -80,7 +80,7 @@ public class DialogManager {
     /**
      * 路线_任务失败
      */
-    public void showTaskFailDialog(String name,String score) {
+    public void showTaskFailDialog(String name,int score) {
         new GameFailDialog(mContext, R.style.dialog, new GameFailDialog.OnCloseListener() {
             @Override
             public void onClick(Dialog dialog, String index) {
@@ -92,7 +92,7 @@ public class DialogManager {
     /**
      * 路线_任务通关
      */
-    public void showTaskOneFinishDialog(String name,String score) {
+    public void showTaskOneFinishDialog(String name,int score) {
         new CompletionDialog(mContext, R.style.dialog, new CompletionDialog.OnCloseListener() {
             @Override
             public void onClick(Dialog dialog, String index) {

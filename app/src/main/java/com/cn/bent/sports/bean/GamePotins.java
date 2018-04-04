@@ -10,34 +10,28 @@ public class GamePotins implements Serializable {
 
 
     /**
-     * alias : string  别名 ,
-     * description : string  导引描述 ,
-     * expires : 0  超时时间 秒 ,
-     * gameLineId : 0  线路ID ,
-     * hasQuestion : false  是否有题目 ,
-     * hasTask : false  是否有线下任务 ,
+     * alias : string
+     * hasQuestion : false
+     * hasTask : false
      * id : 0
+     * latitude : 0
+     * longitude : 0
      * major : 0
-     * offlineTask : {"description":"string","fileUrl":"string","gamePointId":0,"id":0,"score":0,"taskType":0}
      * orderNo : 0
-     * pointId : 0
-     * state : false 状态 ,
-     * tipImage : string
+     * score : 0
+     * state : 0
      */
 
     private String alias;
-    private String description;
-    private int expires;
-    private int gameLineId;
     private boolean hasQuestion;
     private boolean hasTask;
     private int id;
+    private int latitude;
+    private int longitude;
     private int major;
-    private OfflineTaskBean offlineTask;
     private int orderNo;
-    private int pointId;
-    private boolean state;
-    private String tipImage;
+    private int score;
+    private int state;
 
     public String getAlias() {
         return alias;
@@ -45,30 +39,6 @@ public class GamePotins implements Serializable {
 
     public void setAlias(String alias) {
         this.alias = alias;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getExpires() {
-        return expires;
-    }
-
-    public void setExpires(int expires) {
-        this.expires = expires;
-    }
-
-    public int getGameLineId() {
-        return gameLineId;
-    }
-
-    public void setGameLineId(int gameLineId) {
-        this.gameLineId = gameLineId;
     }
 
     public boolean isHasQuestion() {
@@ -95,20 +65,28 @@ public class GamePotins implements Serializable {
         this.id = id;
     }
 
+    public int getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(int latitude) {
+        this.latitude = latitude;
+    }
+
+    public int getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(int longitude) {
+        this.longitude = longitude;
+    }
+
     public int getMajor() {
         return major;
     }
 
     public void setMajor(int major) {
         this.major = major;
-    }
-
-    public OfflineTaskBean getOfflineTask() {
-        return offlineTask;
-    }
-
-    public void setOfflineTask(OfflineTaskBean offlineTask) {
-        this.offlineTask = offlineTask;
     }
 
     public int getOrderNo() {
@@ -119,93 +97,19 @@ public class GamePotins implements Serializable {
         this.orderNo = orderNo;
     }
 
-    public int getPointId() {
-        return pointId;
+    public int getScore() {
+        return score;
     }
 
-    public void setPointId(int pointId) {
-        this.pointId = pointId;
+    public void setScore(int score) {
+        this.score = score;
     }
 
-    public boolean isState() {
+    public int getState() {
         return state;
     }
 
-    public void setState(boolean state) {
+    public void setState(int state) {
         this.state = state;
-    }
-
-    public String getTipImage() {
-        return tipImage;
-    }
-
-    public void setTipImage(String tipImage) {
-        this.tipImage = tipImage;
-    }
-
-    public static class OfflineTaskBean implements Serializable {
-        /**
-         * description : string
-         * fileUrl : string
-         * gamePointId : 0
-         * id : 0
-         * score : 0
-         * taskType : 0
-         */
-
-        private String description;
-        private String fileUrl;
-        private int gamePointId;
-        private int id;
-        private int score;
-        private int taskType;
-
-        public String getDescription() {
-            return description;
-        }
-
-        public void setDescription(String description) {
-            this.description = description;
-        }
-
-        public String getFileUrl() {
-            return fileUrl;
-        }
-
-        public void setFileUrl(String fileUrl) {
-            this.fileUrl = fileUrl;
-        }
-
-        public int getGamePointId() {
-            return gamePointId;
-        }
-
-        public void setGamePointId(int gamePointId) {
-            this.gamePointId = gamePointId;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        public int getScore() {
-            return score;
-        }
-
-        public void setScore(int score) {
-            this.score = score;
-        }
-
-        public int getTaskType() {
-            return taskType;
-        }
-
-        public void setTaskType(int taskType) {
-            this.taskType = taskType;
-        }
     }
 }

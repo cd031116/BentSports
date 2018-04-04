@@ -1,5 +1,6 @@
 package com.cn.bent.sports.view.activity.youle.play;
 
+import android.app.Dialog;
 import android.util.Log;
 import android.view.View;
 import android.webkit.JavascriptInterface;
@@ -8,15 +9,25 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.cn.bent.sports.R;
+import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.GameEntity;
-import com.cn.bent.sports.view.activity.PlayWebViewActivity;
+import com.cn.bent.sports.widget.CompletionDialog;
+import com.cn.bent.sports.widget.GameErrorDialog;
+import com.cn.bent.sports.widget.GameFailDialog;
 import com.google.gson.Gson;
+import com.zhl.network.RxObserver;
+import com.zhl.network.RxSchedulers;
+import com.zhl.network.huiqu.JavaResult;
+import com.zhl.network.huiqu.JavaRxFunction;
 
 import butterknife.Bind;
+import butterknife.OnClick;
+import io.reactivex.Observable;
 
 /**
  * Created by dawn on 2018/4/2.
+ * 游戏web页面
  */
 
 public class GameWebActivity extends BaseActivity {
@@ -74,17 +85,78 @@ public class GameWebActivity extends BaseActivity {
             Log.e("dasa", "h5Result: " + ss);
             Gson gson = new Gson();
             GameEntity gameEntity = gson.fromJson(ss, GameEntity.class);
-            finishTask(gameEntity);
+            finishTask(gameEntity, 1);
             Log.d("dasa", "h5Result: " + gameEntity.getGameid() + ",getScord:" + gameEntity.getScord() + ",getUid:" + gameEntity.getUid());
         }
     }
 
-    private void finishTask(GameEntity gameEntity) {
+    private void finishTask(GameEntity gameEntity, int game_mode) {
+        Observable<JavaResult<Boolean>> javaResultObservable;
+        showAlert("正在获取...", true);
+        if (game_mode == 1)
+            javaResultObservable = BaseApi.getJavaLoginDefaultService(this)
+                    .finishOfflineGame(70, 4, 23, 123);
+        else
+            javaResultObservable = BaseApi.getJavaLoginDefaultService(this)
+                    .finishOnlineGame(70, 4, 23, 123);
+        javaResultObservable.map(new JavaRxFunction<Boolean>())
+                .compose(RxSchedulers.<Boolean>io_main())
+                .subscribe(new RxObserver<Boolean>(this, TAG, 1, false) {
+                    @Override
+                    public void onSuccess(int whichRequest, Boolean aBoolean) {
+                        dismissAlert();
+                        if (aBoolean)
+                            showSuccessDialog("game_name", 30);
+                        else
+                            showErrorDialog("game_name", 30);
+                    }
 
+                    @Override
+                    public void onError(int whichRequest, Throwable e) {
+                        dismissAlert();
+                        if (e.getMessage().equals("回答错误"))
+                            showAlertDialog();
+                    }
+                });
+    }
+
+    private void showAlertDialog() {
+        new GameErrorDialog(GameWebActivity.this, R.style.dialog, new GameErrorDialog.OnCloseListener() {
+            @Override
+            public void onClick(Dialog dialog, int index) {
+                dialog.dismiss();
+                finish();
+            }
+        }).show();
+    }
+
+    private void showErrorDialog(String game_name, int score) {
+        new GameFailDialog(GameWebActivity.this, R.style.dialog, new GameFailDialog.OnCloseListener() {
+            @Override
+            public void onClick(Dialog dialog, String index) {
+                dialog.dismiss();
+                finish();
+            }
+        }).setName(game_name).setScore(score).show();
+    }
+
+    private void showSuccessDialog(String game_name, int score) {
+        new CompletionDialog(GameWebActivity.this, R.style.dialog, new CompletionDialog.OnCloseListener() {
+            @Override
+            public void onClick(Dialog dialog, String index) {
+                dialog.dismiss();
+                finish();
+            }
+        }).setName(game_name).setScore(score).show();
     }
 
     @Override
     public void initData() {
         super.initData();
+    }
+
+    @OnClick(R.id.map_return)
+    void onClick(View view) {
+        finish();
     }
 }

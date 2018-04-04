@@ -61,6 +61,7 @@ public class MemberEditActivity extends BaseActivity {
                 .subscribe(new RxObserver<List<MemberDataEntity>>(this, TAG, 1, false) {
                     @Override
                     public void onSuccess(int whichRequest, List<MemberDataEntity> memberDataEntities) {
+
                         if (memberDataEntities != null && memberDataEntities.size() > 0)
                             setRecyList(memberDataEntities);
                     }

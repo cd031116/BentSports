@@ -81,6 +81,30 @@ public class BitmapManager {
         }
         return bitmapDescriptor;
     }
+    /**
+     * 游戏点marker点图标
+     *
+     * @param index
+     * @return
+     */
+    public BitmapDescriptor getGameBitmapDescriptor(int index) {
+        BitmapDescriptor bitmapDescriptor = null;
+        switch (index) {
+            case 1:
+                bitmapDescriptor = BitmapDescriptorFactory
+                        .fromResource(R.drawable.game_commplete);
+                break;
+            case -1:
+                bitmapDescriptor = BitmapDescriptorFactory
+                        .fromResource(R.drawable.uncomplete);
+                break;
+            default:
+                bitmapDescriptor = BitmapDescriptorFactory
+                        .fromResource(R.drawable.uncomplete);
+                break;
+        }
+        return bitmapDescriptor;
+    }
 
     public ArrayList<BitmapDescriptor> getBitmapDescriptorOverlay() {
         ArrayList<BitmapDescriptor> iconList = new ArrayList<>();

@@ -150,8 +150,8 @@ public interface ApiService {
      *
      * @return
      */
-    @GET("api/travel/game_team/1/game_point_status")
-    Observable<JavaResult<List<GamePotins>>> getGamePoints(@Query("gameLineId") String gameLineId);
+    @GET("api/travel/game_team/{teamId}/game_point_status")
+    Observable<JavaResult<List<GamePotins>>> getGamePoints(@Query("teamId") String teamId);
 
     /**
      * 获取团队积分情况
@@ -193,7 +193,7 @@ public interface ApiService {
                                                 @Query("score") int score,
                                                 @Query("timing") int timing );
     /**
-     * 强制退赛
+     * 完成线上任务
      *
      * @return
      */
@@ -230,9 +230,9 @@ public interface ApiService {
     Observable<JavaResult<TeamGame>> getTeamGame(@Field("gameId") String gameId);
 
 
-    /*teamId 加入组队
-    **/
-    @FormUrlEncoded
+    /**
+     * teamId 加入组队
+     */
     @POST("api/travel/game_team/{teamId}/_join")
     Observable<JavaResult<JoinTeam>> joinTeamGame(@Path("teamId") String teamId);
 

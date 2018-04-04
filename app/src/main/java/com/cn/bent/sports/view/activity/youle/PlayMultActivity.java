@@ -41,11 +41,13 @@ import com.cn.bent.sports.bean.MajorBean;
 import com.cn.bent.sports.bean.MapDot;
 import com.cn.bent.sports.bean.RailBean;
 import com.cn.bent.sports.bean.ReFreshEvent;
+import com.cn.bent.sports.bean.ScenicPointsEntity;
 import com.cn.bent.sports.bean.TeamGame;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.DataUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.view.activity.ArActivity;
+import com.cn.bent.sports.view.activity.BitmapManager;
 import com.cn.bent.sports.view.activity.MapActivity;
 import com.cn.bent.sports.view.activity.OfflineActivity;
 import com.cn.bent.sports.view.activity.PlayWebViewActivity;
@@ -71,7 +73,9 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -106,7 +110,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     private LatLng mStartPoint;//起点，116.335891,39.942295
     private LatLng mEndPoint;//终点，116.481288,39.995576
     private static final int REQUEST_ENABLE_BT = 2;
-    private static final int REQUEST_SCANS= 11;
+    private static final int REQUEST_SCANS = 11;
     private static final int REQUEST_Scan = 12;
     private MinewBeaconManager mMinewBeaconManager;
     private int t_ids = -1;
@@ -119,6 +123,10 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     private boolean isGame = false;
     private String gameTeamId;
     //-------------------------------------------------
+
+    private List<GamePotins> mGamePotinsList = new ArrayList<>();
+
+
     @Override
     protected int getLayoutId() {
         return R.layout.map_mult_layout;
@@ -138,7 +146,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
         mapView.onCreate(savedInstanceState);
-        gameTeamId= getIntent().getExtras().getString("gameTeamId");
+        gameTeamId = getIntent().getExtras().getString("gameTeamId");
     }
 
     @Override
@@ -189,7 +197,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     }
 
 
-    @OnClick({R.id.map_scan,R.id.map_return,R.id.look_rank,R.id.finish_situation,R.id.exit_game})
+    @OnClick({R.id.map_scan, R.id.map_return, R.id.look_rank, R.id.finish_situation, R.id.exit_game})
     void onClick(View view) {
         switch (view.getId()) {
             case R.id.map_scan:
@@ -200,10 +208,10 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                 PlayMultActivity.this.finish();
                 break;
             case R.id.look_rank:
-               startActivity(new Intent(PlayMultActivity.this,RankingListActivity.class));
+                startActivity(new Intent(PlayMultActivity.this, RankingListActivity.class));
                 break;
             case R.id.finish_situation:
-                startActivity(new Intent(PlayMultActivity.this,CompleteInfoActivity.class));
+                startActivity(new Intent(PlayMultActivity.this, CompleteInfoActivity.class));
                 break;
             case R.id.exit_game:
                 OpenOutDialog();
@@ -306,6 +314,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         //在activity执行onSaveInstanceState时执行mMapView.onSaveInstanceState (outState)，保存地图当前的状态
         mapView.onSaveInstanceState(outState);
     }
+
     /**
      * 方法必须重写
      */
@@ -313,7 +322,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 
     public void onDestroy() {
         super.onDestroy();
-        if(DataUtils.isBlue(PlayMultActivity.this) && mMinewBeaconManager != null){
+        if (DataUtils.isBlue(PlayMultActivity.this) && mMinewBeaconManager != null) {
             mMinewBeaconManager.stopScan();
         }
         mapView.onDestroy();
@@ -642,14 +651,17 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 
     private void getPoints() {
         showAlert("正在获取...", true);
-        BaseApi.getJavaLoginDefaultService(PlayMultActivity.this).getGamePoints(gameTeamId)
+        BaseApi.getJavaLoginDefaultService(PlayMultActivity.this).getGamePoints(1 + "")
                 .map(new JavaRxFunction<List<GamePotins>>())
                 .compose(RxSchedulers.<List<GamePotins>>io_main())
                 .subscribe(new RxObserver<List<GamePotins>>(PlayMultActivity.this, TAG, 1, false) {
                     @Override
                     public void onSuccess(int whichRequest, List<GamePotins> info) {
                         dismissAlert();
-
+                        mGamePotinsList = info;
+                        for (GamePotins gamePotins : info) {
+                            setOverLay(gamePotins.getState(), gamePotins);
+                        }
                     }
 
                     @Override
@@ -661,7 +673,18 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                 });
     }
 
+    private void setOverLay(int index, GamePotins gamePotins) {
 
+        MarkerOptions markerOption = new MarkerOptions();
+        markerOption.position(new LatLng(gamePotins.getLatitude(), gamePotins.getLongitude()));
+        markerOption.draggable(true);//设置Marker可拖动
+        markerOption.title(gamePotins.getId() + "");
+        markerOption.icon(BitmapManager.getInstance().getGameBitmapDescriptor(index));
+        // 将Marker设置为贴地显示，可以双指下拉地图查看效果
+        markerOption.setFlat(true);//设置marker平贴地图效果
+        Marker marker = aMap.addMarker(markerOption);
+
+    }
 
 
 }
