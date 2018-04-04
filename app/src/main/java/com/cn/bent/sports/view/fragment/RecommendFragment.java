@@ -59,7 +59,8 @@ public class RecommendFragment extends BaseFragment {
                 startActivity(new Intent(getActivity(), MapActivity.class));
                 break;
             case R.id.scan_t:
-                RxActivityTool.skipActivityForResult(getActivity(),ActivityScanerCode.class,REQUEST_Scan);
+                Intent intent = new Intent(getActivity(), ActivityScanerCode.class);
+                startActivityForResult(intent, REQUEST_Scan);
                 break;
             case R.id.line_title:
                 startActivity(new Intent(getActivity(), PlayFunActivity.class));
@@ -82,10 +83,6 @@ public class RecommendFragment extends BaseFragment {
         switch (requestCode) {
             case REQUEST_Scan:
                 if (null != data) {
-                    Bundle bundle = data.getExtras();
-                    if (bundle == null) {
-                        return;
-                    }
                     String jieguo=data.getStringExtra("SCAN_RESULT");
                     getJoinTeam(jieguo);
                     break;

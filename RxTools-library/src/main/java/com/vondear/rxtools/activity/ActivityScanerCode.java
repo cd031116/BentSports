@@ -289,7 +289,7 @@ public class ActivityScanerCode extends ActivityBase {
         String result1 = result.getText();
         Log.v("二维码/条形码 扫描结果", result1);
         if (mScanerListener == null) {
-            RxToast.success(result1);
+//            RxToast.success(result1);
             initDialogResult(result);
         } else {
             mScanerListener.onSuccess("From to Camera", result);

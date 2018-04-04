@@ -103,6 +103,9 @@ public class OrganizeActivity extends BaseActivity {
     }
 
     private void shouPoup(String strs) {
+        if(mopupWindow!=null&&mopupWindow.isShowing()){
+            return;
+        }
         mopupWindow = new ScanPoupWindow(OrganizeActivity.this, strs, null);
         mopupWindow.showAtLocation(this.findViewById(R.id.top_view),
                 Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
@@ -117,6 +120,7 @@ public class OrganizeActivity extends BaseActivity {
                     @Override
                     public void onSuccess(int whichRequest, TeamGame info) {
                         dismissAlert();
+                        teamGame=info;
                         setview(info);
                     }
                     @Override
@@ -213,7 +217,7 @@ public class OrganizeActivity extends BaseActivity {
                 }
             }
         };
-        m_recycle.setLayoutManager(new GridLayoutManager(OrganizeActivity.this,5));
+        m_recycle.setLayoutManager(new GridLayoutManager(OrganizeActivity.this,4));
         m_recycle.setAdapter(mAdapter);
     }
 

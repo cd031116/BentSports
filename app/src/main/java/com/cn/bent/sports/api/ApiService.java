@@ -235,7 +235,7 @@ public interface ApiService {
     * */
     @FormUrlEncoded
     @POST("api/travel/game_team/{teamId}/_join")
-    Observable<JavaResult<JoinTeam>> joinTeamGame(@Path("teamId") String teamId);
+    Observable<JavaResult<JoinTeam>> joinTeamGame(@Field("teamId") String teamId);
 
 
     @GET("outdoor/map/getFenceAndDot")

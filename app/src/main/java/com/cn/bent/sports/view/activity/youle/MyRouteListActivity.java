@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -152,7 +153,7 @@ public class MyRouteListActivity extends BaseActivity {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(MyRouteListActivity.this, OrganizeActivity.class);
-                        intent.putExtra("gameTeamId", myGame.getGameTeamId());
+                        intent.putExtra("gameTeamId", myGame.getGameTeamId()+"");
                         startActivity(intent);
                     }
                 });
