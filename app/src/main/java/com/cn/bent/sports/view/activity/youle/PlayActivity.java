@@ -192,17 +192,13 @@ public class PlayActivity extends BaseActivity implements AMap.OnMyLocationChang
         View view = this.getLayoutInflater().inflate(R.layout.marker_dedai, null);
         TextView textView = (TextView) view.findViewById(R.id.text_num);
         textView.setText("8");
-        SupportMultipleScreensUtil.init(this);
-        SupportMultipleScreensUtil.scale(view);
         MarkerOptions markerOption = new MarkerOptions();
         markerOption.position(new LatLng(lp.getLatitude(), lp.getLongitude()));
-        markerOption.draggable(true);//设置Marker可拖动
         markerOption.icon(BitmapManager.getInstance().getBitmapDescriptor4View(view));
         // 将Marker设置为贴地显示，可以双指下拉地图查看效果
         markerOption.setFlat(true);//设置marker平贴地图效果
         Marker marker = aMap.addMarker(markerOption);
         aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lp.getLatitude(), lp.getLongitude()), mCurrentZoom));
-
     }
 
     @OnClick({R.id.map_scan, R.id.map_more})

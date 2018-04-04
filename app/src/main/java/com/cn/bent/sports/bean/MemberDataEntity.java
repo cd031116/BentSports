@@ -27,7 +27,15 @@ public class MemberDataEntity implements Serializable {
     private int latitude;
     private int longitude;
     private String nickname;
+    private int score;
 
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
 
     public String getAvatar() {
         return avatar;

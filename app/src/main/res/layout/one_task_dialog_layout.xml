@@ -29,7 +29,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/t65"
             android:layout_marginTop="@dimen/t80"
-            android:text="极限脑风暴"
+            android:text="还需2人完成"
             android:textColor="@color/c_999999"
             android:textSize="@dimen/t38" />
 
