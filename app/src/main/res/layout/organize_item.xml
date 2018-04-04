@@ -9,19 +9,20 @@
 
     <RelativeLayout
         android:layout_width="146px"
-        android:layout_height="156px">
+        android:layout_height="146px">
 
         <ImageView
             android:id="@+id/user_photo"
             android:layout_width="126px"
             android:layout_height="126px"
+            android:layout_alignParentBottom="true"
             android:background="@drawable/default_head" />
         <ImageView
             android:id="@+id/top_h"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:visibility="gone"
+            android:visibility="visible"
             android:background="@drawable/captain"/>
     </RelativeLayout>
 

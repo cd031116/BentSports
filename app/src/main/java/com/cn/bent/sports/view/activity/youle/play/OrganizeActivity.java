@@ -24,6 +24,7 @@ import com.cn.bent.sports.recyclebase.CommonAdapter;
 import com.cn.bent.sports.recyclebase.ViewHolder;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.SaveObjectUtils;
+import com.cn.bent.sports.view.activity.youle.MyRouteListActivity;
 import com.cn.bent.sports.view.activity.youle.bean.JoinTeam;
 import com.cn.bent.sports.view.activity.youle.bean.UserInfo;
 import com.cn.bent.sports.view.poupwindow.ScanPoupWindow;
@@ -232,12 +233,13 @@ public class OrganizeActivity extends BaseActivity {
     }
 
     private void setList() {
+      final   UserInfo infos= SaveObjectUtils.getInstance(OrganizeActivity.this).getObject(Constants.USER_BASE, null);
         mAdapter = new CommonAdapter<MemberDataEntity>(OrganizeActivity.this, R.layout.organize_item, mList) {
             @Override
             protected void convert(ViewHolder holder, MemberDataEntity joinTeam, int position) {
                 holder.setText(R.id.name_t,joinTeam.getNickname());
                 holder.setRunderWithUrl(R.id.user_photo,joinTeam.getAvatar());
-                if(position==1){
+                if(infos.getId()==joinTeam.getUserId()){
                     holder.setVisible(R.id.top_h,true);
                 }else {
                     holder.setVisible(R.id.top_h,false);

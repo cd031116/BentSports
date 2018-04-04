@@ -17,6 +17,7 @@ import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.view.activity.youle.PlayMultActivity;
 import com.cn.bent.sports.view.activity.youle.bean.JoinTeam;
+import com.cn.bent.sports.view.activity.youle.bean.MyGame;
 import com.vondear.rxtools.view.RxToast;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
@@ -37,7 +38,7 @@ import ua.naiksoftware.stomp.client.StompMessage;
  * create 2018/3/31/031 10:18  组队队员界面
  **/
 public class TeamMemberActivity extends BaseActivity {
-    private int gameTeamId ;
+    private MyGame myGame ;
     private JoinTeam bean;
     @Bind(R.id.image_cover)
     ImageView image_cover;
@@ -51,7 +52,7 @@ public class TeamMemberActivity extends BaseActivity {
     @Override
     public void initView() {
         super.initView();
-        gameTeamId =  getIntent().getExtras().getInt("gameTeamId");
+        myGame = (MyGame)getIntent().getSerializableExtra("myGame");
         createStompClient();
         getGameDetail();
     }
@@ -67,7 +68,7 @@ public class TeamMemberActivity extends BaseActivity {
             case R.id.look_peo:
                 Intent intent = new Intent(TeamMemberActivity.this, MemberEditActivity.class);
                 intent.putExtra("type", "personal");
-                intent.putExtra("gameTeamId", gameTeamId);
+                intent.putExtra("gameTeamId", myGame.getGameTeamId());
                 startActivity(intent);
                 break;
         }
@@ -76,7 +77,7 @@ public class TeamMemberActivity extends BaseActivity {
 
     private void getGameDetail() {
         showAlert("正在获取...", true);
-        BaseApi.getJavaLoginDefaultService(TeamMemberActivity.this).getGamePrapre((long)gameTeamId)
+        BaseApi.getJavaLoginDefaultService(TeamMemberActivity.this).getGamePrapre((long)myGame.getGameId())
                 .map(new JavaRxFunction<String>())
                 .compose(RxSchedulers.<String>io_main())
                 .subscribe(new RxObserver<String>(TeamMemberActivity.this, TAG, 1, false) {
@@ -134,7 +135,7 @@ public class TeamMemberActivity extends BaseActivity {
 
     //    //接受消息
     private void getMsg() {
-        mStompClient.topic("/topic/+" + gameTeamId+ "" + "/status").subscribe(new Consumer<StompMessage>() {
+        mStompClient.topic("/topic/+" + myGame.getGameTeamId()+ "" + "/status").subscribe(new Consumer<StompMessage>() {
             @Override
             public void accept(StompMessage stompMessage) throws Exception {
                 String msg = stompMessage.getPayload().trim();
@@ -148,7 +149,7 @@ public class TeamMemberActivity extends BaseActivity {
                 }
                 if("GAME_START".equals(datas)){
                     Intent intent = new Intent(TeamMemberActivity.this, PlayMultActivity.class);
-                    intent.putExtra("gameTeamId", gameTeamId);
+                    intent.putExtra("gameTeamId",  myGame.getGameTeamId());
                     startActivity(intent);
                     finish();
                 }
@@ -157,4 +158,14 @@ public class TeamMemberActivity extends BaseActivity {
 
     }
 
+
+    @OnClick({R.id.top_left,R.id.top_image})
+    void onclik(View v){
+        switch (v.getId()){
+            case R.id.top_left:
+            case R.id.top_image:
+                TeamMemberActivity.this.finish();
+                break;
+        }
+    }
 }

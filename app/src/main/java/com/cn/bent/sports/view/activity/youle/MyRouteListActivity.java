@@ -159,7 +159,7 @@ public class MyRouteListActivity extends BaseActivity {
                                 startActivity(intent);
                             }else {
                                 Intent intent = new Intent(MyRouteListActivity.this, TeamMemberActivity.class);
-                                intent.putExtra("gameTeamId", myGame.getGameTeamId());
+                                intent.putExtra("myGame", myGame);
                                 startActivity(intent);
                             }
                         }
