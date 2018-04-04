@@ -18,10 +18,13 @@ import com.cn.bent.sports.recyclebase.CommonAdapter;
 import com.cn.bent.sports.recyclebase.ViewHolder;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.SaveObjectUtils;
+import com.cn.bent.sports.view.activity.youle.bean.QueryInfo;
+import com.cn.bent.sports.view.activity.youle.bean.UserInfo;
 import com.cn.bent.sports.widget.DividerItemDecoration;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.HuiquRxFunction;
+import com.zhl.network.huiqu.JavaRxFunction;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -61,9 +64,9 @@ public class RankingListActivity extends BaseActivity {
     ImageView img_head;
     @Bind(R.id.range_jifen)
     TextView range_jifen;
-    private LoginBase user;
-
-
+    private UserInfo user;
+    private int gameTeamId;
+    private int pageIndex=1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,7 +82,8 @@ public class RankingListActivity extends BaseActivity {
         super.initView();
         EventBus.getDefault().register(this);
         range_list.setLayoutManager(new LinearLayoutManager(this));
-        user = (LoginBase) SaveObjectUtils.getInstance(this).getObject(Constants.USER_INFO, null);
+        user = (UserInfo) SaveObjectUtils.getInstance(this).getObject(Constants.USER_BASE, null);
+        gameTeamId = getIntent().getIntExtra("gameTeamId",1);
     }
 
     @Override
@@ -124,15 +128,15 @@ public class RankingListActivity extends BaseActivity {
     }
 
     private void getRankData() {
-        BaseApi.getDefaultService(this).getRankList()
-                .map(new HuiquRxFunction<RankEntity>())
+        BaseApi.getJavaLoginDefaultService(this).getRankList(new QueryInfo(true,pageIndex,10,gameTeamId))
+                .map(new JavaRxFunction<RankEntity>())
                 .compose(RxSchedulers.<RankEntity>io_main())
                 .subscribe(new RxObserver<RankEntity>(this, "getRankList", 1, false) {
                     @Override
                     public void onSuccess(int whichRequest, RankEntity rankEntity) {
                         if (rankEntity != null && rankEntity.getRankList() != null && rankEntity.getRankList().size() > 0) {
                             for (int i = 0; i < rankEntity.getRankList().size(); i++) {
-                                if (user.getMember_id().equals(rankEntity.getRankList().get(i).getUser_id())) {
+                                if ((user.getId()+"").equals(rankEntity.getRankList().get(i).getUser_id())) {
                                     range_num.setText(String.valueOf(i + 1));
                                     range_jifen.setText(String.valueOf(rankEntity.getRankList().get(i).getScore()));
                                     range_name.setText(rankEntity.getRankList().get(i).getNickname());

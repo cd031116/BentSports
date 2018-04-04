@@ -39,7 +39,9 @@ public class PlayPointManager  {
         long total=0;
         List<GamePotins> mlist   =PlayPointDb.getDB().select(null,GamePotins.class);
         for (GamePotins potins : mlist) {
-            total=total+potins.getScore();
+            if(potins.getState()==2){
+                total=total+potins.getScore();
+            }
         }
         return  total;
     }

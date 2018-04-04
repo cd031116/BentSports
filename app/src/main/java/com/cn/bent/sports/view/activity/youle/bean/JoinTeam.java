@@ -20,8 +20,8 @@ public class JoinTeam implements Serializable {
 
     private String avatar;
     private int gameTeamId;
-    private int latitude;
-    private int longitude;
+    private double latitude;
+    private double longitude;
     private String nickname;
     private int userId;
 
@@ -41,17 +41,26 @@ public class JoinTeam implements Serializable {
         this.gameTeamId = gameTeamId;
     }
 
-    public int getLatitude() {
+    public double getLatitude() {
         return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     public void setLatitude(int latitude) {
         this.latitude = latitude;
     }
 
-    public int getLongitude() {
-        return longitude;
-    }
 
     public void setLongitude(int longitude) {
         this.longitude = longitude;
@@ -70,6 +79,15 @@ public class JoinTeam implements Serializable {
     }
 
     public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public JoinTeam(String avatar, int gameTeamId, double latitude, double longitude, String nickname, int userId) {
+        this.avatar = avatar;
+        this.gameTeamId = gameTeamId;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.nickname = nickname;
         this.userId = userId;
     }
 }

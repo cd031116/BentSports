@@ -24,6 +24,7 @@ import com.cn.bent.sports.bean.TeamGame;
 import com.cn.bent.sports.bean.UserMsgEntity;
 import com.cn.bent.sports.view.activity.youle.bean.JoinTeam;
 import com.cn.bent.sports.view.activity.youle.bean.MyGame;
+import com.cn.bent.sports.view.activity.youle.bean.QueryInfo;
 import com.cn.bent.sports.view.activity.youle.bean.TaskPoint;
 import com.cn.bent.sports.view.activity.youle.bean.UserInfo;
 import com.zhl.network.huiqu.HuiquResult;
@@ -34,6 +35,7 @@ import com.zhl.network.huiqu.ResponseResult;
 import java.util.List;
 
 import io.reactivex.Observable;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -307,6 +309,11 @@ public interface ApiService {
     @GET("api/travel//game_team/{teamId}/members")
     Observable<JavaResult<List<MemberDataEntity>>> getMemberDetailData(@Path("teamId") String teamId);
 
+
+    @FormUrlEncoded
+    @POST("api/travel/game_team/rank")
+    Observable<JavaResult<RankEntity>> getRankList(@Body QueryInfo user);
+
     /**
      * @return
      */
@@ -337,8 +344,7 @@ public interface ApiService {
     Observable<HuiquResult<AllFinishEntity>> getGameRecord(
             @Field("cur_user_id") String cur_user_id);
 
-    @GET("outdoor/user/ranklist")
-    Observable<HuiquResult<RankEntity>> getRankList();
+
 
     /*
             *
