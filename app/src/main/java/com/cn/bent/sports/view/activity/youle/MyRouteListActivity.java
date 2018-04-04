@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -15,16 +14,13 @@ import com.cn.bent.sports.recyclebase.CommonAdapter;
 import com.cn.bent.sports.recyclebase.ViewHolder;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.SaveObjectUtils;
-import com.cn.bent.sports.view.activity.youle.bean.JoinTeam;
 import com.cn.bent.sports.view.activity.youle.bean.MyGame;
 import com.cn.bent.sports.view.activity.youle.bean.UserInfo;
 import com.cn.bent.sports.view.activity.youle.play.OrganizeActivity;
-import com.cn.bent.sports.view.activity.youle.play.PrepareActivity;
 import com.cn.bent.sports.view.activity.youle.play.TeamMemberActivity;
 import com.jwenfeng.library.pulltorefresh.BaseRefreshListener;
 import com.jwenfeng.library.pulltorefresh.PullToRefreshLayout;
 import com.kennyc.view.MultiStateView;
-import com.vondear.rxtools.RxTool;
 import com.vondear.rxtools.view.RxToast;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
@@ -163,7 +159,7 @@ public class MyRouteListActivity extends BaseActivity {
                                 startActivity(intent);
                             }else {
                                 Intent intent = new Intent(MyRouteListActivity.this, TeamMemberActivity.class);
-                                intent.putExtra("gameTeamId", myGame.getGameTeamId()+"");
+                                intent.putExtra("gameTeamId", myGame.getGameTeamId());
                                 startActivity(intent);
                             }
                         }

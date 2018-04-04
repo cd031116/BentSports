@@ -199,7 +199,8 @@
         <activity android:name=".view.activity.youle.play.CompleteInfoActivity" />
         <activity android:name=".view.activity.WalkRankListActivity" />
         <activity android:name=".view.activity.youle.MyRouteListActivity" />
-        <activity android:name=".view.activity.youle.play.TeamMemberActivity"></activity>
+        <activity android:name=".view.activity.youle.play.TeamMemberActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

@@ -55,7 +55,7 @@ public class MemberEditActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        BaseApi.getJavaLoginDefaultService(this).getMemberDetailData(gameTeamId)
+        BaseApi.getJavaLoginDefaultService(this).getMemberDetailData(gameTeamId+"")
                 .map(new JavaRxFunction<List<MemberDataEntity>>())
                 .compose(RxSchedulers.<List<MemberDataEntity>>io_main())
                 .subscribe(new RxObserver<List<MemberDataEntity>>(this, TAG, 1, false) {

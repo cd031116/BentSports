@@ -37,16 +37,11 @@ import ua.naiksoftware.stomp.client.StompMessage;
  * create 2018/3/31/031 10:18  组队队员界面
  **/
 public class TeamMemberActivity extends BaseActivity {
-    private String gameTeamId = "";
+    private int gameTeamId ;
     private JoinTeam bean;
     @Bind(R.id.image_cover)
     ImageView image_cover;
     private StompClient mStompClient;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        gameTeamId=getIntent().getExtras().getString("gameTeamId");
-    }
 
     @Override
     protected int getLayoutId() {
@@ -56,6 +51,7 @@ public class TeamMemberActivity extends BaseActivity {
     @Override
     public void initView() {
         super.initView();
+        gameTeamId =  getIntent().getExtras().getInt("gameTeamId");
         createStompClient();
         getGameDetail();
     }
@@ -71,7 +67,7 @@ public class TeamMemberActivity extends BaseActivity {
             case R.id.look_peo:
                 Intent intent = new Intent(TeamMemberActivity.this, MemberEditActivity.class);
                 intent.putExtra("type", "personal");
-                intent.putExtra("gameTeamId", bean.getGameTeamId());
+                intent.putExtra("gameTeamId", gameTeamId);
                 startActivity(intent);
                 break;
         }
@@ -80,7 +76,7 @@ public class TeamMemberActivity extends BaseActivity {
 
     private void getGameDetail() {
         showAlert("正在获取...", true);
-        BaseApi.getJavaLoginDefaultService(TeamMemberActivity.this).getGamePrapre(gameTeamId)
+        BaseApi.getJavaLoginDefaultService(TeamMemberActivity.this).getGamePrapre((long)gameTeamId)
                 .map(new JavaRxFunction<String>())
                 .compose(RxSchedulers.<String>io_main())
                 .subscribe(new RxObserver<String>(TeamMemberActivity.this, TAG, 1, false) {

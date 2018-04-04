@@ -96,7 +96,7 @@ public class PrepareActivity extends BaseActivity {
 
     private void getGamePrapre() {
         showAlert("正在获取...", true);
-        BaseApi.getJavaLoginDefaultService(PrepareActivity.this).getGamePrapre(teamGame.getGameId() + "")
+        BaseApi.getJavaLoginDefaultService(PrepareActivity.this).getGamePrapre((long)teamGame.getGameId())
                 .map(new JavaRxFunction<String>())
                 .compose(RxSchedulers.<String>io_main())
                 .subscribe(new RxObserver<String>(PrepareActivity.this, TAG, 1, false) {

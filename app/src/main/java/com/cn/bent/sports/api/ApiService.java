@@ -143,7 +143,7 @@ public interface ApiService {
      */
     @GET("api/travel/game/{id}/prepare")
     Observable<JavaResult<String>> getGamePrapre(
-            @Path("id") String id);
+            @Path("id") long id);
 
     /**
      * 获取游戏点标

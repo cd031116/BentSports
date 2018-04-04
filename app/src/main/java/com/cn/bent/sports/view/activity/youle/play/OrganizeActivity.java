@@ -83,6 +83,7 @@ public class OrganizeActivity extends BaseActivity {
         super.initData();
         getGameDetail();
         getPeople();
+        setList();
     }
 
     @OnClick({R.id.creat_scan, R.id.sure_start, R.id.top_left, R.id.top_image})
@@ -176,7 +177,7 @@ public class OrganizeActivity extends BaseActivity {
 //        bean.setAvatar(infos.getAvatar());
 //        bean.setUserId(infos.getId());
 //        bean.setNickname(infos.getNickname());
-        setList();
+
     }
 
 
