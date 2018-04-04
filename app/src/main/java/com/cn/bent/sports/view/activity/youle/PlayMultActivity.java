@@ -116,7 +116,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     private DoTaskPoupWindow mopupWindow;
     private TalkPoupWindow soundWindow;
     private boolean isGame = false;
-    private TeamGame teamGame;
+    private String gameTeamId;
     //-------------------------------------------------
     @Override
     protected int getLayoutId() {
@@ -127,7 +127,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mapView.onCreate(savedInstanceState);
-        teamGame=(TeamGame) getIntent().getSerializableExtra("teamGame");
+        gameTeamId= getIntent().getExtras().getString("gameTeamId");
     }
 
     @Override
@@ -630,7 +630,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 
     private void getPoints() {
         showAlert("正在获取...", true);
-        BaseApi.getJavaLoginDefaultService(PlayMultActivity.this).getPoints(teamGame.getGameId()+"",teamGame.getGameLineId()+"")
+        BaseApi.getJavaLoginDefaultService(PlayMultActivity.this).getGamePoints(gameTeamId)
                 .map(new JavaRxFunction<List<GamePotins>>())
                 .compose(RxSchedulers.<List<GamePotins>>io_main())
                 .subscribe(new RxObserver<List<GamePotins>>(PlayMultActivity.this, TAG, 1, false) {
@@ -648,6 +648,8 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                     }
                 });
     }
+
+
 
 
 }

@@ -7,10 +7,15 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
+import com.cn.bent.sports.bean.LoginResult;
 import com.cn.bent.sports.utils.Constants;
+import com.cn.bent.sports.utils.SaveObjectUtils;
+import com.cn.bent.sports.view.activity.youle.PlayMultActivity;
 import com.cn.bent.sports.view.activity.youle.bean.JoinTeam;
 import com.vondear.rxtools.view.RxToast;
 import com.zhl.network.RxObserver;
@@ -20,17 +25,19 @@ import com.zhl.network.huiqu.JavaRxFunction;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import io.reactivex.functions.Consumer;
 import okhttp3.WebSocket;
 import ua.naiksoftware.stomp.LifecycleEvent;
 import ua.naiksoftware.stomp.Stomp;
 import ua.naiksoftware.stomp.client.StompClient;
+import ua.naiksoftware.stomp.client.StompMessage;
 
 /**
  * aunthor lyj
  * create 2018/3/31/031 10:18  组队队员界面
  **/
 public class TeamMemberActivity extends BaseActivity {
-    private String teamId = "";
+    private String gameTeamId = "";
     private JoinTeam bean;
     @Bind(R.id.image_cover)
     ImageView image_cover;
@@ -38,7 +45,7 @@ public class TeamMemberActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        teamId=getIntent().getExtras().getString("teamId");
+        gameTeamId=getIntent().getExtras().getString("gameTeamId");
     }
 
     @Override
@@ -73,7 +80,7 @@ public class TeamMemberActivity extends BaseActivity {
 
     private void getGameDetail() {
         showAlert("正在获取...", true);
-        BaseApi.getJavaLoginDefaultService(TeamMemberActivity.this).getGamePrapre(teamId)
+        BaseApi.getJavaLoginDefaultService(TeamMemberActivity.this).getGamePrapre(gameTeamId)
                 .map(new JavaRxFunction<String>())
                 .compose(RxSchedulers.<String>io_main())
                 .subscribe(new RxObserver<String>(TeamMemberActivity.this, TAG, 1, false) {
@@ -97,29 +104,61 @@ public class TeamMemberActivity extends BaseActivity {
     }
 
     //
+    //组队长连接
     private void createStompClient() {
-        mStompClient = Stomp.over(WebSocket.class, Constants.getsocket(TeamMemberActivity.this));
-        mStompClient.connect();
-        Toast.makeText(TeamMemberActivity.this,"开始连接 192.168.0.46:8080",Toast.LENGTH_SHORT).show();
-//        mStompClient.lifecycle().subscribe(new Action1<LifecycleEvent>() {
-//            @Override
-//            public void call(LifecycleEvent lifecycleEvent) {
-//                switch (lifecycleEvent.getType()) {
-//                    case OPENED:
-//                        Log.d(TAG, "Stomp connection opened");
-//
-//                        break;
-//
-//                    case ERROR:
-//                        Log.e(TAG, "Stomp Error", lifecycleEvent.getException());
-////                        toast("连接出错");
-//                        break;
-//                    case CLOSED:
-//                        Log.d(TAG, "Stomp connection closed");
-////                        toast("连接关闭");
-//                        break;
-//                }
-//            }
-//        });
+        LoginResult user = SaveObjectUtils.getInstance(TeamMemberActivity.this).getObject(Constants.USER_INFO, null);
+        try {
+            mStompClient = Stomp.over(org.java_websocket.WebSocket.class, "ws://" + Constants.getsocket(TeamMemberActivity.this) + "/websocket?access_token" + user.getAccess_token());
+            mStompClient.connect();
+        } catch (Exception e) {
+            Log.i("tttt", "msg=" + e.getMessage());
+        }
+        mStompClient.lifecycle().subscribe(new Consumer<LifecycleEvent>() {
+            @Override
+            public void accept(LifecycleEvent lifecycleEvent) {
+                Log.d("tttt", "lifecycleEvent=" + lifecycleEvent.getType());
+                switch (lifecycleEvent.getType()) {
+                    case OPENED:
+                        Log.d("tttt", "Stomp connection opened");
+                        getMsg();
+                        break;
+
+                    case ERROR:
+                        Log.e("tttt", "Stomp Error", lifecycleEvent.getException());
+
+                        break;
+                    case CLOSED:
+                        Log.d("tttt", "Stomp connection closed");
+                        createStompClient();
+                        break;
+                }
+            }
+        });
     }
+
+    //    //接受消息
+    private void getMsg() {
+        mStompClient.topic("/topic/+" + gameTeamId+ "" + "/status").subscribe(new Consumer<StompMessage>() {
+            @Override
+            public void accept(StompMessage stompMessage) throws Exception {
+                String msg = stompMessage.getPayload().trim();
+                String datas="";
+                try {
+                    JSONObject jsonObject = new JSONObject();
+                    JSONObject obj = jsonObject.getJSONObject(msg);
+                    datas =obj.getString("data");
+                }catch (Exception e){
+
+                }
+                if("GAME_START".equals(datas)){
+                    Intent intent = new Intent(TeamMemberActivity.this, PlayMultActivity.class);
+                    intent.putExtra("gameTeamId", gameTeamId);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        });
+
+    }
+
 }

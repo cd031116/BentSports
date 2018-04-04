@@ -182,6 +182,7 @@ public class LoginActivity extends BaseActivity implements Handler.Callback {
                     @Override
                     public void onSuccess(int whichRequest, LoginResult info) {
                         SaveObjectUtils.getInstance(LoginActivity.this).setObject(Constants.USER_INFO, info);
+                        Log.i("tttt","token="+info.getAccess_token());
                         dismissAlert();
                         getUserInfo();
 //                        getdot();

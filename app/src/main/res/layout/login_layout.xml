@@ -47,7 +47,7 @@
         android:layout_gravity="center_horizontal"
         android:background="@drawable/edit_bg"
         android:hint="请输入手机号"
-        android:inputType="number"
+        android:inputType="text"
         android:paddingBottom="10px"
         android:paddingLeft="57px"
         android:paddingTop="10px"

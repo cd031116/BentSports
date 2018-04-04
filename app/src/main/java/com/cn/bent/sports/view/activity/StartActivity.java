@@ -17,8 +17,10 @@ import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.base.BaseConfig;
 import com.cn.bent.sports.base.SdcardPermissionAction;
 import com.cn.bent.sports.base.SensorsPermission;
+import com.cn.bent.sports.bean.LoginResult;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.DataUtils;
+import com.cn.bent.sports.utils.SaveObjectUtils;
 
 import org.aisen.android.support.action.IAction;
 
@@ -69,8 +71,15 @@ public class StartActivity extends BaseActivity {
     private void redirectTo() {
         BaseConfig bg = BaseConfig.getInstance(StartActivity.this);
         final int isFirst = bg.getIntValue(Constants.IS_FIRST, 0);
+        LoginResult user= SaveObjectUtils.getInstance(StartActivity.this).getObject(Constants.USER_INFO, null);
         if (isFirst == 1) {
-            startActivity(new Intent(StartActivity.this,MainActivity.class));
+            if(user==null){
+                startActivity(new Intent(StartActivity.this,LoginActivity.class));
+            }else {
+                startActivity(new Intent(StartActivity.this,MainActivity.class));
+            }
+
+
             finish();
         } else {
             if (this instanceof org.aisen.android.ui.activity.basic.BaseActivity) {

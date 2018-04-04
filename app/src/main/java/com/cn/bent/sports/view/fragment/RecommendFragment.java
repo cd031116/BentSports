@@ -87,7 +87,7 @@ public class RecommendFragment extends BaseFragment {
                         return;
                     }
                     String jieguo=data.getStringExtra("SCAN_RESULT");
-                    getJoinTeam("");
+                    getJoinTeam(jieguo);
                     break;
                 }
         }
@@ -104,9 +104,8 @@ public class RecommendFragment extends BaseFragment {
                     public void onSuccess(int whichRequest, JoinTeam info) {
                         dismissAlert();
                         Intent intent=new Intent(getActivity(),TeamMemberActivity.class);
-                        intent.putExtra("teamId",teamId);
+                        intent.putExtra("gameTeamId",info.getGameTeamId());
                         startActivity(intent);
-
                     }
 
                     @Override

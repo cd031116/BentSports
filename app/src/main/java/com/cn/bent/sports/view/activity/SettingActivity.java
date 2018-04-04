@@ -12,9 +12,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.cn.bent.sports.MainActivity;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
+import com.cn.bent.sports.base.BaseConfig;
 import com.cn.bent.sports.base.MyApplication;
 import com.cn.bent.sports.bean.InfoEvent;
 import com.cn.bent.sports.bean.LoginBase;
@@ -38,6 +40,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import okhttp3.OkHttpClient;
 
 public class SettingActivity extends BaseActivity {
     @Bind(R.id.name_t)

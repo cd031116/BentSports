@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.cn.bent.sports.utils.CornersTransform;
 import com.cn.bent.sports.utils.SupportMultipleScreensUtil;
 
 
@@ -126,6 +127,18 @@ public class ViewHolder extends RecyclerView.ViewHolder {
     public ViewHolder setBackgroundRes(int viewId, int backgroundRes) {
         View view = getView(viewId);
         view.setBackgroundResource(backgroundRes);
+        return this;
+    }
+
+    public ViewHolder setRunderBackrund(int viewId, String url,Context context) {
+        RequestOptions myOptions = new RequestOptions()
+                .centerCrop()
+                .transform(new CornersTransform(context,10));
+        ImageView view = getView(viewId);
+        Glide.with(mContext)
+                .load(url)
+                .apply(myOptions)
+                .into(view);
         return this;
     }
 

@@ -4,30 +4,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true"
     tools:context="com.cn.bent.sports.view.activity.youle.MyRouteListActivity">
 
     <include layout="@layout/view_top" />
-    <com.jwenfeng.library.pulltorefresh.PullToRefreshLayout
-        android:id="@+id/refresh"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/top_layout">
-
     <com.kennyc.view.MultiStateView
         android:id="@+id/multiStateView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
+        android:layout_below="@+id/top_layout"
         app:msv_emptyView="@layout/empty_view"
         app:msv_errorView="@layout/error_view"
         app:msv_loadingView="@layout/loading_view"
         app:msv_viewState="loading">
+    <com.jwenfeng.library.pulltorefresh.PullToRefreshLayout
+        android:id="@+id/refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rlist"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
        />
-    </com.kennyc.view.MultiStateView>
+
     </com.jwenfeng.library.pulltorefresh.PullToRefreshLayout>
+    </com.kennyc.view.MultiStateView>
 </RelativeLayout>

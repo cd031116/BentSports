@@ -23,6 +23,7 @@ import com.cn.bent.sports.bean.ScenicSpotEntity;
 import com.cn.bent.sports.bean.TeamGame;
 import com.cn.bent.sports.bean.UserMsgEntity;
 import com.cn.bent.sports.view.activity.youle.bean.JoinTeam;
+import com.cn.bent.sports.view.activity.youle.bean.MyGame;
 import com.cn.bent.sports.view.activity.youle.bean.UserInfo;
 import com.zhl.network.huiqu.HuiquResult;
 import com.zhl.network.huiqu.HuiquTBResult;
@@ -149,9 +150,8 @@ public interface ApiService {
      *
      * @return
      */
-    @GET("api/travel/game/{id}/game_points")
-    Observable<JavaResult<List<GamePotins>>> getPoints(
-            @Path("id") String id, @Query("gameLineId") String gameLineId);
+    @GET("api/travel/game_team/1/game_point_status")
+    Observable<JavaResult<List<GamePotins>>> getGamePoints(@Query("gameLineId") String gameLineId);
 
     /**
      * 获取团队积分情况
@@ -161,6 +161,15 @@ public interface ApiService {
     @GET("api/travel/game_team/{teamId}/score")
     Observable<JavaResult<List<GameTeamScoreEntity>>> getTeamScore(
             @Path("id") String id, @Path("teamId") String teamId);
+
+
+    /**
+     * 获取队伍信息
+     *
+     * @return
+     */
+    @GET("api/travel/game_team/{teamId}")
+    Observable<JavaResult<TeamGame>> getTeamInfo(@Path("teamId") String teamId);
 
     /**
      * 获取某个游戏点的完成情况
@@ -231,6 +240,13 @@ public interface ApiService {
 
     @GET("outdoor/map/getFenceAndDot")
     Observable<HuiquResult<RailBean>> getFenceAndDot();
+
+
+    /*我的游戏
+    * */
+    @GET("api/travel/game/user")
+    Observable<JavaResult<List<MyGame>>> getMyRoute();
+
 
 
     /**

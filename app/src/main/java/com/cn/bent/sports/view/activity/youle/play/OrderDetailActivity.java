@@ -17,9 +17,11 @@ import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.GameDetail;
 import com.cn.bent.sports.bean.GameInfo;
 import com.cn.bent.sports.bean.LoginResult;
+import com.cn.bent.sports.bean.TeamGame;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.view.activity.PlayFunActivity;
+import com.cn.bent.sports.view.activity.youle.MyRouteListActivity;
 import com.cn.bent.sports.widget.MyScroview;
 import com.kennyc.view.MultiStateView;
 import com.vondear.rxtools.view.RxToast;
@@ -81,7 +83,6 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
     private String memberId;
     private String title;
     private String gameId;
-    private GameDetail gameInfo;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_order_detail;
@@ -182,10 +183,7 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
     void onclick(View v){
         switch (v.getId()){
             case R.id.submit:
-                Intent intent=new Intent(OrderDetailActivity.this,OrganizeActivity.class);
-                 intent.putExtra("gameInfo",gameInfo);
-                startActivity(intent);
-                finish();
+                getOrgnize();
                 break;
             case R.id.tab1_mian:
                 changeview(1);
@@ -208,7 +206,6 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
                     @Override
                     public void onSuccess(int whichRequest, GameDetail info) {
                         dismissAlert();
-                        gameInfo=info;
                         multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
                         setview(info);
                     }
@@ -234,4 +231,29 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
         num_dot.setText("12个点标");
         p_num.setText(info.getMaxPeople()+"人");
     }
+
+
+    private void getOrgnize() {
+        showAlert("正在提交...", true);
+        BaseApi.getJavaLoginDefaultService(OrderDetailActivity.this).getTeamGame(gameId)
+                .map(new JavaRxFunction<TeamGame>())
+                .compose(RxSchedulers.<TeamGame>io_main())
+                .subscribe(new RxObserver<TeamGame>(OrderDetailActivity.this, TAG, 1, false) {
+                    @Override
+                    public void onSuccess(int whichRequest, TeamGame info) {
+                        dismissAlert();
+                        Intent intent=new Intent(OrderDetailActivity.this,MyRouteListActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+
+                    @Override
+                    public void onError(int whichRequest, Throwable e) {
+                        dismissAlert();
+                        RxToast.error(e.getMessage());
+                    }
+                });
+    }
+
+
 }

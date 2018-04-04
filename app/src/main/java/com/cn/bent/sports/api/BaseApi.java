@@ -30,9 +30,7 @@ public class BaseApi {
         return apiService;
     }
     public static ApiService getJavaLoginService(Context context) {
-        if (apiService == null) {
             apiService = RxRetrofit.getLoginRetrofit(ConstantValues.JAVA_URL,context).create(ApiService.class);
-        }
         return apiService;
     }
     public static ApiService getJavaLoginDefaultService(Context context) {
@@ -40,4 +38,5 @@ public class BaseApi {
             apiService = RxRetrofit.getLoginRetrofit(ConstantValues.JAVA_URL,context,user.getAccess_token()).create(ApiService.class);
         return apiService;
     }
+
 }
