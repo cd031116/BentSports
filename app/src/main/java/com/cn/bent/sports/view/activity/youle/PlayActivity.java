@@ -406,7 +406,7 @@ public class PlayActivity extends BaseActivity implements AMap.OnMyLocationChang
 
     private void getPoints() {
         showAlert("正在获取...", true);
-        BaseApi.getJavaLoginDefaultService(PlayActivity.this).getPoints(teamGame.getGameId() + "", teamGame.getGameLineId() + "")
+        BaseApi.getJavaLoginDefaultService(PlayActivity.this).getGamePoints(teamGame.getGameLineId()+"")
                 .map(new JavaRxFunction<List<GamePotins>>())
                 .compose(RxSchedulers.<List<GamePotins>>io_main())
                 .subscribe(new RxObserver<List<GamePotins>>(PlayActivity.this, TAG, 1, false) {
