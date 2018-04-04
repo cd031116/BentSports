@@ -3,7 +3,6 @@ package com.cn.bent.sports.database;
 import android.content.Context;
 
 import com.cn.bent.sports.bean.MemberDataEntity;
-import com.cn.bent.sports.bean.ScenicPointsEntity;
 
 import java.util.ArrayList;
 import java.util.List;

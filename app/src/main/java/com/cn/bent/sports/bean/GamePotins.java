@@ -1,6 +1,9 @@
 package com.cn.bent.sports.bean;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by Administrator on 2018/3/30/030.
@@ -26,12 +29,19 @@ public class GamePotins implements Serializable {
     private boolean hasQuestion;//是否有线上T题目
     private boolean hasTask;//是否有线下游戏
     private int id;
-    private int latitude;
-    private int longitude;
     private int major;
     private int orderNo;
     private int score;
     private int state;
+    /**
+     * longitude : 113.088702
+     * latitude : 28.013602
+     * teamTaskDetails : [{"userId":1,"score":1},{"userId":17,"score":1},{"userId":2,"score":1},{"userId":4,"score":1}]
+     */
+
+    private double longitude;
+    private double latitude;
+    private List<TeamTaskDetailsBean> teamTaskDetails;
 
     public String getAlias() {
         return alias;
@@ -65,17 +75,11 @@ public class GamePotins implements Serializable {
         this.id = id;
     }
 
-    public int getLatitude() {
-        return latitude;
-    }
 
     public void setLatitude(int latitude) {
         this.latitude = latitude;
     }
 
-    public int getLongitude() {
-        return longitude;
-    }
 
     public void setLongitude(int longitude) {
         this.longitude = longitude;
@@ -111,5 +115,56 @@ public class GamePotins implements Serializable {
 
     public void setState(int state) {
         this.state = state;
+    }
+
+    public List<TeamTaskDetailsBean> getTeamTaskDetails() {
+        return teamTaskDetails;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setTeamTaskDetails(List<TeamTaskDetailsBean> teamTaskDetails) {
+        this.teamTaskDetails = teamTaskDetails;
+    }
+
+    public static class TeamTaskDetailsBean implements Serializable{
+        /**
+         * userId : 1
+         * score : 1
+         */
+
+        private int userId;
+        private int score;
+
+        public int getUserId() {
+            return userId;
+        }
+
+        public void setUserId(int userId) {
+            this.userId = userId;
+        }
+
+
+        public int getScore() {
+            return score;
+        }
+
+        public void setScore(int score) {
+            this.score = score;
+        }
     }
 }

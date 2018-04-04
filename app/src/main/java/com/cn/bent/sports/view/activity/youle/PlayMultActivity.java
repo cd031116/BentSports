@@ -297,9 +297,6 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 
 
 
-
-
-
     @Override
     public void onResume() {
         super.onResume();
@@ -789,9 +786,6 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                         RxToast.error(e.getMessage());
                     }
                 });
-
-
-
 
     }
 
