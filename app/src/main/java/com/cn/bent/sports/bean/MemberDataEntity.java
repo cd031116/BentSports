@@ -1,5 +1,7 @@
 package com.cn.bent.sports.bean;
 
+import org.aisen.android.component.orm.annotation.PrimaryKey;
+
 import java.io.Serializable;
 
 /**
@@ -8,7 +10,8 @@ import java.io.Serializable;
  */
 
 public class MemberDataEntity implements Serializable {
-
+    public MemberDataEntity() {
+    }
     /**
      * avatar : string
      * gameTeamId : 0
@@ -17,13 +20,14 @@ public class MemberDataEntity implements Serializable {
      * nickname : string
      * userId : 0
      */
-
+    @PrimaryKey(column = "userId")
+    private int userId;
     private String avatar;
     private int gameTeamId;
     private int latitude;
     private int longitude;
     private String nickname;
-    private int userId;
+
 
     public String getAvatar() {
         return avatar;

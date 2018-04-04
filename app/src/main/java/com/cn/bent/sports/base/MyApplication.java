@@ -5,6 +5,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.support.multidex.MultiDex;
 
+import com.cn.bent.sports.database.PlayUserManager;
 import com.cn.bent.sports.database.QueueManager;
 import com.cn.bent.sports.database.TaskCationManager;
 import com.mob.MobSDK;
@@ -29,6 +30,7 @@ public class MyApplication extends GlobalContext{
         instance = this;
         activityManager = ActivityManagerd.getScreenManager();
         TaskCationManager.setup(this);
+        PlayUserManager.setup(this);
         QueueManager.setup(this);
         RxTool.init(this);
         MobSDK.init(this);

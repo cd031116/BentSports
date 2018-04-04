@@ -13,6 +13,8 @@ import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.LoginResult;
+import com.cn.bent.sports.bean.MemberDataEntity;
+import com.cn.bent.sports.database.PlayUserManager;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.view.activity.youle.PlayMultActivity;
@@ -23,6 +25,8 @@ import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.JavaRxFunction;
 
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -148,15 +152,41 @@ public class TeamMemberActivity extends BaseActivity {
 
                 }
                 if("GAME_START".equals(datas)){
-                    Intent intent = new Intent(TeamMemberActivity.this, PlayMultActivity.class);
-                    intent.putExtra("gameTeamId",  myGame.getGameTeamId());
-                    startActivity(intent);
-                    finish();
+                    getPeople();
+
                 }
             }
         });
 
     }
+
+    //获取人个数
+    private void  getPeople(){
+        BaseApi.getJavaLoginDefaultService(TeamMemberActivity.this).getMemberDetailData(myGame.getGameTeamId()+"")
+                .map(new JavaRxFunction<List<MemberDataEntity>>())
+                .compose(RxSchedulers.<List<MemberDataEntity>>io_main())
+                .subscribe(new RxObserver<List<MemberDataEntity>>(TeamMemberActivity.this, TAG, 1, false) {
+                    @Override
+                    public void onSuccess(int whichRequest, List<MemberDataEntity> info) {
+                        if(info!=null){
+                            PlayUserManager.insert(info);
+                        }
+                        Intent intent = new Intent(TeamMemberActivity.this, PlayMultActivity.class);
+                        intent.putExtra("gameTeamId",  myGame.getGameTeamId());
+                        startActivity(intent);
+                        finish();
+                    }
+                    @Override
+                    public void onError(int whichRequest, Throwable e) {
+                        dismissAlert();
+                        Intent intent = new Intent(TeamMemberActivity.this, PlayMultActivity.class);
+                        intent.putExtra("gameTeamId",  myGame.getGameTeamId());
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+    }
+
 
 
     @OnClick({R.id.top_left,R.id.top_image})

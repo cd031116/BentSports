@@ -20,6 +20,7 @@ import com.cn.bent.sports.bean.GameDetail;
 import com.cn.bent.sports.bean.LoginResult;
 import com.cn.bent.sports.bean.MemberDataEntity;
 import com.cn.bent.sports.bean.TeamGame;
+import com.cn.bent.sports.database.PlayUserManager;
 import com.cn.bent.sports.recyclebase.CommonAdapter;
 import com.cn.bent.sports.recyclebase.ViewHolder;
 import com.cn.bent.sports.utils.Constants;
@@ -94,6 +95,7 @@ public class OrganizeActivity extends BaseActivity {
                 shouPoup(teamGame.getId() + "");
                 break;
             case R.id.sure_start:
+                PlayUserManager.insert(mList);
                 Intent intent = new Intent(OrganizeActivity.this, PrepareActivity.class);
                 intent.putExtra("teamGame", teamGame);
                 startActivity(intent);
