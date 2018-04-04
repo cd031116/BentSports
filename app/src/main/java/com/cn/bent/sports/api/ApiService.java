@@ -217,9 +217,8 @@ public interface ApiService {
      *
      * @return
      */
-    @FormUrlEncoded
     @POST("api/travel/game_team/{teamId}/_start")
-    Observable<JavaResult<Boolean>> startTeamGame(@Field("teamId") String teamId);
+    Observable<JavaResult<Boolean>> startTeamGame(@Path("teamId") long teamId);
 
     /**
      * 创建组队

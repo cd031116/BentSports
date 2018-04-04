@@ -91,7 +91,7 @@ public class PlayActivity extends BaseActivity implements AMap.OnMyLocationChang
     private LatLonPoint lp = new LatLonPoint(28.008977, 113.088063);//
     private DoTaskPoupWindow mopupWindow;
     private TalkPoupWindow soundWindow;
-    private LoginBase user;
+    private LoginResult user;
     private boolean isBlue = false;
     private static final int REQUEST_ENABLE_BT = 2;
     private String asd;
@@ -113,7 +113,7 @@ public class PlayActivity extends BaseActivity implements AMap.OnMyLocationChang
     public void initView() {
         super.initView();
         task_finish_layout.setVisibility(View.GONE);
-        user = SaveObjectUtils.getInstance(this).getObject(Constants.USER_INFO, null);
+        user = SaveObjectUtils.getInstance(this).getObject(Constants.USER_BASE, null);
 
         teamGame = (TeamGame) getIntent().getSerializableExtra("teamGame");
         mMinewBeaconManager = MinewBeaconManager.getInstance(this);

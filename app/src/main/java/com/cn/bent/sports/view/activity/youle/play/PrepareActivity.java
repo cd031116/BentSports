@@ -63,7 +63,7 @@ public class PrepareActivity extends BaseActivity {
 
     private void getGameDetail() {
         showAlert("正在获取...", true);
-        BaseApi.getJavaLoginDefaultService(PrepareActivity.this).startTeamGame(teamGame.getId() + "")
+        BaseApi.getJavaLoginDefaultService(PrepareActivity.this).startTeamGame((long)teamGame.getId())
                 .map(new JavaRxFunction<Boolean>())
                 .compose(RxSchedulers.<Boolean>io_main())
                 .subscribe(new RxObserver<Boolean>(PrepareActivity.this, TAG, 1, false) {
@@ -71,15 +71,15 @@ public class PrepareActivity extends BaseActivity {
                     public void onSuccess(int whichRequest, Boolean info) {
                         dismissAlert();
                         if (info) {
-                            if(teamGame.getTeamMemberReal()>1){
+//                            if(teamGame.getTeamMemberReal()>1){
                                 Intent intent = new Intent(PrepareActivity.this, PlayMultActivity.class);
-                                intent.putExtra("teamGame", teamGame);
+                                intent.putExtra("gameTeamId", teamGame.getId()+"");
                                 startActivity(intent);
-                            }else {
-                                Intent intent = new Intent(PrepareActivity.this, PlayActivity.class);
-                                intent.putExtra("gameTeamId", teamGame.getId());
-                                startActivity(intent);
-                            }
+//                            }else {
+//                                Intent intent = new Intent(PrepareActivity.this, PlayActivity.class);
+//                                intent.putExtra("gameTeamId", teamGame.getId());
+//                                startActivity(intent);
+//                            }
                             finish();
                         } else {
                             RxToast.error("开始失败");
