@@ -14,10 +14,11 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSONObject;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.AMapUtils;
 import com.amap.api.maps.CameraUpdateFactory;
@@ -25,7 +26,6 @@ import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
-import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
@@ -33,35 +33,32 @@ import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.base.BaseConfig;
-import com.cn.bent.sports.bean.GameDetail;
 import com.cn.bent.sports.bean.GamePotins;
-import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.bean.LoginResult;
 import com.cn.bent.sports.bean.MajorBean;
 import com.cn.bent.sports.bean.MapDot;
-import com.cn.bent.sports.bean.RailBean;
 import com.cn.bent.sports.bean.ReFreshEvent;
-import com.cn.bent.sports.bean.ScenicPointsEntity;
 import com.cn.bent.sports.bean.TeamGame;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.DataUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.view.activity.ArActivity;
 import com.cn.bent.sports.view.activity.BitmapManager;
-import com.cn.bent.sports.view.activity.MapActivity;
 import com.cn.bent.sports.view.activity.OfflineActivity;
 import com.cn.bent.sports.view.activity.PlayWebViewActivity;
+import com.cn.bent.sports.view.activity.youle.bean.TaskPoint;
+import com.cn.bent.sports.view.activity.youle.bean.UserInfo;
 import com.cn.bent.sports.view.activity.youle.play.CompleteInfoActivity;
-import com.cn.bent.sports.view.activity.youle.play.OrderDetailActivity;
+import com.cn.bent.sports.view.activity.youle.play.MemberEditActivity;
+import com.cn.bent.sports.view.activity.youle.play.PrepareActivity;
 import com.cn.bent.sports.view.poupwindow.DoTaskPoupWindow;
 import com.cn.bent.sports.view.poupwindow.TalkPoupWindow;
+import com.cn.bent.sports.widget.OneTaskFinishDialog;
 import com.cn.bent.sports.widget.OutGameDialog;
-import com.kennyc.view.MultiStateView;
 import com.minew.beacon.BeaconValueIndex;
 import com.minew.beacon.BluetoothState;
 import com.minew.beacon.MinewBeacon;
 import com.minew.beacon.MinewBeaconManager;
-import com.vondear.rxtools.RxActivityTool;
 import com.vondear.rxtools.activity.ActivityScanerCode;
 import com.vondear.rxtools.view.RxToast;
 import com.zhl.network.RxObserver;
@@ -71,14 +68,18 @@ import com.zhl.network.huiqu.JavaRxFunction;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.java_websocket.WebSocket;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import io.reactivex.functions.Consumer;
+import ua.naiksoftware.stomp.LifecycleEvent;
+import ua.naiksoftware.stomp.Stomp;
+import ua.naiksoftware.stomp.client.StompClient;
+import ua.naiksoftware.stomp.client.StompMessage;
 
 /**
  * Created by dawn on 2018/3/27.  多人游玩界面
@@ -101,8 +102,12 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     RelativeLayout line_two;
     @Bind(R.id.time_two)
     TextView timing;//底部计时器
+    @Bind(R.id.exit_game)
+    ImageView exit_game;//个人
+    @Bind(R.id.team_game)
+    ImageView team_game;//团队
 
-
+    private StompClient mStompClient;
     private AMap aMap;
     private float mCurrentZoom = 18f;
     //--------------------
@@ -117,15 +122,12 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     private long times_s = 0;
     private Handler handler2;
     private boolean isBlue = false;
-    private List<MapDot> place_list = new ArrayList<>();
     private DoTaskPoupWindow mopupWindow;
     private TalkPoupWindow soundWindow;
-    private boolean isGame = false;
-    private String gameTeamId;
+    private TeamGame teamGame;//传过来的对象
     //-------------------------------------------------
 
     private List<GamePotins> mGamePotinsList = new ArrayList<>();
-
 
     @Override
     protected int getLayoutId() {
@@ -146,12 +148,21 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
         mapView.onCreate(savedInstanceState);
-        gameTeamId = getIntent().getExtras().getString("gameTeamId");
     }
 
     @Override
     public void initView() {
         super.initView();
+        teamGame = (TeamGame) getIntent().getSerializableExtra("teamGame");
+        if(teamGame.getTeamMemberMax()<=1){
+            exit_game.setVisibility(View.VISIBLE);
+            team_game.setVisibility(View.GONE);
+        }else {
+            team_game.setVisibility(View.VISIBLE);
+            exit_game.setVisibility(View.GONE);
+        }
+
+        createStompClient();
         getPoints();
         line_two.setVisibility(View.GONE);
         if (aMap == null) {
@@ -197,7 +208,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     }
 
 
-    @OnClick({R.id.map_scan, R.id.map_return, R.id.look_rank, R.id.finish_situation, R.id.exit_game})
+    @OnClick({R.id.map_scan, R.id.map_return, R.id.look_rank, R.id.finish_situation, R.id.exit_game,R.id.team_game})
     void onClick(View view) {
         switch (view.getId()) {
             case R.id.map_scan:
@@ -215,6 +226,12 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                 break;
             case R.id.exit_game:
                 OpenOutDialog();
+                break;
+            case R.id.team_game:
+                Intent intent1 = new Intent(PlayMultActivity.this, MemberEditActivity.class);
+                intent1.putExtra("type", "team");
+                intent1.putExtra("gameTeamId", teamGame.getId());
+                startActivity(intent1);
                 break;
         }
     }
@@ -241,25 +258,19 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     public boolean onMarkerClick(Marker marker) {
         for (int i = 0; i < mList.size(); i++) {
             if (marker.equals(mList.get(i))) {
-                if (place_list.get(i).getType().equals("2")) {
-                    isGame = false;
-                    shousoundPoup(place_list.get(i).getName(), place_list.get(i).getMp3(), place_list.get(i).getDesc(), i);
+
+                if(mGamePotinsList.get(i).getState()==-1){//未开始
+                    getPointGame(teamGame.getId(),mGamePotinsList.get(i).getId(),!mGamePotinsList.get(i).isHasQuestion(),mGamePotinsList.get(i).isHasTask());
+                    t_ids=i;
                     break;
-                } else {
-                    if (place_list.get(i).getIs_play().equals("0")) {
-                        t_ids = i;
-                        isGame = true;
-                        setcheck();
-                        place_list.get(t_ids).setCheck(true);
-                        addMarkersToMap();
-                        mEndPoint = null;
-                        mEndPoint = new LatLng(Double.valueOf(place_list.get(i).getLatitude()).doubleValue(),
-                                Double.valueOf(place_list.get(i).getLongitude()).doubleValue());
-                        shouPoup(place_list.get(t_ids).getGame_name(), false, place_list.get(t_ids).getGame_id(), place_list.get(t_ids).getMp3());
-                        break;
-                    } else {
-                        isGame = false;
-                    }
+                }else if (mGamePotinsList.get(i).getState()==1||mGamePotinsList.get(i).getState()==2) {
+                    new OneTaskFinishDialog(PlayMultActivity.this, R.style.dialog, new OneTaskFinishDialog.OnClickListener() {
+                        @Override
+                        public void onClick(Dialog dialog, int index) {
+                            dialog.dismiss();
+                        }
+                    }).setListData(teamGame,mGamePotinsList.get(i).getId()).show();
+                    break;
                 }
             }
         }
@@ -283,11 +294,10 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     };
 
 
-    private void setcheck() {
-        for (MapDot hs : place_list) {
-            hs.setCheck(false);
-        }
-    }
+
+
+
+
 
 
     @Override
@@ -334,50 +344,6 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         EventBus.getDefault().unregister(this);
     }
 
-    private void addMarkersToMap() {
-        aMap.clear();
-        ArrayList<MarkerOptions> markerOptionlst = new ArrayList<MarkerOptions>();
-        if (place_list != null) {
-            if (mList != null) {
-                mList.clear();
-            }
-            for (MapDot hs : place_list) {
-                String longitude = hs.getLongitude();
-                String latitude = hs.getLatitude();
-                double dlat = Double.valueOf(latitude).doubleValue();//纬度
-                double dlong = Double.valueOf(longitude).doubleValue();//经度
-                MarkerOptions markerOption = new MarkerOptions();
-                markerOption.position(new LatLng(dlat, dlong));
-                markerOption.title(hs.getName());
-                markerOption.draggable(false);
-                if (hs.isCheck() && hs.getIs_play().equals("0") && !hs.getType().equals("2")) {
-                    markerOption.icon(
-                            BitmapDescriptorFactory.fromBitmap(BitmapFactory
-                                    .decodeResource(getResources(),
-                                            R.drawable.zb_icon)));
-                } else if (hs.getIs_play().equals("0") && !hs.isCheck() && !hs.getType().equals("2")) {
-                    markerOption.icon(
-                            BitmapDescriptorFactory.fromBitmap(BitmapFactory
-                                    .decodeResource(getResources(),
-                                            R.drawable.zuobiao)));
-                } else if (hs.getIs_play().equals("1") && !hs.getType().equals("2")) {
-                    markerOption.icon(
-                            BitmapDescriptorFactory.fromBitmap(BitmapFactory
-                                    .decodeResource(getResources(),
-                                            R.drawable.completed)));
-
-                } else {
-                    markerOption.icon(
-                            BitmapDescriptorFactory.fromBitmap(BitmapFactory
-                                    .decodeResource(getResources(),
-                                            R.drawable.radio_icon)));
-                }
-                markerOptionlst.add(markerOption);
-                aMap.addMarker(markerOption);
-                mList.add(aMap.addMarker(markerOption));
-            }
-        }
-    }
 
     /**
      * 显示定位蓝点
@@ -437,31 +403,30 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
             if (times_s <= 0) {
 //                login();
             }
-            if (index == 1) {
-                if ("14".equals(place_list.get(t_ids).getGame_id())) {
-                    Intent intent = new Intent(PlayMultActivity.this, ActivityScanerCode.class);
-                    startActivityForResult(intent, REQUEST_Scan);
-                } else if ("15".equals(place_list.get(t_ids).getGame_id())) {
-                    Intent intent = new Intent(PlayMultActivity.this, ArActivity.class);
-                    intent.putExtra("gameId", place_list.get(t_ids).getGame_id());
-                    startActivity(intent);
-                    t_ids = -1;
-                } else if ("18".equals(place_list.get(t_ids).getGame_id())) {
-                    Intent intent = new Intent(PlayMultActivity.this, OfflineActivity.class);
-                    intent.putExtra("gameId", place_list.get(t_ids).getGame_id());
-                    startActivity(intent);
-                    t_ids = -1;
-                } else {
-                    Intent intent = new Intent(PlayMultActivity.this, PlayWebViewActivity.class);
-                    intent.putExtra("gameId", place_list.get(t_ids).getGame_id());
-                    intent.putExtra("gameUrl", place_list.get(t_ids).getGame_url());
-                    startActivity(intent);
-                    t_ids = -1;
-                }
-            } else {
-                t_ids = -1;
-            }
-            isGame = false;
+//            if (index == 1) {
+//                if ("14".equals(place_list.get(t_ids).getGame_id())) {
+//                    Intent intent = new Intent(PlayMultActivity.this, ActivityScanerCode.class);
+//                    startActivityForResult(intent, REQUEST_Scan);
+//                } else if ("15".equals(place_list.get(t_ids).getGame_id())) {
+//                    Intent intent = new Intent(PlayMultActivity.this, ArActivity.class);
+//                    intent.putExtra("gameId", place_list.get(t_ids).getGame_id());
+//                    startActivity(intent);
+//                    t_ids = -1;
+//                } else if ("18".equals(place_list.get(t_ids).getGame_id())) {
+//                    Intent intent = new Intent(PlayMultActivity.this, OfflineActivity.class);
+//                    intent.putExtra("gameId", place_list.get(t_ids).getGame_id());
+//                    startActivity(intent);
+//                    t_ids = -1;
+//                } else {
+//                    Intent intent = new Intent(PlayMultActivity.this, PlayWebViewActivity.class);
+//                    intent.putExtra("gameId", place_list.get(t_ids).getGame_id());
+//                    intent.putExtra("gameUrl", place_list.get(t_ids).getGame_url());
+//                    startActivity(intent);
+//                    t_ids = -1;
+//                }
+//            } else {
+//                t_ids = -1;
+//            }
             mopupWindow.dismiss();
             if (DataUtils.isBlue(PlayMultActivity.this) && mMinewBeaconManager != null) {
                 mMinewBeaconManager.stopScan();
@@ -522,17 +487,15 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
             public void onRangeBeacons(List<MinewBeacon> minewBeacons) {
                 if (minewBeacons != null && minewBeacons.size() > 0) {
 //                    String distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
-                    if (place_list != null && place_list.size() > 0 && t_ids >= 0 && isGame) {
+                    if (mGamePotinsList != null && mGamePotinsList.size() > 0 && t_ids >= 0) {
                         for (MinewBeacon beacon : minewBeacons) {
-                            String majer = beacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Major).getStringValue() + beacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
+                            String majer = beacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Major).getStringValue() ;
                             if (majer != null) {
-                                for (MajorBean cheeck : place_list.get(t_ids).getiBeacons()) {
-                                    String jieguo = cheeck.getMajor() + cheeck.getMinor();
-                                    if (jieguo.equals(majer)) {
-                                        shouPoup(place_list.get(t_ids).getName(), true, place_list.get(t_ids).getGame_id(), place_list.get(t_ids).getMp3());
+                                    if (majer.equals(mGamePotinsList.get(t_ids).getMajor()+"")) {
+//                                        shouPoup(place_list.get(t_ids).getName(), true, place_list.get(t_ids).getGame_id(), place_list.get(t_ids).getMp3());
+                                        t_ids=-1;
                                         break;
                                     }
-                                }
                             }
                         }
                     }
@@ -541,7 +504,6 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 
             /**
              *  the manager calls back this method when BluetoothStateChanged.
-             *
              *  @param state BluetoothState
              */
             @Override
@@ -587,10 +549,10 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                         return;
                     }
                     String jieguo = data.getStringExtra("SCAN_RESULT");
-                    if ("B33832EF5EFF3EFF30B1B646B6F2410F".equals(jieguo)) {
+                    if ("B33832EF5EFF3EFF30B1B646B6F2410F".equals(jieguo)) {//玩游戏
                         Intent intent = new Intent(this, PlayWebViewActivity.class);
-                        intent.putExtra("gameId", place_list.get(t_ids).getGame_id());
-                        intent.putExtra("gameUrl", place_list.get(t_ids).getGame_url());
+//                        intent.putExtra("gameId", place_list.get(t_ids).getGame_id());
+//                        intent.putExtra("gameUrl", place_list.get(t_ids).getGame_url());
                         startActivity(intent);
                     } else {
                         RxToast.error("二维码不匹配");
@@ -683,6 +645,153 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         // 将Marker设置为贴地显示，可以双指下拉地图查看效果
         markerOption.setFlat(true);//设置marker平贴地图效果
         Marker marker = aMap.addMarker(markerOption);
+
+    }
+
+    //--------------------------------------------------长连接
+    private void createStompClient() {
+        LoginResult user = SaveObjectUtils.getInstance(PlayMultActivity.this).getObject(Constants.USER_INFO, null);
+        try {
+            mStompClient = Stomp.over(WebSocket.class, "ws://" + Constants.getsocket(PlayMultActivity.this) + "/websocket?access_token=" + user.getAccess_token());
+            mStompClient.connect();
+        } catch (Exception e) {
+            Log.i("tttt", "msg=" + e.getMessage());
+        }
+        mStompClient.lifecycle().subscribe(new Consumer<LifecycleEvent>() {
+            @Override
+            public void accept(LifecycleEvent lifecycleEvent) {
+                Log.d("tttt", "lifecycleEvent=" + lifecycleEvent.getType());
+                switch (lifecycleEvent.getType()) {
+                    case OPENED:
+                        Log.d("tttt", "Stomp connection opened");
+                        getMsg();
+                        getpointsMsg();
+                        getAddressMsg();
+                        break;
+
+                    case ERROR:
+                        Log.e("tttt", "Stomp Error", lifecycleEvent.getException());
+
+                        break;
+                    case CLOSED:
+                        Log.d("tttt", "Stomp connection closed");
+                        createStompClient();
+                        break;
+                }
+            }
+        });
+    }
+    //监听游戏完成
+    private void getMsg() {
+        mStompClient.topic("/topic/+" + teamGame.getId()+ "" + "/status").subscribe(new Consumer<StompMessage>() {
+            @Override
+            public void accept(StompMessage stompMessage) throws Exception {
+                String msg = stompMessage.getPayload().trim();
+                String datas="";
+                try {
+                    JSONObject jsonObject = new JSONObject();
+                    JSONObject obj = jsonObject.getJSONObject(msg);
+                    datas =obj.getString("data");
+                }catch (Exception e){
+
+                }
+                if("GAME_OVER".equals(datas)){
+
+                }
+            }
+        });
+
+    }
+
+    //监听任务完成
+    private void getpointsMsg() {
+        mStompClient.topic("/topic/+" + teamGame.getId()+ "" + "/pass").subscribe(new Consumer<StompMessage>() {
+            @Override
+            public void accept(StompMessage stompMessage) throws Exception {
+                String msg = stompMessage.getPayload().trim();
+                String datas="";
+                try {
+                    JSONObject jsonObject = new JSONObject();
+                    JSONObject obj = jsonObject.getJSONObject(msg);
+                    datas =obj.getString("data");
+                }catch (Exception e){
+
+                }
+            /*   "data": {
+                "gamePointId": 0,
+                        "score": 0,
+                        "timing": 0,
+                        "type": 0,
+                        "userId": 0
+            },*/
+            }
+        });
+
+    }
+    ///user/{username}/topic/{teamId}/getLocations
+    //获取队员地理位置
+    private void getAddressMsg() {
+        UserInfo user = SaveObjectUtils.getInstance(PlayMultActivity.this).getObject(Constants.USER_BASE, null);
+        mStompClient.topic("/user"+user.getNickname()+"/topic/+" + teamGame.getId()+ "" + "/getLocations").subscribe(new Consumer<StompMessage>() {
+            @Override
+            public void accept(StompMessage stompMessage) throws Exception {
+                String msg = stompMessage.getPayload().trim();
+                String datas="";
+                try {
+                    JSONObject jsonObject = new JSONObject();
+                    JSONObject obj = jsonObject.getJSONObject(msg);
+                    datas =obj.getString("data");
+                }catch (Exception e){
+
+                }
+              /*  "data": [
+                {
+                    "avatar": "string",
+                        "gameTeamId": 0,
+                        "latitude": 0,
+                        "longitude": 0,
+                        "nickname": "string",
+                        "userId": 0
+                }*/
+            }
+        });
+    }
+
+    private  void getPointGame(long teamGameId,long pointId,boolean xianxia,boolean xxtimu){
+        showAlert("正在获取任务...", true);
+        BaseApi.getJavaLoginDefaultService(PlayMultActivity.this).getPointGame(teamGameId,pointId,xianxia,xxtimu)
+                .map(new JavaRxFunction<TaskPoint>())
+                .compose(RxSchedulers.<TaskPoint>io_main())
+                .subscribe(new RxObserver<TaskPoint>(PlayMultActivity.this, TAG, 1, false) {
+                    @Override
+                    public void onSuccess(int whichRequest, TaskPoint info) {
+                        dismissAlert();
+//                        shousoundPoup(place_list.get(i).getName(), place_list.get(i).getMp3(), place_list.get(i).getDesc(), i);
+//                    if (place_list.get(i).getIs_play().equals("0")) {
+//                        t_ids = i;
+//                        isGame = true;
+//                        setcheck();
+//                        place_list.get(t_ids).setCheck(true);
+//                        mEndPoint = null;
+//                        mEndPoint = new LatLng(Double.valueOf(place_list.get(i).getLatitude()).doubleValue(),
+//                                Double.valueOf(place_list.get(i).getLongitude()).doubleValue());
+//                        shouPoup(place_list.get(t_ids).getGame_name(), false, place_list.get(t_ids).getGame_id(), place_list.get(t_ids).getMp3());
+//                        break;
+//                    } else {
+//                        isGame = false;
+//                    }
+                    }
+
+                    @Override
+                    public void onError(int whichRequest, Throwable e) {
+                        dismissAlert();
+
+                        RxToast.error(e.getMessage());
+                    }
+                });
+
+
+
 
     }
 

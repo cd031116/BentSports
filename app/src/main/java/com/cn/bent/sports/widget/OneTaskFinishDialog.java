@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.bean.GameTeamScoreEntity;
 import com.cn.bent.sports.bean.LoginBase;
+import com.cn.bent.sports.bean.TeamGame;
 import com.cn.bent.sports.recyclebase.CommonAdapter;
 import com.cn.bent.sports.recyclebase.ViewHolder;
 import com.cn.bent.sports.utils.SupportMultipleScreensUtil;
@@ -34,7 +35,8 @@ public class OneTaskFinishDialog extends Dialog implements View.OnClickListener{
     private Context mContext;
     private LinearLayout dialog_layout;
     private List<GameTeamScoreEntity> gameTeamScoreEntityList;
-
+    private TeamGame teamGame;
+    long gamePointId;
 
     public OneTaskFinishDialog(Context context) {
         super(context);
@@ -53,8 +55,9 @@ public class OneTaskFinishDialog extends Dialog implements View.OnClickListener{
     }
 
 
-    public OneTaskFinishDialog setListData(List<GameTeamScoreEntity> gameTeamScoreEntityList) {
-        this.gameTeamScoreEntityList = gameTeamScoreEntityList;
+    public OneTaskFinishDialog setListData(TeamGame teamId, long gamePointId) {
+        this.teamGame = teamId;
+        this.gamePointId = gamePointId;
         return this;
     }
 

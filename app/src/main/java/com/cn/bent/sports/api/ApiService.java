@@ -24,6 +24,7 @@ import com.cn.bent.sports.bean.TeamGame;
 import com.cn.bent.sports.bean.UserMsgEntity;
 import com.cn.bent.sports.view.activity.youle.bean.JoinTeam;
 import com.cn.bent.sports.view.activity.youle.bean.MyGame;
+import com.cn.bent.sports.view.activity.youle.bean.TaskPoint;
 import com.cn.bent.sports.view.activity.youle.bean.UserInfo;
 import com.zhl.network.huiqu.HuiquResult;
 import com.zhl.network.huiqu.HuiquTBResult;
@@ -152,6 +153,19 @@ public interface ApiService {
      */
     @GET("api/travel/game_team/{teamId}/game_point_status")
     Observable<JavaResult<List<GamePotins>>> getGamePoints(@Query("teamId") String teamId);
+
+
+    /**
+     * 获取游戏点标对应的任务
+     *
+     * @return
+     */
+    @POST("api/travel/game_team/{teamId}/task/{gamePointId}")
+    Observable<JavaResult<TaskPoint>> getPointGame(@Path("teamId") long teamId,
+                                                   @Path("gamePointId") long gamePointId,
+                                                   @Query("task") boolean task,
+                                                   @Query("question") boolean question);
+
 
     /**
      * 获取团队积分情况

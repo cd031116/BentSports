@@ -140,7 +140,7 @@ public class PlayActivity extends BaseActivity implements AMap.OnMyLocationChang
                                     public void onClick(Dialog dialog, int index) {
                                         dialog.dismiss();
                                     }
-                                }).setListData(gameTeamScoreEntities).show();
+                                }).show();
                             }
 
                             @Override

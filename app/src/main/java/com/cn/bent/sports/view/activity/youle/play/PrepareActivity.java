@@ -73,7 +73,7 @@ public class PrepareActivity extends BaseActivity {
                         if (info) {
 //                            if(teamGame.getTeamMemberReal()>1){
                                 Intent intent = new Intent(PrepareActivity.this, PlayMultActivity.class);
-                                intent.putExtra("gameTeamId", teamGame.getId()+"");
+                                intent.putExtra("teamGame", teamGame);
                                 startActivity(intent);
 //                            }else {
 //                                Intent intent = new Intent(PrepareActivity.this, PlayActivity.class);

@@ -35,7 +35,16 @@ public class TeamGame implements Serializable {
     private int teamMemberMax;
     private int teamMemberReal;//实际队员数量 ,
     private int state;
+    private int passRate;//通过率
     private String startTime;
+
+    public int getPassRate() {
+        return passRate;
+    }
+
+    public void setPassRate(int passRate) {
+        this.passRate = passRate;
+    }
 
     public int getId() {
         return id;

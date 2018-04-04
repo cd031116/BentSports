@@ -23,8 +23,8 @@ public class GamePotins implements Serializable {
      */
 
     private String alias;
-    private boolean hasQuestion;
-    private boolean hasTask;
+    private boolean hasQuestion;//是否有线上T题目
+    private boolean hasTask;//是否有线下游戏
     private int id;
     private int latitude;
     private int longitude;

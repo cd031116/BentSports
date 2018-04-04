@@ -39,17 +39,17 @@ public class DialogManager {
         return instance;
     }
 
-    /**
-     * 路线单任务完成
-     */
-    public void showOneFinishDialog(List<GameTeamScoreEntity> mlist) {
-        new OneTaskFinishDialog(mContext, R.style.dialog, new OneTaskFinishDialog.OnClickListener() {
-            @Override
-            public void onClick(Dialog dialog, int index) {
-                dialog.dismiss();
-            }
-        }).setListData(mlist).show();
-    }
+//    /**
+//     * 路线单任务完成
+//     */
+//    public void showOneFinishDialog(List<GameTeamScoreEntity> mlist) {
+//        new OneTaskFinishDialog(mContext, R.style.dialog, new OneTaskFinishDialog.OnClickListener() {
+//            @Override
+//            public void onClick(Dialog dialog, int index) {
+//                dialog.dismiss();
+//            }
+//        }).setListData(mlist).show();
+//    }
 
     /**
      * 路线_提示弹窗
