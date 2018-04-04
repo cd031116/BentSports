@@ -28,8 +28,6 @@ import com.cn.bent.sports.database.PlayUserManager;
 import com.cn.bent.sports.recyclebase.CommonAdapter;
 import com.cn.bent.sports.recyclebase.ViewHolder;
 import com.cn.bent.sports.utils.SupportMultipleScreensUtil;
-import com.cn.bent.sports.view.activity.youle.PlayActivity;
-import com.cn.bent.sports.view.activity.youle.play.MemberEditActivity;
 import com.vondear.rxtools.view.RxToast;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;

@@ -234,7 +234,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                 break;
             case R.id.team_game:
                 Intent intent1 = new Intent(PlayMultActivity.this, MemberEditActivity.class);
-                intent1.putExtra("type", "team");
+                intent1.putExtra("type", "game_team");
                 intent1.putExtra("gameTeamId", teamGame.getId());
                 startActivity(intent1);
                 break;

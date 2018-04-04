@@ -174,7 +174,7 @@ public interface ApiService {
      */
     @GET("api/travel/game_team/{teamId}/score")
     Observable<JavaResult<List<GameTeamScoreEntity>>> getTeamScore(
-            @Path("id") String id, @Path("teamId") String teamId);
+             @Path("teamId") long teamId);
 
 
     /**
