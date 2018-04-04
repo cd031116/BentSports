@@ -108,7 +108,7 @@ public class TeamMemberActivity extends BaseActivity {
     private void createStompClient() {
         LoginResult user = SaveObjectUtils.getInstance(TeamMemberActivity.this).getObject(Constants.USER_INFO, null);
         try {
-            mStompClient = Stomp.over(org.java_websocket.WebSocket.class, "ws://" + Constants.getsocket(TeamMemberActivity.this) + "/websocket?access_token" + user.getAccess_token());
+            mStompClient = Stomp.over(org.java_websocket.WebSocket.class, "ws://" + Constants.getsocket(TeamMemberActivity.this) + "/websocket?access_token=" + user.getAccess_token());
             mStompClient.connect();
         } catch (Exception e) {
             Log.i("tttt", "msg=" + e.getMessage());

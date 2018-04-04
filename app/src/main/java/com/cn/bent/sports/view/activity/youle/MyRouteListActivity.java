@@ -13,8 +13,11 @@ import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.recyclebase.CommonAdapter;
 import com.cn.bent.sports.recyclebase.ViewHolder;
+import com.cn.bent.sports.utils.Constants;
+import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.view.activity.youle.bean.JoinTeam;
 import com.cn.bent.sports.view.activity.youle.bean.MyGame;
+import com.cn.bent.sports.view.activity.youle.bean.UserInfo;
 import com.cn.bent.sports.view.activity.youle.play.OrganizeActivity;
 import com.cn.bent.sports.view.activity.youle.play.PrepareActivity;
 import com.cn.bent.sports.view.activity.youle.play.TeamMemberActivity;
@@ -152,9 +155,32 @@ public class MyRouteListActivity extends BaseActivity {
                 holder.setOnClickListener(R.id.top_click, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(MyRouteListActivity.this, OrganizeActivity.class);
-                        intent.putExtra("gameTeamId", myGame.getGameTeamId()+"");
-                        startActivity(intent);
+                        UserInfo infos= SaveObjectUtils.getInstance(MyRouteListActivity.this).getObject(Constants.USER_BASE, null);
+                        if(myGame.getState()==1){
+                            if(infos.getId()==myGame.getLeaderId()){
+                                Intent intent = new Intent(MyRouteListActivity.this, OrganizeActivity.class);
+                                intent.putExtra("gameTeamId", myGame.getGameTeamId()+"");
+                                startActivity(intent);
+                            }else {
+                                Intent intent = new Intent(MyRouteListActivity.this, TeamMemberActivity.class);
+                                intent.putExtra("gameTeamId", myGame.getGameTeamId()+"");
+                                startActivity(intent);
+                            }
+                        }
+                        if (myGame.getState()==2) {
+                            Intent intent = new Intent(MyRouteListActivity.this, PlayMultActivity.class);
+                            intent.putExtra("gameTeamId", myGame.getGameTeamId()+"");
+                            startActivity(intent);
+                        }
+                        if (myGame.getState()==3) {
+                          RxToast.success("已完成");
+                        }
+                        if (myGame.getState()==4) {
+                            RxToast.warning("已强制结束");
+                        }
+                        if (myGame.getState()==5) {
+                            RxToast.warning("超时结束");
+                        }
                     }
                 });
             }

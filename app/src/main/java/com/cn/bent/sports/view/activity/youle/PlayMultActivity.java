@@ -182,7 +182,8 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     void onClick(View view) {
         switch (view.getId()) {
             case R.id.map_scan:
-                RxActivityTool.skipActivityForResult(this,ActivityScanerCode.class,REQUEST_SCANS);
+                Intent intent = new Intent(PlayMultActivity.this, ActivityScanerCode.class);
+                startActivityForResult(intent, REQUEST_SCANS);
                 break;
             case R.id.map_return:
                 PlayMultActivity.this.finish();
@@ -418,8 +419,8 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
             }
             if (index == 1) {
                 if ("14".equals(place_list.get(t_ids).getGame_id())) {
-                    RxActivityTool.skipActivityForResult(PlayMultActivity.this, ActivityScanerCode.class, REQUEST_Scan);
-
+                    Intent intent = new Intent(PlayMultActivity.this, ActivityScanerCode.class);
+                    startActivityForResult(intent, REQUEST_Scan);
                 } else if ("15".equals(place_list.get(t_ids).getGame_id())) {
                     Intent intent = new Intent(PlayMultActivity.this, ArActivity.class);
                     intent.putExtra("gameId", place_list.get(t_ids).getGame_id());

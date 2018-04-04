@@ -232,10 +232,10 @@ public interface ApiService {
 
 
     /*teamId 加入组队
-    * */
+    **/
     @FormUrlEncoded
     @POST("api/travel/game_team/{teamId}/_join")
-    Observable<JavaResult<JoinTeam>> joinTeamGame(@Field("teamId") String teamId);
+    Observable<JavaResult<JoinTeam>> joinTeamGame(@Path("teamId") String teamId);
 
 
     @GET("outdoor/map/getFenceAndDot")
@@ -292,7 +292,7 @@ public interface ApiService {
      * @return
      */
     @GET("api/travel//game_team/{teamId}/members")
-    Observable<JavaResult<List<MemberDataEntity>>> getMemberDetailData(@Path("teamId") int teamId);
+    Observable<JavaResult<List<MemberDataEntity>>> getMemberDetailData(@Path("teamId") String teamId);
 
     /**
      * @return

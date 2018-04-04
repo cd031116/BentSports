@@ -18,6 +18,7 @@ import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.GameDetail;
 import com.cn.bent.sports.bean.LoginResult;
+import com.cn.bent.sports.bean.MemberDataEntity;
 import com.cn.bent.sports.bean.TeamGame;
 import com.cn.bent.sports.recyclebase.CommonAdapter;
 import com.cn.bent.sports.recyclebase.ViewHolder;
@@ -58,8 +59,8 @@ public class OrganizeActivity extends BaseActivity {
     TextView join_num;
     @Bind(R.id.recycle)
     RecyclerView m_recycle;
-    private CommonAdapter<JoinTeam> mAdapter;
-    private List<JoinTeam> mList = new ArrayList<>();
+    private CommonAdapter<MemberDataEntity> mAdapter;
+    private List<MemberDataEntity> mList = new ArrayList<>();
     private ScanPoupWindow mopupWindow;
     private String gameTeamId;
     TeamGame teamGame;
@@ -81,6 +82,7 @@ public class OrganizeActivity extends BaseActivity {
     public void initData() {
         super.initData();
         getGameDetail();
+        getPeople();
     }
 
     @OnClick({R.id.creat_scan, R.id.sure_start, R.id.top_left, R.id.top_image})
@@ -131,6 +133,31 @@ public class OrganizeActivity extends BaseActivity {
                 });
     }
 
+    //获取人个数
+    private void getPeople() {
+        BaseApi.getJavaLoginDefaultService(OrganizeActivity.this).getMemberDetailData(gameTeamId)
+                .map(new JavaRxFunction<List<MemberDataEntity>>())
+                .compose(RxSchedulers.<List<MemberDataEntity>>io_main())
+                .subscribe(new RxObserver<List<MemberDataEntity>>(OrganizeActivity.this, TAG, 1, false) {
+                    @Override
+                    public void onSuccess(int whichRequest, List<MemberDataEntity> info) {
+                        dismissAlert();
+                        if(info!=null){
+                            if (mList!=null){
+                                mList.clear();
+                            }
+                            mList.addAll(info);
+                        }
+                          mAdapter.notifyDataSetChanged();
+                        join_num.setText(mList.size() + "");
+                    }
+                    @Override
+                    public void onError(int whichRequest, Throwable e) {
+                        dismissAlert();
+                    }
+                });
+    }
+
 
 
     private void setview(TeamGame info) {
@@ -144,12 +171,11 @@ public class OrganizeActivity extends BaseActivity {
                 .into(user_photo);
         total_num.setText(info.getTeamMemberMax() + "");
         join_num.setText(info.getTeamMemberReal() + "");
-        UserInfo infos=SaveObjectUtils.getInstance(OrganizeActivity.this).getObject(Constants.USER_BASE, null);
-        JoinTeam bean=new JoinTeam();
-        bean.setAvatar(infos.getAvatar());
-        bean.setUserId(infos.getId());
-        bean.setNickname(infos.getNickname());
-        mList.add(bean);
+//        UserInfo infos=SaveObjectUtils.getInstance(OrganizeActivity.this).getObject(Constants.USER_BASE, null);
+//        JoinTeam bean=new JoinTeam();
+//        bean.setAvatar(infos.getAvatar());
+//        bean.setUserId(infos.getId());
+//        bean.setNickname(infos.getNickname());
         setList();
     }
 
@@ -158,7 +184,7 @@ public class OrganizeActivity extends BaseActivity {
     private void createStompClient() {
         LoginResult user = SaveObjectUtils.getInstance(OrganizeActivity.this).getObject(Constants.USER_INFO, null);
         try {
-            mStompClient = Stomp.over(WebSocket.class, "ws://" + Constants.getsocket(OrganizeActivity.this) + "/websocket?access_token" + user.getAccess_token());
+            mStompClient = Stomp.over(WebSocket.class, "ws://" + Constants.getsocket(OrganizeActivity.this) + "/websocket?access_token=" + user.getAccess_token());
             mStompClient.connect();
         } catch (Exception e) {
             Log.i("tttt", "msg=" + e.getMessage());
@@ -195,7 +221,7 @@ public class OrganizeActivity extends BaseActivity {
                 JSONObject jsonObject = new JSONObject();
                 JSONObject obj = jsonObject.getJSONObject(msg);
                 JSONObject datas = obj.getJSONObject("data");
-                JoinTeam bean = JSON.parseObject(datas.toString(), JoinTeam.class);
+                MemberDataEntity bean = JSON.parseObject(datas.toString(), MemberDataEntity.class);
                 mList.add(bean);
                 mAdapter.notifyDataSetChanged();
                 join_num.setText(mList.size() + "");
@@ -205,9 +231,9 @@ public class OrganizeActivity extends BaseActivity {
     }
 
     private void setList() {
-        mAdapter = new CommonAdapter<JoinTeam>(OrganizeActivity.this, R.layout.organize_item, mList) {
+        mAdapter = new CommonAdapter<MemberDataEntity>(OrganizeActivity.this, R.layout.organize_item, mList) {
             @Override
-            protected void convert(ViewHolder holder, JoinTeam joinTeam, int position) {
+            protected void convert(ViewHolder holder, MemberDataEntity joinTeam, int position) {
                 holder.setText(R.id.name_t,joinTeam.getNickname());
                 holder.setRunderWithUrl(R.id.user_photo,joinTeam.getAvatar());
                 if(position==1){

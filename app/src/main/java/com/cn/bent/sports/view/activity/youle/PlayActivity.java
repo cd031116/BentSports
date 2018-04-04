@@ -209,7 +209,8 @@ public class PlayActivity extends BaseActivity implements AMap.OnMyLocationChang
     void onClick(View view) {
         switch (view.getId()) {
             case R.id.map_scan:
-                RxActivityTool.skipActivityForResult(this, ActivityScanerCode.class, SCAN_CODE);
+                Intent intent = new Intent(PlayActivity.this, ActivityScanerCode.class);
+                startActivityForResult(intent, SCAN_CODE);
                 break;
             case R.id.map_more:
                 OpenOutDialog();

@@ -464,8 +464,8 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
             }
             if (index == 1) {
                 if ("14".equals(place_list.get(t_ids).getGame_id())) {
-                    RxActivityTool.skipActivityForResult(getActivity(),ActivityScanerCode.class,REQUEST_Scan);
-
+                    Intent intent = new Intent(getActivity(), ActivityScanerCode.class);
+                    startActivityForResult(intent, REQUEST_Scan);
                 } else if ("15".equals(place_list.get(t_ids).getGame_id())) {
                     Intent intent = new Intent(getActivity(), ArActivity.class);
                     intent.putExtra("gameId", place_list.get(t_ids).getGame_id());
