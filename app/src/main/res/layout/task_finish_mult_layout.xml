@@ -19,6 +19,7 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/title_two"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/t170"
             android:paddingTop="@dimen/t74"
@@ -44,7 +45,7 @@
                 android:textSize="@dimen/t43" />
 
             <TextView
-                android:id="@+id/score"
+                android:id="@+id/score_two"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/t400"
@@ -56,7 +57,7 @@
 
 
             <TextView
-                android:id="@+id/all_task"
+                android:id="@+id/all_task_two"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -64,7 +65,7 @@
                 android:text="/12" />
 
             <TextView
-                android:id="@+id/finish_task"
+                android:id="@+id/finish_task_two"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@id/all_task"

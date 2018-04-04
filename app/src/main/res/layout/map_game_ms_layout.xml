@@ -21,7 +21,7 @@
         android:textSize="@dimen/t43" />
 
     <TextView
-        android:id="@+id/score"
+        android:id="@+id/score_one"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/t400"

@@ -3,7 +3,6 @@ package com.cn.bent.sports.view.activity.youle;
 import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Build;
@@ -35,22 +34,18 @@ import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.base.BaseConfig;
 import com.cn.bent.sports.bean.GamePotins;
 import com.cn.bent.sports.bean.LoginResult;
-import com.cn.bent.sports.bean.MajorBean;
-import com.cn.bent.sports.bean.MapDot;
 import com.cn.bent.sports.bean.ReFreshEvent;
 import com.cn.bent.sports.bean.TeamGame;
+import com.cn.bent.sports.database.PlayPointManager;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.DataUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
-import com.cn.bent.sports.view.activity.ArActivity;
 import com.cn.bent.sports.view.activity.BitmapManager;
-import com.cn.bent.sports.view.activity.OfflineActivity;
 import com.cn.bent.sports.view.activity.PlayWebViewActivity;
 import com.cn.bent.sports.view.activity.youle.bean.TaskPoint;
 import com.cn.bent.sports.view.activity.youle.bean.UserInfo;
 import com.cn.bent.sports.view.activity.youle.play.CompleteInfoActivity;
 import com.cn.bent.sports.view.activity.youle.play.MemberEditActivity;
-import com.cn.bent.sports.view.activity.youle.play.PrepareActivity;
 import com.cn.bent.sports.view.poupwindow.DoTaskPoupWindow;
 import com.cn.bent.sports.view.poupwindow.TalkPoupWindow;
 import com.cn.bent.sports.widget.OneTaskFinishDialog;
@@ -90,8 +85,8 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     MapView mapView;
     @Bind(R.id.time)
     TextView time;
-    @Bind(R.id.score)
-    TextView score;
+    @Bind(R.id.score_one)
+    TextView score_one;
     @Bind(R.id.all_task)
     TextView all_task;
     @Bind(R.id.finish_task)
@@ -100,13 +95,22 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     RelativeLayout line_one;
     @Bind(R.id.line_two)
     RelativeLayout line_two;
+    @Bind(R.id.title_two)
+    TextView title_two;//布局二(团队  叫团队成绩   个人叫我的成绩)
+    @Bind(R.id.score_two)
+    TextView score_two;//分数
+    @Bind(R.id.finish_situation)
+    ImageView finish_situation;//团队显示
+    @Bind(R.id.all_task_two)
+    TextView all_task_two;//时间
+    @Bind(R.id.finish_task_two)
+    TextView finish_task_two;//时间
     @Bind(R.id.time_two)
     TextView timing;//底部计时器
     @Bind(R.id.exit_game)
     ImageView exit_game;//个人
     @Bind(R.id.team_game)
     ImageView team_game;//团队
-
     private StompClient mStompClient;
     private AMap aMap;
     private float mCurrentZoom = 18f;
@@ -617,10 +621,12 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                     @Override
                     public void onSuccess(int whichRequest, List<GamePotins> info) {
                         dismissAlert();
+                        PlayPointManager.insert(info);
                         mGamePotinsList = info;
                         for (GamePotins gamePotins : info) {
                             setOverLay(gamePotins.getState(), gamePotins);
                         }
+                        setTheView();
                     }
 
                     @Override
@@ -633,7 +639,6 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     }
 
     private void setOverLay(int index, GamePotins gamePotins) {
-
         MarkerOptions markerOption = new MarkerOptions();
         markerOption.position(new LatLng(gamePotins.getLatitude(), gamePotins.getLongitude()));
         markerOption.draggable(true);//设置Marker可拖动
@@ -644,6 +649,27 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         Marker marker = aMap.addMarker(markerOption);
 
     }
+
+    private void setTheView(){
+        if (PlayPointManager.isHavaPlay()) {
+            if(teamGame.getTeamMemberMax()<=1){
+                finish_situation.setVisibility(View.GONE);
+                title_two.setText("我的成绩");
+            }else {
+                finish_situation.setVisibility(View.VISIBLE);
+                title_two.setText("团队成绩");
+            }
+            score_two.setText(PlayPointManager.getScore()+"分");
+            finish_task_two.setText(PlayPointManager.getHavaPlay()+"");
+            all_task_two.setText("/"+mGamePotinsList.size());
+        }else {
+            score_one.setText(PlayPointManager.getScore()+"分");
+            finish_task.setText(PlayPointManager.getHavaPlay()+"");
+            all_task.setText("/"+mGamePotinsList.size());
+        }
+    }
+
+
 
     //--------------------------------------------------长连接
     private void createStompClient() {
@@ -693,7 +719,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 
                 }
                 if("GAME_OVER".equals(datas)){
-
+                    setTheView();
                 }
             }
         });
@@ -786,8 +812,11 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                         RxToast.error(e.getMessage());
                     }
                 });
-
     }
+
+    //计算总分数和完成关卡数
+
+
 
 
 }

@@ -2,6 +2,8 @@ package com.cn.bent.sports.bean;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.aisen.android.component.orm.annotation.PrimaryKey;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -24,11 +26,11 @@ public class GamePotins implements Serializable {
      * score : 0
      * state : 0
      */
-
+    @PrimaryKey(column = "id")
+    private int id;
     private String alias;
     private boolean hasQuestion;//是否有线上T题目
     private boolean hasTask;//是否有线下游戏
-    private int id;
     private int major;
     private int orderNo;
     private int score;

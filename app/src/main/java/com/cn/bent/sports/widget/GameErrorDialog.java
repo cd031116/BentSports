@@ -14,10 +14,10 @@ import com.cn.bent.sports.utils.SupportMultipleScreensUtil;
  */
 
 public class GameErrorDialog extends Dialog implements View.OnClickListener {
-    private TextView know_complete;
+    private TextView know_complete,msg;
     private Context mContext;
     private OnCloseListener listener;
-
+    private String msga="";
 
     public GameErrorDialog(Context context) {
         super(context);
@@ -37,6 +37,12 @@ public class GameErrorDialog extends Dialog implements View.OnClickListener {
     }
 
 
+    public GameErrorDialog setMsg(String setMsg) {
+      this.msga=setMsg;
+        return this;
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +50,8 @@ public class GameErrorDialog extends Dialog implements View.OnClickListener {
         View rootView = findViewById(android.R.id.content);
         SupportMultipleScreensUtil.init(mContext);
         SupportMultipleScreensUtil.scale(rootView);
+        msg= (TextView) rootView.findViewById(R.id.msg);
+        msg.setText(msga);
         setCanceledOnTouchOutside(false);
         setCancelable(false);
         initView();

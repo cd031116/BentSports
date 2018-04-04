@@ -48,10 +48,12 @@
     <include
         android:id="@+id/line_one"
         layout="@layout/map_game_ms_layout"
+        android:visibility="gone"
         />
 
     <include
         android:id="@+id/line_two"
         layout="@layout/task_finish_mult_layout"
+        android:visibility="gone"
         />
 </RelativeLayout>
