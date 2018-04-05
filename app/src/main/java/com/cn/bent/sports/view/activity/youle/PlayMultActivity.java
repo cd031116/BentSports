@@ -262,9 +262,8 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     public boolean onMarkerClick(Marker marker) {
         for (int i = 0; i < mList.size(); i++) {
             if (marker.equals(mList.get(i))) {
-
                 if (mGamePotinsList.get(i).getState() == -1) {//未开始
-                    getPointGame(gameTeamId, mGamePotinsList.get(i).getId(), !mGamePotinsList.get(i).isHasQuestion(), mGamePotinsList.get(i).isHasTask());
+                    getPointGame(gameTeamId, mGamePotinsList.get(i).getId(), mGamePotinsList.get(i).isHasQuestion(), !mGamePotinsList.get(i).isHasTask());
                     t_ids = i;
                     break;
                 } else if (mGamePotinsList.get(i).getState() == 1 || mGamePotinsList.get(i).getState() == 2) {
@@ -700,23 +699,8 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                         }
                         mGamePotinsList = info;
                         aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(info.get(0).getLatitude(), info.get(0).getLongitude()), mCurrentZoom));
-                        Glide.with(PlayMultActivity.this).load("http://ww1.sinaimg.cn/orj480/736f0c7ejw1f659dt6n94j20bu06k754.jpg")
-                                .into(new SimpleTarget<Drawable>() {
-                                    @Override
-                                    public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
-                                        ImageView imageView=new ImageView(PlayMultActivity.this);
-                                        imageView.setImageDrawable(resource);
-                                        MarkerOptions markerOption = new MarkerOptions();
-                                        markerOption.position(new LatLng(info.get(0).getLatitude(), info.get(0).getLongitude()));
-                                        Bitmap bitmap = convertViewToBitmap(imageView);
-                                        Log.i("tttt","bitmap="+bitmap);
-                                        markerOption = new MarkerOptions().icon(BitmapDescriptorFactory.fromBitmap(bitmap));
-                                        aMap.addMarker(markerOption);
-                                    }
-                                });
-
                         for (GamePotins gamePotins : info) {
-//                            setOverLay(gamePotins.getState(), gamePotins);
+                            setOverLay(gamePotins.getState(), gamePotins);
                         }
                         setTheView();
                     }
@@ -729,13 +713,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                     }
                 });
     }
-    public static Bitmap convertViewToBitmap(View view) {
-        view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-        view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
-        view.buildDrawingCache();
-        Bitmap bitmap = view.getDrawingCache();
-        return bitmap;
-    }
+
     private void setOverLay(int index, GamePotins gamePotins) {
         MarkerOptions markerOption = new MarkerOptions();
 
@@ -746,7 +724,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         // 将Marker设置为贴地显示，可以双指下拉地图查看效果
         markerOption.setFlat(true);//设置marker平贴地图效果
         Marker marker = aMap.addMarker(markerOption);
-
+        mList.add(marker);
     }
 
     //计算总分数和完成关卡数

@@ -13,7 +13,6 @@ import java.util.List;
  */
 
 public class TaskCationManager {
-    private static final List<ScenicPointsEntity.PointsBean> mTaskList = new ArrayList<>();
 
     public static void setup(Context context) {
         TaskCationDB.setup(context);
@@ -21,9 +20,7 @@ public class TaskCationManager {
 
     //获得所有
     public static List<ScenicPointsEntity.PointsBean> getHistory() {
-        mTaskList.clear();
-        mTaskList.addAll(TaskCationDB.getDB().select(null, ScenicPointsEntity.PointsBean.class));
-        return mTaskList;
+        return TaskCationDB.getDB().select(null, ScenicPointsEntity.PointsBean.class);
     }
 
 
@@ -58,7 +55,6 @@ public class TaskCationManager {
 
     //删除所有
     public static void clear() {
-        mTaskList.clear();
         TaskCationDB.getDB().deleteAll(null, ScenicPointsEntity.PointsBean.class);
     }
 

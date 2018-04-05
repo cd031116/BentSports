@@ -20,6 +20,7 @@ import com.cn.bent.sports.bean.RailBean;
 import com.cn.bent.sports.bean.RankEntity;
 import com.cn.bent.sports.bean.ScenicPointsEntity;
 import com.cn.bent.sports.bean.ScenicSpotEntity;
+import com.cn.bent.sports.bean.StepInfo;
 import com.cn.bent.sports.bean.TeamGame;
 import com.cn.bent.sports.bean.UserMsgEntity;
 import com.cn.bent.sports.view.activity.youle.bean.JoinTeam;
@@ -167,6 +168,12 @@ public interface ApiService {
                                                    @Path("gamePointId") long gamePointId,
                                                    @Query("task") boolean task,
                                                    @Query("question") boolean question);
+
+
+    @FormUrlEncoded
+    @POST("api/basic/user_run_data")
+    Observable<JavaResult<Boolean>> sendStep(@Query("step") int step);
+
 
 
     /**
@@ -389,4 +396,14 @@ public interface ApiService {
     @POST("outdoor/map/getMapMsg")
     Observable<HuiquResult<PlayMapBean>> getMapMsg(
             @Field("cur_user_id") String cur_user_id);
+
+    /**
+     * 获取队员信息（后面的接口都只有id 头像等信息前端需要存起来）
+     *
+     * @param
+     * @return
+     */
+    @GET("api/basic/user_run_data/rank")
+    Observable<JavaResult<StepInfo>> getStepList();
+
 }

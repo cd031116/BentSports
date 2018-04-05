@@ -118,7 +118,6 @@ public class MemberEditActivity extends BaseActivity {
                         for (GameTeamScoreEntity gameTeamScoreEntity : gameTeamScoreEntities) {
                             PlayUserManager.updatePlay(gameTeamScoreEntity.getUserId(), gameTeamScoreEntity.getScore());
                         }
-                        Log.i("tttt","PlayUserManager="+PlayUserManager.getHistory().size());
                         setRecyView( PlayUserManager.getHistory());
                     }
 //                        PlayUserManager.insert(history);
@@ -159,7 +158,6 @@ public class MemberEditActivity extends BaseActivity {
                     else
                         holder.setText(R.id.item_score, memberDataEntity.getScore() + "");
                     holder.setText(R.id.item_name, memberDataEntity.getNickname() + "");
-                    Log.i("tttt","memberDataEntity="+memberDataEntity.getUserId());
                     ImageView view = (ImageView) holder.getView(R.id.item_img);
                     Glide.with(mContext).load(memberDataEntity.getAvatar()).into(view);
 

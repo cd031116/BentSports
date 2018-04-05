@@ -1,12 +1,24 @@
 package com.cn.bent.sports.view.fragment;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.view.View;
+import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseFragment;
+import com.cn.bent.sports.evevt.ShowPoupEvent;
+import com.cn.bent.sports.sensor.UpdateUiCallBack;
+import com.cn.bent.sports.utils.Constants;
+import com.cn.bent.sports.utils.SaveObjectUtils;
+import com.cn.bent.sports.utils.StepData;
 import com.cn.bent.sports.view.activity.MapActivity;
 import com.cn.bent.sports.view.activity.WalkRankListActivity;
 import com.cn.bent.sports.view.activity.youle.MyRouteListActivity;
@@ -14,8 +26,11 @@ import com.cn.bent.sports.view.activity.youle.PlayActivity;
 import com.cn.bent.sports.view.activity.PlayFunActivity;
 import com.cn.bent.sports.view.activity.youle.PlayMultActivity;
 import com.cn.bent.sports.view.activity.youle.bean.JoinTeam;
+import com.cn.bent.sports.view.activity.youle.bean.TaskPoint;
+import com.cn.bent.sports.view.activity.youle.bean.UserInfo;
 import com.cn.bent.sports.view.activity.youle.play.MemberEditActivity;
 import com.cn.bent.sports.view.activity.youle.play.TeamMemberActivity;
+import com.cn.bent.sports.view.service.StepService;
 import com.vondear.rxtools.RxActivityTool;
 import com.vondear.rxtools.activity.ActivityScanerCode;
 import com.vondear.rxtools.view.RxToast;
@@ -23,7 +38,13 @@ import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.JavaRxFunction;
 
+import org.aisen.android.component.eventbus.NotificationCenter;
+import org.greenrobot.eventbus.EventBus;
+
+import butterknife.Bind;
 import butterknife.OnClick;
+import io.reactivex.functions.Consumer;
+import ua.naiksoftware.stomp.client.StompMessage;
 
 /**
  * Created by lyj on 2018/3/19 0019.
@@ -37,6 +58,10 @@ public class RecommendFragment extends BaseFragment {
 //        fragment.setArguments(bundle);
         return fragment;
     }
+
+    @Bind({R.id.walk_num})
+    TextView walk_num;
+    private boolean isBind = false;
     private static final int REQUEST_Scan = 12;
 
     @Override
@@ -51,7 +76,7 @@ public class RecommendFragment extends BaseFragment {
 
     @Override
     protected void initData() {
-
+        setupService();
     }
 
     @OnClick({R.id.go_daolan,R.id.scan_t,R.id.line_title,R.id.activity_one,R.id.seek_rank,R.id.see_my})
@@ -74,11 +99,7 @@ public class RecommendFragment extends BaseFragment {
                 startActivity(intent1);
                 break;
             case R.id.seek_rank:
-//                startActivity(new Intent(getActivity(), WalkRankListActivity.class));
-                Intent intent2 = new Intent(getActivity(), MemberEditActivity.class);
-                intent2.putExtra("type", "team");
-                intent2.putExtra("gameTeamId", 171);
-                startActivity(intent2);
+                startActivity(new Intent(getActivity(), WalkRankListActivity.class));
                 break;
             case R.id.see_my:
                 startActivity(new Intent(getActivity(), MyRouteListActivity.class));
@@ -121,6 +142,84 @@ public class RecommendFragment extends BaseFragment {
                     }
                 });
     }
+
+
+
+    /**
+     * 开启计步服务
+     */
+    private void setupService() {
+        Intent intent = new Intent(getActivity(), StepService.class);
+        isBind = getActivity().bindService(intent, conn, Context.BIND_AUTO_CREATE);
+        getActivity().startService(intent);
+    }
+    /**
+     * 用于查询应用服务（application Service）的状态的一种interface，
+     * 更详细的信息可以参考Service 和 context.bindService()中的描述，
+     * 和许多来自系统的回调方式一样，ServiceConnection的方法都是进程的主线程中调用的。
+     */
+    ServiceConnection conn = new ServiceConnection() {
+        /**
+         * 在建立起于Service的连接时会调用该方法，目前Android是通过IBind机制实现与服务的连接。
+         * @param name 实际所连接到的Service组件名称
+         * @param service 服务的通信信道的IBind，可以通过Service访问对应服务
+         */
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            StepService stepService = ((StepService.StepBinder) service).getService();
+            //设置初始化数据
+            walk_num.setText(stepService.getStepCount() + "");
+            //设置步数监听回调
+            stepService.registerCallback(new UpdateUiCallBack() {
+                @Override
+                public void updateUi(int stepCount) {
+                    walk_num.setText(stepCount + "");
+                    sendStepMsg(stepCount);
+                }
+            });
+        }
+
+        /**
+         *
+         * 当与Service之间的连接丢失的时候会调用该方法，
+         * 这种情况经常发生在Service所在的进程崩溃或者被Kill的时候调用，
+         * 此方法不会移除与Service的连接，当服务重新启动的时候仍然会调用 onServiceConnected()。
+         * @param name 丢失连接的组件名称
+         */
+        @Override
+        public void onServiceDisconnected(ComponentName name){
+
+        }
+    };
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (isBind) {
+            getActivity().unbindService(conn);
+        }
+    }
+
+    private void sendStepMsg(int steps) {
+        if(!StepData.getInstance(getActivity()).isThanNow(5)){
+            return;
+        }
+        BaseApi.getJavaLoginDefaultService(getActivity()).sendStep(steps)
+                .map(new JavaRxFunction<Boolean>())
+                .compose(RxSchedulers.<Boolean>io_main())
+                .subscribe(new RxObserver<Boolean>(getActivity(), TAG, 1, false) {
+                    @Override
+                    public void onSuccess(int whichRequest, Boolean aBoolean) {
+                        StepData.getInstance(getActivity()).setStepDataValue(System.currentTimeMillis());
+
+                    }
+                    @Override
+                    public void onError(int whichRequest, Throwable e) {
+
+                    }
+                });
+    }
+
 
 
 }

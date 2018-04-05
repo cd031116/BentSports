@@ -21,11 +21,7 @@ public class PlayUserManager {
 
     //获得所有
     public static List<MemberDataEntity> getHistory() {
-        if(mTaskList!=null){
-            mTaskList.clear();
-        }
-        mTaskList.addAll(PlayUserDb.getDB().select(null,MemberDataEntity.class));
-        return mTaskList;
+        return PlayUserDb.getDB().select(null,MemberDataEntity.class);
     }
 
     //插入集合数据(初始一次)

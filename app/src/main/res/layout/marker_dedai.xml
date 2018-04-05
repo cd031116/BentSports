@@ -5,6 +5,7 @@
 
 
     <ImageView
+        android:id="@+id/imageView"
         android:layout_width="@dimen/t110"
         android:layout_height="@dimen/t121"
         android:src="@drawable/wait_teammate" />

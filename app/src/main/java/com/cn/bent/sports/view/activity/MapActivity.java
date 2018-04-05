@@ -85,6 +85,7 @@ import com.cn.bent.sports.sensor.UpdateUiCallBack;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.DataUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
+import com.cn.bent.sports.utils.StepData;
 import com.cn.bent.sports.view.poupwindow.LineListPoupWindow;
 import com.cn.bent.sports.view.poupwindow.XianluPoupWindow;
 import com.cn.bent.sports.view.service.MusicService;
@@ -268,6 +269,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                 @Override
                 public void updateUi(int stepCount) {
                     waik_num.setText(stepCount + "");
+                    sendStepMsg(stepCount);
                 }
             });
         }
@@ -1231,6 +1233,27 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                 break;
 
         }
+    }
+
+
+    private void sendStepMsg(int steps) {
+        if(!StepData.getInstance(MapActivity.this).isThanNow(5)){
+            return;
+        }
+        BaseApi.getJavaLoginDefaultService(MapActivity.this).sendStep(steps)
+                .map(new JavaRxFunction<Boolean>())
+                .compose(RxSchedulers.<Boolean>io_main())
+                .subscribe(new RxObserver<Boolean>(MapActivity.this, TAG, 1, false) {
+                    @Override
+                    public void onSuccess(int whichRequest, Boolean aBoolean) {
+                        StepData.getInstance(MapActivity.this).setStepDataValue(System.currentTimeMillis());
+
+                    }
+                    @Override
+                    public void onError(int whichRequest, Throwable e) {
+
+                    }
+                });
     }
 
 }
