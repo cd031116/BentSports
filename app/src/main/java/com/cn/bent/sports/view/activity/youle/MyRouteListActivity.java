@@ -164,7 +164,7 @@ public class MyRouteListActivity extends BaseActivity {
                         }
                         if (myGame.getState()==2||myGame.getState()==3) {
                             Intent intent = new Intent(MyRouteListActivity.this, PlayMultActivity.class);
-                            intent.putExtra("gameTeamId", myGame.getGameTeamId()+"");
+                            intent.putExtra("gameTeamId", myGame.getGameTeamId());
                             startActivity(intent);
                         }
                         if (myGame.getState()==4) {

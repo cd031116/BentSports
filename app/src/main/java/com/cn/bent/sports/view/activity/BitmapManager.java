@@ -5,9 +5,11 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.AnimationDrawable;
 import android.location.LocationManager;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.amap.api.maps.model.BitmapDescriptor;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
+import com.bumptech.glide.Glide;
 import com.cn.bent.sports.R;
 
 import java.util.ArrayList;
@@ -121,6 +123,8 @@ public class BitmapManager {
                 .fromBitmap(getViewBitmap(view));
         return bitmapDescriptor;
     }
+
+
 
     private Bitmap getViewBitmap(View addViewContent) {
 

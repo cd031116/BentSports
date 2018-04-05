@@ -3,8 +3,9 @@ package com.cn.bent.sports.view.activity.youle;
 import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,6 +31,9 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
@@ -76,6 +80,8 @@ import ua.naiksoftware.stomp.LifecycleEvent;
 import ua.naiksoftware.stomp.Stomp;
 import ua.naiksoftware.stomp.client.StompClient;
 import ua.naiksoftware.stomp.client.StompMessage;
+
+import static com.amap.api.col.n3.ga.I;
 
 /**
  * Created by dawn on 2018/3/27.  多人游玩界面
@@ -132,9 +138,10 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     private boolean isBlue = false;
     private DoTaskPoupWindow mopupWindow;
     private TalkPoupWindow soundWindow;
-    private TeamGame teamGame;//传过来的对象
+    private int gameTeamId;//传过来的id
+    private TeamGame teamGame;
     //-------------------------------------------------
-
+    private List<JoinTeam> mPosition = new ArrayList<>();
     private List<GamePotins> mGamePotinsList = new ArrayList<>();
 
     @Override
@@ -162,17 +169,10 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     public void initView() {
         super.initView();
         teamGame = (TeamGame) getIntent().getSerializableExtra("teamGame");
-        if(teamGame.getTeamMemberMax()<=1){
-            exit_game.setVisibility(View.VISIBLE);
-            team_game.setVisibility(View.GONE);
-        }else {
-            team_game.setVisibility(View.VISIBLE);
-            exit_game.setVisibility(View.GONE);
-        }
+        gameTeamId = getIntent().getExtras().getInt("gameTeamId");
 
         createStompClient();
-        showAlert("正在获取...", true);
-        getPoints();
+        getTeamInfo();
         line_two.setVisibility(View.GONE);
         if (aMap == null) {
             aMap = mapView.getMap();
@@ -210,8 +210,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     }
 
 
-
-    @OnClick({R.id.map_scan, R.id.map_return, R.id.look_rank, R.id.finish_situation, R.id.exit_game,R.id.team_game})
+    @OnClick({R.id.map_scan, R.id.map_return, R.id.look_rank, R.id.finish_situation, R.id.exit_game, R.id.team_game})
     void onClick(View view) {
         switch (view.getId()) {
             case R.id.map_scan:
@@ -222,8 +221,8 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                 PlayMultActivity.this.finish();
                 break;
             case R.id.look_rank:
-                Intent intent2=new Intent(PlayMultActivity.this, RankingListActivity.class);
-                intent2.putExtra("gameTeamId", teamGame.getId());
+                Intent intent2 = new Intent(PlayMultActivity.this, RankingListActivity.class);
+                intent2.putExtra("gameTeamId", gameTeamId);
                 startActivity(intent2);
                 break;
             case R.id.finish_situation:
@@ -235,7 +234,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
             case R.id.team_game:
                 Intent intent1 = new Intent(PlayMultActivity.this, MemberEditActivity.class);
                 intent1.putExtra("type", "game_team");
-                intent1.putExtra("gameTeamId", teamGame.getId());
+                intent1.putExtra("gameTeamId", gameTeamId);
                 startActivity(intent1);
                 break;
         }
@@ -264,17 +263,17 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         for (int i = 0; i < mList.size(); i++) {
             if (marker.equals(mList.get(i))) {
 
-                if(mGamePotinsList.get(i).getState()==-1){//未开始
-                    getPointGame(teamGame.getId(),mGamePotinsList.get(i).getId(),!mGamePotinsList.get(i).isHasQuestion(),mGamePotinsList.get(i).isHasTask());
-                    t_ids=i;
+                if (mGamePotinsList.get(i).getState() == -1) {//未开始
+                    getPointGame(gameTeamId, mGamePotinsList.get(i).getId(), !mGamePotinsList.get(i).isHasQuestion(), mGamePotinsList.get(i).isHasTask());
+                    t_ids = i;
                     break;
-                }else if (mGamePotinsList.get(i).getState()==1||mGamePotinsList.get(i).getState()==2) {
+                } else if (mGamePotinsList.get(i).getState() == 1 || mGamePotinsList.get(i).getState() == 2) {
                     new OneTaskFinishDialog(PlayMultActivity.this, R.style.dialog, new OneTaskFinishDialog.OnClickListener() {
                         @Override
                         public void onClick(Dialog dialog, int index) {
                             dialog.dismiss();
                         }
-                    }).setListData(teamGame,mGamePotinsList.get(i).getId()).show();
+                    }).setListData(teamGame, mGamePotinsList.get(i).getId()).show();
                     break;
                 }
             }
@@ -297,9 +296,6 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
             mCurrentZoom = cameraPosition.zoom;//获取手指缩放地图后的值
         }
     };
-
-
-
 
 
     @Override
@@ -491,13 +487,13 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 //                    String distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
                     if (mGamePotinsList != null && mGamePotinsList.size() > 0 && t_ids >= 0) {
                         for (MinewBeacon beacon : minewBeacons) {
-                            String majer = beacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Major).getStringValue() ;
+                            String majer = beacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Major).getStringValue();
                             if (majer != null) {
-                                    if (majer.equals(mGamePotinsList.get(t_ids).getMajor()+"")) {
+                                if (majer.equals(mGamePotinsList.get(t_ids).getMajor() + "")) {
 //                                        shouPoup(place_list.get(t_ids).getName(), true, place_list.get(t_ids).getGame_id(), place_list.get(t_ids).getMp3());
-                                        t_ids=-1;
-                                        break;
-                                    }
+                                    t_ids = -1;
+                                    break;
+                                }
                             }
                         }
                     }
@@ -582,10 +578,10 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     @Override
     public void onMyLocationChange(Location location) {
         mStartPoint = new LatLng(location.getLatitude(), location.getLongitude());
-        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), mCurrentZoom));
+//        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), mCurrentZoom));
         if (mEndPoint != null) {
             String distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
-            addPositionmsg(location.getLatitude(),location.getLongitude());
+            addPositionmsg(location.getLatitude(), location.getLongitude());
             if (mopupWindow != null && mopupWindow.isShowing()) {
                 mopupWindow.setDistance((int) (Double.parseDouble(distance)) + "m");
             }
@@ -593,14 +589,14 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     }
 //上报地理位置
 
-    public void addPositionmsg(double lat,double longt){
-        if(teamGame.getTeamMemberMax()<=1){
+    public void addPositionmsg(double lat, double longt) {
+        if (teamGame.getTeamMemberMax() <= 1) {
             return;
         }
         UserInfo user = SaveObjectUtils.getInstance(PlayMultActivity.this).getObject(Constants.USER_BASE, null);
-        JoinTeam team=new JoinTeam(user.getAvatar(),teamGame.getId(),lat,longt,user.getNickname(),user.getId());
-         String STARS=JSON.toJSONString(team);
-        mStompClient.send("/{teamId}/save_location",STARS)
+        JoinTeam team = new JoinTeam(user.getAvatar(), gameTeamId, lat, longt, user.getNickname(), user.getId());
+        String STARS = JSON.toJSONString(team);
+        mStompClient.send("/{teamId}/save_location", STARS)
                 .subscribe(new Subscriber<Void>() {
                     @Override
                     public void onSubscribe(Subscription s) {
@@ -623,8 +619,6 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                     }
                 });
     }
-
-
 
 
     /**
@@ -669,22 +663,60 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                     }
                 });
     }
-    private void getPoints() {
+
+    //获取队伍信息
+    private void getTeamInfo() {
         showAlert("正在获取...", true);
-        BaseApi.getJavaLoginDefaultService(PlayMultActivity.this).getGamePoints(1 + "")
+        BaseApi.getJavaLoginDefaultService(PlayMultActivity.this).getTeamInfo(gameTeamId + "")
+                .map(new JavaRxFunction<TeamGame>())
+                .compose(RxSchedulers.<TeamGame>io_main())
+                .subscribe(new RxObserver<TeamGame>(PlayMultActivity.this, TAG, 1, false) {
+                    @Override
+                    public void onSuccess(int whichRequest, TeamGame info) {
+                        teamGame = info;
+                        getPoints();
+                    }
+
+                    @Override
+                    public void onError(int whichRequest, Throwable e) {
+                        dismissAlert();
+                        RxToast.error(e.getMessage());
+                    }
+                });
+    }
+
+    //获取
+    private void getPoints() {
+        BaseApi.getJavaLoginDefaultService(PlayMultActivity.this).getGamePoints(gameTeamId)
                 .map(new JavaRxFunction<List<GamePotins>>())
                 .compose(RxSchedulers.<List<GamePotins>>io_main())
                 .subscribe(new RxObserver<List<GamePotins>>(PlayMultActivity.this, TAG, 1, false) {
                     @Override
-                    public void onSuccess(int whichRequest, List<GamePotins> info) {
+                    public void onSuccess(int whichRequest,final List<GamePotins> info) {
                         dismissAlert();
                         PlayPointManager.insert(info);
-                        if(mGamePotinsList!=null){
+                        if (mGamePotinsList != null) {
                             mGamePotinsList.clear();
                         }
                         mGamePotinsList = info;
+                        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(info.get(0).getLatitude(), info.get(0).getLongitude()), mCurrentZoom));
+                        Glide.with(PlayMultActivity.this).load("http://ww1.sinaimg.cn/orj480/736f0c7ejw1f659dt6n94j20bu06k754.jpg")
+                                .into(new SimpleTarget<Drawable>() {
+                                    @Override
+                                    public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
+                                        ImageView imageView=new ImageView(PlayMultActivity.this);
+                                        imageView.setImageDrawable(resource);
+                                        MarkerOptions markerOption = new MarkerOptions();
+                                        markerOption.position(new LatLng(info.get(0).getLatitude(), info.get(0).getLongitude()));
+                                        Bitmap bitmap = convertViewToBitmap(imageView);
+                                        Log.i("tttt","bitmap="+bitmap);
+                                        markerOption = new MarkerOptions().icon(BitmapDescriptorFactory.fromBitmap(bitmap));
+                                        aMap.addMarker(markerOption);
+                                    }
+                                });
+
                         for (GamePotins gamePotins : info) {
-                            setOverLay(gamePotins.getState(), gamePotins);
+//                            setOverLay(gamePotins.getState(), gamePotins);
                         }
                         setTheView();
                     }
@@ -697,7 +729,13 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                     }
                 });
     }
-
+    public static Bitmap convertViewToBitmap(View view) {
+        view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+        view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
+        view.buildDrawingCache();
+        Bitmap bitmap = view.getDrawingCache();
+        return bitmap;
+    }
     private void setOverLay(int index, GamePotins gamePotins) {
         MarkerOptions markerOption = new MarkerOptions();
 
@@ -710,28 +748,35 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         Marker marker = aMap.addMarker(markerOption);
 
     }
+
     //计算总分数和完成关卡数
-    private void setTheView(){
+    private void setTheView() {
+        if (teamGame.getTeamMemberMax() <= 1) {
+            exit_game.setVisibility(View.VISIBLE);
+            team_game.setVisibility(View.GONE);
+        } else {
+            team_game.setVisibility(View.VISIBLE);
+            exit_game.setVisibility(View.GONE);
+        }
         if (PlayPointManager.isHavaPlay()) {
             map_scan.setVisibility(View.GONE);
             team_game.setVisibility(View.GONE);
-            if(teamGame.getTeamMemberMax()<=1){
+            if (teamGame.getTeamMemberMax() <= 1) {
                 finish_situation.setVisibility(View.GONE);
                 title_two.setText("我的成绩");
-            }else {
+            } else {
                 finish_situation.setVisibility(View.VISIBLE);
                 title_two.setText("团队成绩");
             }
-            score_two.setText(PlayPointManager.getScore()+"分");
-            finish_task_two.setText(PlayPointManager.getHavaPlay()+"");
-            all_task_two.setText("/"+mGamePotinsList.size());
-        }else {
-            score_one.setText(PlayPointManager.getScore()+"分");
-            finish_task.setText(PlayPointManager.getHavaPlay()+"");
-            all_task.setText("/"+mGamePotinsList.size());
+            score_two.setText(PlayPointManager.getScore() + "分");
+            finish_task_two.setText(PlayPointManager.getHavaPlay() + "");
+            all_task_two.setText("/" + mGamePotinsList.size());
+        } else {
+            score_one.setText(PlayPointManager.getScore() + "分");
+            finish_task.setText(PlayPointManager.getHavaPlay() + "");
+            all_task.setText("/" + mGamePotinsList.size());
         }
     }
-
 
 
     //--------------------------------------------------长连接
@@ -767,21 +812,22 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
             }
         });
     }
+
     //监听游戏完成
     private void getMsg() {
-        mStompClient.topic("/topic/+" + teamGame.getId()+ "" + "/status").subscribe(new Consumer<StompMessage>() {
+        mStompClient.topic("/topic/+" + gameTeamId + "" + "/status").subscribe(new Consumer<StompMessage>() {
             @Override
             public void accept(StompMessage stompMessage) throws Exception {
                 String msg = stompMessage.getPayload().trim();
-                String datas="";
+                String datas = "";
                 try {
                     JSONObject jsonObject = new JSONObject();
                     JSONObject obj = jsonObject.getJSONObject(msg);
-                    datas =obj.getString("data");
-                }catch (Exception e){
+                    datas = obj.getString("data");
+                } catch (Exception e) {
 
                 }
-                if("GAME_OVER".equals(datas)){
+                if ("GAME_OVER".equals(datas)) {
                     setTheView();
                 }
             }
@@ -791,17 +837,17 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 
     //监听任务完成
     private void getpointsMsg() {
-        mStompClient.topic("/topic/+" + teamGame.getId()+ "" + "/pass").subscribe(new Consumer<StompMessage>() {
+        mStompClient.topic("/topic/+" + gameTeamId + "" + "/pass").subscribe(new Consumer<StompMessage>() {
             @Override
             public void accept(StompMessage stompMessage) throws Exception {
                 getPoints();
                 String msg = stompMessage.getPayload().trim();
-                String datas="";
+                String datas = "";
                 try {
                     JSONObject jsonObject = new JSONObject();
                     JSONObject obj = jsonObject.getJSONObject(msg);
-                    datas =obj.getString("data");
-                }catch (Exception e){
+                    datas = obj.getString("data");
+                } catch (Exception e) {
 
                 }
             /*   "data": {
@@ -813,40 +859,51 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
             },*/
             }
         });
+    }
+
+    //队员头像
+    private void setUserInfo() {
+        for (JoinTeam bean : mPosition) {
+            MarkerOptions markerOption = new MarkerOptions();
+            markerOption.position(new LatLng(bean.getLatitude(), bean.getLongitude()));
+            markerOption.draggable(true);//设置Marker可拖动
+            markerOption.title(bean.getUserId() + "");
+            ImageView view = new ImageView(PlayMultActivity.this);
+//            markerOption.icon(BitmapManager.getInstance().getImageUrl(PlayMultActivity.this, view, bean.getAvatar()));
+            // 将Marker设置为贴地显示，可以双指下拉地图查看效果
+            markerOption.setFlat(true);//设置marker平贴地图效果
+            Marker marker = aMap.addMarker(markerOption);
+        }
 
     }
+
+
     ///user/{username}/topic/{teamId}/getLocations
     //获取队员地理位置
     private void getAddressMsg() {
         UserInfo user = SaveObjectUtils.getInstance(PlayMultActivity.this).getObject(Constants.USER_BASE, null);
-        mStompClient.topic("/user"+user.getNickname()+"/topic/+" + teamGame.getId()+ "" + "/getLocations").subscribe(new Consumer<StompMessage>() {
+        mStompClient.topic("/user" + user.getNickname() + "/topic/+" + gameTeamId + "" + "/getLocations").subscribe(new Consumer<StompMessage>() {
             @Override
             public void accept(StompMessage stompMessage) throws Exception {
                 String msg = stompMessage.getPayload().trim();
-                String datas="";
+                JSONObject datas = null;
                 try {
                     JSONObject jsonObject = new JSONObject();
                     JSONObject obj = jsonObject.getJSONObject(msg);
-                    datas =obj.getString("data");
-                }catch (Exception e){
+                    datas = obj.getJSONObject("data");
+                    mPosition.addAll(JSON.parseArray(datas.toString(), JoinTeam.class));
+                } catch (Exception e) {
 
                 }
-              /*  "data": [
-                {
-                    "avatar": "string",
-                        "gameTeamId": 0,
-                        "latitude": 0,
-                        "longitude": 0,
-                        "nickname": "string",
-                        "userId": 0
-                }*/
+                setUserInfo();
+
             }
         });
     }
 
-    private  void getPointGame(long teamGameId,long pointId,boolean xianxia,boolean xxtimu){
+    private void getPointGame(long teamGameId, long pointId, boolean xianxia, boolean xxtimu) {
         showAlert("正在获取任务...", true);
-        BaseApi.getJavaLoginDefaultService(PlayMultActivity.this).getPointGame(teamGameId,pointId,xianxia,xxtimu)
+        BaseApi.getJavaLoginDefaultService(PlayMultActivity.this).getPointGame(teamGameId, pointId, xianxia, xxtimu)
                 .map(new JavaRxFunction<TaskPoint>())
                 .compose(RxSchedulers.<TaskPoint>io_main())
                 .subscribe(new RxObserver<TaskPoint>(PlayMultActivity.this, TAG, 1, false) {
@@ -877,9 +934,6 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                     }
                 });
     }
-
-    //计算总分数和完成关卡数
-
 
 
 //    private void setMarker() {

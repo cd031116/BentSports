@@ -154,7 +154,7 @@ public interface ApiService {
      * @return
      */
     @GET("api/travel/game_team/{teamId}/game_point_status")
-    Observable<JavaResult<List<GamePotins>>> getGamePoints(@Query("teamId") String teamId);
+    Observable<JavaResult<List<GamePotins>>> getGamePoints(@Path("teamId") long teamId);
 
 
     /**
