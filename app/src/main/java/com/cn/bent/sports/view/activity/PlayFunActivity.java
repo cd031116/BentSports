@@ -10,22 +10,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.cn.bent.sports.MainActivity;
+import com.bumptech.glide.request.RequestOptions;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.GameInfo;
 import com.cn.bent.sports.bean.LoginResult;
-import com.cn.bent.sports.utils.Constants;
-import com.cn.bent.sports.utils.SaveObjectUtils;
-import com.cn.bent.sports.utils.ToastUtils;
-import com.cn.bent.sports.view.activity.youle.PlayMultActivity;
+import com.cn.bent.sports.utils.CornersTransform;
 import com.cn.bent.sports.view.activity.youle.play.OrderDetailActivity;
 import com.kennyc.view.MultiStateView;
 import com.vondear.rxtools.view.RxToast;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
-import com.zhl.network.huiqu.HuiquRxTBFunction;
 import com.zhl.network.huiqu.JavaRxFunction;
 
 import java.util.ArrayList;
@@ -142,8 +138,13 @@ public class PlayFunActivity extends BaseActivity {
                     finish();
                 }
             });
+
+            RequestOptions myOptions = new RequestOptions()
+                    .centerCrop()
+                    .transform(new CornersTransform(PlayFunActivity.this,8));
             Glide.with(PlayFunActivity.this)
                     .load(mList.get(position).getCover())
+                    .apply(myOptions)
                     .into(imageView);
             container.addView(view);
             return view;

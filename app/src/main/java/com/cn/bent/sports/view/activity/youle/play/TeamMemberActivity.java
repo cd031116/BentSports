@@ -42,12 +42,11 @@ import ua.naiksoftware.stomp.client.StompMessage;
  * create 2018/3/31/031 10:18  组队队员界面
  **/
 public class TeamMemberActivity extends BaseActivity {
-    private MyGame myGame ;
     private JoinTeam bean;
     @Bind(R.id.image_cover)
     ImageView image_cover;
     private StompClient mStompClient;
-
+   private int gameTeamId ;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_team_member;
@@ -56,7 +55,7 @@ public class TeamMemberActivity extends BaseActivity {
     @Override
     public void initView() {
         super.initView();
-        myGame = (MyGame)getIntent().getSerializableExtra("myGame");
+        gameTeamId=getIntent().getExtras().getInt("gameTeamId");
         createStompClient();
         getGameDetail();
     }
@@ -72,7 +71,7 @@ public class TeamMemberActivity extends BaseActivity {
             case R.id.look_peo:
                 Intent intent = new Intent(TeamMemberActivity.this, MemberEditActivity.class);
                 intent.putExtra("type", "personal");
-                intent.putExtra("gameTeamId", myGame.getGameTeamId());
+                intent.putExtra("gameTeamId", gameTeamId);
                 startActivity(intent);
                 break;
         }
@@ -81,7 +80,7 @@ public class TeamMemberActivity extends BaseActivity {
 
     private void getGameDetail() {
         showAlert("正在获取...", true);
-        BaseApi.getJavaLoginDefaultService(TeamMemberActivity.this).getGamePrapre((long)myGame.getGameId())
+        BaseApi.getJavaLoginDefaultService(TeamMemberActivity.this).getGamePrapre(gameTeamId)
                 .map(new JavaRxFunction<String>())
                 .compose(RxSchedulers.<String>io_main())
                 .subscribe(new RxObserver<String>(TeamMemberActivity.this, TAG, 1, false) {
@@ -139,7 +138,7 @@ public class TeamMemberActivity extends BaseActivity {
 
     //    //接受消息
     private void getMsg() {
-        mStompClient.topic("/topic/+" + myGame.getGameTeamId()+ "" + "/status").subscribe(new Consumer<StompMessage>() {
+        mStompClient.topic("/topic/+" + gameTeamId+ "" + "/status").subscribe(new Consumer<StompMessage>() {
             @Override
             public void accept(StompMessage stompMessage) throws Exception {
                 String msg = stompMessage.getPayload().trim();
@@ -162,7 +161,7 @@ public class TeamMemberActivity extends BaseActivity {
 
     //获取人个数
     private void  getPeople(){
-        BaseApi.getJavaLoginDefaultService(TeamMemberActivity.this).getMemberDetailData(myGame.getGameTeamId()+"")
+        BaseApi.getJavaLoginDefaultService(TeamMemberActivity.this).getMemberDetailData(gameTeamId+"")
                 .map(new JavaRxFunction<List<MemberDataEntity>>())
                 .compose(RxSchedulers.<List<MemberDataEntity>>io_main())
                 .subscribe(new RxObserver<List<MemberDataEntity>>(TeamMemberActivity.this, TAG, 1, false) {
@@ -172,7 +171,7 @@ public class TeamMemberActivity extends BaseActivity {
                             PlayUserManager.insert(info);
                         }
                         Intent intent = new Intent(TeamMemberActivity.this, PlayMultActivity.class);
-                        intent.putExtra("gameTeamId",  myGame.getGameTeamId());
+                        intent.putExtra("gameTeamId",  gameTeamId);
                         startActivity(intent);
                         finish();
                     }
@@ -180,7 +179,7 @@ public class TeamMemberActivity extends BaseActivity {
                     public void onError(int whichRequest, Throwable e) {
                         dismissAlert();
                         Intent intent = new Intent(TeamMemberActivity.this, PlayMultActivity.class);
-                        intent.putExtra("gameTeamId",  myGame.getGameTeamId());
+                        intent.putExtra("gameTeamId",  gameTeamId);
                         startActivity(intent);
                         finish();
                     }

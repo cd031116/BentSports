@@ -222,6 +222,7 @@ public class OrganizeActivity extends BaseActivity {
             @Override
             public void accept(StompMessage stompMessage) throws Exception {
                 String msg = stompMessage.getPayload().trim();
+                Log.i("tttt","join_team="+msg);
                 JSONObject jsonObject = new JSONObject();
                 JSONObject obj = jsonObject.getJSONObject(msg);
                 JSONObject datas = obj.getJSONObject("data");
