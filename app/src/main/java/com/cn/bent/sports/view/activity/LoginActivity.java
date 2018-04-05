@@ -152,8 +152,6 @@ public class LoginActivity extends BaseActivity implements Handler.Callback {
     }
 
     private void weiChatLogin( Platform platform) {
-
-        showAlert("正在登录...", true);
         BaseApi.getJavaLoginService(this).weichatLogin("password", platform.getDb().get("unionid"),"1","ANDROID",platform.getDb().getUserName(),platform.getDb().getUserIcon())
                 .map(new HuiquRxTBFunction<LoginResult>())
                 .compose(RxSchedulers.<LoginResult>io_main())
@@ -175,7 +173,7 @@ public class LoginActivity extends BaseActivity implements Handler.Callback {
 
     private void login(String account, String code) {
         showAlert("正在登录...", true);
-        BaseApi.getJavaLoginService(this).Loging("password","mdzz2" ,"123456")
+        BaseApi.getJavaLoginService(this).Loging("password",account ,code)
                 .map(new HuiquRxTBFunction<LoginResult>())
                 .compose(RxSchedulers.<LoginResult>io_main())
                 .subscribe(new RxObserver<LoginResult>(LoginActivity.this, "login", 1, false) {
@@ -218,19 +216,13 @@ public class LoginActivity extends BaseActivity implements Handler.Callback {
 
     }
 
-    private void getcode() {
-        BaseApi.getDefaultService(LoginActivity.this)
-                .getcode(edit_photo.getText().toString())
-                .map(new HuiquRxTBFunction<HuiquTBResult>())
-                .compose(RxSchedulers.<HuiquTBResult>io_main())
-                .subscribe(new RxObserver<HuiquTBResult>(LoginActivity.this, "getcode", 1, false) {
+    private void getcode(String account) {
+        BaseApi.getJavaLoginDefaultService(LoginActivity.this).sendCode(account,0)
+                .map(new JavaRxFunction<Boolean>())
+                .compose(RxSchedulers.<Boolean>io_main())
+                .subscribe(new RxObserver<Boolean>(LoginActivity.this, "getcode", 1, false) {
                     @Override
-                    public void onSuccess(int whichRequest, HuiquTBResult result) {
-                        if (!"1".equals(result.getCode())) {
-                            RxToast.success(result.getMsg());
-                        } else {
-
-                        }
+                    public void onSuccess(int whichRequest, Boolean result) {
                         timerCount.start();
                     }
 
@@ -261,7 +253,7 @@ public class LoginActivity extends BaseActivity implements Handler.Callback {
                     RxToast.warning("请输入手机号");
                     break;
                 }
-                getcode();
+                getcode(sd);
                 break;
             case R.id.commit_btn:
                 login(edit_photo.getText().toString(), code_photo.getText().toString());
@@ -273,6 +265,7 @@ public class LoginActivity extends BaseActivity implements Handler.Callback {
                 wechat.setPlatformActionListener(paListener);
                 wechat.authorize();
                 wechat.showUser(null);
+                showAlert("正在调用微信登录...", true);
                 break;
         }
     }

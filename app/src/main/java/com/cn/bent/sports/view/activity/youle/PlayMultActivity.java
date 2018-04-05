@@ -734,6 +734,8 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
             exit_game.setVisibility(View.GONE);
         }
         if (PlayPointManager.isHavaPlay()) {
+            line_two.setVisibility(View.VISIBLE);
+            line_one.setVisibility(View.GONE);
             map_scan.setVisibility(View.GONE);
             team_game.setVisibility(View.GONE);
             if (teamGame.getTeamMemberMax() <= 1) {
@@ -747,6 +749,8 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
             finish_task_two.setText(PlayPointManager.getHavaPlay() + "");
             all_task_two.setText("/" + mGamePotinsList.size());
         } else {
+            line_one.setVisibility(View.VISIBLE);
+            line_two.setVisibility(View.GONE);
             score_one.setText(PlayPointManager.getScore() + "分");
             finish_task.setText(PlayPointManager.getHavaPlay() + "");
             all_task.setText("/" + mGamePotinsList.size());
@@ -838,6 +842,9 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 
     //队员头像
     private void setUserInfo() {
+        if(teamGame==null&&teamGame.getTeamMemberMax()<=1){
+            return;
+        }
         for(Marker marker:mList){
             marker.remove();
         }
@@ -871,7 +878,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 
 
     ///user/{username}/topic/{teamId}/getLocations
-    //获取队员地理位置
+    //获取队员地理位置个人不需要
     private void getAddressMsg() {
         UserInfo user = SaveObjectUtils.getInstance(PlayMultActivity.this).getObject(Constants.USER_BASE, null);
         mStompClient.topic("/user" + user.getNickname() + "/topic/+" + gameTeamId + "" + "/getLocations").subscribe(new Consumer<StompMessage>() {

@@ -93,6 +93,14 @@ public interface ApiService {
     @GET("api/basic/user")
     Observable<JavaResult<UserInfo>> getUserInfo();
 
+    /*发送验证码
+  * */
+    @FormUrlEncoded
+    @POST("api/basic/user/noauth/send_code")
+    Observable<JavaResult<Boolean>> sendCode(@Query("phone") String phone,
+                                              @Query("type") int type);
+
+
     /**
      * 登录
      *
