@@ -22,6 +22,7 @@ public class TeamGame implements Serializable {
      * teamMemberReal : 1
      * state : 1
      * startTime : 2018-03-30T10:29:34.71
+     * passRate:50
      */
 
     private int id;//组队id

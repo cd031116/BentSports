@@ -7,6 +7,8 @@ import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 
+import com.cn.bent.sports.bean.GamePotins;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -15,7 +17,10 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -48,6 +53,17 @@ public class DataUtils {
             e.printStackTrace();
         }
         return date.getTime();
+    }
+
+    public static void compareDaXiao(List<GamePotins> history) {
+        Collections.sort(history, new Comparator<GamePotins>() {
+            @Override
+            public int compare(GamePotins user1, GamePotins user2) {
+                Integer id1 = user1.getOrderNo();
+                Integer id2 = user2.getOrderNo();
+                return id1.compareTo(id2);
+            }
+        });
     }
 
     //时间戳转换成字符窜

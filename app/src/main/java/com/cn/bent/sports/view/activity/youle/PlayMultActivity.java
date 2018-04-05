@@ -3,6 +3,7 @@ package com.cn.bent.sports.view.activity.youle;
 import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
@@ -123,6 +124,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     private StompClient mStompClient;
     private AMap aMap;
     private float mCurrentZoom = 18f;
+    private int type = 1;
     //--------------------
     private List<Marker> mList = new ArrayList<Marker>();
     private LatLng mStartPoint;//起点，116.335891,39.942295
@@ -690,7 +692,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                 .compose(RxSchedulers.<List<GamePotins>>io_main())
                 .subscribe(new RxObserver<List<GamePotins>>(PlayMultActivity.this, TAG, 1, false) {
                     @Override
-                    public void onSuccess(int whichRequest,final List<GamePotins> info) {
+                    public void onSuccess(int whichRequest, final List<GamePotins> info) {
                         dismissAlert();
                         PlayPointManager.insert(info);
                         if (mGamePotinsList != null) {
@@ -699,9 +701,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                         mGamePotinsList = info;
                         aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(info.get(0).getLatitude(), info.get(0).getLongitude()), mCurrentZoom));
 
-                        for (GamePotins gamePotins : info) {
-                            setOverLay(gamePotins.getState(), gamePotins);
-                        }
+                        setMarkerView(info);
                         setTheView();
                     }
 
@@ -713,12 +713,50 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                 });
     }
 
-    private void setOverLay(int index, GamePotins gamePotins) {
+    /**
+     * 设置点标
+     *
+     * @param info 1-依次穿越，2-限时挑战 3-自由规划
+     */
+    private void setMarkerView(List<GamePotins> info) {
+        if (type == 1) {
+            DataUtils.compareDaXiao(info);
+            for (GamePotins gamePotins : info) {
+                Log.d(TAG, "setMarkerView: " + gamePotins.getOrderNo() + "----getState:" + gamePotins.getState()+"--:"+teamGame.getPassRate());
+                if (gamePotins.getState() == 2) {
+                    setOverLay(gamePotins);
+                }
+                if (gamePotins.getState() == 1) {
+                    setMarker(gamePotins);
+                    break;
+                }
+                if (gamePotins.getState() == -1) {
+                    setOverLay(gamePotins);
+                    break;
+                }
+            }
+        } else
+            for (GamePotins gamePotins : info)
+                if (gamePotins.getState() == 1)
+                    setMarker(gamePotins);
+                else
+                    setOverLay(gamePotins);
+    }
+
+    public static Bitmap convertViewToBitmap(View view) {
+        view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+        view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
+        view.buildDrawingCache();
+        Bitmap bitmap = view.getDrawingCache();
+        return bitmap;
+    }
+
+    private void setOverLay( GamePotins gamePotins) {
         MarkerOptions markerOption = new MarkerOptions();
         markerOption.position(new LatLng(gamePotins.getLatitude(), gamePotins.getLongitude()));
         markerOption.draggable(true);//设置Marker可拖动
         markerOption.title(gamePotins.getId() + "");
-        markerOption.icon(BitmapManager.getInstance().getGameBitmapDescriptor(index));
+        markerOption.icon(BitmapManager.getInstance().getGameBitmapDescriptor(gamePotins.getState()));
         // 将Marker设置为贴地显示，可以双指下拉地图查看效果
         markerOption.setFlat(true);//设置marker平贴地图效果
         Marker marker = aMap.addMarker(markerOption);
@@ -934,16 +972,24 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     }
 
 
-//    private void setMarker() {
-//        View view = this.getLayoutInflater().inflate(R.layout.marker_dedai, null);
-//        TextView textView = (TextView) view.findViewById(R.id.text_num);
-//        textView.setText("8");
-//        MarkerOptions markerOption = new MarkerOptions();
+    private void setMarker(GamePotins gamePotins) {
+        int passNum = gamePotins.getTeamTaskDetails().size();
+        int allNum;
+        if (teamGame.getPassRate() * teamGame.getTeamMemberMax() % 100 == 0)
+            allNum = teamGame.getPassRate() * teamGame.getTeamMemberMax() / 100;
+        else
+            allNum = teamGame.getPassRate() * teamGame.getTeamMemberMax() / 100 + 1;
+        Log.d(TAG, "setMarker: " + passNum + "--:" + allNum);
+
+        View view = this.getLayoutInflater().inflate(R.layout.marker_dedai, null);
+        TextView textView = (TextView) view.findViewById(R.id.text_num);
+        textView.setText(String.valueOf(allNum - passNum));
+        MarkerOptions markerOption = new MarkerOptions();
 //        markerOption.position(new LatLng(lp.getLatitude(), lp.getLongitude()));
-//        markerOption.icon(BitmapManager.getInstance().getBitmapDescriptor4View(view));
-//        // 将Marker设置为贴地显示，可以双指下拉地图查看效果
-//        markerOption.setFlat(true);//设置marker平贴地图效果
-//        Marker marker = aMap.addMarker(markerOption);
-//        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lp.getLatitude(), lp.getLongitude()), mCurrentZoom));
-//    }
+        markerOption.icon(BitmapManager.getInstance().getBitmapDescriptor4View(view));
+        // 将Marker设置为贴地显示，可以双指下拉地图查看效果
+        markerOption.setFlat(true);//设置marker平贴地图效果
+        Marker marker = aMap.addMarker(markerOption);
+    }
+
 }

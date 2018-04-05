@@ -92,17 +92,13 @@ public class BitmapManager {
     public BitmapDescriptor getGameBitmapDescriptor(int index) {
         BitmapDescriptor bitmapDescriptor = null;
         switch (index) {
-            case 1:
-                bitmapDescriptor = BitmapDescriptorFactory
-                        .fromResource(R.drawable.game_commplete);
-                break;
             case -1:
                 bitmapDescriptor = BitmapDescriptorFactory
                         .fromResource(R.drawable.uncomplete);
                 break;
-            default:
+            case 2:
                 bitmapDescriptor = BitmapDescriptorFactory
-                        .fromResource(R.drawable.uncomplete);
+                        .fromResource(R.drawable.game_commplete);
                 break;
         }
         return bitmapDescriptor;
@@ -138,8 +134,7 @@ public class BitmapManager {
         addViewContent.buildDrawingCache();
 
         Bitmap cacheBitmap = addViewContent.getDrawingCache();
-        Bitmap bitmap = Bitmap.createBitmap(cacheBitmap);
-
+        Bitmap bitmap=  Bitmap.createBitmap(cacheBitmap);
         return bitmap;
     }
 }
