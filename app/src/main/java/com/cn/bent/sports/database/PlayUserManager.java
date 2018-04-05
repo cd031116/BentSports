@@ -36,10 +36,10 @@ public class PlayUserManager {
         TaskCationDB.getDB().deleteAll(null,MemberDataEntity.class);
     }
 
-    public static MemberDataEntity getPlayUser(String userId){
+    public static MemberDataEntity getPlayUser(int userId){
         List<MemberDataEntity> mList = PlayUserDb.getDB().select(null,MemberDataEntity.class);
         for (MemberDataEntity bean:mList) {
-            if (userId.equals(bean.getUserId())) {
+            if (userId==bean.getUserId()) {
                 return bean;
             }
         }

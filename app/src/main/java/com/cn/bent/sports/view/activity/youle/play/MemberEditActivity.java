@@ -3,6 +3,7 @@ package com.cn.bent.sports.view.activity.youle.play;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -24,6 +25,7 @@ import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.JavaRxFunction;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -60,18 +62,18 @@ public class MemberEditActivity extends BaseActivity {
     @Override
     public void initView() {
         String type = getIntent().getStringExtra("type");
+        gameTeamId = getIntent().getIntExtra("gameTeamId", 1);
         member_list.setLayoutManager(new LinearLayoutManager(this));
         if (!TextUtils.isEmpty(type) && ("personal".equals(type))) {
             m_edit.setVisibility(View.GONE);
             obtainMemberInfo();
-        }else if (!TextUtils.isEmpty(type) && ("team".equals(type))){
+        } else if (!TextUtils.isEmpty(type) && ("team".equals(type))) {
             m_edit.setVisibility(View.VISIBLE);
             obtainMemberInfo();
-        }else{
+        } else {
             m_edit.setVisibility(View.GONE);
-
+            obtainTeamScore();
         }
-        gameTeamId = getIntent().getIntExtra("gameTeamId", 1);
         getGameDetail();
     }
 
@@ -105,23 +107,32 @@ public class MemberEditActivity extends BaseActivity {
 
     }
 
-    private void obtainTeamScore(){
-        final List<MemberDataEntity> history = PlayUserManager.getHistory();
+    List<MemberDataEntity> history;
+
+    private void obtainTeamScore() {
+        history = new ArrayList<>();
+        history = PlayUserManager.getHistory();
+        Log.d(TAG, "obtainTeamScore: " + history.size());
         BaseApi.getJavaLoginDefaultService(this).getTeamScore(gameTeamId)
                 .map(new JavaRxFunction<List<GameTeamScoreEntity>>())
                 .compose(RxSchedulers.<List<GameTeamScoreEntity>>io_main())
-                .subscribe(new RxObserver<List<GameTeamScoreEntity>>(this,TAG,2,false) {
+                .subscribe(new RxObserver<List<GameTeamScoreEntity>>(this, TAG, 2, false) {
                     @Override
                     public void onSuccess(int whichRequest, List<GameTeamScoreEntity> gameTeamScoreEntities) {
-                        for (GameTeamScoreEntity gameTeamScoreEntity : gameTeamScoreEntities) {
-                            for (MemberDataEntity memberDataEntity : history) {
+
+                        Log.d(TAG, "obtainTeamScore onSuccess: " + gameTeamScoreEntities.size());
+                        for (MemberDataEntity memberDataEntity : history) {
+                            for (GameTeamScoreEntity gameTeamScoreEntity : gameTeamScoreEntities) {
+                                Log.d(TAG, "onSuccess UserId: " + gameTeamScoreEntity.getUserId() + "---member user:" + memberDataEntity.getUserId() + "---:" + gameTeamScoreEntity.getScore());
                                 if (gameTeamScoreEntity.getUserId() == memberDataEntity.getUserId()) {
                                     memberDataEntity.setScore(gameTeamScoreEntity.getScore());
                                     break;
                                 }
                             }
                         }
-                        compareDaXiao(history);
+                        Log.d(TAG, "onSuccess: "+history.size());
+                        PlayUserManager.insert(history);
+                            compareDaXiao(history);
                         setRecyView(history);
                     }
 
@@ -131,6 +142,7 @@ public class MemberEditActivity extends BaseActivity {
                     }
                 });
     }
+
     /**
      * 从大到小排序
      *
@@ -168,7 +180,7 @@ public class MemberEditActivity extends BaseActivity {
         }
     }
 
-    private void obtainMemberInfo(){
+    private void obtainMemberInfo() {
         BaseApi.getJavaLoginDefaultService(this).getMemberDetailData(gameTeamId + "")
                 .map(new JavaRxFunction<List<MemberDataEntity>>())
                 .compose(RxSchedulers.<List<MemberDataEntity>>io_main())

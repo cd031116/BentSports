@@ -12,7 +12,9 @@ import com.cn.bent.sports.view.activity.WalkRankListActivity;
 import com.cn.bent.sports.view.activity.youle.MyRouteListActivity;
 import com.cn.bent.sports.view.activity.youle.PlayActivity;
 import com.cn.bent.sports.view.activity.PlayFunActivity;
+import com.cn.bent.sports.view.activity.youle.PlayMultActivity;
 import com.cn.bent.sports.view.activity.youle.bean.JoinTeam;
+import com.cn.bent.sports.view.activity.youle.play.MemberEditActivity;
 import com.cn.bent.sports.view.activity.youle.play.TeamMemberActivity;
 import com.vondear.rxtools.RxActivityTool;
 import com.vondear.rxtools.activity.ActivityScanerCode;
@@ -66,10 +68,17 @@ public class RecommendFragment extends BaseFragment {
                 startActivity(new Intent(getActivity(), PlayFunActivity.class));
                 break;
             case R.id.activity_one:
-                startActivity(new Intent(getActivity(), PlayActivity.class));
+                Intent intent1 = new Intent(getActivity(), MemberEditActivity.class);
+                intent1.putExtra("type", "game_team");
+                intent1.putExtra("gameTeamId", 169);
+                startActivity(intent1);
                 break;
             case R.id.seek_rank:
-                startActivity(new Intent(getActivity(), WalkRankListActivity.class));
+//                startActivity(new Intent(getActivity(), WalkRankListActivity.class));
+                Intent intent2 = new Intent(getActivity(), MemberEditActivity.class);
+                intent2.putExtra("type", "team");
+                intent2.putExtra("gameTeamId", 169);
+                startActivity(intent2);
                 break;
             case R.id.see_my:
                 startActivity(new Intent(getActivity(), MyRouteListActivity.class));
