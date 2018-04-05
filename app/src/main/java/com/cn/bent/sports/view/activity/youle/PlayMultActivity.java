@@ -42,6 +42,7 @@ import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.base.BaseConfig;
 import com.cn.bent.sports.bean.GamePotins;
 import com.cn.bent.sports.bean.LoginResult;
+import com.cn.bent.sports.bean.MemberDataEntity;
 import com.cn.bent.sports.bean.TeamGame;
 import com.cn.bent.sports.database.PlayPointManager;
 import com.cn.bent.sports.utils.Constants;
@@ -854,16 +855,16 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 
     //监听任务完成
     private void getpointsMsg() {
-        mStompClient.topic("/topic/+" + gameTeamId + "" + "/pass").subscribe(new Consumer<StompMessage>() {
+        String pats="/topic/+" + gameTeamId + "/pass";
+        mStompClient.topic(pats).subscribe(new Consumer<StompMessage>() {
             @Override
             public void accept(StompMessage stompMessage) throws Exception {
                 getPoints();
                 String msg = stompMessage.getPayload().trim();
                 String datas = "";
                 try {
-                    JSONObject jsonObject = new JSONObject();
-                    JSONObject obj = jsonObject.getJSONObject(msg);
-                    datas = obj.getString("data");
+                    JSONObject jsonObject =JSONObject.parseObject(msg);
+                    datas = jsonObject.getString("data");
                 } catch (Exception e) {
 
                 }
@@ -919,15 +920,15 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     //获取队员地理位置个人不需要
     private void getAddressMsg() {
         UserInfo user = SaveObjectUtils.getInstance(PlayMultActivity.this).getObject(Constants.USER_BASE, null);
-        mStompClient.topic("/user" + user.getNickname() + "/topic/+" + gameTeamId + "" + "/getLocations").subscribe(new Consumer<StompMessage>() {
+        String paths="/user" + user.getNickname() + "/topic/+" + gameTeamId  + "/getLocations";
+        mStompClient.topic(paths).subscribe(new Consumer<StompMessage>() {
             @Override
             public void accept(StompMessage stompMessage) throws Exception {
                 String msg = stompMessage.getPayload().trim();
                 JSONObject datas = null;
                 try {
-                    JSONObject jsonObject = new JSONObject();
-                    JSONObject obj = jsonObject.getJSONObject(msg);
-                    datas = obj.getJSONObject("data");
+                    JSONObject jsonObject =JSONObject.parseObject(msg);
+                    datas = jsonObject.getJSONObject("data");
                     mPosition.addAll(JSON.parseArray(datas.toString(), JoinTeam.class));
                 } catch (Exception e) {
 

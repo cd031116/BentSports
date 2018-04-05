@@ -131,7 +131,7 @@ public class RecommendFragment extends BaseFragment {
                     public void onSuccess(int whichRequest, JoinTeam info) {
                         dismissAlert();
                         Intent intent=new Intent(getActivity(),TeamMemberActivity.class);
-                        intent.putExtra("gameTeamId",info.getGameTeamId());
+                        intent.putExtra("gameTeamId",teamId);
                         startActivity(intent);
                     }
 

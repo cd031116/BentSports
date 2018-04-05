@@ -218,18 +218,32 @@ public class OrganizeActivity extends BaseActivity {
 
     //    //接受消息
     private void getMsg() {
-        mStompClient.topic("/topic/+" + teamGame.getId() + "" + "/join_team").subscribe(new Consumer<StompMessage>() {
+        String path="/topic/"+teamGame.getId()+"/join_team";
+        mStompClient.topic(path).subscribe(new Consumer<StompMessage>() {
             @Override
             public void accept(StompMessage stompMessage) throws Exception {
                 String msg = stompMessage.getPayload().trim();
-                Log.i("tttt","join_team="+msg);
-                JSONObject jsonObject = new JSONObject();
-                JSONObject obj = jsonObject.getJSONObject(msg);
-                JSONObject datas = obj.getJSONObject("data");
-                MemberDataEntity bean = JSON.parseObject(datas.toString(), MemberDataEntity.class);
-                mList.add(bean);
-                mAdapter.notifyDataSetChanged();
-                join_num.setText(mList.size() + "");
+                try {
+                    JSONObject jsonObject =JSONObject.parseObject(msg);
+                    JSONObject datas = jsonObject.getJSONObject("data");
+                    MemberDataEntity bean = JSON.parseObject(datas.toJSONString(), MemberDataEntity.class);
+                    mList.add(bean);
+                }catch (Exception e){
+
+                }
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mAdapter.notifyDataSetChanged();
+                                join_num.setText(mList.size() + "");
+                            }
+                        });
+                    }
+                }).start();
+
             }
         });
 

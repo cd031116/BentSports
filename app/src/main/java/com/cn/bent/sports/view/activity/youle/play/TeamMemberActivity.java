@@ -138,15 +138,15 @@ public class TeamMemberActivity extends BaseActivity {
 
     //    //接受消息
     private void getMsg() {
-        mStompClient.topic("/topic/+" + gameTeamId+ "" + "/status").subscribe(new Consumer<StompMessage>() {
+        String pats="/topic/+" + gameTeamId + "/status";
+        mStompClient.topic(pats).subscribe(new Consumer<StompMessage>() {
             @Override
             public void accept(StompMessage stompMessage) throws Exception {
                 String msg = stompMessage.getPayload().trim();
                 String datas="";
                 try {
-                    JSONObject jsonObject = new JSONObject();
-                    JSONObject obj = jsonObject.getJSONObject(msg);
-                    datas =obj.getString("data");
+                    JSONObject jsonObject =JSONObject.parseObject(msg);
+                    datas = jsonObject.getString("data");
                 }catch (Exception e){
 
                 }

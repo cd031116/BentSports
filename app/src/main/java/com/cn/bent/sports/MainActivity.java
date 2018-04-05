@@ -150,7 +150,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
                         break;
                     case 2:
                         mCurrentFragment = CardFragment.newInstance();
-                        ;//子Fragment实例
+                        //子Fragment实例
                         break;
                     case 3:
                         mCurrentFragment = IsMeFragment.newInstance();
