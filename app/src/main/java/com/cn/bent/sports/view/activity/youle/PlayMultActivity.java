@@ -3,7 +3,6 @@ package com.cn.bent.sports.view.activity.youle;
 import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
@@ -25,6 +24,7 @@ import com.amap.api.maps.AMap;
 import com.amap.api.maps.AMapUtils;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
+import com.amap.api.maps.model.BitmapDescriptor;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
@@ -32,6 +32,7 @@ import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.cn.bent.sports.R;
@@ -80,8 +81,6 @@ import ua.naiksoftware.stomp.LifecycleEvent;
 import ua.naiksoftware.stomp.Stomp;
 import ua.naiksoftware.stomp.client.StompClient;
 import ua.naiksoftware.stomp.client.StompMessage;
-
-import static com.amap.api.col.n3.ga.I;
 
 /**
  * Created by dawn on 2018/3/27.  多人游玩界面
@@ -260,8 +259,8 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        for (int i = 0; i < mList.size(); i++) {
-            if (marker.equals(mList.get(i))) {
+        for (int i = 0; i < mGamePotinsList.size(); i++) {
+            if(Integer.parseInt(marker.getTitle())==mGamePotinsList.get(i).getId()){
                 if (mGamePotinsList.get(i).getState() == -1) {//未开始
                     getPointGame(gameTeamId, mGamePotinsList.get(i).getId(), mGamePotinsList.get(i).isHasQuestion(), !mGamePotinsList.get(i).isHasTask());
                     t_ids = i;
@@ -353,7 +352,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE_NO_CENTER);
 //        myLocationStyle.strokeWidth(1.0f);
         myLocationStyle.myLocationIcon(BitmapDescriptorFactory
-                .fromResource(R.drawable.dangqwz));
+                .fromResource(R.drawable.current_location));
         myLocationStyle.strokeColor(Color.parseColor("#F9DEDE"));// 设置圆形的边框颜色
         myLocationStyle.radiusFillColor(Color.argb(100, 249, 222, 222));//
         aMap.setMyLocationStyle(myLocationStyle);
@@ -699,6 +698,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                         }
                         mGamePotinsList = info;
                         aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(info.get(0).getLatitude(), info.get(0).getLongitude()), mCurrentZoom));
+
                         for (GamePotins gamePotins : info) {
                             setOverLay(gamePotins.getState(), gamePotins);
                         }
@@ -708,7 +708,6 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                     @Override
                     public void onError(int whichRequest, Throwable e) {
                         dismissAlert();
-
                         RxToast.error(e.getMessage());
                     }
                 });
@@ -716,7 +715,6 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 
     private void setOverLay(int index, GamePotins gamePotins) {
         MarkerOptions markerOption = new MarkerOptions();
-
         markerOption.position(new LatLng(gamePotins.getLatitude(), gamePotins.getLongitude()));
         markerOption.draggable(true);//设置Marker可拖动
         markerOption.title(gamePotins.getId() + "");
@@ -724,7 +722,6 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         // 将Marker设置为贴地显示，可以双指下拉地图查看效果
         markerOption.setFlat(true);//设置marker平贴地图效果
         Marker marker = aMap.addMarker(markerOption);
-        mList.add(marker);
     }
 
     //计算总分数和完成关卡数
@@ -841,18 +838,35 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 
     //队员头像
     private void setUserInfo() {
-        for (JoinTeam bean : mPosition) {
+        for(Marker marker:mList){
+            marker.remove();
+        }
+        mList.clear();
+        for (final  JoinTeam bean : mPosition) {
             MarkerOptions markerOption = new MarkerOptions();
             markerOption.position(new LatLng(bean.getLatitude(), bean.getLongitude()));
-            markerOption.draggable(true);//设置Marker可拖动
+            markerOption.draggable(false);//设置Marker可拖动
             markerOption.title(bean.getUserId() + "");
-            ImageView view = new ImageView(PlayMultActivity.this);
-//            markerOption.icon(BitmapManager.getInstance().getImageUrl(PlayMultActivity.this, view, bean.getAvatar()));
-            // 将Marker设置为贴地显示，可以双指下拉地图查看效果
-            markerOption.setFlat(true);//设置marker平贴地图效果
-            Marker marker = aMap.addMarker(markerOption);
-        }
+            RequestOptions myOptions = new RequestOptions()
+                    .centerCrop()
+                    .circleCropTransform();
 
+            Glide.with(PlayMultActivity.this).load(bean.getAvatar())
+                    .apply(myOptions)
+                    .into(new SimpleTarget<Drawable>(100,100) {
+                        @Override
+                        public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
+                            MarkerOptions markerOption = new MarkerOptions();
+                            ImageView imageView=new ImageView(PlayMultActivity.this);
+                            imageView.setImageDrawable(resource);
+                            markerOption.position(new LatLng(bean.getLatitude(),bean.getLongitude()));
+                            BitmapDescriptor bitmapDescriptor=BitmapDescriptorFactory.fromView(imageView);
+                            markerOption.icon(bitmapDescriptor);
+                            Marker marker =   aMap.addMarker(markerOption);
+                            mList.add(marker);
+                        }
+                    });
+        }
     }
 
 
@@ -874,7 +888,6 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 
                 }
                 setUserInfo();
-
             }
         });
     }

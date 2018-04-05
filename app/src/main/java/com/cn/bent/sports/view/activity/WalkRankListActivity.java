@@ -23,6 +23,7 @@ import com.cn.bent.sports.recyclebase.ViewHolder;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.view.activity.youle.bean.UserInfo;
+import com.kennyc.view.MultiStateView;
 import com.vondear.rxtools.view.RxToast;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
@@ -43,7 +44,8 @@ public class WalkRankListActivity extends BaseActivity {
     TextView walk_num;
     @Bind(R.id.walk_rank)
     TextView walk_rank;
-
+    @Bind(R.id.multiStateView)
+    MultiStateView multiStateView;
     private CommonAdapter<StepInfo.ListBean> mAdapter;
     private List<StepInfo.ListBean> mList = new ArrayList<>();
     @Override
@@ -96,19 +98,25 @@ public class WalkRankListActivity extends BaseActivity {
                     @Override
                     public void onSuccess(int whichRequest, StepInfo info) {
                         dismissAlert();
-                        if(mList!=null){
-                            mList.clear();
+                        if (info.getList().size()>0){
+                            multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+                            if(mList!=null){
+                                mList.clear();
+                            }
+                            mList.addAll(info.getList());
+                            mAdapter.notifyDataSetChanged();
+                            setMyView(info);
+                        }else {
+                            multiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
                         }
-                        mList.addAll(info.getList());
-                        mAdapter.notifyDataSetChanged();
-                        setMyView(info);
+
                         Log.i("tttt", "info=" + info);
                     }
 
                     @Override
                     public void onError(int whichRequest, Throwable e){
                         dismissAlert();
-                        RxToast.error(e.getMessage());
+                        multiStateView.setViewState(MultiStateView.VIEW_STATE_ERROR);
                     }
                 });
     }
@@ -138,10 +146,9 @@ public class WalkRankListActivity extends BaseActivity {
     private void setMyView( StepInfo infos){
         boolean ishave=false;
         UserInfo users= SaveObjectUtils.getInstance(WalkRankListActivity.this).getObject(Constants.USER_BASE,null);
-         for (StepInfo.ListBean bean: infos.getList()) {
              for (int i=0;i<infos.getList().size();i++){
-                 if (bean.getUserId()==users.getId()){
-                     walk_num.setText(bean.getStep()+"");
+                 if (infos.getList().get(i).getUserId()==users.getId()){
+                     walk_num.setText(infos.getList().get(i).getStep()+"");
                      walk_rank.setText("当前第"+(i+1)+"名");
                      ishave=true;
                      break;
@@ -150,7 +157,6 @@ public class WalkRankListActivity extends BaseActivity {
                 if(!ishave){
                     walk_rank.setText("未上榜");
                 }
-        }
     }
 
 

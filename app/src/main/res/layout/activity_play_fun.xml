@@ -25,7 +25,14 @@
             android:layout_marginTop="52px"
             android:textSize="69px"
             android:text="趣玩路线"/>
-
+    <com.kennyc.view.MultiStateView
+        android:id="@+id/multiStateView"
+        android:layout_width="match_parent"
+        android:layout_height="1225px"
+        app:msv_emptyView="@layout/empty_view"
+        app:msv_errorView="@layout/error_view"
+        app:msv_loadingView="@layout/loading_view"
+        app:msv_viewState="loading">
     <me.crosswall.lib.coverflow.core.PagerContainer
         android:id="@+id/pager_container"
         android:layout_width="match_parent"
@@ -39,7 +46,7 @@
 
     </me.crosswall.lib.coverflow.core.PagerContainer>
 
-
+    </com.kennyc.view.MultiStateView>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -68,7 +75,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="69px"
                 android:textColor="#333333"
-                android:text="4"/>
+                android:text=""/>
         </LinearLayout>
 
 

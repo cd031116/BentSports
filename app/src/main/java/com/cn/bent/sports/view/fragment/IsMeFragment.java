@@ -25,8 +25,10 @@ import com.cn.bent.sports.ibeacon.ScanActivity;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.view.activity.MapActivity;
+import com.cn.bent.sports.view.activity.PlayFunActivity;
 import com.cn.bent.sports.view.activity.PlayWebViewActivity;
 import com.cn.bent.sports.view.activity.SettingActivity;
+import com.cn.bent.sports.view.activity.youle.MyRouteListActivity;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.HuiquRxFunction;
@@ -118,11 +120,17 @@ public class IsMeFragment extends BaseFragment {
         }
     }
 
-    @OnClick({R.id.setting, R.id.user_photo})
+    @OnClick({R.id.setting, R.id.user_photo,R.id.quwan,R.id.xitong})
     void conlick(View view) {
         switch (view.getId()) {
             case R.id.setting:
             case R.id.user_photo:
+
+                break;
+            case R.id.quwan:
+                startActivity(new Intent(getActivity(), MyRouteListActivity.class));
+                break;
+            case R.id.xitong:
                 startActivity(new Intent(getActivity(), SettingActivity.class));
                 break;
         }

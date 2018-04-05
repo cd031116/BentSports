@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -84,12 +85,22 @@
                 android:textColor="@color/color_666666"
                 android:textSize="@dimen/t38" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/walk_list"
+            <com.kennyc.view.MultiStateView
+                android:id="@+id/multiStateView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_below="@id/bushu"
-                android:background="#ededed" />
+                app:msv_emptyView="@layout/empty_view"
+                app:msv_errorView="@layout/error_view"
+                app:msv_loadingView="@layout/loading_view"
+                app:msv_viewState="loading">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/walk_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#ededed" />
+            </com.kennyc.view.MultiStateView>
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>
 
