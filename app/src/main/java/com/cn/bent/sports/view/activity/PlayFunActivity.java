@@ -119,6 +119,7 @@ public class PlayFunActivity extends BaseActivity {
             View view = LayoutInflater.from(PlayFunActivity.this).inflate(R.layout.item_cover, null);
             ImageView imageView = (ImageView) view.findViewById(R.id.image_cover);
             TextView go_task = (TextView) view.findViewById(R.id.go_task);
+
             TextView name_p = (TextView) view.findViewById(R.id.name_p);
             TextView p_num = (TextView) view.findViewById(R.id.p_num);
             TextView num_dot = (TextView) view.findViewById(R.id.num_dot);

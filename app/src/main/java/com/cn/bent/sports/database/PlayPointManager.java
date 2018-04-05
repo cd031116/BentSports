@@ -21,7 +21,9 @@ public class PlayPointManager  {
     }
     //获得所有
     public static List<GamePotins> getHistory() {
-        return PlayPointDb.getDB().select(null,GamePotins.class);
+        mTaskList.clear();
+        mTaskList.addAll(PlayPointDb.getDB().select(null,GamePotins.class));
+        return mTaskList;
     }
     //插入集合数据(初始一次)
     public static void insert(List<GamePotins> list){
