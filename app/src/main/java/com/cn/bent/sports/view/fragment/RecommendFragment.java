@@ -70,14 +70,14 @@ public class RecommendFragment extends BaseFragment {
             case R.id.activity_one:
                 Intent intent1 = new Intent(getActivity(), MemberEditActivity.class);
                 intent1.putExtra("type", "game_team");
-                intent1.putExtra("gameTeamId", 169);
+                intent1.putExtra("gameTeamId", 171);
                 startActivity(intent1);
                 break;
             case R.id.seek_rank:
 //                startActivity(new Intent(getActivity(), WalkRankListActivity.class));
                 Intent intent2 = new Intent(getActivity(), MemberEditActivity.class);
                 intent2.putExtra("type", "team");
-                intent2.putExtra("gameTeamId", 169);
+                intent2.putExtra("gameTeamId", 171);
                 startActivity(intent2);
                 break;
             case R.id.see_my:

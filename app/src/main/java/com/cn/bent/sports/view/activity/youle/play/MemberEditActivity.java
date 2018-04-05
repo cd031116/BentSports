@@ -107,34 +107,22 @@ public class MemberEditActivity extends BaseActivity {
 
     }
 
-    List<MemberDataEntity> history;
 
     private void obtainTeamScore() {
-        history = new ArrayList<>();
-        history = PlayUserManager.getHistory();
-        Log.d(TAG, "obtainTeamScore: " + history.size());
         BaseApi.getJavaLoginDefaultService(this).getTeamScore(gameTeamId)
                 .map(new JavaRxFunction<List<GameTeamScoreEntity>>())
                 .compose(RxSchedulers.<List<GameTeamScoreEntity>>io_main())
                 .subscribe(new RxObserver<List<GameTeamScoreEntity>>(this, TAG, 2, false) {
                     @Override
                     public void onSuccess(int whichRequest, List<GameTeamScoreEntity> gameTeamScoreEntities) {
-
-                        Log.d(TAG, "obtainTeamScore onSuccess: " + gameTeamScoreEntities.size());
-                        for (MemberDataEntity memberDataEntity : history) {
-                            for (GameTeamScoreEntity gameTeamScoreEntity : gameTeamScoreEntities) {
-                                Log.d(TAG, "onSuccess UserId: " + gameTeamScoreEntity.getUserId() + "---member user:" + memberDataEntity.getUserId() + "---:" + gameTeamScoreEntity.getScore());
-                                if (gameTeamScoreEntity.getUserId() == memberDataEntity.getUserId()) {
-                                    memberDataEntity.setScore(gameTeamScoreEntity.getScore());
-                                    break;
-                                }
-                            }
+                        for (GameTeamScoreEntity gameTeamScoreEntity : gameTeamScoreEntities) {
+                            PlayUserManager.updatePlay(gameTeamScoreEntity.getUserId(), gameTeamScoreEntity.getScore());
                         }
-                        Log.d(TAG, "onSuccess: "+history.size());
-                        PlayUserManager.insert(history);
-                            compareDaXiao(history);
-                        setRecyView(history);
+                        Log.i("tttt","PlayUserManager="+PlayUserManager.getHistory().size());
+                        setRecyView( PlayUserManager.getHistory());
                     }
+//                        PlayUserManager.insert(history);
+//                            compareDaXiao(history);
 
                     @Override
                     public void onError(int whichRequest, Throwable e) {
@@ -171,6 +159,7 @@ public class MemberEditActivity extends BaseActivity {
                     else
                         holder.setText(R.id.item_score, memberDataEntity.getScore() + "");
                     holder.setText(R.id.item_name, memberDataEntity.getNickname() + "");
+                    Log.i("tttt","memberDataEntity="+memberDataEntity.getUserId());
                     ImageView view = (ImageView) holder.getView(R.id.item_img);
                     Glide.with(mContext).load(memberDataEntity.getAvatar()).into(view);
 

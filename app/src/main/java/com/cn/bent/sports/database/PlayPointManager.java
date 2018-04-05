@@ -21,6 +21,7 @@ public class PlayPointManager  {
     }
     //获得所有
     public static List<GamePotins> getHistory() {
+        mTaskList.clear();
         mTaskList.addAll(PlayPointDb.getDB().select(null,GamePotins.class));
         return mTaskList;
     }

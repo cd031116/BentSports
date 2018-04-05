@@ -21,6 +21,9 @@ public class PlayUserManager {
 
     //获得所有
     public static List<MemberDataEntity> getHistory() {
+        if(mTaskList!=null){
+            mTaskList.clear();
+        }
         mTaskList.addAll(PlayUserDb.getDB().select(null,MemberDataEntity.class));
         return mTaskList;
     }
@@ -33,7 +36,7 @@ public class PlayUserManager {
 
     //删除所有
     public static void clear() {
-        TaskCationDB.getDB().deleteAll(null,MemberDataEntity.class);
+        PlayUserDb.getDB().deleteAll(null,MemberDataEntity.class);
     }
 
     public static MemberDataEntity getPlayUser(int userId){
@@ -46,4 +49,16 @@ public class PlayUserManager {
        return null;
     }
 
+
+    //更新分数
+    public static void updatePlay(int userId,int score) {
+        List<MemberDataEntity> mTaskLists = PlayUserDb.getDB().select(null, MemberDataEntity.class);
+        for (MemberDataEntity info : mTaskLists) {
+            if(info.getUserId()==userId){
+                info.setScore(score);
+                PlayUserDb.getDB().update(null,info);
+                break;
+            }
+        }
+    }
 }

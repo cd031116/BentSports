@@ -21,6 +21,7 @@ public class TaskCationManager {
 
     //获得所有
     public static List<ScenicPointsEntity.PointsBean> getHistory() {
+        mTaskList.clear();
         mTaskList.addAll(TaskCationDB.getDB().select(null, ScenicPointsEntity.PointsBean.class));
         return mTaskList;
     }
