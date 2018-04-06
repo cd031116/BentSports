@@ -597,7 +597,8 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         UserInfo user = SaveObjectUtils.getInstance(PlayMultActivity.this).getObject(Constants.USER_BASE, null);
         JoinTeam team = new JoinTeam(user.getAvatar(), gameTeamId, lat, longt, user.getNickname(), user.getId());
         String STARS = JSON.toJSONString(team);
-        mStompClient.send("/{teamId}/save_location", STARS)
+        String pats="/"+gameTeamId+"/save_location";
+        mStompClient.send(pats, STARS)
                 .subscribe(new Subscriber<Void>() {
                     @Override
                     public void onSubscribe(Subscription s) {
