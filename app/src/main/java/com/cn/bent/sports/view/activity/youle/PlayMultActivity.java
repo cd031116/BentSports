@@ -572,7 +572,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 //上报地理位置
 
     public void addPositionmsg(final  double lat,final double longt) {
-        if (teamGame.getTeamMemberMax() <= 1) {
+        if (teamGame.getTeamMemberReal() <= 1) {
             return;
         }
         boolean has=AddressData.getInstance(PlayMultActivity.this).isThan10(mStartPoint);
@@ -761,7 +761,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 
     //计算总分数和完成关卡数
     private void setTheView() {
-        if (teamGame.getTeamMemberMax() <= 1) {
+        if (teamGame.getTeamMemberReal() <= 1) {
             exit_game.setVisibility(View.VISIBLE);
             team_game.setVisibility(View.GONE);
         } else {
@@ -773,7 +773,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
             line_one.setVisibility(View.GONE);
             map_scan.setVisibility(View.GONE);
             team_game.setVisibility(View.GONE);
-            if (teamGame.getTeamMemberMax() <= 1) {
+            if (teamGame.getTeamMemberReal() <= 1) {
                 finish_situation.setVisibility(View.GONE);
                 title_two.setText("我的成绩");
             } else {
