@@ -746,16 +746,18 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
             DataUtils.compareDaXiao(info);
             for (GamePotins gamePotins : info) {
                 Log.d(TAG, "setMarkerView: " + gamePotins.getOrderNo() + "----getState:" + gamePotins.getState() + "--:" + teamGame.getPassRate());
-                if (gamePotins.getState() == 2) {
-                    setOverLay(gamePotins);
-                }
-                if (gamePotins.getState() == 1) {
-                    setMarker(gamePotins);
-                    break;
-                }
-                if (gamePotins.getState() == -1) {
-                    setOverLay(gamePotins);
-                    break;
+                if (gamePotins.getOrderNo() != 0) {
+                    if (gamePotins.getState() == 2) {
+                        setOverLay(gamePotins);
+                    }
+                    if (gamePotins.getState() == 1) {
+                        setMarker(gamePotins);
+                        break;
+                    }
+                    if (gamePotins.getState() == -1) {
+                        setOverLay(gamePotins);
+                        break;
+                    }
                 }
             }
         } else

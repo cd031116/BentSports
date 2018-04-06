@@ -126,6 +126,7 @@ public class MemberEditActivity extends BaseActivity {
                 .subscribe(new RxObserver<List<GameTeamScoreEntity>>(this, TAG, 2, false) {
                     @Override
                     public void onSuccess(int whichRequest, List<GameTeamScoreEntity> gameTeamScoreEntities) {
+
                         for (GameTeamScoreEntity gameTeamScoreEntity : gameTeamScoreEntities) {
                             PlayUserManager.updatePlay(gameTeamScoreEntity.getUserId(), gameTeamScoreEntity.getScore());
                         }

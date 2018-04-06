@@ -1,6 +1,7 @@
 package com.cn.bent.sports.database;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.cn.bent.sports.bean.MemberDataEntity;
 
@@ -52,6 +53,7 @@ public class PlayUserManager {
     public static void updatePlay(int userId,int score) {
         List<MemberDataEntity> mTaskLists = PlayUserDb.getDB().select(null, MemberDataEntity.class);
         for (MemberDataEntity info : mTaskLists) {
+            Log.d("tttt", "updatePlay: "+info.getUserId()+"---:"+userId+"---:"+score);
             if(info.getUserId()==userId){
                 info.setScore(score);
                 PlayUserDb.getDB().update(null,info);
