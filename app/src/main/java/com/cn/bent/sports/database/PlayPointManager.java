@@ -51,7 +51,7 @@ public class PlayPointManager  {
         int total=0;
         List<GamePotins> mlist   =PlayPointDb.getDB().select(null,GamePotins.class);
         for (GamePotins potins : mlist) {
-            if (potins.getState()==1){
+            if (potins.getState()==2){
                 total=total+1;
             }
         }
