@@ -42,6 +42,7 @@ import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.base.BaseConfig;
 import com.cn.bent.sports.bean.GamePotins;
 import com.cn.bent.sports.bean.LoginResult;
+import com.cn.bent.sports.bean.MapDot;
 import com.cn.bent.sports.bean.MemberDataEntity;
 import com.cn.bent.sports.bean.TeamGame;
 import com.cn.bent.sports.database.PlayPointManager;
@@ -110,7 +111,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     @Bind(R.id.finish_situation)
     ImageView finish_situation;//团队显示
     @Bind(R.id.all_task_two)
-    TextView all_task_two;//时间
+    TextView all_task_two;
     @Bind(R.id.finish_task_two)
     TextView finish_task_two;//时间
     @Bind(R.id.time_two)
@@ -204,7 +205,13 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         // 绑定 Marker 被点击事件
         aMap.setOnMarkerClickListener(this);
     }
-
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (handler2 != null) {
+            handler2.removeCallbacks(runnable2);
+        }
+    }
 
     @Override
     public void initData() {
@@ -308,6 +315,9 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         }
         //在activity执行onResume时执行mMapView.onResume ()，重新绘制加载地图
         mapView.onResume();
+        if (times_s > 0) {
+            setTimes();
+        }
     }
 
 
@@ -679,6 +689,10 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                         teamGame = info;
                         Log.i("tttt","info="+info.getStartTime());
                         getPoints();
+                        if(info.getStartTime()!=null){
+                            times_s=DataUtils.getStringToDate(DataUtils.UTCtoString(info.getStartTime()));
+                            setTimes();
+                        }
                     }
 
                     @Override
@@ -829,7 +843,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 
     //监听游戏完成
     private void getMsg() {
-        mStompClient.topic("/topic/" + gameTeamId + "" + "/status").subscribe(new Consumer<StompMessage>() {
+        mStompClient.topic("/topic/"+ gameTeamId  + "/status").subscribe(new Consumer<StompMessage>() {
             @Override
             public void accept(StompMessage stompMessage) throws Exception {
                 String msg = stompMessage.getPayload().trim();
@@ -1022,5 +1036,19 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         Marker marker = aMap.addMarker(markerOption);
         mMarkerList.add(marker);
     }
+//计时器
+private void setTimes() {
+    handler2.postDelayed(runnable2, 1000);
+}
+
+
+Runnable runnable2 = new Runnable() {
+    @Override
+    public void run() {
+        handler2.postDelayed(this, 1000);
+        time.setText(DataUtils.getDateToTime(System.currentTimeMillis() - times_s));
+        timing.setText(DataUtils.getDateToTime(System.currentTimeMillis() - times_s));
+    }
+};
 
 }

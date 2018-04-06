@@ -74,6 +74,20 @@ public class DataUtils {
     }
 
 
+    public static String UTCtoString(String UTCString) {
+        try{
+            UTCString = UTCString.replace("Z", " UTC");
+            SimpleDateFormat utcFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z");
+            SimpleDateFormat defaultFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date date = utcFormat.parse(UTCString);
+            return defaultFormat.format(date);
+        } catch(ParseException pe)
+        {
+            pe.printStackTrace();
+            return null;
+        }
+    }
+
     public static String getDateToTime(long milSecond) {
         long secoond = milSecond / 1000;
         if (secoond >= 2 * 60 * 60) {
