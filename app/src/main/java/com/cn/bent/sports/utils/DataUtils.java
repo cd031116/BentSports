@@ -44,7 +44,10 @@ public class DataUtils {
 
     //将字符串转为时间戳
     public static long getStringToDate(String dateString) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
+        if (dateString==null){
+            return 0;
+        }
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
         try {
             date = dateFormat.parse(dateString);
@@ -76,8 +79,7 @@ public class DataUtils {
 
     public static String UTCtoString(String UTCString) {
         try{
-            UTCString = UTCString.replace("Z", " UTC");
-            SimpleDateFormat utcFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z");
+            SimpleDateFormat utcFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
             SimpleDateFormat defaultFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date date = utcFormat.parse(UTCString);
             return defaultFormat.format(date);
@@ -90,8 +92,8 @@ public class DataUtils {
 
     public static String getDateToTime(long milSecond) {
         long secoond = milSecond / 1000;
-        if (secoond >= 2 * 60 * 60) {
-            return "02.00.00";
+        if (secoond >= 4 * 60 * 60) {
+            return "04.00.00";
         } else {
             long hour = (secoond % (24 * 60 * 60)) / (60 * 60);
             long min = ((secoond % (24 * 60 * 60)) % (60 * 60)) / 60;

@@ -38,6 +38,15 @@ public class TeamGame implements Serializable {
     private int state;
     private int passRate;//通过率
     private String startTime;
+    private int gameType;
+
+    public int getGameType() {
+        return gameType;
+    }
+
+    public void setGameType(int gameType) {
+        this.gameType = gameType;
+    }
 
     public int getPassRate() {
         return passRate;

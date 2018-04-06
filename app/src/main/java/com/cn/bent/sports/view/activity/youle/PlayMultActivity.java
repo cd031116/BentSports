@@ -205,6 +205,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         // 绑定 Marker 被点击事件
         aMap.setOnMarkerClickListener(this);
     }
+
     @Override
     public void onStop() {
         super.onStop();
@@ -407,9 +408,6 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     private DoTaskPoupWindow.ItemInclick itemsOnClick = new DoTaskPoupWindow.ItemInclick() {
         @Override
         public void ItemClick(int index) {
-            BaseConfig bf = BaseConfig.getInstance(PlayMultActivity.this);
-            bf.setStringValue(Constants.IS_SHOWS, "0");
-            times_s = bf.getLongValue(Constants.IS_TIME, 0);
             if (times_s <= 0) {
 //                login();
             }
@@ -608,7 +606,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         UserInfo user = SaveObjectUtils.getInstance(PlayMultActivity.this).getObject(Constants.USER_BASE, null);
         JoinTeam team = new JoinTeam(user.getAvatar(), gameTeamId, lat, longt, user.getNickname(), user.getId());
         String STARS = JSON.toJSONString(team);
-        String pats="/"+gameTeamId+"/save_location";
+        String pats = "/" + gameTeamId + "/save_location";
         mStompClient.send(pats, STARS)
                 .subscribe(new Subscriber<Void>() {
                     @Override
@@ -628,7 +626,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 
                     @Override
                     public void onComplete() {
-                        Log.d("tttt", "上传完成onComplete=" );
+                        Log.d("tttt", "上传完成onComplete=");
                     }
                 });
     }
@@ -687,11 +685,15 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                     @Override
                     public void onSuccess(int whichRequest, TeamGame info) {
                         teamGame = info;
-                        Log.i("tttt","info="+info.getStartTime());
+                        Log.i("tttt", "info=" + info.getStartTime());
+
+                        Log.i("tttt", "DataUtils=" + DataUtils.UTCtoString(info.getStartTime()));
                         getPoints();
-                        if(info.getStartTime()!=null){
-                            times_s=DataUtils.getStringToDate(DataUtils.UTCtoString(info.getStartTime()));
-                            setTimes();
+                        if (info.getStartTime() != null) {
+                            times_s = DataUtils.getStringToDate(DataUtils.UTCtoString(info.getStartTime()));
+                            Log.i("tttt", "times_s=" + times_s);
+                            Log.i("tttt", "times_s=" + System.currentTimeMillis());
+
                         }
                     }
 
@@ -802,6 +804,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
             finish_task_two.setText(PlayPointManager.getHavaPlay() + "");
             all_task_two.setText("/" + mGamePotinsList.size());
         } else {
+            setTimes();
             line_one.setVisibility(View.VISIBLE);
             line_two.setVisibility(View.GONE);
             score_one.setText(PlayPointManager.getScore() + "分");
@@ -814,8 +817,8 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     //--------------------------------------------------长连接
     private void createStompClient() {
         LoginResult user = SaveObjectUtils.getInstance(PlayMultActivity.this).getObject(Constants.USER_INFO, null);
-            mStompClient = Stomp.over(WebSocket.class, "ws://" + Constants.getsocket(PlayMultActivity.this) + "/websocket?access_token=" + user.getAccess_token());
-            mStompClient.connect();
+        mStompClient = Stomp.over(WebSocket.class, "ws://" + Constants.getsocket(PlayMultActivity.this) + "/websocket?access_token=" + user.getAccess_token());
+        mStompClient.connect();
         mStompClient.lifecycle().subscribe(new Consumer<LifecycleEvent>() {
             @Override
             public void accept(LifecycleEvent lifecycleEvent) {
@@ -843,11 +846,11 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 
     //监听游戏完成
     private void getMsg() {
-        mStompClient.topic("/topic/"+ gameTeamId  + "/status").subscribe(new Consumer<StompMessage>() {
+        mStompClient.topic("/topic/" + gameTeamId + "/status").subscribe(new Consumer<StompMessage>() {
             @Override
             public void accept(StompMessage stompMessage) throws Exception {
                 String msg = stompMessage.getPayload().trim();
-                Log.i("tttt","任务完成="+msg);
+                Log.i("tttt", "任务完成=" + msg);
                 String datas = "";
                 try {
                     JSONObject jsonObject = new JSONObject();
@@ -958,7 +961,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
             @Override
             public void accept(StompMessage stompMessage) throws Exception {
                 String msg = stompMessage.getPayload().trim();
-                Log.i("tttt","getAddressMsg="+msg);
+                Log.i("tttt", "getAddressMsg=" + msg);
                 JSONObject datas = null;
                 try {
                     JSONObject jsonObject = JSONObject.parseObject(msg);
@@ -1036,19 +1039,25 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         Marker marker = aMap.addMarker(markerOption);
         mMarkerList.add(marker);
     }
-//计时器
-private void setTimes() {
-    handler2.postDelayed(runnable2, 1000);
-}
 
-
-Runnable runnable2 = new Runnable() {
-    @Override
-    public void run() {
-        handler2.postDelayed(this, 1000);
-        time.setText(DataUtils.getDateToTime(System.currentTimeMillis() - times_s));
-        timing.setText(DataUtils.getDateToTime(System.currentTimeMillis() - times_s));
+    //计时器
+    private void setTimes() {
+        if (PlayPointManager.isHavaPlay()) {
+            time.setText("");
+            timing.setText("");
+            return;
+        }
+        handler2.postDelayed(runnable2, 1000);
     }
-};
+
+
+    Runnable runnable2 = new Runnable() {
+        @Override
+        public void run() {
+            handler2.postDelayed(this, 1000);
+            time.setText(DataUtils.getDateToTime(System.currentTimeMillis() - times_s));
+            timing.setText(DataUtils.getDateToTime(System.currentTimeMillis() - times_s));
+        }
+    };
 
 }
