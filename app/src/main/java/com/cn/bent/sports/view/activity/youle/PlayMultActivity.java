@@ -618,7 +618,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 
                     @Override
                     public void onComplete() {
-
+                        Log.d("tttt", "上传完成onComplete=" );
                     }
                 });
     }
@@ -677,6 +677,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                     @Override
                     public void onSuccess(int whichRequest, TeamGame info) {
                         teamGame = info;
+                        Log.i("tttt","info="+info.getStartTime());
                         getPoints();
                     }
 
@@ -749,13 +750,6 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                     setOverLay(gamePotins);
     }
 
-    public static Bitmap convertViewToBitmap(View view) {
-        view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-        view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
-        view.buildDrawingCache();
-        Bitmap bitmap = view.getDrawingCache();
-        return bitmap;
-    }
 
     private void setOverLay(GamePotins gamePotins) {
         MarkerOptions markerOption = new MarkerOptions();
@@ -806,12 +800,8 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     //--------------------------------------------------长连接
     private void createStompClient() {
         LoginResult user = SaveObjectUtils.getInstance(PlayMultActivity.this).getObject(Constants.USER_INFO, null);
-        try {
             mStompClient = Stomp.over(WebSocket.class, "ws://" + Constants.getsocket(PlayMultActivity.this) + "/websocket?access_token=" + user.getAccess_token());
             mStompClient.connect();
-        } catch (Exception e) {
-            Log.i("tttt", "msg=" + e.getMessage());
-        }
         mStompClient.lifecycle().subscribe(new Consumer<LifecycleEvent>() {
             @Override
             public void accept(LifecycleEvent lifecycleEvent) {
@@ -839,10 +829,11 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 
     //监听游戏完成
     private void getMsg() {
-        mStompClient.topic("/topic/+" + gameTeamId + "" + "/status").subscribe(new Consumer<StompMessage>() {
+        mStompClient.topic("/topic/" + gameTeamId + "" + "/status").subscribe(new Consumer<StompMessage>() {
             @Override
             public void accept(StompMessage stompMessage) throws Exception {
                 String msg = stompMessage.getPayload().trim();
+                Log.i("tttt","任务完成="+msg);
                 String datas = "";
                 try {
                     JSONObject jsonObject = new JSONObject();
@@ -948,20 +939,30 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     //获取队员地理位置个人不需要
     private void getAddressMsg() {
         UserInfo user = SaveObjectUtils.getInstance(PlayMultActivity.this).getObject(Constants.USER_BASE, null);
-        String paths = "/user" + user.getNickname() + "/topic/+" + gameTeamId + "/getLocations";
+        String paths = "/user/" + user.getNickname() + "/topic/+" + gameTeamId + "/getLocations";
         mStompClient.topic(paths).subscribe(new Consumer<StompMessage>() {
             @Override
             public void accept(StompMessage stompMessage) throws Exception {
                 String msg = stompMessage.getPayload().trim();
+                Log.i("tttt","getAddressMsg="+msg);
                 JSONObject datas = null;
                 try {
                     JSONObject jsonObject = JSONObject.parseObject(msg);
                     datas = jsonObject.getJSONObject("data");
+                    mPosition.clear();
                     mPosition.addAll(JSON.parseArray(datas.toString(), JoinTeam.class));
                 } catch (Exception e) {
 
                 }
-                setUserInfo();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        setUserInfo();
+
+                    }
+                });
+
+
             }
         });
     }

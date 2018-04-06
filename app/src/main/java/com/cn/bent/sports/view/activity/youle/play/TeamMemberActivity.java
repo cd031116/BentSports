@@ -152,7 +152,17 @@ public class TeamMemberActivity extends BaseActivity {
 
                 }
                 if("GAME_START".equals(datas)){
-                    getPeople();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    getPeople();
+                                }
+                            });
+                        }
+                    }).start();
 
                 }
             }
