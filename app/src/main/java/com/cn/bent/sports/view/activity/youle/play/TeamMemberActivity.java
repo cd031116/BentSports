@@ -148,22 +148,12 @@ public class TeamMemberActivity extends BaseActivity {
                 try {
                     JSONObject jsonObject =JSONObject.parseObject(msg);
                     datas = jsonObject.getString("data");
-                    Log.d(TAG, "getMsg datas: "+datas);
                 }catch (Exception e){
 
                 }
                 if("GAME_START".equals(datas)){
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    getPeople();
-                                }
-                            });
-                        }
-                    }).start();
+                    getPeople();
+
                 }
             }
         });
@@ -207,5 +197,11 @@ public class TeamMemberActivity extends BaseActivity {
                 TeamMemberActivity.this.finish();
                 break;
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mStompClient.disconnect();
     }
 }

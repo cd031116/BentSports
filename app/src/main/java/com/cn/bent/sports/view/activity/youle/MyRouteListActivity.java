@@ -57,8 +57,13 @@ public class MyRouteListActivity extends BaseActivity {
     public void initView() {
         super.initView();
         top_title.setText("我的路线");
-        getMyRoute(true);
         setview();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getMyRoute(true);
     }
 
     @Override

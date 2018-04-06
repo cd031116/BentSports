@@ -846,7 +846,18 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 
                 }
                 if ("GAME_OVER".equals(datas)) {
-                    setTheView();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    setTheView();
+                                }
+                            });
+                        }
+                    }).start();
+
                 }
             }
         });
@@ -855,11 +866,22 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 
     //监听任务完成
     private void getpointsMsg() {
-        String pats="/topic/+" + gameTeamId + "/pass";
+        String pats="/topic/" + gameTeamId + "/pass";
         mStompClient.topic(pats).subscribe(new Consumer<StompMessage>() {
             @Override
             public void accept(StompMessage stompMessage) throws Exception {
-                getPoints();
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                getPoints();
+                            }
+                        });
+                    }
+                }).start();
                 String msg = stompMessage.getPayload().trim();
                 String datas = "";
                 try {

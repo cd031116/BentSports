@@ -267,5 +267,9 @@ public class OrganizeActivity extends BaseActivity {
         m_recycle.setAdapter(mAdapter);
     }
 
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mStompClient.disconnect();
+    }
 }
