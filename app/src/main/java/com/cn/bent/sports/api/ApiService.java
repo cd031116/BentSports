@@ -177,8 +177,7 @@ public interface ApiService {
                                                    @Query("task") boolean task,
                                                    @Query("question") boolean question);
 
-
-    @FormUrlEncoded
+    
     @POST("api/basic/user_run_data")
     Observable<JavaResult<Boolean>> sendStep(@Query("step") int step);
 

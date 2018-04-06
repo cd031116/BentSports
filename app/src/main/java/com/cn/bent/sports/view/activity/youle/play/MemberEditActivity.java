@@ -120,7 +120,6 @@ public class MemberEditActivity extends BaseActivity {
                         }
                         setRecyView( PlayUserManager.getHistory());
                     }
-//                        PlayUserManager.insert(history);
 //                            compareDaXiao(history);
 
                     @Override

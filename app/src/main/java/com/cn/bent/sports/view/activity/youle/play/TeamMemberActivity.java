@@ -138,7 +138,8 @@ public class TeamMemberActivity extends BaseActivity {
 
     //    //接受消息
     private void getMsg() {
-        String pats="/topic/+" + gameTeamId + "/status";
+        String pats="/topic/" + gameTeamId + "/status";
+        Log.d(TAG, "getMsg pats: "+pats);
         mStompClient.topic(pats).subscribe(new Consumer<StompMessage>() {
             @Override
             public void accept(StompMessage stompMessage) throws Exception {
@@ -147,12 +148,22 @@ public class TeamMemberActivity extends BaseActivity {
                 try {
                     JSONObject jsonObject =JSONObject.parseObject(msg);
                     datas = jsonObject.getString("data");
+                    Log.d(TAG, "getMsg datas: "+datas);
                 }catch (Exception e){
 
                 }
                 if("GAME_START".equals(datas)){
-                    getPeople();
-
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    getPeople();
+                                }
+                            });
+                        }
+                    }).start();
                 }
             }
         });

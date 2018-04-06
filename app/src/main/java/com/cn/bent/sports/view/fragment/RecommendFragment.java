@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -131,7 +132,7 @@ public class RecommendFragment extends BaseFragment {
                     public void onSuccess(int whichRequest, JoinTeam info) {
                         dismissAlert();
                         Intent intent=new Intent(getActivity(),TeamMemberActivity.class);
-                        intent.putExtra("gameTeamId",teamId);
+                        intent.putExtra("gameTeamId",Integer.parseInt(teamId));
                         startActivity(intent);
                     }
 
