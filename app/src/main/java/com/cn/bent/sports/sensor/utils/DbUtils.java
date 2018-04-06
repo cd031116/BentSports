@@ -96,7 +96,6 @@ public class DbUtils {
 
     /**
      * 删除所有
-     *
      * @param cla
      */
     public static <T> void deleteAll(Class<T> cla) {

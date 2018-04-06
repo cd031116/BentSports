@@ -8,16 +8,22 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseFragment;
+import com.cn.bent.sports.bean.GameInfo;
 import com.cn.bent.sports.evevt.ShowPoupEvent;
 import com.cn.bent.sports.sensor.UpdateUiCallBack;
 import com.cn.bent.sports.utils.Constants;
+import com.cn.bent.sports.utils.CornersTransform;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.utils.StepData;
 import com.cn.bent.sports.view.activity.MapActivity;
@@ -30,8 +36,10 @@ import com.cn.bent.sports.view.activity.youle.bean.JoinTeam;
 import com.cn.bent.sports.view.activity.youle.bean.TaskPoint;
 import com.cn.bent.sports.view.activity.youle.bean.UserInfo;
 import com.cn.bent.sports.view.activity.youle.play.MemberEditActivity;
+import com.cn.bent.sports.view.activity.youle.play.OrderDetailActivity;
 import com.cn.bent.sports.view.activity.youle.play.TeamMemberActivity;
 import com.cn.bent.sports.view.service.StepService;
+import com.kennyc.view.MultiStateView;
 import com.vondear.rxtools.RxActivityTool;
 import com.vondear.rxtools.activity.ActivityScanerCode;
 import com.vondear.rxtools.view.RxToast;
@@ -41,6 +49,9 @@ import com.zhl.network.huiqu.JavaRxFunction;
 
 import org.aisen.android.component.eventbus.NotificationCenter;
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -60,11 +71,15 @@ public class RecommendFragment extends BaseFragment {
         return fragment;
     }
 
-    @Bind({R.id.walk_num})
+    @Bind(R.id.walk_num)
     TextView walk_num;
+    @Bind(R.id.play_one)
+    ImageView play_one;
+    @Bind(R.id.play_two)
+    ImageView play_two;
     private boolean isBind = false;
     private static final int REQUEST_Scan = 12;
-
+    private List<GameInfo> mList = new ArrayList<>();
     @Override
     protected int getLayoutId() {
         return R.layout.recommend_fragment;
@@ -77,6 +92,7 @@ public class RecommendFragment extends BaseFragment {
 
     @Override
     protected void initData() {
+        getGameList();
         setupService();
     }
 
@@ -220,6 +236,62 @@ public class RecommendFragment extends BaseFragment {
                 });
     }
 
+    private void getGameList() {
+        BaseApi.getJavaLoginDefaultService(getActivity()).getGameList("1")
+                .map(new JavaRxFunction<List<GameInfo>>())
+                .compose(RxSchedulers.<List<GameInfo>>io_main())
+                .subscribe(new RxObserver<List<GameInfo>>(getActivity(), TAG, 1, false) {
+                    @Override
+                    public void onSuccess(int whichRequest, List<GameInfo> info) {
+                        if (info!=null){
+                            mList.clear();
+                            mList.addAll(info);
+                            setviews(info);
+                        }
+                    }
 
+                    @Override
+                    public void onError(int whichRequest, Throwable e) {
+                        dismissAlert();
+                    }
+                });
+    }
+
+
+    @OnClick({R.id.play_one,R.id.play_two})
+    void onclik(View v){
+        switch (v.getId()){
+            case R.id.play_one:
+                Intent intent = new Intent(getActivity(), OrderDetailActivity.class);
+                intent.putExtra("gameId", mList.get(0).getId());
+                startActivity(intent);
+                break;
+            case R.id.play_two:
+                Intent intent1 = new Intent(getActivity(), OrderDetailActivity.class);
+                intent1.putExtra("gameId", mList.get(1).getId());
+                startActivity(intent1);
+                break;
+        }
+    }
+
+    private void setviews(List<GameInfo> info){
+        if(info.size()<=0){
+            return;
+        }
+        RequestOptions myOptions = new RequestOptions()
+                .centerCrop()
+                .transform(new CornersTransform(getActivity(),12));
+        Glide.with(getActivity())
+                .load(info.get(0).getCover())
+                .apply(myOptions)
+                .into(play_one);
+        if (info.size()>1){
+            Glide.with(getActivity())
+                    .load(info.get(1).getCover())
+                    .apply(myOptions)
+                    .into(play_two);
+        }
+
+    }
 
 }

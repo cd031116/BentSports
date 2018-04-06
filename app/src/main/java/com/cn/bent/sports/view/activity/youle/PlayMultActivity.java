@@ -46,6 +46,7 @@ import com.cn.bent.sports.bean.MapDot;
 import com.cn.bent.sports.bean.MemberDataEntity;
 import com.cn.bent.sports.bean.TeamGame;
 import com.cn.bent.sports.database.PlayPointManager;
+import com.cn.bent.sports.utils.AddressData;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.DataUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
@@ -216,7 +217,6 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 
     @Override
     public void initData() {
-        addLocaToMap();
         startLocation();
     }
 
@@ -261,7 +261,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         myLocationStyle.interval(2 * 1000);
         myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE_NO_CENTER);
         myLocationStyle.myLocationIcon(BitmapDescriptorFactory
-                .fromResource(R.drawable.dangqwz));
+                .fromResource(R.drawable.current_location));
         myLocationStyle.strokeColor(Color.parseColor("#F9DEDE"));// 设置圆形的边框颜色
         myLocationStyle.radiusFillColor(Color.argb(100, 249, 222, 222));//
         aMap.setMyLocationStyle(myLocationStyle);
@@ -276,6 +276,8 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                 if (mGamePotinsList.get(i).getState() == -1) {//未开始
                     getPointGame(gameTeamId, mGamePotinsList.get(i).getId(), mGamePotinsList.get(i).isHasQuestion(), !mGamePotinsList.get(i).isHasTask());
                     t_ids = i;
+                    mEndPoint = new LatLng(Double.valueOf(mGamePotinsList.get(i).getLatitude()).doubleValue(),
+                                Double.valueOf(mGamePotinsList.get(i).getLongitude()).doubleValue());
                     break;
                 } else if (mGamePotinsList.get(i).getState() == 1 || mGamePotinsList.get(i).getState() == 2) {
                     new OneTaskFinishDialog(PlayMultActivity.this, R.style.dialog, new OneTaskFinishDialog.OnClickListener() {
@@ -353,6 +355,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         mapView.onDestroy();
         mapView = null;
         mStompClient.disconnect();
+        AddressData.getInstance(PlayMultActivity.this).removeValue();
     }
 
 
@@ -588,10 +591,11 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     @Override
     public void onMyLocationChange(Location location) {
         mStartPoint = new LatLng(location.getLatitude(), location.getLongitude());
+        addPositionmsg(location.getLatitude(), location.getLongitude());
 //        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), mCurrentZoom));
         if (mEndPoint != null) {
             String distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
-            addPositionmsg(location.getLatitude(), location.getLongitude());
+            Log.d("tttt", "addPositionmsg=");
             if (mopupWindow != null && mopupWindow.isShowing()) {
                 mopupWindow.setDistance((int) (Double.parseDouble(distance)) + "m");
             }
@@ -599,19 +603,24 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     }
 //上报地理位置
 
-    public void addPositionmsg(double lat, double longt) {
+    public void addPositionmsg(final  double lat,final double longt) {
         if (teamGame.getTeamMemberMax() <= 1) {
+            return;
+        }
+        boolean has=AddressData.getInstance(PlayMultActivity.this).isThan10(mStartPoint);
+        if(!has){
             return;
         }
         UserInfo user = SaveObjectUtils.getInstance(PlayMultActivity.this).getObject(Constants.USER_BASE, null);
         JoinTeam team = new JoinTeam(user.getAvatar(), gameTeamId, lat, longt, user.getNickname(), user.getId());
         String STARS = JSON.toJSONString(team);
-        String pats = "/" + gameTeamId + "/save_location";
+        Log.i("tttt","STARS="+STARS);
+        String pats = "/" + gameTeamId + "/save_location"+"/teamMember="+STARS;
         mStompClient.send(pats, STARS)
                 .subscribe(new Subscriber<Void>() {
                     @Override
                     public void onSubscribe(Subscription s) {
-
+                        Log.i("tttt","ssssss="+s.toString());
                     }
 
                     @Override
@@ -626,7 +635,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 
                     @Override
                     public void onComplete() {
-                        Log.d("tttt", "上传完成onComplete=");
+                        AddressData.getInstance(PlayMultActivity.this).setStepDataValue(lat,longt);
                     }
                 });
     }
@@ -868,7 +877,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    setTheView();
+                                    getPoints();
                                 }
                             });
                         }
