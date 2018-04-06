@@ -72,10 +72,10 @@ public class DoTaskPoupWindow extends PopupWindow {
         if (gamePotins.getState() == 1) {
             int passNum = gamePotins.getTeamTaskDetails().size();
             int allNum;
-            if (teamGame.getPassRate() * teamGame.getTeamMemberMax() % 100 == 0)
-                allNum = teamGame.getPassRate() * teamGame.getTeamMemberMax() / 100;
+            if (teamGame.getPassRate() * teamGame.getTeamMemberReal() % 100 == 0)
+                allNum = teamGame.getPassRate() * teamGame.getTeamMemberReal() / 100;
             else
-                allNum = teamGame.getPassRate() * teamGame.getTeamMemberMax() / 100 + 1;
+                allNum = teamGame.getPassRate() * teamGame.getTeamMemberReal() / 100 + 1;
             int needNum = allNum - passNum;
             if (needNum > 0) {
                 need_people.setVisibility(View.VISIBLE);

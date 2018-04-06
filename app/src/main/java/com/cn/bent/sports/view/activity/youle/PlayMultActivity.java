@@ -52,10 +52,12 @@ import com.cn.bent.sports.utils.DataUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.view.activity.BitmapManager;
 import com.cn.bent.sports.view.activity.PlayWebViewActivity;
+import com.cn.bent.sports.view.activity.SettingActivity;
 import com.cn.bent.sports.view.activity.youle.bean.JoinTeam;
 import com.cn.bent.sports.view.activity.youle.bean.TaskPoint;
 import com.cn.bent.sports.view.activity.youle.bean.UserInfo;
 import com.cn.bent.sports.view.activity.youle.play.CompleteInfoActivity;
+import com.cn.bent.sports.view.activity.youle.play.GameWebActivity;
 import com.cn.bent.sports.view.activity.youle.play.MemberEditActivity;
 import com.cn.bent.sports.view.poupwindow.DoTaskPoupWindow;
 import com.cn.bent.sports.view.poupwindow.TalkPoupWindow;
@@ -148,7 +150,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     //-------------------------------------------------
     private List<JoinTeam> mPosition = new ArrayList<>();
     private List<GamePotins> mGamePotinsList = new ArrayList<>();
-    private boolean isDo=false;
+    private boolean isDo = false;
 
     @Override
     protected int getLayoutId() {
@@ -276,10 +278,10 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
             if (Integer.parseInt(marker.getTitle()) == mGamePotinsList.get(i).getId()) {
                 if (mGamePotinsList.get(i).getState() == -1) {//未开始
 //                    getPointGame(gameTeamId, mGamePotinsList.get(i).getId(), mGamePotinsList.get(i).isHasQuestion(), !mGamePotinsList.get(i).isHasTask());
-                    shouPoup(mGamePotinsList.get(i),teamGame,false);
+                    shouPoup(mGamePotinsList.get(i), teamGame, false);
                     mEndPoint = new LatLng(Double.valueOf(mGamePotinsList.get(i).getLatitude()).doubleValue(),
                             Double.valueOf(mGamePotinsList.get(i).getLongitude()).doubleValue());
-                    t_ids=i;
+                    t_ids = i;
                     break;
                 } else if (mGamePotinsList.get(i).getState() == 1 || mGamePotinsList.get(i).getState() == 2) {
                     new OneTaskFinishDialog(PlayMultActivity.this, R.style.dialog, new OneTaskFinishDialog.OnClickListener() {
@@ -380,7 +382,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     }
 
     //    boolean isFirst=false;
-    private void shouPoup(GamePotins gamePotins, TeamGame teamGame,boolean isDo) {
+    private void shouPoup(GamePotins gamePotins, TeamGame teamGame, boolean isDo) {
         String distance = "";
 
         if (DataUtils.isBlue(this) && mMinewBeaconManager != null) {
@@ -392,8 +394,11 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         if (mopupWindow != null && mopupWindow.isShowing()) {
             mopupWindow.setvisib(isDo);
             mopupWindow.setDistance((int) (Double.parseDouble(distance)) + "m");
+            int num = getSyPeople(gamePotins);
+            if (num > 0)
+                mopupWindow.setNeedPeople("还需" + num + "人完成");
         } else {
-            mopupWindow = new DoTaskPoupWindow(this,isDo, gamePotins, teamGame, (int) (Double.parseDouble(distance)) + "m", itemsOnClick);
+            mopupWindow = new DoTaskPoupWindow(this, isDo, gamePotins, teamGame, (int) (Double.parseDouble(distance)) + "m", itemsOnClick);
             mopupWindow.showAtLocation(this.findViewById(R.id.mapView),
                     Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
         }
@@ -401,9 +406,19 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 
     private DoTaskPoupWindow.ItemOnclick itemsOnClick = new DoTaskPoupWindow.ItemOnclick() {
         @Override
-        public void ItemClick(int index,GamePotins gamePotins,TeamGame teamGame) {
+        public void ItemClick(int index, GamePotins gamePotins, TeamGame teamGames) {
             if (times_s <= 0) {
 //                login();
+            }
+            if (index == 1) {
+                //TODO 跳转游戏界面
+                startActivity(new Intent(PlayMultActivity.this, SettingActivity.class));
+            }
+            if (index == 2) {
+                Intent intent1 = new Intent(PlayMultActivity.this, MemberEditActivity.class);
+                intent1.putExtra("type", "game_team");
+                intent1.putExtra("gameTeamId", teamGames.getId());
+                startActivity(intent1);
             }
 
             mopupWindow.dismiss();
@@ -471,7 +486,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                             String majer = beacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Major).getStringValue();
                             if (majer != null) {
                                 if (majer.equals(mGamePotinsList.get(t_ids).getMajor() + "")) {
-                                    shouPoup(mGamePotinsList.get(t_ids),teamGame,true);
+                                    shouPoup(mGamePotinsList.get(t_ids), teamGame, true);
                                     t_ids = -1;
                                     break;
                                 }
@@ -497,6 +512,20 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                 }
             }
         });
+    }
+
+    private int getSyPeople(GamePotins gamePotins) {
+        int needNum = 0;
+        if (gamePotins.getState() == 1) {
+            int passNum = gamePotins.getTeamTaskDetails().size();
+            int allNum;
+            if (teamGame.getPassRate() * teamGame.getTeamMemberReal() % 100 == 0)
+                allNum = teamGame.getPassRate() * teamGame.getTeamMemberReal() / 100;
+            else
+                allNum = teamGame.getPassRate() * teamGame.getTeamMemberReal() / 100 + 1;
+            needNum = allNum - passNum;
+        }
+        return needNum;
     }
 
     private void showBLEDialog() {
