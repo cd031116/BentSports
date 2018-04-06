@@ -1041,7 +1041,8 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     }
 
     //计时器
-    private void setTimes() {
+    private void
+    setTimes() {
         if (PlayPointManager.isHavaPlay()) {
             time.setText("");
             timing.setText("");

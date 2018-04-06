@@ -121,7 +121,6 @@ public class RecommendFragment extends BaseFragment {
         }
     }
 
-
     private void getJoinTeam(final  String teamId ) {
         showAlert("正在加入组队...", true);
         BaseApi.getJavaLoginDefaultService(getActivity()).joinTeamGame(teamId )
