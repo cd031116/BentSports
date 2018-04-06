@@ -127,7 +127,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     private StompClient mStompClient;
     private AMap aMap;
     private float mCurrentZoom = 18f;
-    private int type = 1;
+    private int type = 2;
     //--------------------
     private List<Marker> mList = new ArrayList<Marker>();
     private List<Marker> mMarkerList = new ArrayList<Marker>();//游戏所有点图标
@@ -148,6 +148,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     //-------------------------------------------------
     private List<JoinTeam> mPosition = new ArrayList<>();
     private List<GamePotins> mGamePotinsList = new ArrayList<>();
+    private boolean isDo=false;
 
     @Override
     protected int getLayoutId() {
@@ -274,10 +275,11 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         for (int i = 0; i < mGamePotinsList.size(); i++) {
             if (Integer.parseInt(marker.getTitle()) == mGamePotinsList.get(i).getId()) {
                 if (mGamePotinsList.get(i).getState() == -1) {//未开始
-                    getPointGame(gameTeamId, mGamePotinsList.get(i).getId(), mGamePotinsList.get(i).isHasQuestion(), !mGamePotinsList.get(i).isHasTask());
-                    t_ids = i;
+//                    getPointGame(gameTeamId, mGamePotinsList.get(i).getId(), mGamePotinsList.get(i).isHasQuestion(), !mGamePotinsList.get(i).isHasTask());
+                    shouPoup(mGamePotinsList.get(i),teamGame,false);
                     mEndPoint = new LatLng(Double.valueOf(mGamePotinsList.get(i).getLatitude()).doubleValue(),
-                                Double.valueOf(mGamePotinsList.get(i).getLongitude()).doubleValue());
+                            Double.valueOf(mGamePotinsList.get(i).getLongitude()).doubleValue());
+                    t_ids=i;
                     break;
                 } else if (mGamePotinsList.get(i).getState() == 1 || mGamePotinsList.get(i).getState() == 2) {
                     new OneTaskFinishDialog(PlayMultActivity.this, R.style.dialog, new OneTaskFinishDialog.OnClickListener() {
@@ -378,66 +380,32 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     }
 
     //    boolean isFirst=false;
-    private void shouPoup(String ganme_name, boolean isShow, String photo, String sound_path) {
+    private void shouPoup(GamePotins gamePotins, TeamGame teamGame,boolean isDo) {
         String distance = "";
+
         if (DataUtils.isBlue(this) && mMinewBeaconManager != null) {
             mMinewBeaconManager.startScan();
         }
-        if (mEndPoint != null && mStartPoint != null) {
-            distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
+        if (gamePotins != null && mStartPoint != null) {
+            distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, new LatLng(gamePotins.getLatitude(), gamePotins.getLongitude())));
         }
         if (mopupWindow != null && mopupWindow.isShowing()) {
-            mopupWindow.setvisib(isShow);
+            mopupWindow.setvisib(isDo);
             mopupWindow.setDistance((int) (Double.parseDouble(distance)) + "m");
         } else {
-            mopupWindow = new DoTaskPoupWindow(this, ganme_name, isShow, photo, sound_path, (int) (Double.parseDouble(distance)) + "m", itemsOnClick);
-            mopupWindow.showAtLocation(this.findViewById(R.id.map_view),
+            mopupWindow = new DoTaskPoupWindow(this,isDo, gamePotins, teamGame, (int) (Double.parseDouble(distance)) + "m", itemsOnClick);
+            mopupWindow.showAtLocation(this.findViewById(R.id.mapView),
                     Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
         }
     }
 
-    private void shousoundPoup(String names, String paths, String shuom, int position) {
-        if (soundWindow != null) {
-            soundWindow.dismiss();
-        }
-        Log.d("tttt", "shousoundPoup: " + t_ids + ",posi:" + position + ",name:" + names + ",path:" + paths);
-        t_ids = position;
-        soundWindow = new TalkPoupWindow(this, names, paths, shuom, null);
-        soundWindow.showAtLocation(this.findViewById(R.id.map_view),
-                Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
-
-    }
-
-    private DoTaskPoupWindow.ItemInclick itemsOnClick = new DoTaskPoupWindow.ItemInclick() {
+    private DoTaskPoupWindow.ItemOnclick itemsOnClick = new DoTaskPoupWindow.ItemOnclick() {
         @Override
-        public void ItemClick(int index) {
+        public void ItemClick(int index,GamePotins gamePotins,TeamGame teamGame) {
             if (times_s <= 0) {
 //                login();
             }
-//            if (index == 1) {
-//                if ("14".equals(place_list.get(t_ids).getGame_id())) {
-//                    Intent intent = new Intent(PlayMultActivity.this, ActivityScanerCode.class);
-//                    startActivityForResult(intent, REQUEST_Scan);
-//                } else if ("15".equals(place_list.get(t_ids).getGame_id())) {
-//                    Intent intent = new Intent(PlayMultActivity.this, ArActivity.class);
-//                    intent.putExtra("gameId", place_list.get(t_ids).getGame_id());
-//                    startActivity(intent);
-//                    t_ids = -1;
-//                } else if ("18".equals(place_list.get(t_ids).getGame_id())) {
-//                    Intent intent = new Intent(PlayMultActivity.this, OfflineActivity.class);
-//                    intent.putExtra("gameId", place_list.get(t_ids).getGame_id());
-//                    startActivity(intent);
-//                    t_ids = -1;
-//                } else {
-//                    Intent intent = new Intent(PlayMultActivity.this, PlayWebViewActivity.class);
-//                    intent.putExtra("gameId", place_list.get(t_ids).getGame_id());
-//                    intent.putExtra("gameUrl", place_list.get(t_ids).getGame_url());
-//                    startActivity(intent);
-//                    t_ids = -1;
-//                }
-//            } else {
-//                t_ids = -1;
-//            }
+
             mopupWindow.dismiss();
             if (DataUtils.isBlue(PlayMultActivity.this) && mMinewBeaconManager != null) {
                 mMinewBeaconManager.stopScan();
@@ -503,7 +471,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                             String majer = beacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Major).getStringValue();
                             if (majer != null) {
                                 if (majer.equals(mGamePotinsList.get(t_ids).getMajor() + "")) {
-//                                        shouPoup(place_list.get(t_ids).getName(), true, place_list.get(t_ids).getGame_id(), place_list.get(t_ids).getMp3());
+                                    shouPoup(mGamePotinsList.get(t_ids),teamGame,true);
                                     t_ids = -1;
                                     break;
                                 }
@@ -751,6 +719,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
      * @param info 1-依次穿越，2-限时挑战 3-自由规划
      */
     private void setMarkerView(List<GamePotins> info) {
+//        if (teamGame.getGameType() == 1) {
         if (type == 1) {
             DataUtils.compareDaXiao(info);
             for (GamePotins gamePotins : info) {

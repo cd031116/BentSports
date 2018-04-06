@@ -1,6 +1,7 @@
 package com.cn.bent.sports.view.poupwindow;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapRegionDecoder;
@@ -19,8 +20,11 @@ import android.widget.TextView;
 
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseConfig;
+import com.cn.bent.sports.bean.GamePotins;
+import com.cn.bent.sports.bean.TeamGame;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.SupportMultipleScreensUtil;
+import com.cn.bent.sports.view.activity.youle.PlayMultActivity;
 import com.cn.bent.sports.widget.OneTaskFinishDialog;
 
 import java.io.IOException;
@@ -37,10 +41,77 @@ public class DoTaskPoupWindow extends PopupWindow {
     private Activity mContext;
     private View view;
     private ImageView image_bg, close_ima, wancheng;
-    private TextView name_game, go_task, juli;
+    private TextView name_game, go_task, juli, need_people;
     private LinearLayout line_s;
     private ItemInclick itemsOnClick;
+    private ItemOnclick itemOnClick;
     private MediaPlayer mPlayer;
+
+
+    public DoTaskPoupWindow(final Activity context, boolean isDo, final GamePotins gamePotins, final TeamGame teamGame, String distance, final ItemOnclick itemsOnClickd) {
+        this.mContext = context;
+        this.itemOnClick = itemsOnClickd;
+        this.view = LayoutInflater.from(mContext).inflate(R.layout.do_task_window, null);
+
+        SupportMultipleScreensUtil.scale(view);
+        image_bg = (ImageView) view.findViewById(R.id.image_bg);
+        name_game = (TextView) view.findViewById(R.id.name_game);
+        line_s = (LinearLayout) view.findViewById(R.id.line_s);
+        go_task = (TextView) view.findViewById(R.id.go_task);
+        close_ima = (ImageView) view.findViewById(R.id.close_ima);
+        juli = (TextView) view.findViewById(R.id.juli);
+        wancheng = (ImageView) view.findViewById(R.id.wancheng);
+        need_people = (TextView) view.findViewById(R.id.need_people);
+        if (isDo) {
+            go_task.setVisibility(View.VISIBLE);
+            line_s.setVisibility(View.GONE);
+        } else {
+            go_task.setVisibility(View.GONE);
+            line_s.setVisibility(View.VISIBLE);
+        }
+        if (gamePotins.getState() == 1) {
+            int passNum = gamePotins.getTeamTaskDetails().size();
+            int allNum;
+            if (teamGame.getPassRate() * teamGame.getTeamMemberMax() % 100 == 0)
+                allNum = teamGame.getPassRate() * teamGame.getTeamMemberMax() / 100;
+            else
+                allNum = teamGame.getPassRate() * teamGame.getTeamMemberMax() / 100 + 1;
+            int needNum = allNum - passNum;
+            if (needNum > 0) {
+                need_people.setVisibility(View.VISIBLE);
+                need_people.setText("还需" + needNum + "人完成");
+            } else
+                need_people.setVisibility(View.GONE);
+        } else
+            need_people.setVisibility(View.GONE);
+
+        name_game.setText(gamePotins.getAlias());
+        juli.setText(distance);
+        close_ima.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itemOnClick.ItemClick(0,gamePotins,teamGame);
+            }
+        });
+        go_task.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itemOnClick.ItemClick(1,gamePotins,teamGame);
+            }
+        });
+        wancheng.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itemOnClick.ItemClick(2,gamePotins,teamGame);
+            }
+        });
+        mContext.setFinishOnTouchOutside(true);
+
+        /* 设置弹出窗口特征 */
+        // 设置视图
+        // 设置弹出窗体的宽和高
+        setWindow(mContext);
+    }
 
     public DoTaskPoupWindow(final Activity mContext, String names, boolean isDo, String path, String sound_path, String distance, ItemInclick itemsOnClickd) {
         this.mContext = mContext;
@@ -113,8 +184,12 @@ public class DoTaskPoupWindow extends PopupWindow {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        setWindow(mContext);
 
 
+    }
+
+    private void setWindow(Activity mContext) {
     /* 设置弹出窗口特征 */
         // 设置视图
         // 设置弹出窗体的宽和高
@@ -136,6 +211,7 @@ public class DoTaskPoupWindow extends PopupWindow {
         this.getContentView().measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
     }
 
+
     public void setvisib(boolean istrue) {
         if (istrue) {
             go_task.setVisibility(View.VISIBLE);
@@ -150,8 +226,15 @@ public class DoTaskPoupWindow extends PopupWindow {
         juli.setText(istrue);
     }
 
+    public void setNeedPeople(String istrue) {
+        need_people.setText(istrue);
+    }
+
     public interface ItemInclick {
         void ItemClick(int position);
+    }
+    public interface ItemOnclick {
+        void ItemClick(int position,GamePotins gamePotins,TeamGame teamGame);
     }
 
     private void playSund(final String paths) {

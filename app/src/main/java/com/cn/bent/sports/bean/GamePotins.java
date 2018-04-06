@@ -27,8 +27,8 @@ public class GamePotins implements Serializable {
      * state : 0
      */
     @PrimaryKey(column = "id")
-    private int id;
-    private String alias;
+    private int id;//游戏点ID
+    private String alias;//别名
     private boolean hasQuestion;//是否有线上T题目
     private boolean hasTask;//是否有线下游戏
     private int major;

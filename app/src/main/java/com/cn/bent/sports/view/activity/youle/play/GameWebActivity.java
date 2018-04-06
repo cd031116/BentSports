@@ -12,6 +12,9 @@ import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.GameEntity;
+import com.cn.bent.sports.bean.LoginResult;
+import com.cn.bent.sports.utils.Constants;
+import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.widget.CompletionDialog;
 import com.cn.bent.sports.widget.GameErrorDialog;
 import com.cn.bent.sports.widget.GameFailDialog;
@@ -35,6 +38,9 @@ public class GameWebActivity extends BaseActivity {
     @Bind(R.id.webview)
     WebView mWebView;
 
+    private String teamId, gamePointId;
+    private boolean task, question;
+
 
     @Override
     protected int getLayoutId() {
@@ -43,6 +49,15 @@ public class GameWebActivity extends BaseActivity {
 
     @Override
     public void initView() {
+
+        LoginResult user = SaveObjectUtils.getInstance(this).getObject(Constants.USER_INFO, null);
+        String access_token = user.getAccess_token();
+
+        teamId = getIntent().getStringExtra("teamId");
+        gamePointId = getIntent().getStringExtra("gamePointId");
+        task = getIntent().getExtras().getBoolean("task");
+        question = getIntent().getExtras().getBoolean("question");
+
         WebSettings webSettings = mWebView.getSettings();
         mWebView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         webSettings.setJavaScriptEnabled(true);
