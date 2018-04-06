@@ -128,6 +128,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     private int type = 1;
     //--------------------
     private List<Marker> mList = new ArrayList<Marker>();
+    private List<Marker> mMarkerList = new ArrayList<Marker>();//游戏所有点图标
     private LatLng mStartPoint;//起点，116.335891,39.942295
     private LatLng mEndPoint;//终点，116.481288,39.995576
     private static final int REQUEST_ENABLE_BT = 2;
@@ -263,7 +264,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     @Override
     public boolean onMarkerClick(Marker marker) {
         for (int i = 0; i < mGamePotinsList.size(); i++) {
-            if(Integer.parseInt(marker.getTitle())==mGamePotinsList.get(i).getId()){
+            if (Integer.parseInt(marker.getTitle()) == mGamePotinsList.get(i).getId()) {
                 if (mGamePotinsList.get(i).getState() == -1) {//未开始
                     getPointGame(gameTeamId, mGamePotinsList.get(i).getId(), mGamePotinsList.get(i).isHasQuestion(), !mGamePotinsList.get(i).isHasTask());
                     t_ids = i;
@@ -702,7 +703,10 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                         }
                         mGamePotinsList = info;
                         aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(info.get(0).getLatitude(), info.get(0).getLongitude()), mCurrentZoom));
-
+                        if (mMarkerList != null && mMarkerList.size() > 0)
+                            for (Marker marker : mMarkerList) {
+                                marker.remove();
+                            }
                         setMarkerView(info);
                         setTheView();
                     }
@@ -724,7 +728,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         if (type == 1) {
             DataUtils.compareDaXiao(info);
             for (GamePotins gamePotins : info) {
-                Log.d(TAG, "setMarkerView: " + gamePotins.getOrderNo() + "----getState:" + gamePotins.getState()+"--:"+teamGame.getPassRate());
+                Log.d(TAG, "setMarkerView: " + gamePotins.getOrderNo() + "----getState:" + gamePotins.getState() + "--:" + teamGame.getPassRate());
                 if (gamePotins.getState() == 2) {
                     setOverLay(gamePotins);
                 }
@@ -753,7 +757,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         return bitmap;
     }
 
-    private void setOverLay( GamePotins gamePotins) {
+    private void setOverLay(GamePotins gamePotins) {
         MarkerOptions markerOption = new MarkerOptions();
         markerOption.position(new LatLng(gamePotins.getLatitude(), gamePotins.getLongitude()));
         markerOption.draggable(true);//设置Marker可拖动
@@ -762,6 +766,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         // 将Marker设置为贴地显示，可以双指下拉地图查看效果
         markerOption.setFlat(true);//设置marker平贴地图效果
         Marker marker = aMap.addMarker(markerOption);
+        mMarkerList.add(marker);
     }
 
     //计算总分数和完成关卡数
@@ -867,7 +872,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 
     //监听任务完成
     private void getpointsMsg() {
-        String pats="/topic/" + gameTeamId + "/pass";
+        String pats = "/topic/" + gameTeamId + "/pass";
         mStompClient.topic(pats).subscribe(new Consumer<StompMessage>() {
             @Override
             public void accept(StompMessage stompMessage) throws Exception {
@@ -886,7 +891,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                 String msg = stompMessage.getPayload().trim();
                 String datas = "";
                 try {
-                    JSONObject jsonObject =JSONObject.parseObject(msg);
+                    JSONObject jsonObject = JSONObject.parseObject(msg);
                     datas = jsonObject.getString("data");
                 } catch (Exception e) {
 
@@ -904,14 +909,14 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 
     //队员头像
     private void setUserInfo() {
-        if(teamGame==null&&teamGame.getTeamMemberMax()<=1){
+        if (teamGame == null && teamGame.getTeamMemberMax() <= 1) {
             return;
         }
-        for(Marker marker:mList){
+        for (Marker marker : mList) {
             marker.remove();
         }
         mList.clear();
-        for (final  JoinTeam bean : mPosition) {
+        for (final JoinTeam bean : mPosition) {
             MarkerOptions markerOption = new MarkerOptions();
             markerOption.position(new LatLng(bean.getLatitude(), bean.getLongitude()));
             markerOption.draggable(false);//设置Marker可拖动
@@ -922,16 +927,16 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 
             Glide.with(PlayMultActivity.this).load(bean.getAvatar())
                     .apply(myOptions)
-                    .into(new SimpleTarget<Drawable>(100,100) {
+                    .into(new SimpleTarget<Drawable>(100, 100) {
                         @Override
                         public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
                             MarkerOptions markerOption = new MarkerOptions();
-                            ImageView imageView=new ImageView(PlayMultActivity.this);
+                            ImageView imageView = new ImageView(PlayMultActivity.this);
                             imageView.setImageDrawable(resource);
-                            markerOption.position(new LatLng(bean.getLatitude(),bean.getLongitude()));
-                            BitmapDescriptor bitmapDescriptor=BitmapDescriptorFactory.fromView(imageView);
+                            markerOption.position(new LatLng(bean.getLatitude(), bean.getLongitude()));
+                            BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromView(imageView);
                             markerOption.icon(bitmapDescriptor);
-                            Marker marker =   aMap.addMarker(markerOption);
+                            Marker marker = aMap.addMarker(markerOption);
                             mList.add(marker);
                         }
                     });
@@ -943,14 +948,14 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     //获取队员地理位置个人不需要
     private void getAddressMsg() {
         UserInfo user = SaveObjectUtils.getInstance(PlayMultActivity.this).getObject(Constants.USER_BASE, null);
-        String paths="/user" + user.getNickname() + "/topic/+" + gameTeamId  + "/getLocations";
+        String paths = "/user" + user.getNickname() + "/topic/+" + gameTeamId + "/getLocations";
         mStompClient.topic(paths).subscribe(new Consumer<StompMessage>() {
             @Override
             public void accept(StompMessage stompMessage) throws Exception {
                 String msg = stompMessage.getPayload().trim();
                 JSONObject datas = null;
                 try {
-                    JSONObject jsonObject =JSONObject.parseObject(msg);
+                    JSONObject jsonObject = JSONObject.parseObject(msg);
                     datas = jsonObject.getJSONObject("data");
                     mPosition.addAll(JSON.parseArray(datas.toString(), JoinTeam.class));
                 } catch (Exception e) {
@@ -1014,6 +1019,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         // 将Marker设置为贴地显示，可以双指下拉地图查看效果
         markerOption.setFlat(true);//设置marker平贴地图效果
         Marker marker = aMap.addMarker(markerOption);
+        mMarkerList.add(marker);
     }
 
 }

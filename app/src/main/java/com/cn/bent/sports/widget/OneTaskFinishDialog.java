@@ -104,7 +104,7 @@ public class OneTaskFinishDialog extends Dialog implements View.OnClickListener 
 
     private void setRecyData(final TeamGame teamGame, long gamePointId) {
         final List<MemberDataEntity> history = PlayUserManager.getHistory();
-        BaseApi.getJavaLoginDefaultService(mContext).getPointTask(teamGame.getGameId(), gamePointId)
+        BaseApi.getJavaLoginDefaultService(mContext).getPointTask(teamGame.getId(), gamePointId)
                 .map(new JavaRxFunction<List<GameTeamScoreEntity>>())
                 .compose(RxSchedulers.<List<GameTeamScoreEntity>>io_main())
                 .subscribe(new RxObserver<List<GameTeamScoreEntity>>(mContext, "getPointTask", 1, false) {
