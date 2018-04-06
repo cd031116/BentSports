@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
@@ -19,6 +20,7 @@ import com.cn.bent.sports.bean.TeamGame;
 import com.cn.bent.sports.database.PlayUserManager;
 import com.cn.bent.sports.recyclebase.CommonAdapter;
 import com.cn.bent.sports.recyclebase.ViewHolder;
+import com.cn.bent.sports.utils.CornersTransform;
 import com.cn.bent.sports.widget.DividerItemDecoration;
 import com.vondear.rxtools.view.RxToast;
 import com.zhl.network.RxObserver;
@@ -31,6 +33,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
  * Created by dawn on 2018/3/31.
@@ -88,10 +91,14 @@ public class MemberEditActivity extends BaseActivity {
                         dismissAlert();
                         member_name.setText(info.getTeamName());
                         m_finish.setText(info.getTeamMemberReal() + "");
-                        m_all.setText(info.getTeamMemberMax() + "");
+                        m_all.setText("/" + info.getTeamMemberMax());
                         member_name.setText(info.getTeamName());
                         leadId = info.getLeaderId();
-                        Glide.with(MemberEditActivity.this).load(info.getAvatar()).into(member_head);
+                        RequestOptions myOptions = new RequestOptions()
+                                .centerCrop()
+                                .circleCropTransform();
+                        Glide.with(MemberEditActivity.this).load(info.getAvatar())
+                                .apply(myOptions).into(member_head);
                     }
 
                     @Override
@@ -107,6 +114,10 @@ public class MemberEditActivity extends BaseActivity {
 
     }
 
+    @OnClick(R.id.close_btn)
+    void onClick() {
+        this.finish();
+    }
 
     private void obtainTeamScore() {
         BaseApi.getJavaLoginDefaultService(this).getTeamScore(gameTeamId)
@@ -118,9 +129,10 @@ public class MemberEditActivity extends BaseActivity {
                         for (GameTeamScoreEntity gameTeamScoreEntity : gameTeamScoreEntities) {
                             PlayUserManager.updatePlay(gameTeamScoreEntity.getUserId(), gameTeamScoreEntity.getScore());
                         }
-                        setRecyView( PlayUserManager.getHistory());
+                        List<MemberDataEntity> memberDataEntityList = PlayUserManager.getHistory();
+                        compareDaXiao(memberDataEntityList);
+                        setRecyView(memberDataEntityList);
                     }
-//                            compareDaXiao(history);
 
                     @Override
                     public void onError(int whichRequest, Throwable e) {
@@ -158,7 +170,11 @@ public class MemberEditActivity extends BaseActivity {
                         holder.setText(R.id.item_score, memberDataEntity.getScore() + "");
                     holder.setText(R.id.item_name, memberDataEntity.getNickname() + "");
                     ImageView view = (ImageView) holder.getView(R.id.item_img);
-                    Glide.with(mContext).load(memberDataEntity.getAvatar()).into(view);
+                    RequestOptions myOptions = new RequestOptions()
+                            .centerCrop()
+                            .circleCropTransform();
+                    Glide.with(mContext).load(memberDataEntity.getAvatar())
+                            .apply(myOptions).into(view);
 
                 }
             };
@@ -198,7 +214,11 @@ public class MemberEditActivity extends BaseActivity {
                     img_head_cap.setVisibility(View.VISIBLE);
                 else
                     img_head_cap.setVisibility(View.GONE);
-//                Glide.with(MemberEditActivity.this).load(memberDataEntity.getAvatar()).into(view);
+                RequestOptions myOptions = new RequestOptions()
+                        .centerCrop()
+                        .circleCropTransform();
+                Glide.with(MemberEditActivity.this).load(memberDataEntity.getAvatar())
+                        .apply(myOptions).into(view);
             }
         };
         member_list.setAdapter(mAdapter);

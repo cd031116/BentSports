@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.bean.GameTeamScoreEntity;
@@ -27,6 +28,7 @@ import com.cn.bent.sports.bean.TeamGame;
 import com.cn.bent.sports.database.PlayUserManager;
 import com.cn.bent.sports.recyclebase.CommonAdapter;
 import com.cn.bent.sports.recyclebase.ViewHolder;
+import com.cn.bent.sports.utils.CornersTransform;
 import com.cn.bent.sports.utils.SupportMultipleScreensUtil;
 import com.vondear.rxtools.view.RxToast;
 import com.zhl.network.RxObserver;
@@ -169,8 +171,11 @@ public class OneTaskFinishDialog extends Dialog implements View.OnClickListener 
                         holder.setText(R.id.item_score, memberDataEntity.getScore() + "");
                     holder.setText(R.id.item_name, memberDataEntity.getNickname() + "");
                     ImageView view = (ImageView) holder.getView(R.id.item_img);
-                    Glide.with(mContext).load(memberDataEntity.getAvatar()).into(view);
-
+                    RequestOptions myOptions = new RequestOptions()
+                            .centerCrop()
+                            .circleCropTransform();
+                    Glide.with(mContext).load(memberDataEntity.getAvatar())
+                            .apply(myOptions).into(view);
                 }
             };
             game_list.setAdapter(mAdapter);
