@@ -232,7 +232,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                 break;
             case R.id.look_rank:
                 Intent intent2 = new Intent(PlayMultActivity.this, RankingListActivity.class);
-                intent2.putExtra("gameTeamId", gameTeamId);
+                intent2.putExtra("gameId", teamGame.getGameId());
                 startActivity(intent2);
                 break;
             case R.id.finish_situation:
@@ -754,6 +754,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 
     private void setOverLay(GamePotins gamePotins) {
         MarkerOptions markerOption = new MarkerOptions();
+        Log.d(TAG, "setOverLay: "+gamePotins.getLatitude()+"--getLongitude:"+gamePotins.getLongitude());
         markerOption.position(new LatLng(gamePotins.getLatitude(), gamePotins.getLongitude()));
         markerOption.draggable(true);//设置Marker可拖动
         markerOption.title(gamePotins.getId() + "");
@@ -1002,19 +1003,20 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 
 
     private void setMarker(GamePotins gamePotins) {
-        int passNum = gamePotins.getTeamTaskDetails().size();
-        int allNum;
-        if (teamGame.getPassRate() * teamGame.getTeamMemberMax() % 100 == 0)
-            allNum = teamGame.getPassRate() * teamGame.getTeamMemberMax() / 100;
-        else
-            allNum = teamGame.getPassRate() * teamGame.getTeamMemberMax() / 100 + 1;
-        Log.d(TAG, "setMarker: " + passNum + "--:" + allNum);
+        int num=  getSyPeople(gamePotins);
+//        int passNum = gamePotins.getTeamTaskDetails().size();
+//        int allNum;
+//        if (teamGame.getPassRate() * teamGame.getTeamMemberMax() % 100 == 0)
+//            allNum = teamGame.getPassRate() * teamGame.getTeamMemberMax() / 100;
+//        else
+//            allNum = teamGame.getPassRate() * teamGame.getTeamMemberMax() / 100 + 1;
+        Log.d(TAG, "setMarker: " + num+"--:"+teamGame.getPassRate());
 
         View view = this.getLayoutInflater().inflate(R.layout.marker_dedai, null);
         TextView textView = (TextView) view.findViewById(R.id.text_num);
-        textView.setText(String.valueOf(allNum - passNum));
+        textView.setText(String.valueOf(num));
         MarkerOptions markerOption = new MarkerOptions();
-//        markerOption.position(new LatLng(lp.getLatitude(), lp.getLongitude()));
+        markerOption.position(new LatLng(gamePotins.getLatitude(), gamePotins.getLongitude()));
         markerOption.icon(BitmapManager.getInstance().getBitmapDescriptor4View(view));
         // 将Marker设置为贴地显示，可以双指下拉地图查看效果
         markerOption.setFlat(true);//设置marker平贴地图效果

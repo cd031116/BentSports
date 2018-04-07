@@ -324,7 +324,6 @@ public interface ApiService {
     Observable<JavaResult<List<MemberDataEntity>>> getMemberDetailData(@Path("teamId") String teamId);
 
 
-    @FormUrlEncoded
     @POST("api/travel/game_team/rank")
     Observable<JavaResult<RankEntity>> getRankList(@Body QueryInfo user);
 

@@ -114,7 +114,7 @@ public class MemberEditActivity extends BaseActivity {
 
     }
 
-    @OnClick(R.id.close_btn)
+    @OnClick({R.id.close_btn, R.id.m_edit})
     void onClick() {
         this.finish();
     }

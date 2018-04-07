@@ -65,7 +65,7 @@ public class RankingListActivity extends BaseActivity {
     @Bind(R.id.range_jifen)
     TextView range_jifen;
     private UserInfo user;
-    private int gameTeamId;
+    private int gameId;
     private int pageIndex=1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +83,7 @@ public class RankingListActivity extends BaseActivity {
         EventBus.getDefault().register(this);
         range_list.setLayoutManager(new LinearLayoutManager(this));
         user = (UserInfo) SaveObjectUtils.getInstance(this).getObject(Constants.USER_BASE, null);
-        gameTeamId = getIntent().getIntExtra("gameTeamId",1);
+        gameId = getIntent().getIntExtra("gameId",1);
     }
 
     @Override
@@ -128,7 +128,7 @@ public class RankingListActivity extends BaseActivity {
     }
 
     private void getRankData() {
-        BaseApi.getJavaLoginDefaultService(this).getRankList(new QueryInfo(true,pageIndex,10,gameTeamId))
+        BaseApi.getJavaLoginDefaultService(this).getRankList(new QueryInfo(true,pageIndex,10,gameId))
                 .map(new JavaRxFunction<RankEntity>())
                 .compose(RxSchedulers.<RankEntity>io_main())
                 .subscribe(new RxObserver<RankEntity>(this, "getRankList", 1, false) {
