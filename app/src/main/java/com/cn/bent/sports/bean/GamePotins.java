@@ -31,10 +31,20 @@ public class GamePotins implements Serializable {
     private String alias;//别名
     private boolean hasQuestion;//是否有线上T题目
     private boolean hasTask;//是否有线下游戏
+    private String description;
     private int major;
     private int orderNo;
     private int score;
     private int state;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     /**
      * longitude : 113.088702
      * latitude : 28.013602

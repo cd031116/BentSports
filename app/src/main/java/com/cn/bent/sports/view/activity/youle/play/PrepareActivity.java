@@ -2,6 +2,7 @@ package com.cn.bent.sports.view.activity.youle.play;
 
 import android.content.Intent;
 import android.view.View;
+import android.webkit.WebView;
 
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
@@ -18,6 +19,7 @@ import com.zhl.network.huiqu.JavaRxFunction;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.OnClick;
 
 
@@ -29,6 +31,8 @@ public class PrepareActivity extends BaseActivity {
     TeamGame teamGame;
     private List<JoinTeam> mList = new ArrayList<>();
 
+    @Bind(R.id.webview)
+    WebView webView;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_prepare;
@@ -46,7 +50,7 @@ public class PrepareActivity extends BaseActivity {
         getGamePrapre();
     }
 
-    @OnClick({R.id.start_t, R.id.look_peo})
+    @OnClick({R.id.start_t, R.id.look_peo,R.id.top_left,R.id.top_image})
     void onclick(View v) {
         switch (v.getId()) {
             case R.id.start_t:
@@ -57,6 +61,10 @@ public class PrepareActivity extends BaseActivity {
                 intent.putExtra("type", "team");
                 intent.putExtra("gameTeamId", teamGame.getId());
                 startActivity(intent);
+                break;
+            case  R.id.top_left:
+            case R.id.top_image:
+                finish();
                 break;
         }
     }
@@ -115,10 +123,7 @@ public class PrepareActivity extends BaseActivity {
     }
 
     private void setview(String info) {
-
-
-
-
+        webView.loadDataWithBaseURL(null,info, "text/html", "UTF-8", null);
     }
 
 

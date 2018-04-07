@@ -22,6 +22,7 @@ import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.view.activity.PlayFunActivity;
 import com.cn.bent.sports.view.activity.youle.MyRouteListActivity;
+import com.cn.bent.sports.view.activity.youle.RankingListActivity;
 import com.cn.bent.sports.widget.MyScroview;
 import com.kennyc.view.MultiStateView;
 import com.vondear.rxtools.view.RxToast;
@@ -179,7 +180,7 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
     }
 
 
-    @OnClick({R.id.submit,R.id.tab1_mian,R.id.tab2_mian,R.id.tab3_mian})
+    @OnClick({R.id.submit,R.id.tab1_mian,R.id.tab2_mian,R.id.tab3_mian,R.id.go_rank})
     void onclick(View v){
         switch (v.getId()){
             case R.id.submit:
@@ -193,6 +194,11 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
                 break;
             case R.id.tab3_mian:
                 changeview(3);
+                break;
+            case R.id.go_rank:
+             Intent intent=new Intent(OrderDetailActivity.this, RankingListActivity.class);
+                intent.putExtra("gameId",Integer.parseInt(gameId));
+             startActivity(intent);
                 break;
         }
     }

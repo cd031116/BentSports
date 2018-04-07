@@ -62,6 +62,9 @@ public class OrganizeActivity extends BaseActivity {
     TextView join_num;
     @Bind(R.id.recycle)
     RecyclerView m_recycle;
+     @Bind(R.id.top_title)
+     TextView top_title;
+
     private CommonAdapter<MemberDataEntity> mAdapter;
     private List<MemberDataEntity> mList = new ArrayList<>();
     private ScanPoupWindow mopupWindow;
@@ -77,6 +80,7 @@ public class OrganizeActivity extends BaseActivity {
     @Override
     public void initView() {
         super.initView();
+        top_title.setText("我的团队");
         gameTeamId =  getIntent().getExtras().getString("gameTeamId");
         createStompClient();
     }

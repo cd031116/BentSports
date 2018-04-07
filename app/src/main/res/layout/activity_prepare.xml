@@ -26,24 +26,16 @@
             android:textColor="#000000"
             android:textSize="70px" />
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="500px"
-            android:layout_marginTop="43px"
-            android:background="@drawable/recomm_bg" />
 
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scrollbars="none">
-
-            <TextView
+            android:layout_height="match_parent"
+            android:background="#ffffff"
+            android:layout_above="@+id/start_view">
+            <WebView
+                android:id="@+id/webview"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="43px"
-                android:text="有一个人叫真咯嗦，娶了个老婆叫要你管，生了个儿子叫麻烦。有一天麻烦不见了！夫妻俩就去报案。警察问爸爸：请问这位男士你叫啥名字？爸爸说:真咯嗦。警察很生气，然后 他又问妈妈叫啥名字。妈妈说:要你管。警察非常生气的说:你们要干什么?夫妻俩说：找麻烦"
-                android:textColor="#333333"
-                android:textSize="53px" />
+                android:layout_height="match_parent" />
         </android.support.v4.widget.NestedScrollView>
     </LinearLayout>
 

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -45,6 +46,8 @@ public class TeamMemberActivity extends BaseActivity {
     private JoinTeam bean;
     @Bind(R.id.image_cover)
     ImageView image_cover;
+    @Bind(R.id.webview)
+    WebView webView;
     private StompClient mStompClient;
    private int gameTeamId ;
     @Override
@@ -65,7 +68,7 @@ public class TeamMemberActivity extends BaseActivity {
         super.initData();
     }
 
-    @OnClick({R.id.look_peo})
+    @OnClick({R.id.look_peo,R.id.top_left,R.id.top_image})
     void onclick(View v) {
         switch (v.getId()) {
             case R.id.look_peo:
@@ -73,6 +76,10 @@ public class TeamMemberActivity extends BaseActivity {
                 intent.putExtra("type", "personal");
                 intent.putExtra("gameTeamId", gameTeamId);
                 startActivity(intent);
+                break;
+            case  R.id.top_left:
+            case R.id.top_image:
+                finish();
                 break;
         }
     }
@@ -99,8 +106,7 @@ public class TeamMemberActivity extends BaseActivity {
 
 
     private void setview(String info) {
-
-
+        webView.loadDataWithBaseURL(null,info, "text/html", "UTF-8", null);
     }
 
     //

@@ -12,6 +12,7 @@ import android.media.MediaPlayer;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -46,7 +47,7 @@ public class DoTaskPoupWindow extends PopupWindow {
     private ItemInclick itemsOnClick;
     private ItemOnclick itemOnClick;
     private MediaPlayer mPlayer;
-
+    private WebView webview;
 
     public DoTaskPoupWindow(final Activity context, boolean isDo, final GamePotins gamePotins, final TeamGame teamGame, String distance, final ItemOnclick itemsOnClickd) {
         this.mContext = context;
@@ -62,6 +63,7 @@ public class DoTaskPoupWindow extends PopupWindow {
         juli = (TextView) view.findViewById(R.id.juli);
         wancheng = (ImageView) view.findViewById(R.id.wancheng);
         need_people = (TextView) view.findViewById(R.id.need_people);
+        webview= (WebView) view.findViewById(R.id.webview);
         if (isDo) {
             go_task.setVisibility(View.VISIBLE);
             line_s.setVisibility(View.GONE);
@@ -84,6 +86,8 @@ public class DoTaskPoupWindow extends PopupWindow {
                 need_people.setVisibility(View.GONE);
         } else
             need_people.setVisibility(View.GONE);
+
+        webview.loadDataWithBaseURL(null, gamePotins.getDescription(), "text/html", "UTF-8", null);
 
         name_game.setText(gamePotins.getAlias());
         juli.setText(distance);

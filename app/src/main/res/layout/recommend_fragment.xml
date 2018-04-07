@@ -149,13 +149,16 @@
                 <ImageView
                     android:id="@+id/play_one"
                     android:layout_width="484px"
-                    android:layout_height="254px" />
+                    android:layout_height="254px"
+                    android:elevation="4dp"/>
 
                 <ImageView
                     android:id="@+id/play_two"
                     android:layout_width="484px"
                     android:layout_height="254px"
-                    android:layout_marginLeft="28px" />
+                    android:layout_marginLeft="28px"
+                    android:translationZ="2dp"
+                    android:elevation="4dp"/>
 
             </LinearLayout>
 
