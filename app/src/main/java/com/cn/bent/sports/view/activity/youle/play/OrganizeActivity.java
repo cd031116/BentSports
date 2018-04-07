@@ -27,6 +27,7 @@ import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.view.activity.youle.MyRouteListActivity;
 import com.cn.bent.sports.view.activity.youle.bean.JoinTeam;
+import com.cn.bent.sports.view.activity.youle.bean.ScanType;
 import com.cn.bent.sports.view.activity.youle.bean.UserInfo;
 import com.cn.bent.sports.view.poupwindow.ScanPoupWindow;
 import com.kennyc.view.MultiStateView;
@@ -92,7 +93,13 @@ public class OrganizeActivity extends BaseActivity {
     void onclick(View v) {
         switch (v.getId()) {
             case R.id.creat_scan:
-                shouPoup(teamGame.getId() + "");
+                if(teamGame!=null){
+                    ScanType st=new ScanType("game",teamGame.getId()+"");
+                    String STARS = JSON.toJSONString(st);
+                    shouPoup(STARS);
+                }else {
+
+                }
                 break;
             case R.id.sure_start:
                 PlayUserManager.insert(mList);

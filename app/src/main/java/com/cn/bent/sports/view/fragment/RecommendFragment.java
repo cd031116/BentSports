@@ -131,7 +131,12 @@ public class RecommendFragment extends BaseFragment {
             case REQUEST_Scan:
                 if (null != data) {
                     String jieguo=data.getStringExtra("SCAN_RESULT");
-                    getJoinTeam(jieguo);
+
+                    JSONObject jsonObject = JSONObject.parseObject(jieguo);
+                    String  types = jsonObject.getString("type");
+                    if("game".equals(types)){
+                        getJoinTeam(jsonObject.getString("param"));
+                    }
                     break;
                 }
         }

@@ -832,6 +832,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     }
 
     //监听游戏完成
+
     private void getMsg() {
         mStompClient.topic("/topic/" + gameTeamId + "/status").subscribe(new Consumer<StompMessage>() {
             @Override

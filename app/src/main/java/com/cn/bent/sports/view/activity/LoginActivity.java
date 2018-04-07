@@ -56,6 +56,7 @@ public class LoginActivity extends BaseActivity implements Handler.Callback {
     private static final int MSG_AUTH_CANCEL = 1;
     private static final int MSG_AUTH_COMPLETE = 3;
     private static final int MSG_AUTH_ERROR= 2;
+    private boolean t_isCode=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -129,27 +130,6 @@ public class LoginActivity extends BaseActivity implements Handler.Callback {
 
     }
 
-    private void getdot() {
-        showAlert("......", true);
-        BaseApi.getDefaultService(this).getFenceAndDot()
-                .map(new HuiquRxFunction<RailBean>())
-                .compose(RxSchedulers.<RailBean>io_main())
-                .subscribe(new RxObserver<RailBean>(LoginActivity.this, "login", 1, false) {
-                    @Override
-                    public void onSuccess(int whichRequest, RailBean info) {
-                        dismissAlert();
-                        SaveObjectUtils.getInstance(LoginActivity.this).setObject(Constants.DOT_INFO, info);
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                        finish();
-                    }
-
-                    @Override
-                    public void onError(int whichRequest, Throwable e) {
-                        dismissAlert();
-                        RxToast.error(e.getMessage());
-                    }
-                });
-    }
 
     private void weiChatLogin( Platform platform) {
         BaseApi.getJavaLoginService(this).weichatLogin("password", platform.getDb().get("unionid"),"1","ANDROID",platform.getDb().getUserName(),platform.getDb().getUserIcon())
@@ -171,9 +151,9 @@ public class LoginActivity extends BaseActivity implements Handler.Callback {
                 });
     }
 
-    private void login(String account, String code) {
+    private void loginCoe(String account, String code) {
         showAlert("正在登录...", true);
-        BaseApi.getJavaLoginService(this).Loging("password",account ,code)
+        BaseApi.getJavaLoginService(this).LogingCode(1,"password","ANDROID",account ,code)
                 .map(new HuiquRxTBFunction<LoginResult>())
                 .compose(RxSchedulers.<LoginResult>io_main())
                 .subscribe(new RxObserver<LoginResult>(LoginActivity.this, "login", 1, false) {
@@ -193,6 +173,9 @@ public class LoginActivity extends BaseActivity implements Handler.Callback {
                     }
                 });
     }
+
+
+
 
     private void getUserInfo() {
         showAlert("正在获取用户信息...", true);
@@ -217,13 +200,14 @@ public class LoginActivity extends BaseActivity implements Handler.Callback {
     }
 
     private void getcode(String account) {
-        BaseApi.getJavaLoginDefaultService(LoginActivity.this).sendCode(account,0)
+        BaseApi.getJavaLoginService(LoginActivity.this).sendCode(account,1)
                 .map(new JavaRxFunction<Boolean>())
                 .compose(RxSchedulers.<Boolean>io_main())
                 .subscribe(new RxObserver<Boolean>(LoginActivity.this, "getcode", 1, false) {
                     @Override
                     public void onSuccess(int whichRequest, Boolean result) {
                         timerCount.start();
+                        t_isCode=true;
                     }
 
                     @Override
@@ -256,7 +240,11 @@ public class LoginActivity extends BaseActivity implements Handler.Callback {
                 getcode(sd);
                 break;
             case R.id.commit_btn:
-                login(edit_photo.getText().toString(), code_photo.getText().toString());
+                if (t_isCode){
+                    loginCoe(edit_photo.getText().toString(), code_photo.getText().toString());
+                }else {
+                    RxToast.warning("请输入验证码");
+                }
                 break;
             case R.id.wechat_sign:
                 Platform wechat = ShareSDK.getPlatform(Wechat.NAME);
@@ -313,11 +301,12 @@ public class LoginActivity extends BaseActivity implements Handler.Callback {
             switch(msg.what) {
                 case MSG_AUTH_CANCEL: {
                     // 取消
+                    dismissAlert();
                     RxToast.normal("取消");
                 }
                 break;
                 case MSG_AUTH_ERROR: {
-
+                    dismissAlert();
                     // 失败
                     Throwable t = (Throwable) msg.obj;
                     String text = "caught error: " + t.getMessage();

@@ -98,9 +98,23 @@ public interface ApiService {
   * */
     @FormUrlEncoded
     @POST("api/basic/user/noauth/send_code")
-    Observable<JavaResult<Boolean>> sendCode(@Query("phone") String phone,
-                                              @Query("type") int type);
+    Observable<JavaResult<Boolean>> sendCode(@Field("phone") String phone,
+                                              @Field("type") int type);
 
+
+    /**
+     * 登录
+     *
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("se/oauth/token")
+    Observable<LoginResult> LogingCode(
+            @Field("login_type") int login_type ,
+            @Field("grant_type") String grant_type,
+            @Field("device") String device,
+            @Field("username") String username,
+            @Field("password") String password);
 
     /**
      * 登录
@@ -111,10 +125,9 @@ public interface ApiService {
     @POST("se/oauth/token")
     Observable<LoginResult> Loging(
             @Field("grant_type") String grant_type,
+            @Field("device") String device,
             @Field("username") String username,
             @Field("password") String password);
-
-
     /**
      * 微信登录
      *
