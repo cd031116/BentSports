@@ -839,9 +839,8 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                 Log.i("tttt", "任务完成=" + msg);
                 String datas = "";
                 try {
-                    JSONObject jsonObject = new JSONObject();
-                    JSONObject obj = jsonObject.getJSONObject(msg);
-                    datas = obj.getString("data");
+                    JSONObject jsonObject = JSONObject.parseObject(msg);
+                    datas = jsonObject.getString("data");
                 } catch (Exception e) {
 
                 }
