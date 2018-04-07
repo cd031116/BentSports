@@ -285,7 +285,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                         public void onClick(Dialog dialog, int index) {
                             dialog.dismiss();
                         }
-                    }).setListData(teamGame, mGamePotinsList.get(i).getId()).show();
+                    }).setListData(teamGame, mGamePotinsList.get(i)).show();
                     break;
                 }
             }
@@ -1005,18 +1005,13 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 
     private void setMarker(GamePotins gamePotins) {
         int num=  getSyPeople(gamePotins);
-//        int passNum = gamePotins.getTeamTaskDetails().size();
-//        int allNum;
-//        if (teamGame.getPassRate() * teamGame.getTeamMemberMax() % 100 == 0)
-//            allNum = teamGame.getPassRate() * teamGame.getTeamMemberMax() / 100;
-//        else
-//            allNum = teamGame.getPassRate() * teamGame.getTeamMemberMax() / 100 + 1;
         Log.d(TAG, "setMarker: " + num+"--:"+teamGame.getPassRate());
 
         View view = this.getLayoutInflater().inflate(R.layout.marker_dedai, null);
         TextView textView = (TextView) view.findViewById(R.id.text_num);
         textView.setText(String.valueOf(num));
         MarkerOptions markerOption = new MarkerOptions();
+        markerOption.title(gamePotins.getId() + "");
         markerOption.position(new LatLng(gamePotins.getLatitude(), gamePotins.getLongitude()));
         markerOption.icon(BitmapManager.getInstance().getBitmapDescriptor4View(view));
         // 将Marker设置为贴地显示，可以双指下拉地图查看效果

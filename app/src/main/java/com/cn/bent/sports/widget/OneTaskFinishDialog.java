@@ -21,6 +21,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
+import com.cn.bent.sports.bean.GamePotins;
 import com.cn.bent.sports.bean.GameTeamScoreEntity;
 import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.bean.MemberDataEntity;
@@ -53,7 +54,7 @@ public class OneTaskFinishDialog extends Dialog implements View.OnClickListener 
     private LinearLayout dialog_layout;
     private List<GameTeamScoreEntity> gameTeamScoreEntityList;
     private TeamGame teamGame;
-    long gamePointId;
+    private GamePotins gamePoints;
 
     public OneTaskFinishDialog(Context context) {
         super(context);
@@ -73,9 +74,9 @@ public class OneTaskFinishDialog extends Dialog implements View.OnClickListener 
     }
 
 
-    public OneTaskFinishDialog setListData(TeamGame teamId, long gamePointId) {
+    public OneTaskFinishDialog setListData(TeamGame teamId, GamePotins gamePoints) {
         this.teamGame = teamId;
-        this.gamePointId = gamePointId;
+        this.gamePoints = gamePoints;
         return this;
     }
 
@@ -101,19 +102,19 @@ public class OneTaskFinishDialog extends Dialog implements View.OnClickListener 
         white_layout.setOnClickListener(null);
         dialog_layout.setOnClickListener(this);
         game_name.setOnClickListener(this);
-        setRecyData(teamGame, gamePointId);
+        setRecyData(teamGame, gamePoints);
     }
 
-    private void setRecyData(final TeamGame teamGame, long gamePointId) {
+    private void setRecyData(final TeamGame teamGame, final GamePotins gamePoints) {
         final List<MemberDataEntity> history = PlayUserManager.getHistory();
-        BaseApi.getJavaLoginDefaultService(mContext).getPointTask(teamGame.getId(), gamePointId)
+        BaseApi.getJavaLoginDefaultService(mContext).getPointTask(teamGame.getId(), gamePoints.getId())
                 .map(new JavaRxFunction<List<GameTeamScoreEntity>>())
                 .compose(RxSchedulers.<List<GameTeamScoreEntity>>io_main())
                 .subscribe(new RxObserver<List<GameTeamScoreEntity>>(mContext, "getPointTask", 1, false) {
                     @Override
                     public void onSuccess(int whichRequest, List<GameTeamScoreEntity> gameTeamScoreEntities) {
                         if (gameTeamScoreEntities != null && gameTeamScoreEntities.size() > 0) {
-                            int finish_num = ((teamGame.getPassRate() * teamGame.getTeamMemberMax()) / 100) - gameTeamScoreEntities.size();
+                            int finish_num=  getSyPeople(gamePoints);
                             if (finish_num > 0) {
                                 game_finish_num.setVisibility(View.VISIBLE);
                                 String finish_num_str = "还需" + finish_num + "人完成";
@@ -142,6 +143,19 @@ public class OneTaskFinishDialog extends Dialog implements View.OnClickListener 
                 });
     }
 
+    private int getSyPeople(GamePotins gamePotins) {
+        int needNum = 0;
+        if (gamePotins.getState() == 1) {
+            int passNum = gamePotins.getTeamTaskDetails().size();
+            int allNum;
+            if (teamGame.getPassRate() * teamGame.getTeamMemberReal() % 100 == 0)
+                allNum = teamGame.getPassRate() * teamGame.getTeamMemberReal() / 100;
+            else
+                allNum = teamGame.getPassRate() * teamGame.getTeamMemberReal() / 100 + 1;
+            needNum = allNum - passNum;
+        }
+        return needNum;
+    }
     /**
      * 从大到小排序
      *
