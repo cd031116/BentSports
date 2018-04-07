@@ -60,7 +60,7 @@ public class AddressData {
     }
     //是否大于 10m
     public boolean isThan10(LatLng nowPosition){
-        if(getStepDataValue(nowPosition)>=10){
+        if(getStepDataValue(nowPosition)>=8){
             return true;
         }
         return false;

@@ -69,7 +69,7 @@
                 android:id="@+id/finish_task_two"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toLeftOf="@id/all_task"
+                android:layout_toLeftOf="@id/all_task_two"
                 android:drawableLeft="@drawable/map_task"
                 android:text="6"
                 android:textColor="@color/c_fd7d6f"

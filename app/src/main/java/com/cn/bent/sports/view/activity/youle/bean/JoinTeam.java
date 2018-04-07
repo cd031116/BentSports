@@ -8,7 +8,10 @@ import java.io.Serializable;
 
 public class JoinTeam implements Serializable {
 
+    public JoinTeam() {
+        super();
 
+    }
     /**
      * avatar : string
      * gameTeamId : 0

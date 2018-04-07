@@ -92,7 +92,7 @@ public class DataUtils {
 
     public static String getDateToTime(long milSecond) {
         long secoond = milSecond / 1000;
-        if (secoond >= 4 * 60 * 60) {
+        if (secoond >= 24 * 60 * 60) {
             return "04.00.00";
         } else {
             long hour = (secoond % (24 * 60 * 60)) / (60 * 60);
@@ -101,7 +101,16 @@ public class DataUtils {
             return (hour >= 10 ? (hour + "") : ("0" + hour)) + ":" + (min >= 10 ? (min + "") : ("0" + min)) + ":" + (sec >= 10 ? (sec + "") : ("0" + sec));
         }
     }
-
+    public   static   List  removeDuplicate(List list)  {
+        for  ( int  i  =   0 ; i  <  list.size()  -   1 ; i ++ )  {
+            for  ( int  j  =  list.size()  -   1 ; j  >  i; j -- )  {
+                if  (list.get(j).equals(list.get(i)))  {
+                    list.remove(j);
+                }
+            }
+        }
+        return list;
+    }
 
     public static void copyFilesFassets(Context context, String oldPath, String newPath) {
         try {

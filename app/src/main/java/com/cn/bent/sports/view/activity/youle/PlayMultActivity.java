@@ -3,7 +3,6 @@ package com.cn.bent.sports.view.activity.youle;
 import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
@@ -39,11 +38,8 @@ import com.bumptech.glide.request.transition.Transition;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
-import com.cn.bent.sports.base.BaseConfig;
 import com.cn.bent.sports.bean.GamePotins;
 import com.cn.bent.sports.bean.LoginResult;
-import com.cn.bent.sports.bean.MapDot;
-import com.cn.bent.sports.bean.MemberDataEntity;
 import com.cn.bent.sports.bean.TeamGame;
 import com.cn.bent.sports.database.PlayPointManager;
 import com.cn.bent.sports.utils.AddressData;
@@ -363,23 +359,6 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     }
 
 
-    /**
-     * 显示定位蓝点
-     */
-    private void addLocaToMap() {
-        aMap.setMyLocationEnabled(true);
-        // 设置定位的类型为定位模式，有定位、跟随或地图根据面向方向旋转几种
-        MyLocationStyle myLocationStyle = new MyLocationStyle();
-        myLocationStyle.interval(2 * 1000);
-        myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE_NO_CENTER);
-//        myLocationStyle.strokeWidth(1.0f);
-        myLocationStyle.myLocationIcon(BitmapDescriptorFactory
-                .fromResource(R.drawable.current_location));
-        myLocationStyle.strokeColor(Color.parseColor("#F9DEDE"));// 设置圆形的边框颜色
-        myLocationStyle.radiusFillColor(Color.argb(100, 249, 222, 222));//
-        aMap.setMyLocationStyle(myLocationStyle);
-        aMap.setOnMyLocationChangeListener(this);
-    }
 
     //    boolean isFirst=false;
     private void shouPoup(GamePotins gamePotins, TeamGame teamGame, boolean isDo) {
@@ -599,7 +578,6 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         }
     }
 //上报地理位置
-
     public void addPositionmsg(final  double lat,final double longt) {
         if (teamGame.getTeamMemberReal() <= 1) {
             return;
@@ -608,11 +586,13 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         if(!has){
             return;
         }
+        if(lat<=0.0||longt<=0.0){
+            return;
+        }
         UserInfo user = SaveObjectUtils.getInstance(PlayMultActivity.this).getObject(Constants.USER_BASE, null);
         JoinTeam team = new JoinTeam(user.getAvatar(), gameTeamId, lat, longt, user.getNickname(), user.getId());
         String STARS = JSON.toJSONString(team);
-        Log.i("tttt","STARS="+STARS);
-        String pats = "/" + gameTeamId + "/save_location"+"/teamMember="+STARS;
+        String pats = "/app/" + gameTeamId + "/save_location";
         mStompClient.send(pats, STARS)
                 .subscribe(new Subscriber<Void>() {
                     @Override
@@ -691,14 +671,10 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                     @Override
                     public void onSuccess(int whichRequest, TeamGame info) {
                         teamGame = info;
-                        Log.i("tttt", "info=" + info.getStartTime());
 
-                        Log.i("tttt", "DataUtils=" + DataUtils.UTCtoString(info.getStartTime()));
                         getPoints();
                         if (info.getStartTime() != null) {
                             times_s = DataUtils.getStringToDate(DataUtils.UTCtoString(info.getStartTime()));
-                            Log.i("tttt", "times_s=" + times_s);
-                            Log.i("tttt", "times_s=" + System.currentTimeMillis());
 
                         }
                     }
@@ -846,6 +822,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                         break;
                     case CLOSED:
                         Log.d("tttt", "Stomp connection closed");
+                        mStompClient.disconnect();
                         createStompClient();
                         break;
                 }
@@ -913,78 +890,75 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                 } catch (Exception e) {
 
                 }
-            /*   "data": {
-                "gamePointId": 0,
-                        "score": 0,
-                        "timing": 0,
-                        "type": 0,
-                        "userId": 0
-            },*/
             }
         });
     }
 
+
     //队员头像
     private void setUserInfo() {
-        if (teamGame == null && teamGame.getTeamMemberMax() <= 1) {
+        DataUtils.removeDuplicate(mPosition);
+        if (teamGame == null && teamGame.getTeamMemberReal() <= 1) {
             return;
         }
+        Log.i("tttt","teamGame.getTeamMemberReal()="+teamGame.getTeamMemberReal());
         for (Marker marker : mList) {
             marker.remove();
         }
         mList.clear();
+        UserInfo userInfo=SaveObjectUtils.getInstance(PlayMultActivity.this).getObject(Constants.USER_BASE,null);
         for (final JoinTeam bean : mPosition) {
-            MarkerOptions markerOption = new MarkerOptions();
-            markerOption.position(new LatLng(bean.getLatitude(), bean.getLongitude()));
-            markerOption.draggable(false);//设置Marker可拖动
-            markerOption.title(bean.getUserId() + "");
-            RequestOptions myOptions = new RequestOptions()
-                    .centerCrop()
-                    .circleCropTransform();
-
-            Glide.with(PlayMultActivity.this).load(bean.getAvatar())
-                    .apply(myOptions)
-                    .into(new SimpleTarget<Drawable>(100, 100) {
-                        @Override
-                        public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
-                            MarkerOptions markerOption = new MarkerOptions();
-                            ImageView imageView = new ImageView(PlayMultActivity.this);
-                            imageView.setImageDrawable(resource);
-                            markerOption.position(new LatLng(bean.getLatitude(), bean.getLongitude()));
-                            BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromView(imageView);
-                            markerOption.icon(bitmapDescriptor);
-                            Marker marker = aMap.addMarker(markerOption);
-                            mList.add(marker);
-                        }
-                    });
+            Log.i("tttt","bean="+bean.getAvatar());
+            if(bean.getUserId()!=userInfo.getId()&&bean.getLatitude()>0&&bean.getLongitude()>0){
+                MarkerOptions markerOption = new MarkerOptions();
+                markerOption.position(new LatLng(bean.getLatitude(), bean.getLongitude()));
+                markerOption.draggable(false);//设置Marker可拖动
+                markerOption.title(bean.getUserId() + "");
+                RequestOptions myOptions = new RequestOptions()
+                        .centerCrop()
+                        .circleCropTransform();
+                Glide.with(PlayMultActivity.this).load(bean.getAvatar())
+                        .apply(myOptions)
+                        .into(new SimpleTarget<Drawable>(100, 100) {
+                            @Override
+                            public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
+                                MarkerOptions markerOption = new MarkerOptions();
+                                ImageView imageView = new ImageView(PlayMultActivity.this);
+                                imageView.setImageDrawable(resource);
+                                markerOption.position(new LatLng(bean.getLatitude(), bean.getLongitude()));
+                                BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromView(imageView);
+                                markerOption.icon(bitmapDescriptor);
+                                Marker marker = aMap.addMarker(markerOption);
+                                mList.add(marker);
+                            }
+                        });
+            }
         }
     }
 
 
-    ///user/{username}/topic/{teamId}/getLocations
     //获取队员地理位置个人不需要
     private void getAddressMsg() {
         UserInfo user = SaveObjectUtils.getInstance(PlayMultActivity.this).getObject(Constants.USER_BASE, null);
-        String paths = "/user/" + user.getNickname() + "/topic/+" + gameTeamId + "/getLocations";
+        String paths = "/user/" + user.getUsername() + "/topic/" + gameTeamId + "/get_locations";
+        Log.i("tttt","paths="+paths);
         mStompClient.topic(paths).subscribe(new Consumer<StompMessage>() {
             @Override
             public void accept(StompMessage stompMessage) throws Exception {
                 String msg = stompMessage.getPayload().trim();
                 Log.i("tttt", "getAddressMsg=" + msg);
-                JSONObject datas = null;
                 try {
                     JSONObject jsonObject = JSONObject.parseObject(msg);
-                    datas = jsonObject.getJSONObject("data");
                     mPosition.clear();
-                    mPosition.addAll(JSON.parseArray(datas.toString(), JoinTeam.class));
+                    mPosition.addAll(JSON.parseArray(JSON.parseObject(msg).getString("data"), JoinTeam.class));
+                    Log.i("tttt","mPosition="+mPosition.size());
                 } catch (Exception e) {
-
+                    Log.i("tttt","eeee="+e.getMessage());
                 }
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         setUserInfo();
-
                     }
                 });
 
@@ -1050,8 +1024,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     }
 
     //计时器
-    private void
-    setTimes() {
+    private void setTimes() {
         if (PlayPointManager.isHavaPlay()) {
             time.setText("");
             timing.setText("");

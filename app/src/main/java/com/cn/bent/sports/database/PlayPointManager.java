@@ -63,7 +63,7 @@ public class PlayPointManager  {
         boolean isHava=true;
         List<GamePotins> mlist   =PlayPointDb.getDB().select(null,GamePotins.class);
         for (GamePotins potins : mlist) {
-            if (potins.getState()==-1){
+            if (potins.getState()==-1||potins.getState()==1){
                 isHava=false;
             }
         }
