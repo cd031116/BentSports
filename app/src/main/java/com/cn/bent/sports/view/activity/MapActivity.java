@@ -177,7 +177,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     private XianluPoupWindow xlWindow;
     private CommonAdapter<ScenicPointsEntity.PointsBean> mAdapter;
     private RouteSearch routeSearch;
-    private List<ScenicPointsEntity.PointsBean> voicePoints=new ArrayList<>();
+    private List<ScenicPointsEntity.PointsBean> voicePoints = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -286,6 +286,14 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         }
     };
 
+    @OnClick({R.id.top_image})
+    void onclik(View v) {
+        switch (v.getId()) {
+            case R.id.top_image:
+                finish();
+                break;
+        }
+    }
 
     private void checkPause() {
         if (mPointsEntity != null) {
@@ -910,7 +918,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             mPointsEntity = mPointsEntityMap.get(Integer.parseInt(marker.getTitle()));
 
             Log.d("dddd", "onPointClick: " + marker.getTitle() + ",getPointId:" + mPointsEntity.getId() + "，mp3:" + mPointsEntity.getMp3());
-            if (mPointsEntity.getType() == 2 && !TextUtils.isEmpty(mPointsEntity.getMp3())) {
+            if (mPointsEntity.getType() == 2 && !TextUtils.isEmpty(mPointsEntity.getMp3()) && (mPointsEntity.getMp3()).endsWith(".mp3")) {
                 addAnimMarker(mPointsEntity);
                 playMarkerAudio(mPointsEntity);
                 notifyRecyChanged();
@@ -1140,7 +1148,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                         for (int i = 0; i < mPointsList.size(); i++) {
                             String jieguo = String.valueOf(mPointsList.get(i).getMajor());
                             if (jieguo.equals(majer)) {
-                                if (!TextUtils.isEmpty(mPointsList.get(i).getMp3())) {
+                                if (!TextUtils.isEmpty(mPointsList.get(i).getMp3()) && (mPointsList.get(i).getMp3()).endsWith(".mp3")) {
                                     QueueManager.update(new QueueBean(mPointsList.get(i).getMp3()));
                                     if (TaskCationManager.isPlay(i) || TaskCationManager.isNow(i)) {
 
@@ -1241,7 +1249,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
 
 
     private void sendStepMsg(int steps) {
-        if(!StepData.getInstance(MapActivity.this).isThanNow(5)){
+        if (!StepData.getInstance(MapActivity.this).isThanNow(5)) {
             return;
         }
         BaseApi.getJavaLoginDefaultService(MapActivity.this).sendStep(steps)
@@ -1253,6 +1261,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                         StepData.getInstance(MapActivity.this).setStepDataValue(System.currentTimeMillis());
 
                     }
+
                     @Override
                     public void onError(int whichRequest, Throwable e) {
 

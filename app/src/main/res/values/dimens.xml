@@ -81,4 +81,5 @@
     <dimen name="t936">936px</dimen>
     <dimen name="t995">995px</dimen>
     <dimen name="t1139">1139px</dimen>
+    <dimen name="fixed_height_bottom_padding">5dp</dimen>
 </resources>

@@ -41,7 +41,7 @@ import java.util.List;
 public class DoTaskPoupWindow extends PopupWindow {
     private Activity mContext;
     private View view;
-    private ImageView image_bg, close_ima, wancheng;
+    private ImageView  close_ima, wancheng;
     private TextView name_game, go_task, juli, need_people;
     private LinearLayout line_s;
     private ItemInclick itemsOnClick;
@@ -55,7 +55,6 @@ public class DoTaskPoupWindow extends PopupWindow {
         this.view = LayoutInflater.from(mContext).inflate(R.layout.do_task_window, null);
 
         SupportMultipleScreensUtil.scale(view);
-        image_bg = (ImageView) view.findViewById(R.id.image_bg);
         name_game = (TextView) view.findViewById(R.id.name_game);
         line_s = (LinearLayout) view.findViewById(R.id.line_s);
         go_task = (TextView) view.findViewById(R.id.go_task);
@@ -124,7 +123,6 @@ public class DoTaskPoupWindow extends PopupWindow {
         SupportMultipleScreensUtil.scale(view);
         mPlayer = new MediaPlayer();
         mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        image_bg = (ImageView) view.findViewById(R.id.image_bg);
         name_game = (TextView) view.findViewById(R.id.name_game);
         line_s = (LinearLayout) view.findViewById(R.id.line_s);
         go_task = (TextView) view.findViewById(R.id.go_task);
@@ -169,25 +167,24 @@ public class DoTaskPoupWindow extends PopupWindow {
         });
         mContext.setFinishOnTouchOutside(true);
 
-        try {
-            InputStream inputStreamF = mContext.getAssets().open(path + ".jpg");
-            //获得图片的宽、高
-            BitmapFactory.Options tmpOptions = new BitmapFactory.Options();
-            tmpOptions.inJustDecodeBounds = true;
-            BitmapFactory.decodeStream(inputStreamF, null, tmpOptions);
-            int width = tmpOptions.outWidth;
-            int height = tmpOptions.outHeight;
-
-            InputStream inputStreamS = mContext.getAssets().open(path + ".jpg");
-            //设置显示图片的中心区域
-            BitmapRegionDecoder bitmapRegionDecoder = BitmapRegionDecoder.newInstance(inputStreamS, false);
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inPreferredConfig = Bitmap.Config.RGB_565;
-            Bitmap bitmap = bitmapRegionDecoder.decodeRegion(new Rect(0, 0, width, height), options);
-            image_bg.setImageBitmap(bitmap);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            InputStream inputStreamF = mContext.getAssets().open(path + ".jpg");
+//            //获得图片的宽、高
+//            BitmapFactory.Options tmpOptions = new BitmapFactory.Options();
+//            tmpOptions.inJustDecodeBounds = true;
+//            BitmapFactory.decodeStream(inputStreamF, null, tmpOptions);
+//            int width = tmpOptions.outWidth;
+//            int height = tmpOptions.outHeight;
+//
+//            InputStream inputStreamS = mContext.getAssets().open(path + ".jpg");
+//            //设置显示图片的中心区域
+//            BitmapRegionDecoder bitmapRegionDecoder = BitmapRegionDecoder.newInstance(inputStreamS, false);
+//            BitmapFactory.Options options = new BitmapFactory.Options();
+//            options.inPreferredConfig = Bitmap.Config.RGB_565;
+//            Bitmap bitmap = bitmapRegionDecoder.decodeRegion(new Rect(0, 0, width, height), options);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         setWindow(mContext);
 
 

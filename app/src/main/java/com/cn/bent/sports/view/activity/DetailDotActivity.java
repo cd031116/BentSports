@@ -210,7 +210,7 @@ public class DetailDotActivity extends BaseActivity {
     };
 
 
-    @OnClick({R.id.paly_t})
+    @OnClick({R.id.paly_t,R.id.top_image})
     void onclick(View v) {
         switch (v.getId()) {
             case R.id.paly_t:
@@ -226,6 +226,9 @@ public class DetailDotActivity extends BaseActivity {
                     paly_t.setBackgroundResource(R.drawable.bofang);
                     mHandler.postDelayed(runnable, 100);
                 }
+                break;
+            case R.id.top_image:
+                finish();
                 break;
         }
     }

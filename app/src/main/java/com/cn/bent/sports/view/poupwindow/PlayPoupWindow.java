@@ -23,7 +23,7 @@ import com.cn.bent.sports.view.activity.DetailDotActivity;
 public class PlayPoupWindow extends PopupWindow {
     private  Activity mContext;
     private View view;
-    private ImageView image_bg, go_detail;
+    private ImageView  go_detail;
     private TextView name_game, go_task,juli;
     private RelativeLayout main_top;
     private ItemInclick itemsOnClick;
@@ -32,7 +32,6 @@ public class PlayPoupWindow extends PopupWindow {
         this.itemsOnClick = itemsOnClickd;
         this.view = LayoutInflater.from(mContext).inflate(R.layout.play_item, null);
         SupportMultipleScreensUtil.scale(view);
-        image_bg = (ImageView) view.findViewById(R.id.image_bg);
         main_top = (RelativeLayout) view.findViewById(R.id.main_top);
         go_detail = (ImageView) view.findViewById(R.id.go_detail);
         go_detail.setOnClickListener(new View.OnClickListener() {
