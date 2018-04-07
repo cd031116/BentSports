@@ -166,7 +166,7 @@ public class DoTaskPoupWindow extends PopupWindow {
             }
         });
         mContext.setFinishOnTouchOutside(true);
-
+//
 //        try {
 //            InputStream inputStreamF = mContext.getAssets().open(path + ".jpg");
 //            //获得图片的宽、高
