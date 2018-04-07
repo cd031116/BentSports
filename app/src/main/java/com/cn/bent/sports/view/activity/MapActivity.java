@@ -421,7 +421,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                                 latLngs.add(new LatLng(doubles.get(0), doubles.get(1)));
                             }
                             polyline = aMap.addPolyline(new PolylineOptions().
-                                    addAll(latLngs).width(10).color(Color.argb(255, 1, 1, 1)));
+                                    addAll(latLngs).width(10).color(Color.argb(255, 237, 237, 237)));
                         }
                         if (linesPointsDetailEntity.getVoicePoints() != null && linesPointsDetailEntity.getVoicePoints().size() > 0) {
                             voicePoints = linesPointsDetailEntity.getVoicePoints();
@@ -835,6 +835,10 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             }
         }
         Log.d("dddd", "calculateLatlng latitude: " + secLatlng.latitude + ",longitude:" + secLatlng.longitude);
+        Intent intent=new Intent(this, WalkNaviActivity.class);
+        intent.putExtra("enty",mPointsEntity);
+        intent.putExtra("startLatlng",secLatlng);
+        startActivity(intent);
         aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(secLatlng, mCurrentZoom));
     }
 

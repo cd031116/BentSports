@@ -1,5 +1,6 @@
 package com.cn.bent.sports.view.activity.youle.play;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -115,8 +116,19 @@ public class MemberEditActivity extends BaseActivity {
     }
 
     @OnClick({R.id.close_btn, R.id.m_edit})
-    void onClick() {
-        this.finish();
+    void onClick(View view) {
+
+        switch (view.getId()) {
+            case R.id.close_btn:
+                this.finish();
+                break;
+            case R.id.m_edit:
+                Intent intent = new Intent(this, OrganizeActivity.class);
+                intent.putExtra("gameTeamId", String.valueOf(gameTeamId));
+                startActivity(intent);
+                break;
+        }
+
     }
 
     private void obtainTeamScore() {

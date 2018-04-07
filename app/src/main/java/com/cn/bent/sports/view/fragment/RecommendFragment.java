@@ -110,10 +110,7 @@ public class RecommendFragment extends BaseFragment {
                 startActivity(new Intent(getActivity(), PlayFunActivity.class));
                 break;
             case R.id.activity_one:
-                Intent intent1 = new Intent(getActivity(), MemberEditActivity.class);
-                intent1.putExtra("type", "game_team");
-                intent1.putExtra("gameTeamId", 171);
-                startActivity(intent1);
+                RxToast.warning("敬请期待下个版本");
                 break;
             case R.id.seek_rank:
                 startActivity(new Intent(getActivity(), WalkRankListActivity.class));
