@@ -182,7 +182,6 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mMapView = (MapView) findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
     }
 
@@ -201,6 +200,9 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         if (aMap == null) {
             aMap = mMapView.getMap();
         }
+        String path = this.getFilesDir() + "/bent/sport.data";
+        aMap.setCustomMapStylePath(path);
+        aMap.setMapCustomEnable(true);//true 开启; false 关闭
         aMap.showMapText(false);//关闭文字
         aMap.getUiSettings().setZoomControlsEnabled(false);//去掉高德地图右下角隐藏的缩放按钮
         aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lp.getLatitude(), lp.getLongitude()), 17));
@@ -349,7 +351,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
      * 获取点位数据
      */
     private void getdot() {
-        showAlert("......", true);
+        showAlert("正在获取...", true);
         BaseApi.getJavaLoginDefaultService(this).getScenicPoints("1")
                 .map(new JavaRxFunction<ScenicPointsEntity>())
                 .compose(RxSchedulers.<ScenicPointsEntity>io_main())
@@ -984,6 +986,9 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
 
     @Override
     public void onDestroy() {
+        if (DataUtils.isBlue(MapActivity.this) && mMinewBeaconManager != null) {
+            mMinewBeaconManager.stopScan();
+        }
         EventBus.getDefault().unregister(this);
         unbindService(serviceConnection);
         NotificationCenter.defaultCenter().unsubscribe(ShowPoupEvent.class, disevent);
