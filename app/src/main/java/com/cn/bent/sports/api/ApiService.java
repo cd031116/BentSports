@@ -6,6 +6,7 @@ import com.cn.bent.sports.bean.AllFinishEntity;
 import com.cn.bent.sports.bean.GameDetail;
 import com.cn.bent.sports.bean.GameInfo;
 import com.cn.bent.sports.bean.GamePotins;
+import com.cn.bent.sports.bean.GameRankEntity;
 import com.cn.bent.sports.bean.GameTeamScoreEntity;
 import com.cn.bent.sports.bean.LinesDetailEntity;
 import com.cn.bent.sports.bean.LinesPointsDetailEntity;
@@ -325,7 +326,7 @@ public interface ApiService {
 
 
     @POST("api/travel/game_team/rank")
-    Observable<JavaResult<RankEntity>> getRankList(@Body QueryInfo user);
+    Observable<GameRankEntity> getRankList(@Body QueryInfo user);
 
     /**
      * @return
