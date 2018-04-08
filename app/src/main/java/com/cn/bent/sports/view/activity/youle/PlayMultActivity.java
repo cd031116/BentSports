@@ -126,7 +126,6 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     private StompClient mStompClient;
     private AMap aMap;
     private float mCurrentZoom = 18f;
-    private int type = 2;
     //--------------------
     private List<Marker> mList = new ArrayList<Marker>();
     private List<Marker> mMarkerList = new ArrayList<Marker>();//游戏所有点图标
@@ -360,7 +359,6 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     }
 
 
-
     //    boolean isFirst=false;
     private void shouPoup(GamePotins gamePotins, TeamGame teamGame, boolean isDo) {
         String distance = "";
@@ -393,10 +391,10 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
             if (index == 1) {
                 //TODO 跳转游戏界面
                 Intent intent = new Intent(PlayMultActivity.this, GameWebActivity.class);
-                intent.putExtra("teamId",teamGames.getId()+"");
-                intent.putExtra("gamePointId",gamePotins.getId()+"");
-                intent.putExtra("gameName",gamePotins.getAlias());
-                intent.putExtra("type","1");
+                intent.putExtra("teamId", teamGames.getId() + "");
+                intent.putExtra("gamePointId", gamePotins.getId() + "");
+                intent.putExtra("gameName", gamePotins.getAlias());
+                intent.putExtra("type", gamePotins.getType());
                 startActivity(intent);
             }
             if (index == 2) {
@@ -583,16 +581,17 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
             }
         }
     }
-//上报地理位置
-    public void addPositionmsg(final  double lat,final double longt) {
+
+    //上报地理位置
+    public void addPositionmsg(final double lat, final double longt) {
         if (teamGame.getTeamMemberReal() <= 1) {
             return;
         }
-        boolean has=AddressData.getInstance(PlayMultActivity.this).isThan10(mStartPoint);
-        if(!has){
+        boolean has = AddressData.getInstance(PlayMultActivity.this).isThan10(mStartPoint);
+        if (!has) {
             return;
         }
-        if(lat<=0.0||longt<=0.0){
+        if (lat <= 0.0 || longt <= 0.0) {
             return;
         }
         UserInfo user = SaveObjectUtils.getInstance(PlayMultActivity.this).getObject(Constants.USER_BASE, null);
@@ -603,7 +602,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                 .subscribe(new Subscriber<Void>() {
                     @Override
                     public void onSubscribe(Subscription s) {
-                        Log.i("tttt","ssssss="+s.toString());
+                        Log.i("tttt", "ssssss=" + s.toString());
                     }
 
                     @Override
@@ -618,7 +617,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 
                     @Override
                     public void onComplete() {
-                        AddressData.getInstance(PlayMultActivity.this).setStepDataValue(lat,longt);
+                        AddressData.getInstance(PlayMultActivity.this).setStepDataValue(lat, longt);
                     }
                 });
     }
@@ -732,7 +731,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                 .subscribe(new RxObserver<Boolean>(PlayMultActivity.this, TAG, 1, false) {
                     @Override
                     public void onSuccess(int whichRequest, final Boolean info) {
-                      setTimes();
+                        setTimes();
                     }
 
                     @Override
@@ -748,8 +747,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
      * @param info 1-依次穿越，2-限时挑战 3-自由规划
      */
     private void setMarkerView(List<GamePotins> info) {
-//        if (teamGame.getGameType() == 1) {
-        if (type == 1) {
+        if (teamGame.getGameType() == 1) {
             DataUtils.compareDaXiao(info);
             for (GamePotins gamePotins : info) {
                 Log.d(TAG, "setMarkerView: " + gamePotins.getOrderNo() + "----getState:" + gamePotins.getState() + "--:" + teamGame.getPassRate());
@@ -778,7 +776,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 
     private void setOverLay(GamePotins gamePotins) {
         MarkerOptions markerOption = new MarkerOptions();
-        Log.d(TAG, "setOverLay: "+gamePotins.getLatitude()+"--getLongitude:"+gamePotins.getLongitude());
+        Log.d(TAG, "setOverLay: " + gamePotins.getLatitude() + "--getLongitude:" + gamePotins.getLongitude());
         markerOption.position(new LatLng(gamePotins.getLatitude(), gamePotins.getLongitude()));
         markerOption.draggable(true);//设置Marker可拖动
         markerOption.title(gamePotins.getId() + "");
@@ -927,15 +925,15 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         if (teamGame == null && teamGame.getTeamMemberReal() <= 1) {
             return;
         }
-        Log.i("tttt","teamGame.getTeamMemberReal()="+teamGame.getTeamMemberReal());
+        Log.i("tttt", "teamGame.getTeamMemberReal()=" + teamGame.getTeamMemberReal());
         for (Marker marker : mList) {
             marker.remove();
         }
         mList.clear();
-        UserInfo userInfo=SaveObjectUtils.getInstance(PlayMultActivity.this).getObject(Constants.USER_BASE,null);
+        UserInfo userInfo = SaveObjectUtils.getInstance(PlayMultActivity.this).getObject(Constants.USER_BASE, null);
         for (final JoinTeam bean : mPosition) {
-            Log.i("tttt","bean="+bean.getAvatar());
-            if(bean.getUserId()!=userInfo.getId()&&bean.getLatitude()>0&&bean.getLongitude()>0){
+            Log.i("tttt", "bean=" + bean.getAvatar());
+            if (bean.getUserId() != userInfo.getId() && bean.getLatitude() > 0 && bean.getLongitude() > 0) {
                 MarkerOptions markerOption = new MarkerOptions();
                 markerOption.position(new LatLng(bean.getLatitude(), bean.getLongitude()));
                 markerOption.draggable(false);//设置Marker可拖动
@@ -967,7 +965,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     private void getAddressMsg() {
         UserInfo user = SaveObjectUtils.getInstance(PlayMultActivity.this).getObject(Constants.USER_BASE, null);
         String paths = "/user/" + user.getUsername() + "/topic/" + gameTeamId + "/get_locations";
-        Log.i("tttt","paths="+paths);
+        Log.i("tttt", "paths=" + paths);
         mStompClient.topic(paths).subscribe(new Consumer<StompMessage>() {
             @Override
             public void accept(StompMessage stompMessage) throws Exception {
@@ -977,9 +975,9 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                     JSONObject jsonObject = JSONObject.parseObject(msg);
                     mPosition.clear();
                     mPosition.addAll(JSON.parseArray(JSON.parseObject(msg).getString("data"), JoinTeam.class));
-                    Log.i("tttt","mPosition="+mPosition.size());
+                    Log.i("tttt", "mPosition=" + mPosition.size());
                 } catch (Exception e) {
-                    Log.i("tttt","eeee="+e.getMessage());
+                    Log.i("tttt", "eeee=" + e.getMessage());
                 }
                 runOnUiThread(new Runnable() {
                     @Override
@@ -1029,8 +1027,8 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 
 
     private void setMarker(GamePotins gamePotins) {
-        int num=  getSyPeople(gamePotins);
-        Log.d(TAG, "setMarker: " + num+"--:"+teamGame.getPassRate());
+        int num = getSyPeople(gamePotins);
+        Log.d(TAG, "setMarker: " + num + "--:" + teamGame.getPassRate());
 
         View view = this.getLayoutInflater().inflate(R.layout.marker_dedai, null);
         TextView textView = (TextView) view.findViewById(R.id.text_num);

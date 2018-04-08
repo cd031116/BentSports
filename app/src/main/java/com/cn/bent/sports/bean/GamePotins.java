@@ -36,6 +36,15 @@ public class GamePotins implements Serializable {
     private int orderNo;
     private int score;
     private int state;
+    private int type;
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
 
     public String getDescription() {
         return description;

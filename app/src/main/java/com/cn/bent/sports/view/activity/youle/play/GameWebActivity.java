@@ -40,7 +40,7 @@ public class GameWebActivity extends BaseActivity {
     @Bind(R.id.webview)
     WebView mWebView;
 
-    private String teamId, gamePointId,type,gameName;
+    private String teamId, gamePointId, type, gameName;
 
 
     @Override
@@ -92,8 +92,8 @@ public class GameWebActivity extends BaseActivity {
         webSettings.setJavaScriptEnabled(true);
         // 设置允许JS弹窗
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
-        Log.d(TAG, "initView: "+"http://192.168.17.143:8860/choice.html" + "?teamId=" + teamId + "&etype=android&gamePointId="+gamePointId+"&type=" + type+"&token=" + access_token);
-        mWebView.loadUrl("http://192.168.17.143:8860/choice.html" + "?teamId=" + teamId + "&etype=android&gamePointId="+gamePointId+"&type=" + type+"&token=" + access_token);
+        Log.d(TAG, "initView: " + "http://192.168.17.143:8860/choice.html" + "?teamId=" + teamId + "&etype=android&gamePointId=" + gamePointId + "&type=" + type + "&token=" + access_token);
+        mWebView.loadUrl("http://192.168.17.143:8860/choice.html" + "?teamId=" + teamId + "&etype=android&gamePointId=" + gamePointId + "&type=" + type + "&token=" + access_token);
         mWebView.addJavascriptInterface(new JSInterface(), "native");
     }
 
@@ -112,30 +112,46 @@ public class GameWebActivity extends BaseActivity {
         Observable<JavaResult<Boolean>> javaResultObservable;
         showAlert("正在获取...", true);
         if (youleGameEntity.getType() == 2)
-            javaResultObservable = BaseApi.getJavaLoginDefaultService(this)
-                    .finishOfflineGame(youleGameEntity.getTeamId(), youleGameEntity.getGamePointId(), youleGameEntity.getScord());
-        else
-            javaResultObservable = BaseApi.getJavaLoginDefaultService(this)
-                    .finishOnlineGame(youleGameEntity.getTeamId(), youleGameEntity.getGamePointId(), youleGameEntity.getScord());
-        javaResultObservable.map(new JavaRxFunction<Boolean>())
-                .compose(RxSchedulers.<Boolean>io_main())
-                .subscribe(new RxObserver<Boolean>(this, TAG, 1, false) {
-                    @Override
-                    public void onSuccess(int whichRequest, Boolean aBoolean) {
-                        dismissAlert();
-                        if (aBoolean)
-                            showSuccessDialog(gameName, youleGameEntity.getScord());
-                        else
-                            showErrorDialog(gameName, youleGameEntity.getScord());
-                    }
+            BaseApi.getJavaLoginDefaultService(this)
+                    .finishOfflineGame(youleGameEntity.getTeamId(), youleGameEntity.getGamePointId(), youleGameEntity.getScord())
+                    .map(new JavaRxFunction<Boolean>())
+                    .compose(RxSchedulers.<Boolean>io_main())
+                    .subscribe(new RxObserver<Boolean>(this, TAG, 1, false) {
+                        @Override
+                        public void onSuccess(int whichRequest, Boolean aBoolean) {
+                            dismissAlert();
+                            if (aBoolean)
+                                showSuccessDialog(gameName, youleGameEntity.getScord());
+                            else
+                                showErrorDialog(gameName, youleGameEntity.getScord());
+                        }
 
-                    @Override
-                    public void onError(int whichRequest, Throwable e) {
-                        dismissAlert();
-                        if (e.getMessage().equals("回答错误"))
-                            showAlertDialog();
-                    }
-                });
+                        @Override
+                        public void onError(int whichRequest, Throwable e) {
+                            dismissAlert();
+                            if (e.getMessage().equals("回答错误"))
+                                showAlertDialog();
+                        }
+                    });
+        else
+            BaseApi.getJavaLoginDefaultService(this)
+                    .finishOnlineGame(youleGameEntity.getTeamId(), youleGameEntity.getGamePointId(), youleGameEntity.getScord())
+                    .map(new JavaRxFunction<String>())
+                    .compose(RxSchedulers.<String>io_main())
+                    .subscribe(new RxObserver<String>(this, TAG, 1, false) {
+                        @Override
+                        public void onSuccess(int whichRequest, String aBoolean) {
+                            dismissAlert();
+                            showSuccessDialog(gameName, youleGameEntity.getScord());
+                        }
+
+                        @Override
+                        public void onError(int whichRequest, Throwable e) {
+                            dismissAlert();
+                            if (e.getMessage().equals("回答错误"))
+                                showAlertDialog();
+                        }
+                    });
     }
 
     private void showAlertDialog() {

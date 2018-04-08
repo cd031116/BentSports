@@ -256,7 +256,7 @@ public interface ApiService {
      * @return
      */
     @POST("api/travel/game_team/{teamId}/_pass_online")
-    Observable<JavaResult<Boolean>> finishOnlineGame(@Path("teamId") String teamId,
+    Observable<JavaResult<String>> finishOnlineGame(@Path("teamId") String teamId,
                                                      @Query("gamePointId") String gamePointId,
                                                      @Query("score") int score);
     /**
