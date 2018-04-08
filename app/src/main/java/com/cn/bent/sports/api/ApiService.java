@@ -238,8 +238,8 @@ public interface ApiService {
      * @return
      */
     @POST("api/travel/game_team/{teamId}/_pass_offline")
-    Observable<JavaResult<Boolean>> finishOfflineGame(@Path("teamId") long teamId,
-                                                @Query("gamePointId") long gamePointId,
+    Observable<JavaResult<Boolean>> finishOfflineGame(@Path("teamId") String teamId,
+                                                @Query("gamePointId") String gamePointId,
                                                 @Query("score") int score );
     /**
      * 完成线上任务
@@ -247,8 +247,8 @@ public interface ApiService {
      * @return
      */
     @POST("api/travel/game_team/{teamId}/_pass_online")
-    Observable<JavaResult<Boolean>> finishOnlineGame(@Path("teamId") long teamId,
-                                                     @Query("gamePointId") long gamePointId,
+    Observable<JavaResult<Boolean>> finishOnlineGame(@Path("teamId") String teamId,
+                                                     @Query("gamePointId") String gamePointId,
                                                      @Query("score") int score);
     /**
      * 强制退赛

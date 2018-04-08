@@ -13,6 +13,8 @@ import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.GameEntity;
 import com.cn.bent.sports.bean.LoginResult;
+import com.cn.bent.sports.bean.TeamGame;
+import com.cn.bent.sports.bean.YouleGameEntity;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.widget.CompletionDialog;
@@ -38,7 +40,7 @@ public class GameWebActivity extends BaseActivity {
     @Bind(R.id.webview)
     WebView mWebView;
 
-    private String teamId, gamePointId,type;
+    private String teamId, gamePointId,type,gameName;
 
 
     @Override
@@ -55,6 +57,7 @@ public class GameWebActivity extends BaseActivity {
         teamId = getIntent().getStringExtra("teamId");
         gamePointId = getIntent().getStringExtra("gamePointId");
         type = getIntent().getStringExtra("type");
+        gameName = getIntent().getStringExtra("gameName");
 
 
         WebSettings webSettings = mWebView.getSettings();
@@ -97,22 +100,22 @@ public class GameWebActivity extends BaseActivity {
         @JavascriptInterface
         public void h5Result(String ss) {
             Log.e("dasa", "h5Result: " + ss);
-//            Gson gson = new Gson();
-//            GameEntity gameEntity = gson.fromJson(ss, GameEntity.class);
-//            finishTask(gameEntity, 1);
+            Gson gson = new Gson();
+            YouleGameEntity youleGameEntity = gson.fromJson(ss, YouleGameEntity.class);
+            finishTask(youleGameEntity);
 //            Log.d("dasa", "h5Result: " + gameEntity.getGameid() + ",getScord:" + gameEntity.getScord() + ",getUid:" + gameEntity.getUid());
         }
     }
 
-    private void finishTask(GameEntity gameEntity, int game_mode) {
+    private void finishTask(final YouleGameEntity youleGameEntity) {
         Observable<JavaResult<Boolean>> javaResultObservable;
         showAlert("正在获取...", true);
-        if (game_mode == 1)
+        if (youleGameEntity.getType() == 2)
             javaResultObservable = BaseApi.getJavaLoginDefaultService(this)
-                    .finishOfflineGame(70, 4, 23);
+                    .finishOfflineGame(youleGameEntity.getTeamId(), youleGameEntity.getGamePointId(), youleGameEntity.getScord());
         else
             javaResultObservable = BaseApi.getJavaLoginDefaultService(this)
-                    .finishOnlineGame(70, 4, 23);
+                    .finishOnlineGame(youleGameEntity.getTeamId(), youleGameEntity.getGamePointId(), youleGameEntity.getScord());
         javaResultObservable.map(new JavaRxFunction<Boolean>())
                 .compose(RxSchedulers.<Boolean>io_main())
                 .subscribe(new RxObserver<Boolean>(this, TAG, 1, false) {
@@ -120,9 +123,9 @@ public class GameWebActivity extends BaseActivity {
                     public void onSuccess(int whichRequest, Boolean aBoolean) {
                         dismissAlert();
                         if (aBoolean)
-                            showSuccessDialog("game_name", 30);
+                            showSuccessDialog(gameName, youleGameEntity.getScord());
                         else
-                            showErrorDialog("game_name", 30);
+                            showErrorDialog(gameName, youleGameEntity.getScord());
                     }
 
                     @Override
