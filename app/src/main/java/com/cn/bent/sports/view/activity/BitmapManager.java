@@ -93,6 +93,7 @@ public class BitmapManager {
         BitmapDescriptor bitmapDescriptor = null;
         switch (index) {
             case -1:
+            case 1:
                 bitmapDescriptor = BitmapDescriptorFactory
                         .fromResource(R.drawable.uncomplete);
                 break;
