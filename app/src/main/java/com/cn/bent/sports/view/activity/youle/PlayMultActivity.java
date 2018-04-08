@@ -687,7 +687,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                 });
     }
 
-    //获取
+    //获取点位
     private void getPoints() {
         BaseApi.getJavaLoginDefaultService(PlayMultActivity.this).getGamePoints(gameTeamId)
                 .map(new JavaRxFunction<List<GamePotins>>())
@@ -714,6 +714,24 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                     public void onError(int whichRequest, Throwable e) {
                         dismissAlert();
                         RxToast.error(e.getMessage());
+                    }
+                });
+    }
+
+    //游戏结束调用
+    private void getGameOver() {
+        BaseApi.getJavaLoginDefaultService(PlayMultActivity.this).getGameOver(gameTeamId)
+                .map(new JavaRxFunction<Boolean>())
+                .compose(RxSchedulers.<Boolean>io_main())
+                .subscribe(new RxObserver<Boolean>(PlayMultActivity.this, TAG, 1, false) {
+                    @Override
+                    public void onSuccess(int whichRequest, final Boolean info) {
+                      setTimes();
+                    }
+
+                    @Override
+                    public void onError(int whichRequest, Throwable e) {
+                        dismissAlert();
                     }
                 });
     }
@@ -789,6 +807,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
             score_two.setText(PlayPointManager.getScore() + "分");
             finish_task_two.setText(PlayPointManager.getHavaPlay() + "");
             all_task_two.setText("/" + mGamePotinsList.size());
+            getGameOver();
         } else {
             setTimes();
             line_one.setVisibility(View.VISIBLE);
@@ -1023,8 +1042,8 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     //计时器
     private void setTimes() {
         if (PlayPointManager.isHavaPlay()) {
-            time.setText("");
-            timing.setText("");
+            time.setText(DataUtils.getDateToTime(System.currentTimeMillis() - times_s));
+            timing.setText(DataUtils.getDateToTime(System.currentTimeMillis() - times_s));
             return;
         }
         handler2.postDelayed(runnable2, 1000);

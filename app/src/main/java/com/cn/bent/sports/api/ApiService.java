@@ -179,7 +179,13 @@ public interface ApiService {
      */
     @GET("api/travel/game_team/{teamId}/game_point_status")
     Observable<JavaResult<List<GamePotins>>> getGamePoints(@Path("teamId") long teamId);
-
+    /**
+     * 游戏结束
+     *
+     * @return
+     */
+    @POST("api/travel/game_team/{teamId}/game_over")
+    Observable<JavaResult<Boolean>> getGameOver(@Path("teamId") long teamId);
 
     /**
      * 获取游戏点标对应的任务
