@@ -24,6 +24,7 @@ import com.cn.bent.sports.bean.ScenicPointsEntity;
 import com.cn.bent.sports.bean.UserMsgEntity;
 import com.cn.bent.sports.ibeacon.ScanActivity;
 import com.cn.bent.sports.utils.Constants;
+import com.cn.bent.sports.utils.ImageUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.view.activity.MapActivity;
 import com.cn.bent.sports.view.activity.PlayFunActivity;
@@ -97,7 +98,7 @@ public class IsMeFragment extends BaseFragment {
         }
         nick_name.setText(TextUtils.isEmpty(userMsgEntity.getNickname())?"":userMsgEntity.getNickname());
         RequestOptions requestOptions = RequestOptions.circleCropTransform();
-        Glide.with(user_photo.getContext()).load(userMsgEntity.getAvatar())
+        Glide.with(user_photo.getContext()).load(ImageUtils.getImageUrl(userMsgEntity.getAvatar()))
                 .apply(requestOptions)
                 .into(user_photo);
         get_num.setText("0");

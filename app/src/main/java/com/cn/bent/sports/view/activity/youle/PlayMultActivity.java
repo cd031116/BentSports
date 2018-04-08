@@ -45,6 +45,7 @@ import com.cn.bent.sports.database.PlayPointManager;
 import com.cn.bent.sports.utils.AddressData;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.DataUtils;
+import com.cn.bent.sports.utils.ImageUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.view.activity.BitmapManager;
 import com.cn.bent.sports.view.activity.PlayWebViewActivity;
@@ -942,7 +943,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                 RequestOptions myOptions = new RequestOptions()
                         .centerCrop()
                         .circleCropTransform();
-                Glide.with(PlayMultActivity.this).load(bean.getAvatar())
+                Glide.with(PlayMultActivity.this).load(ImageUtils.getImageUrl(bean.getAvatar()))
                         .apply(myOptions)
                         .into(new SimpleTarget<Drawable>(100, 100) {
                             @Override

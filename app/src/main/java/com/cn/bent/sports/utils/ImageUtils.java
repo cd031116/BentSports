@@ -2,6 +2,7 @@ package com.cn.bent.sports.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.text.TextUtils;
 import android.util.Base64;
 
 import java.io.ByteArrayOutputStream;
@@ -58,5 +59,17 @@ public class ImageUtils {
             }
         }
         return result;
+    }
+
+    public static String getImageUrl(String url) {
+        if (TextUtils.isEmpty(url)) {
+            return "";
+        }
+        if (url.contains("http://") || url.contains("www.")|| url.contains("https://")) {
+            return url;
+        } else {
+            url = Constants.JAVA_YUN_URL + url;
+            return url;
+        }
     }
 }

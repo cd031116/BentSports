@@ -23,6 +23,7 @@ import com.cn.bent.sports.bean.PointsEntity;
 import com.cn.bent.sports.bean.ScenicPointsEntity;
 import com.cn.bent.sports.bean.StartEvent;
 import com.cn.bent.sports.utils.Constants;
+import com.cn.bent.sports.utils.ImageUtils;
 import com.cn.bent.sports.utils.NiceUtil;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.view.service.MusicService;
@@ -73,8 +74,8 @@ public class DetailDotActivity extends BaseActivity {
         if (pEnty!=null){
             getPointsDetailData();
             title_dot.setText(pEnty.getPointName());
-            Glide.with(this).load(pEnty.getPointImg()).into(di_bg);
-            Glide.with(this).load(pEnty.getImagesUrl()).into(bg_top);
+            Glide.with(this).load(ImageUtils.getImageUrl(pEnty.getPointImg())).into(di_bg);
+            Glide.with(this).load(ImageUtils.getImageUrl(pEnty.getImagesUrl())).into(bg_top);
         }
         EventBus.getDefault().register(this);
         mHandler = new Handler();
@@ -167,7 +168,7 @@ public class DetailDotActivity extends BaseActivity {
             pEnty=SaveObjectUtils.getInstance(getApplicationContext()).getObject(Constants.NOW_POION, null);
         if(pEnty!=null){
             mtitle.setText(pEnty.getPointName());
-            Glide.with(this).load(pEnty.getImagesUrl()).into(bg_top);
+            Glide.with(this).load(ImageUtils.getImageUrl(pEnty.getImagesUrl())).into(bg_top);
         }
     }
 
@@ -238,7 +239,7 @@ public class DetailDotActivity extends BaseActivity {
         super.initData();
         if(pEnty!=null){
             mtitle.setText(pEnty.getPointName());
-            Glide.with(this).load(pEnty.getImagesUrl()).into(bg_top);
+            Glide.with(this).load(ImageUtils.getImageUrl(pEnty.getImagesUrl())).into(bg_top);
         }
 
     }

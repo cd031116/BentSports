@@ -30,6 +30,7 @@ import com.cn.bent.sports.database.PlayUserManager;
 import com.cn.bent.sports.recyclebase.CommonAdapter;
 import com.cn.bent.sports.recyclebase.ViewHolder;
 import com.cn.bent.sports.utils.CornersTransform;
+import com.cn.bent.sports.utils.ImageUtils;
 import com.cn.bent.sports.utils.SupportMultipleScreensUtil;
 import com.vondear.rxtools.view.RxToast;
 import com.zhl.network.RxObserver;
@@ -188,7 +189,7 @@ public class OneTaskFinishDialog extends Dialog implements View.OnClickListener 
                     RequestOptions myOptions = new RequestOptions()
                             .centerCrop()
                             .circleCropTransform();
-                    Glide.with(mContext).load(memberDataEntity.getAvatar())
+                    Glide.with(mContext).load(ImageUtils.getImageUrl(memberDataEntity.getAvatar()))
                             .apply(myOptions).into(view);
                 }
             };

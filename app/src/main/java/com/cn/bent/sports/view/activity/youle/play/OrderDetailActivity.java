@@ -25,6 +25,7 @@ import com.cn.bent.sports.bean.GameInfo;
 import com.cn.bent.sports.bean.LoginResult;
 import com.cn.bent.sports.bean.TeamGame;
 import com.cn.bent.sports.utils.Constants;
+import com.cn.bent.sports.utils.ImageUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.view.activity.PlayFunActivity;
 import com.cn.bent.sports.view.activity.youle.MyRouteListActivity;
@@ -233,7 +234,7 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
         RequestOptions myOptions = new RequestOptions()
                 .centerCrop();
         Glide.with(OrderDetailActivity.this)
-                .load(info.getCover())
+                .load(ImageUtils.getImageUrl(info.getCover()))
                 .apply(myOptions)
                 .into(image_cover);
         name_t.setText(info.getTitle());

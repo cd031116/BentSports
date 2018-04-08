@@ -24,6 +24,7 @@ import com.cn.bent.sports.database.PlayUserManager;
 import com.cn.bent.sports.recyclebase.CommonAdapter;
 import com.cn.bent.sports.recyclebase.ViewHolder;
 import com.cn.bent.sports.utils.Constants;
+import com.cn.bent.sports.utils.ImageUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.view.activity.youle.MyRouteListActivity;
 import com.cn.bent.sports.view.activity.youle.bean.JoinTeam;
@@ -181,7 +182,7 @@ public class OrganizeActivity extends BaseActivity {
                 .centerCrop()
                 .circleCropTransform();
         Glide.with(OrganizeActivity.this)
-                .load(info.getAvatar())
+                .load(ImageUtils.getImageUrl(info.getAvatar()))
                 .apply(myOptions)
                 .into(user_photo);
         total_num.setText(info.getTeamMemberMax() + "");

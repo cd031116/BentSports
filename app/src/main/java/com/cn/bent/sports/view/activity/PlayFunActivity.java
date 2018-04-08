@@ -17,6 +17,7 @@ import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.GameInfo;
 import com.cn.bent.sports.bean.LoginResult;
 import com.cn.bent.sports.utils.CornersTransform;
+import com.cn.bent.sports.utils.ImageUtils;
 import com.cn.bent.sports.view.activity.youle.play.OrderDetailActivity;
 import com.kennyc.view.MultiStateView;
 import com.vondear.rxtools.view.RxToast;
@@ -144,7 +145,7 @@ public class PlayFunActivity extends BaseActivity {
                     .centerCrop()
                     .transform(new CornersTransform(PlayFunActivity.this,8));
             Glide.with(PlayFunActivity.this)
-                    .load(mList.get(position).getCover())
+                    .load(ImageUtils.getImageUrl(mList.get(position).getCover()))
                     .apply(myOptions)
                     .into(imageView);
             container.addView(view);

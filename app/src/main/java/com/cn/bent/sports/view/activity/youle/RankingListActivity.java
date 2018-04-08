@@ -23,6 +23,7 @@ import com.cn.bent.sports.bean.ReFreshEvent;
 import com.cn.bent.sports.recyclebase.CommonAdapter;
 import com.cn.bent.sports.recyclebase.ViewHolder;
 import com.cn.bent.sports.utils.Constants;
+import com.cn.bent.sports.utils.ImageUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.view.activity.youle.bean.QueryInfo;
 import com.cn.bent.sports.view.activity.youle.bean.UserInfo;
@@ -96,7 +97,7 @@ public class RankingListActivity extends BaseActivity implements OnLoadMoreListe
                 holder.setText(R.id.range_jifen, rangeEntity.getScore() + "");
                 ImageView NormalInfoImg = (ImageView) holder.getView(R.id.img_head);
                 RequestOptions requestOptions = RequestOptions.circleCropTransform();
-                Glide.with(NormalInfoImg.getContext()).load(rangeEntity.getAvatar())
+                Glide.with(NormalInfoImg.getContext()).load(ImageUtils.getImageUrl(rangeEntity.getAvatar()))
                         .apply(requestOptions)
                         .into(NormalInfoImg);
 
@@ -172,7 +173,7 @@ public class RankingListActivity extends BaseActivity implements OnLoadMoreListe
             range_jifen.setText(String.valueOf(rankEntity.get(index).getScore()));
             range_name.setText(rankEntity.get(index).getTeamName());
             RequestOptions requestOptions = RequestOptions.circleCropTransform();
-            Glide.with(img_head.getContext()).load(rankEntity.get(index).getAvatar())
+            Glide.with(img_head.getContext()).load(ImageUtils.getImageUrl(rankEntity.get(index).getAvatar()))
                     .apply(requestOptions)
                     .into(img_head);
         } else
@@ -181,7 +182,7 @@ public class RankingListActivity extends BaseActivity implements OnLoadMoreListe
             name_1.setText(rankEntity.get(0).getTeamName());
             jifen_1.setText(rankEntity.get(0).getScore() + "");
             RequestOptions requestOptions = RequestOptions.circleCropTransform();
-            Glide.with(head_1.getContext()).load(rankEntity.get(0).getAvatar())
+            Glide.with(head_1.getContext()).load(ImageUtils.getImageUrl(rankEntity.get(0).getAvatar()))
                     .apply(requestOptions)
                     .into(head_1);
         }
@@ -189,7 +190,7 @@ public class RankingListActivity extends BaseActivity implements OnLoadMoreListe
             name_2.setText(rankEntity.get(1).getTeamName());
             jifen_2.setText(rankEntity.get(1).getScore() + "");
             RequestOptions requestOptions = RequestOptions.circleCropTransform();
-            Glide.with(head_2.getContext()).load(rankEntity.get(1).getAvatar())
+            Glide.with(head_2.getContext()).load(ImageUtils.getImageUrl(rankEntity.get(1).getAvatar()))
                     .apply(requestOptions)
                     .into(head_2);
         }
@@ -197,7 +198,7 @@ public class RankingListActivity extends BaseActivity implements OnLoadMoreListe
             name_3.setText(rankEntity.get(2).getTeamName());
             jifen_3.setText(rankEntity.get(2).getScore() + "");
             RequestOptions requestOptions = RequestOptions.circleCropTransform();
-            Glide.with(head_3.getContext()).load(rankEntity.get(2).getAvatar())
+            Glide.with(head_3.getContext()).load(ImageUtils.getImageUrl(rankEntity.get(2).getAvatar()))
                     .apply(requestOptions)
                     .into(head_3);
         }

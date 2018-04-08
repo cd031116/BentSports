@@ -75,7 +75,7 @@ public class SettingActivity extends BaseActivity {
         ISNav.getInstance().init(new ImageLoader() {
             @Override
             public void displayImage(Context context, String path, ImageView imageView) {
-                Glide.with(context).load(path).into(imageView);
+                Glide.with(context).load(ImageUtils.getImageUrl(path)).into(imageView);
             }
         });
         user = SaveObjectUtils.getInstance(SettingActivity.this).getObject(Constants.USER_BASE, null);
@@ -88,7 +88,7 @@ public class SettingActivity extends BaseActivity {
                 name_t.setTextColor(Color.parseColor("#333333"));
                 phone_t.setText(user.getPhone()!=null?user.getPhone():"");
                 RequestOptions requestOptions = RequestOptions.circleCropTransform();
-                Glide.with(SettingActivity.this).load(user.getAvatar())
+                Glide.with(SettingActivity.this).load(ImageUtils.getImageUrl(user.getAvatar()))
                         .apply(requestOptions)
                         .into(user_photo);
             }
@@ -200,7 +200,7 @@ public class SettingActivity extends BaseActivity {
                         SaveObjectUtils.getInstance(SettingActivity.this).setObject(Constants.USER_INFO, users);
 
                         RequestOptions requestOptions = RequestOptions.circleCropTransform();
-                        Glide.with(SettingActivity.this).load(info.getHeadimgurl())
+                        Glide.with(SettingActivity.this).load(ImageUtils.getImageUrl(info.getHeadimgurl()))
                                 .apply(requestOptions)
                                 .into(user_photo);
                         RxToast.success("图像更改成功");

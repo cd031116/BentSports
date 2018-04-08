@@ -26,6 +26,7 @@ import com.cn.bent.sports.evevt.ShowPoupEvent;
 import com.cn.bent.sports.sensor.UpdateUiCallBack;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.CornersTransform;
+import com.cn.bent.sports.utils.ImageUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.utils.StepData;
 import com.cn.bent.sports.view.activity.MapActivity;
@@ -327,12 +328,12 @@ public class RecommendFragment extends BaseFragment {
                 .centerCrop()
                 .transform(new CornersTransform(getActivity(),12));
         Glide.with(getActivity())
-                .load(info.get(0).getCover())
+                .load(ImageUtils.getImageUrl(info.get(0).getCover()))
                 .apply(myOptions)
                 .into(play_one);
         if (info.size()>1){
             Glide.with(getActivity())
-                    .load(info.get(1).getCover())
+                    .load(ImageUtils.getImageUrl(info.get(1).getCover()))
                     .apply(myOptions)
                     .into(play_two);
         }

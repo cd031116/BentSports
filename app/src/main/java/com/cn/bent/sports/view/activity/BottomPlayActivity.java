@@ -23,6 +23,7 @@ import com.cn.bent.sports.evevt.DistanceEvent;
 import com.cn.bent.sports.evevt.DistanceSubscriber;
 import com.cn.bent.sports.evevt.ShowPoupEvent;
 import com.cn.bent.sports.utils.Constants;
+import com.cn.bent.sports.utils.ImageUtils;
 import com.cn.bent.sports.utils.NiceUtil;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.view.service.MusicService;
@@ -124,7 +125,7 @@ public class BottomPlayActivity extends BaseActivity {
         super.initData();
         if(pEnty!=null){
             name_t.setText(pEnty.getPointName());
-            Glide.with(this).load(pEnty.getPointImg()).into(point_img);
+            Glide.with(this).load(ImageUtils.getImageUrl(pEnty.getPointImg())).into(point_img);
         }
     }
 

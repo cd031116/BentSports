@@ -22,6 +22,7 @@ import com.cn.bent.sports.database.PlayUserManager;
 import com.cn.bent.sports.recyclebase.CommonAdapter;
 import com.cn.bent.sports.recyclebase.ViewHolder;
 import com.cn.bent.sports.utils.CornersTransform;
+import com.cn.bent.sports.utils.ImageUtils;
 import com.cn.bent.sports.widget.DividerItemDecoration;
 import com.vondear.rxtools.view.RxToast;
 import com.zhl.network.RxObserver;
@@ -98,7 +99,7 @@ public class MemberEditActivity extends BaseActivity {
                         RequestOptions myOptions = new RequestOptions()
                                 .centerCrop()
                                 .circleCropTransform();
-                        Glide.with(MemberEditActivity.this).load(info.getAvatar())
+                        Glide.with(MemberEditActivity.this).load(ImageUtils.getImageUrl(info.getAvatar()))
                                 .apply(myOptions).into(member_head);
                     }
 
@@ -186,7 +187,7 @@ public class MemberEditActivity extends BaseActivity {
                     RequestOptions myOptions = new RequestOptions()
                             .centerCrop()
                             .circleCropTransform();
-                    Glide.with(mContext).load(memberDataEntity.getAvatar())
+                    Glide.with(mContext).load(ImageUtils.getImageUrl(memberDataEntity.getAvatar()))
                             .apply(myOptions).into(view);
 
                 }
@@ -230,7 +231,7 @@ public class MemberEditActivity extends BaseActivity {
                 RequestOptions myOptions = new RequestOptions()
                         .centerCrop()
                         .circleCropTransform();
-                Glide.with(MemberEditActivity.this).load(memberDataEntity.getAvatar())
+                Glide.with(MemberEditActivity.this).load(ImageUtils.getImageUrl(memberDataEntity.getAvatar()))
                         .apply(myOptions).into(view);
             }
         };
