@@ -395,7 +395,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                 intent.putExtra("teamId",teamGames.getId()+"");
                 intent.putExtra("gamePointId",gamePotins.getId()+"");
                 intent.putExtra("gameName",gamePotins.getAlias());
-                intent.putExtra("type","2");
+                intent.putExtra("type","1");
                 startActivity(intent);
             }
             if (index == 2) {

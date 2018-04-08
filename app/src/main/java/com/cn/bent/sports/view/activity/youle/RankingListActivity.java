@@ -105,7 +105,7 @@ public class RankingListActivity extends BaseActivity implements OnLoadMoreListe
         if (type == 1)
             range_list.setAdapter(mAdapter);
         else
-            mAdapter.notifyItemInserted(rankListBeen.size() +1);
+            mAdapter.notifyItemInserted(rankListBeen.size() + 1);
         range_list.addItemDecoration(new DividerItemDecoration(this, R.drawable.list_divider));
     }
 
@@ -228,9 +228,12 @@ public class RankingListActivity extends BaseActivity implements OnLoadMoreListe
                         public void onSuccess(int whichRequest, GameRankEntity rankEntity) {
                             Log.d(TAG, "onSuccess onLoadMore:" + rankEntity.getList().size());
                             if (rankEntity != null && rankEntity.getList().size() > 0) {
-                                mListBean.addAll(rankEntity.getList());
-                                setView(mListBean, 2);
-                                mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
+                                if (!rankEntity.isIsLastPage()) {
+                                    mListBean.addAll(rankEntity.getList());
+                                    setView(mListBean, 2);
+                                    mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
+                                } else
+                                    mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.THE_END);
                             } else
                                 mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.THE_END);
                         }

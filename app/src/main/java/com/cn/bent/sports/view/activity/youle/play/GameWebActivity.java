@@ -92,7 +92,8 @@ public class GameWebActivity extends BaseActivity {
         webSettings.setJavaScriptEnabled(true);
         // 设置允许JS弹窗
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
-        mWebView.loadUrl("http://192.168.17.112:8860/btlTask.html" + "?teamId=" + teamId + "&etype=android&gamePointId="+gamePointId+"&type=" + type+"&token=" + access_token);
+        Log.d(TAG, "initView: "+"http://192.168.17.143:8860/choice.html" + "?teamId=" + teamId + "&etype=android&gamePointId="+gamePointId+"&type=" + type+"&token=" + access_token);
+        mWebView.loadUrl("http://192.168.17.143:8860/choice.html" + "?teamId=" + teamId + "&etype=android&gamePointId="+gamePointId+"&type=" + type+"&token=" + access_token);
         mWebView.addJavascriptInterface(new JSInterface(), "native");
     }
 
