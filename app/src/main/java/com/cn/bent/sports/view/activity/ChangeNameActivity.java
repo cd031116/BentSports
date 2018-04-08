@@ -7,15 +7,20 @@ import android.widget.EditText;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
+import com.cn.bent.sports.bean.GameDetail;
 import com.cn.bent.sports.bean.InfoEvent;
 import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.SaveObjectUtils;
+import com.cn.bent.sports.view.activity.youle.bean.UserInfo;
+import com.cn.bent.sports.view.activity.youle.play.OrderDetailActivity;
+import com.kennyc.view.MultiStateView;
 import com.vondear.rxtools.view.RxToast;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.HuiquRxTBFunction;
 import com.zhl.network.huiqu.HuiquTBResult;
+import com.zhl.network.huiqu.JavaRxFunction;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -27,7 +32,7 @@ public class ChangeNameActivity extends BaseActivity {
     @Bind(R.id.name)
     EditText name_t;
 
-    private LoginBase user;
+    private UserInfo user;
 
     @Override
     protected int getLayoutId() {
@@ -36,14 +41,14 @@ public class ChangeNameActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        user = SaveObjectUtils.getInstance(ChangeNameActivity.this).getObject(Constants.USER_INFO, null);
+        user = SaveObjectUtils.getInstance(ChangeNameActivity.this).getObject(Constants.USER_BASE, null);
         super.initView();
     }
 
     @Override
     public void initData() {
         super.initData();
-        name_t.setText(user.getNickname());
+        name_t.setText(user.getNickname()!=null?user.getNickname():"");
     }
 
 
@@ -64,29 +69,29 @@ public class ChangeNameActivity extends BaseActivity {
                 break;
         }
     }
-
-    private void login(final String nickname) {
+    private void login(final String nickmane) {
         showAlert("正在提交...", true);
-        BaseApi.getDefaultService(this).modifyUserMsg(user.getMember_id(), "1", nickname)
-                .map(new HuiquRxTBFunction<HuiquTBResult>())
-                .compose(RxSchedulers.<HuiquTBResult>io_main())
-                .subscribe(new RxObserver<HuiquTBResult>(ChangeNameActivity.this, "changeName", 1, false) {
+        UserInfo mysuer=new UserInfo();
+        mysuer.setId(user.getId());
+        mysuer.setNickname(nickmane);
+        BaseApi.getJavaLoginDefaultService(ChangeNameActivity.this).exchangeName(mysuer)
+                .map(new HuiquRxTBFunction<Boolean>())
+                .compose(RxSchedulers.<Boolean>io_main())
+                .subscribe(new RxObserver<Boolean>(ChangeNameActivity.this, TAG, 1, false) {
                     @Override
-                    public void onSuccess(int whichRequest, HuiquTBResult info) {
+                    public void onSuccess(int whichRequest, Boolean bean) {
                         dismissAlert();
-                        user.setNickname(nickname);
-                        SaveObjectUtils.getInstance(ChangeNameActivity.this).setObject(Constants.USER_INFO, user);
-                        RxToast.success(info.getMsg());
-                        EventBus.getDefault().post(new InfoEvent());
-                        finish();
+                        user.setNickname(nickmane);
+                        SaveObjectUtils.getInstance(ChangeNameActivity.this).setObject(Constants.USER_BASE,user);
+                        RxToast.success("修改成功");
                     }
-
                     @Override
                     public void onError(int whichRequest, Throwable e) {
                         dismissAlert();
-                        RxToast.error(e.getMessage());
+
                     }
                 });
     }
+
 
 }

@@ -2,8 +2,11 @@ package com.cn.bent.sports.view.activity.youle.play;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.media.JetPlayer;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -12,9 +15,11 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.Options;
 import com.bumptech.glide.request.RequestOptions;
+import com.cn.bent.sports.MainActivity;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
+import com.cn.bent.sports.base.BaseConfig;
 import com.cn.bent.sports.bean.GameDetail;
 import com.cn.bent.sports.bean.GameInfo;
 import com.cn.bent.sports.bean.LoginResult;
@@ -24,6 +29,11 @@ import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.view.activity.PlayFunActivity;
 import com.cn.bent.sports.view.activity.youle.MyRouteListActivity;
 import com.cn.bent.sports.view.activity.youle.RankingListActivity;
+import com.cn.bent.sports.view.fragment.CardFragment;
+import com.cn.bent.sports.view.fragment.IsMeFragment;
+import com.cn.bent.sports.view.fragment.RecommendFragment;
+import com.cn.bent.sports.view.fragment.ShoppingFragment;
+import com.cn.bent.sports.view.fragment.WebViewFragment;
 import com.cn.bent.sports.widget.MyScroview;
 import com.kennyc.view.MultiStateView;
 import com.vondear.rxtools.view.RxToast;
@@ -37,9 +47,9 @@ import butterknife.Bind;
 import butterknife.OnClick;
 
 /**
- * aunthor lyj
- * create 2018/3/27/027 15:36   路线详情
- **/
+*aunthor lyj
+* create 2018/3/27/027 15:36   路线详情
+**/
 public class OrderDetailActivity extends BaseActivity implements MyScroview.OnScrollListener {
     @Bind(R.id.myscroview)
     MyScroview myscroview;
@@ -75,7 +85,9 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
     TextView num_dot;
     @Bind(R.id.p_num)
     TextView p_num;
-
+    @Bind(R.id.address_t)
+    TextView address_t;
+    FragmentManager mFragmentMan;
     private int select = 1;
     private int topHeight;
     private int journeyHeight;
@@ -85,7 +97,7 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
     private String memberId;
     private String title;
     private String gameId;
-
+    private GameDetail myGame;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_order_detail;
@@ -94,8 +106,9 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
     @Override
     public void initView() {
         super.initView();
-        gameId = getIntent().getExtras().getString("gameId");
+        gameId=getIntent().getExtras().getString("gameId");
         myscroview.setOnScrollListener(this);
+        mFragmentMan = getSupportFragmentManager();
     }
 
     @Override
@@ -107,7 +120,6 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
     @Override
     public void onResume() {
         super.onResume();
-        changeview(select);
     }
 
 
@@ -119,12 +131,15 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
         tab2_v.setSelected(false);
         tab3_v.setSelected(false);
         if (index == 1) {
+            changeFrament("afragment",0);
             tab1_t.setTextColor(Color.parseColor("#e11818"));
             tab1_v.setSelected(true);
         } else if (index == 2) {
+            changeFrament("bfragment",1);
             tab2_t.setTextColor(Color.parseColor("#e11818"));
             tab2_v.setSelected(true);
         } else {
+            changeFrament("cfragment",2);
             tab3_t.setTextColor(Color.parseColor("#e11818"));
             tab3_v.setSelected(true);
         }
@@ -135,13 +150,6 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
         super.onWindowFocusChanged(hasFocus);
         if (hasFocus) {
             topHeight = search02.getBottom() - search02.getHeight();
-            new Handler().postDelayed(new Runnable() {
-                public void run() {
-//                    journeyHeight = recycleview.getBottom() - 120;
-//                    payknowHeight = payKnowLayout.getBottom() - 120;
-                }
-
-            }, 500);
         }
     }
 
@@ -152,13 +160,6 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
                 search02.removeView(tab_mian);
                 search01.addView(tab_mian);
             }
-//            changeview(1);
-//            if (scrollY >= journeyHeight && scrollY <= payknowHeight) {
-//                changeview(2);
-//            }
-//            if (scrollY >= payknowHeight) {
-//                changeview(3);
-//            }
         } else {
             if (tab_mian.getParent() != search02) {
                 search01.removeView(tab_mian);
@@ -182,9 +183,9 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
     }
 
 
-    @OnClick({R.id.submit, R.id.tab1_mian, R.id.tab2_mian, R.id.tab3_mian, R.id.go_rank})
-    void onclick(View v) {
-        switch (v.getId()) {
+    @OnClick({R.id.submit,R.id.tab1_mian,R.id.tab2_mian,R.id.tab3_mian,R.id.go_rank})
+    void onclick(View v){
+        switch (v.getId()){
             case R.id.submit:
                 getOrgnize();
                 break;
@@ -198,9 +199,9 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
                 changeview(3);
                 break;
             case R.id.go_rank:
-                Intent intent = new Intent(OrderDetailActivity.this, RankingListActivity.class);
-                intent.putExtra("gameId", Integer.parseInt(gameId));
-                startActivity(intent);
+             Intent intent=new Intent(OrderDetailActivity.this, RankingListActivity.class);
+                intent.putExtra("gameId",Integer.parseInt(gameId));
+             startActivity(intent);
                 break;
         }
     }
@@ -215,9 +216,10 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
                     public void onSuccess(int whichRequest, GameDetail info) {
                         dismissAlert();
                         multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+                        myGame=info;
                         setview(info);
+                        changeview(select);
                     }
-
                     @Override
                     public void onError(int whichRequest, Throwable e) {
                         dismissAlert();
@@ -227,7 +229,7 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
                 });
     }
 
-    private void setview(GameDetail info) {
+    private void  setview(GameDetail info){
         RequestOptions myOptions = new RequestOptions()
                 .centerCrop();
         Glide.with(OrderDetailActivity.this)
@@ -235,15 +237,19 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
                 .apply(myOptions)
                 .into(image_cover);
         name_t.setText(info.getTitle());
-        group_price.setText(info.getPrice() + "");
-        if (info.getType() == 1)
+        group_price.setText(info.getPrice()+"");
+        if (info.getType()==1){
             type_t.setText("依次穿越");
-        if (info.getType() == 2)
+        }
+        if (info.getType()==2){
             type_t.setText("限时挑战");
-        if (info.getType() == 3)
+        }
+        if (info.getType()==3){
             type_t.setText("自由规划");
-        num_dot.setText(info.getPointCount() + "个点标");
-        p_num.setText(info.getMaxPeople() + "人");
+        }
+        num_dot.setText(info.getPointCount()+"个点标");
+        p_num.setText(info.getMaxPeople()+"人");
+        address_t.setText(info.getAddress());
     }
 
 
@@ -256,7 +262,7 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
                     @Override
                     public void onSuccess(int whichRequest, TeamGame info) {
                         dismissAlert();
-                        Intent intent = new Intent(OrderDetailActivity.this, MyRouteListActivity.class);
+                        Intent intent=new Intent(OrderDetailActivity.this,MyRouteListActivity.class);
                         startActivity(intent);
                         finish();
                     }
@@ -268,6 +274,49 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
                     }
                 });
     }
+//
+// 3. 先进第二个或第三个的子模块，再返回首页
+private String lastFragmentTag = null;
 
+    private void changeFrament(String tag, int index) {
+        BaseConfig bg = BaseConfig.getInstance(OrderDetailActivity.this);
+        if (mFragmentMan != null) {
+            // Add default fragments to view. Try to reuse old fragments or create new ones
+            FragmentTransaction transaction = mFragmentMan.beginTransaction();
+            // 当前的Fragment
+            Fragment mCurrentFragment = mFragmentMan.findFragmentByTag(tag);
+            // 前一次Fragment
+            Fragment mLastFragment = null;
+            if (!TextUtils.isEmpty(lastFragmentTag) && !lastFragmentTag.equals(tag)) {
+                mLastFragment = mFragmentMan.findFragmentByTag(lastFragmentTag);
+            }
+            // 构造当前Fragment
+            if (mCurrentFragment == null) {
+                switch (index) {
+                    case 0:
+                        mCurrentFragment = WebViewFragment.newInstance(myGame.getGameDetail().getDetail());
+                        break;
+                    case 1:
+                        mCurrentFragment = WebViewFragment.newInstance(myGame.getGameDetail().getNotice());//子Fragment实例
+                        break;
+                    case 2:
+                        mCurrentFragment = WebViewFragment.newInstance(myGame.getGameDetail().getTip());
+                        //子Fragment实例
+                        break;
+                }
+                transaction.add(R.id.id_content, mCurrentFragment, tag);
+            }
+            // 显示当前Fragment
+            else {
+                transaction.show(mCurrentFragment);
+            }
+            // 隐藏前一次Fragment
+            if (mLastFragment != null) {
+                transaction.hide(mLastFragment);
+            }
+            transaction.commit();
+            lastFragmentTag = tag;
+        }
+    }
 
 }

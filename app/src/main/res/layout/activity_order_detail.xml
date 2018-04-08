@@ -44,13 +44,14 @@
                             android:id="@+id/image_cover"
                             android:layout_width="match_parent"
                             android:layout_height="570px"
-                            android:scaleType="fitXY"/>
+                            android:scaleType="fitXY" />
 
                         <ImageView
+                            android:id="@+id/exit_image"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="43px"
-                            android:layout_marginTop="150px"
+                            android:layout_marginTop="120px"
                             android:src="@drawable/d_return" />
                     </RelativeLayout>
 
@@ -69,7 +70,6 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:gravity="bottom"
-                            android:text="石燕湖寻宝"
                             android:textColor="#333333"
                             android:textSize="57px" />
 
@@ -131,7 +131,6 @@
                             android:paddingLeft="43px"
                             android:paddingRight="43px"
                             android:paddingTop="20px"
-                            android:text="一次穿越"
                             android:textColor="@color/red_text" />
 
 
@@ -145,7 +144,6 @@
                             android:paddingLeft="43px"
                             android:paddingRight="43px"
                             android:paddingTop="20px"
-                            android:text="12个点标"
                             android:textColor="@color/blue_text" />
 
                     </LinearLayout>
@@ -174,7 +172,7 @@
                                 android:id="@+id/p_num"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="2人"
+                                android:text=""
                                 android:textColor="@color/red_text"
                                 android:textSize="43px" />
 
@@ -211,6 +209,7 @@
 
 
                             <TextView
+                                android:id="@+id/time_t"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="2018-02-01 9:00-17:00"
@@ -235,9 +234,9 @@
                                 android:src="@drawable/d_address" />
 
                             <TextView
+                                android:id="@+id/address_t"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="长沙石燕湖生态公园"
                                 android:textColor="@color/color_666666"
                                 android:textSize="43px" />
                         </LinearLayout>
@@ -258,99 +257,11 @@
                     </LinearLayout>
 
 
-                    <TextView
-                        android:id="@+id/detail_text"
+                    <FrameLayout
+                        android:id="@+id/id_content"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="#ffffff"
-                        android:lineSpacingExtra="5dp"
-                        android:padding="43px"
-                        android:textColor="@color/c_333333" />
-
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="260px"
-                        android:padding="43px" />
-
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="#ffffff"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical"
-                        android:padding="42px">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="游戏规则:"
-                            android:textColor="@color/c_333333"
-                            android:textSize="43px" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="30px"
-                            android:lineSpacingExtra="5dp"
-                            android:textColor="#333333"
-                            android:textSize="43px" />
-
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="30px"
-                        android:background="#ffffff"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical"
-                        android:paddingLeft="42px">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="费用需知:"
-                            android:textColor="@color/c_333333"
-                            android:textSize="43px" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="30px"
-                            android:lineSpacingExtra="5dp"
-                            android:textColor="#333333"
-                            android:textSize="43px" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="30px"
-                        android:background="#ffffff"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical"
-                        android:paddingLeft="42px">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="温馨提示:"
-                            android:textColor="@color/c_333333"
-                            android:textSize="43px" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="30px"
-                            android:lineSpacingExtra="5dp"
-                            android:textColor="#333333"
-                            android:textSize="43px" />
-
-                    </LinearLayout>
+                        android:layout_height="match_parent"
+                        android:background="#ffffff"/>
 
                 </LinearLayout>
 

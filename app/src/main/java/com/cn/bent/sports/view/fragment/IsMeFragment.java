@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -29,6 +30,7 @@ import com.cn.bent.sports.view.activity.PlayFunActivity;
 import com.cn.bent.sports.view.activity.PlayWebViewActivity;
 import com.cn.bent.sports.view.activity.SettingActivity;
 import com.cn.bent.sports.view.activity.youle.MyRouteListActivity;
+import com.cn.bent.sports.view.activity.youle.bean.UserInfo;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.HuiquRxFunction;
@@ -48,10 +50,14 @@ import butterknife.OnClick;
 public class IsMeFragment extends BaseFragment {
     @Bind(R.id.user_photo)
     ImageView user_photo;
-    @Bind(R.id.nick_name)
+    @Bind(R.id.nickname)
     TextView nick_name;
+    @Bind(R.id.scrore)
+    TextView scrore;
+    @Bind(R.id.get_num)
+    TextView get_num;
 
-    private LoginResult user;
+    private UserInfo user;
 
 
     public static IsMeFragment newInstance() {
@@ -68,56 +74,34 @@ public class IsMeFragment extends BaseFragment {
 
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
-        user = (LoginResult) SaveObjectUtils.getInstance(getActivity()).getObject(Constants.USER_INFO, null);
+
 
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
+        user = (UserInfo) SaveObjectUtils.getInstance(getActivity()).getObject(Constants.USER_BASE, null);
+        setView(user);
     }
 
     @Override
     protected void initData() {
     }
 
-    private void setView(UserMsgEntity userMsgEntity) {
+    private void setView(UserInfo userMsgEntity) {
         if (getActivity() == null)
             return;
-        nick_name.setText(userMsgEntity.getUserMsg().getNickname());
+        if(userMsgEntity==null){
+            return;
+        }
+        nick_name.setText(TextUtils.isEmpty(userMsgEntity.getNickname())?"":userMsgEntity.getNickname());
         RequestOptions requestOptions = RequestOptions.circleCropTransform();
-        Glide.with(user_photo.getContext()).load(userMsgEntity.getUserMsg().getHeadimg())
+        Glide.with(user_photo.getContext()).load(userMsgEntity.getAvatar())
                 .apply(requestOptions)
                 .into(user_photo);
-        if (userMsgEntity.getCard_num() != null && userMsgEntity.getCard_num().size() > 0) {
-            for (UserMsgEntity.CardNumBean cardBean : userMsgEntity.getCard_num()) {
-                Log.d("tttt", "getGame_id: " + cardBean.getGame_id());
-                switch (cardBean.getGame_id()) {
-                    case 1:
-                        if (cardBean.getStatus() == 1)
-                            break;
-                    case 12:
-                        if (cardBean.getStatus() == 1)
-                            break;
-                    case 13:
-                        if (cardBean.getStatus() == 1)
-                            break;
-                    case 14:
-                        if (cardBean.getStatus() == 1)
-                            break;
-                    case 15:
-                        if (cardBean.getStatus() == 1)
-                            break;
-                    case 16:
-                        if (cardBean.getStatus() == 1)
-                            break;
-                    case 17:
-                        if (cardBean.getStatus() == 1)
-                            break;
-                }
-            }
-        }
+        get_num.setText("0");
+        scrore.setText("0");
     }
 
     @OnClick({R.id.setting, R.id.user_photo,R.id.quwan,R.id.xitong})

@@ -84,9 +84,9 @@ public class SettingActivity extends BaseActivity {
                 name_t.setText("未设置");
                 name_t.setTextColor(Color.parseColor("#999999"));
             } else {
-                name_t.setText(user.getNickname());
+                name_t.setText(user.getNickname()!=null?user.getNickname():"");
                 name_t.setTextColor(Color.parseColor("#333333"));
-                phone_t.setText(user.getPhone());
+                phone_t.setText(user.getPhone()!=null?user.getPhone():"");
                 RequestOptions requestOptions = RequestOptions.circleCropTransform();
                 Glide.with(SettingActivity.this).load(user.getAvatar())
                         .apply(requestOptions)
@@ -115,34 +115,34 @@ public class SettingActivity extends BaseActivity {
                 break;
             case R.id.user_photo:
             case R.id.gai_photo:
-                ISListConfig config = new ISListConfig.Builder()
-                        // 是否多选, 默认true
-                        .multiSelect(false)
-                        // 是否记住上次选中记录, 仅当multiSelect为true的时候配置，默认为true
-                        .rememberSelected(false)
-                        // “确定”按钮背景色
-                        .btnBgColor(Color.GRAY)
-                        // “确定”按钮文字颜色
-                        .btnTextColor(Color.BLUE)
-                        // 使用沉浸式状态栏
-                        .statusBarColor(Color.parseColor("#3F51B5"))
-                        // 返回图标ResId
-                        .backResId(R.drawable.guanbi_hei)
-                        // 标题
-                        .title("图片")
-                        // 标题文字颜色
-                        .titleColor(Color.WHITE)
-                        // TitleBar背景色
-                        .titleBgColor(Color.parseColor("#3F51B5"))
-                        // 裁剪大小。needCrop为true的时候配置
-                        .cropSize(1, 1, 200, 200)
-                        .needCrop(true)
-                        // 第一个是否显示相机，默认true
-                        .needCamera(true)
-                        // 最大选择图片数量，默认9
-                        .maxNum(1)
-                        .build();
-                ISNav.getInstance().toListActivity(this, config, REQUEST_CAMERA_CODE);
+//                ISListConfig config = new ISListConfig.Builder()
+//                        // 是否多选, 默认true
+//                        .multiSelect(false)
+//                        // 是否记住上次选中记录, 仅当multiSelect为true的时候配置，默认为true
+//                        .rememberSelected(false)
+//                        // “确定”按钮背景色
+//                        .btnBgColor(Color.GRAY)
+//                        // “确定”按钮文字颜色
+//                        .btnTextColor(Color.BLUE)
+//                        // 使用沉浸式状态栏
+//                        .statusBarColor(Color.parseColor("#3F51B5"))
+//                        // 返回图标ResId
+//                        .backResId(R.drawable.guanbi_hei)
+//                        // 标题
+//                        .title("图片")
+//                        // 标题文字颜色
+//                        .titleColor(Color.WHITE)
+//                        // TitleBar背景色
+//                        .titleBgColor(Color.parseColor("#3F51B5"))
+//                        // 裁剪大小。needCrop为true的时候配置
+//                        .cropSize(1, 1, 200, 200)
+//                        .needCrop(true)
+//                        // 第一个是否显示相机，默认true
+//                        .needCamera(true)
+//                        // 最大选择图片数量，默认9
+//                        .maxNum(1)
+//                        .build();
+//                ISNav.getInstance().toListActivity(this, config, REQUEST_CAMERA_CODE);
                 break;
             case R.id.ni_info:
 

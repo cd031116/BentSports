@@ -43,6 +43,15 @@ public class GameDetail implements Serializable {
     private int orderNo;
     private GameDetailBean gameDetail;
     private int state;
+    private long expires;
+
+    public long getExpires() {
+        return expires;
+    }
+
+    public void setExpires(long expires) {
+        this.expires = expires;
+    }
 
     public int getId() {
         return id;
@@ -178,6 +187,15 @@ public class GameDetail implements Serializable {
         private String detail;
         private String tip;
         private String notice;
+        private String prepare;
+
+        public String getPrepare() {
+            return prepare;
+        }
+
+        public void setPrepare(String prepare) {
+            this.prepare = prepare;
+        }
 
         public int getId() {
             return id;

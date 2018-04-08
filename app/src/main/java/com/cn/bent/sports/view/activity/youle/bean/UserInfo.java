@@ -142,4 +142,5 @@ public class UserInfo implements Serializable{
     public void setWxOpenid(String wxOpenid) {
         this.wxOpenid = wxOpenid;
     }
+
 }

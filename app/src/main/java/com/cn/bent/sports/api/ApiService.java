@@ -41,6 +41,7 @@ import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -162,6 +163,14 @@ public interface ApiService {
     @GET("api/travel/game/{id}")
     Observable<JavaResult<GameDetail>> getGameDetail(
             @Path("id") String id);
+
+    /**
+     * 修改昵称
+     *
+     * @return
+     */
+    @PATCH("api/basic/user")
+    Observable<Boolean> exchangeName(@Body UserInfo user);
 
     /**
      * 准备页面
