@@ -128,11 +128,12 @@ public class RecommendFragment extends BaseFragment {
             case REQUEST_Scan:
                 if (null != data) {
                     String jieguo=data.getStringExtra("SCAN_RESULT");
-
                     JSONObject jsonObject = JSONObject.parseObject(jieguo);
                     String  types = jsonObject.getString("type");
                     if("game".equals(types)){
                         getJoinTeam(jsonObject.getString("param"));
+                    }else {
+                        RxToast.warning("二维码不正确");
                     }
                     break;
                 }
@@ -264,14 +265,19 @@ public class RecommendFragment extends BaseFragment {
     void onclik(View v){
         switch (v.getId()){
             case R.id.play_one:
-                Intent intent = new Intent(getActivity(), OrderDetailActivity.class);
-                intent.putExtra("gameId", mList.get(0).getId());
-                startActivity(intent);
+                if (mList.size()>=1){
+                    Intent intent = new Intent(getActivity(), OrderDetailActivity.class);
+                    intent.putExtra("gameId", mList.get(0).getId());
+                    startActivity(intent);
+                }
                 break;
             case R.id.play_two:
-                Intent intent1 = new Intent(getActivity(), OrderDetailActivity.class);
-                intent1.putExtra("gameId", mList.get(1).getId());
-                startActivity(intent1);
+                if(mList.size()>=2){
+                    Intent intent1 = new Intent(getActivity(), OrderDetailActivity.class);
+                    intent1.putExtra("gameId", mList.get(1).getId());
+                    startActivity(intent1);
+                }
+
                 break;
         }
     }
