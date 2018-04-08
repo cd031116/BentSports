@@ -161,10 +161,10 @@ public class PlayWebViewActivity extends BaseActivity {
         @JavascriptInterface
         public void h5Result(String ss) {
             Log.e("dasa", "h5Result: " + ss);
-            Gson gson = new Gson();
-            GameEntity gameEntity = gson.fromJson(ss, GameEntity.class);
-            addScroe(gameEntity);
-            Log.d("dasa", "h5Result: " + gameEntity.getGameid() + ",getScord:" + gameEntity.getScord() + ",getUid:" + gameEntity.getUid());
+//            Gson gson = new Gson();
+//            GameEntity gameEntity = gson.fromJson(ss, GameEntity.class);
+//            addScroe(gameEntity);
+//            Log.d("dasa", "h5Result: " + gameEntity.getGameid() + ",getScord:" + gameEntity.getScord() + ",getUid:" + gameEntity.getUid());
         }
     }
 

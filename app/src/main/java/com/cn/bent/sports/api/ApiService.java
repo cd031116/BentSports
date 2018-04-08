@@ -237,31 +237,26 @@ public interface ApiService {
      *
      * @return
      */
-    @FormUrlEncoded
-    @POST("api/travel/game_team/{teamId}/_pass_online")
+    @POST("api/travel/game_team/{teamId}/_pass_offline")
     Observable<JavaResult<Boolean>> finishOfflineGame(@Path("teamId") long teamId,
                                                 @Query("gamePointId") long gamePointId,
-                                                @Query("score") int score,
-                                                @Query("timing") int timing );
+                                                @Query("score") int score );
     /**
      * 完成线上任务
      *
      * @return
      */
-    @FormUrlEncoded
-    @POST("api/travel/game_team/{teamId}/task")
+    @POST("api/travel/game_team/{teamId}/_pass_online")
     Observable<JavaResult<Boolean>> finishOnlineGame(@Path("teamId") long teamId,
                                                      @Query("gamePointId") long gamePointId,
-                                                     @Query("score") int score,
-                                                     @Query("timing") int timing );
+                                                     @Query("score") int score);
     /**
      * 强制退赛
      *
      * @return
      */
-    @FormUrlEncoded
     @POST("api/travel/game_team/{teamId}/task")
-    Observable<JavaResult<Boolean>> outTeamGame(@Path("teamId") long teamId, @Field("timing") int timing);
+    Observable<JavaResult<Boolean>> outTeamGame(@Path("teamId") long teamId);
 
     /**
      * 开始游戏

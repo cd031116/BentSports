@@ -2,6 +2,7 @@ package com.cn.bent.sports.view.activity.youle.play;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.JetPlayer;
 import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
@@ -36,9 +37,9 @@ import butterknife.Bind;
 import butterknife.OnClick;
 
 /**
-*aunthor lyj
-* create 2018/3/27/027 15:36   路线详情
-**/
+ * aunthor lyj
+ * create 2018/3/27/027 15:36   路线详情
+ **/
 public class OrderDetailActivity extends BaseActivity implements MyScroview.OnScrollListener {
     @Bind(R.id.myscroview)
     MyScroview myscroview;
@@ -84,6 +85,7 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
     private String memberId;
     private String title;
     private String gameId;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_order_detail;
@@ -92,7 +94,7 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
     @Override
     public void initView() {
         super.initView();
-        gameId=getIntent().getExtras().getString("gameId");
+        gameId = getIntent().getExtras().getString("gameId");
         myscroview.setOnScrollListener(this);
     }
 
@@ -180,9 +182,9 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
     }
 
 
-    @OnClick({R.id.submit,R.id.tab1_mian,R.id.tab2_mian,R.id.tab3_mian,R.id.go_rank})
-    void onclick(View v){
-        switch (v.getId()){
+    @OnClick({R.id.submit, R.id.tab1_mian, R.id.tab2_mian, R.id.tab3_mian, R.id.go_rank})
+    void onclick(View v) {
+        switch (v.getId()) {
             case R.id.submit:
                 getOrgnize();
                 break;
@@ -196,9 +198,9 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
                 changeview(3);
                 break;
             case R.id.go_rank:
-             Intent intent=new Intent(OrderDetailActivity.this, RankingListActivity.class);
-                intent.putExtra("gameId",Integer.parseInt(gameId));
-             startActivity(intent);
+                Intent intent = new Intent(OrderDetailActivity.this, RankingListActivity.class);
+                intent.putExtra("gameId", Integer.parseInt(gameId));
+                startActivity(intent);
                 break;
         }
     }
@@ -215,6 +217,7 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
                         multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
                         setview(info);
                     }
+
                     @Override
                     public void onError(int whichRequest, Throwable e) {
                         dismissAlert();
@@ -224,7 +227,7 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
                 });
     }
 
-    private void  setview(GameDetail info){
+    private void setview(GameDetail info) {
         RequestOptions myOptions = new RequestOptions()
                 .centerCrop();
         Glide.with(OrderDetailActivity.this)
@@ -232,10 +235,15 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
                 .apply(myOptions)
                 .into(image_cover);
         name_t.setText(info.getTitle());
-        group_price.setText(info.getPrice()+"");
-        type_t.setText("依次穿越");
-        num_dot.setText("12个点标");
-        p_num.setText(info.getMaxPeople()+"人");
+        group_price.setText(info.getPrice() + "");
+        if (info.getType() == 1)
+            type_t.setText("依次穿越");
+        if (info.getType() == 2)
+            type_t.setText("限时挑战");
+        if (info.getType() == 3)
+            type_t.setText("自由规划");
+        num_dot.setText(info.getPointCount() + "个点标");
+        p_num.setText(info.getMaxPeople() + "人");
     }
 
 
@@ -248,7 +256,7 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
                     @Override
                     public void onSuccess(int whichRequest, TeamGame info) {
                         dismissAlert();
-                        Intent intent=new Intent(OrderDetailActivity.this,MyRouteListActivity.class);
+                        Intent intent = new Intent(OrderDetailActivity.this, MyRouteListActivity.class);
                         startActivity(intent);
                         finish();
                     }

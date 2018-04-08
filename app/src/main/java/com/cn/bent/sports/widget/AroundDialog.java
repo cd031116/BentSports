@@ -108,7 +108,7 @@ public class AroundDialog extends Dialog implements View.OnClickListener {
                 listener.onClick(this, 8);
                 break;
             case R.id.sx_guanbi:
-                listener.onClick(this, 9);
+                listener.onClick(this, 0);
                 break;
         }
     }

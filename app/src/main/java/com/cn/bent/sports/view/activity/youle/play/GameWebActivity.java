@@ -38,8 +38,7 @@ public class GameWebActivity extends BaseActivity {
     @Bind(R.id.webview)
     WebView mWebView;
 
-    private String teamId, gamePointId;
-    private boolean task, question;
+    private String teamId, gamePointId,type;
 
 
     @Override
@@ -55,8 +54,8 @@ public class GameWebActivity extends BaseActivity {
 
         teamId = getIntent().getStringExtra("teamId");
         gamePointId = getIntent().getStringExtra("gamePointId");
-        task = getIntent().getExtras().getBoolean("task");
-        question = getIntent().getExtras().getBoolean("question");
+        type = getIntent().getStringExtra("type");
+
 
         WebSettings webSettings = mWebView.getSettings();
         mWebView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
@@ -90,7 +89,7 @@ public class GameWebActivity extends BaseActivity {
         webSettings.setJavaScriptEnabled(true);
         // 设置允许JS弹窗
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
-//        mWebView.loadUrl(gameUrl + "?uid=" + user.getMember_id() + "&etype=android&gameid=" + gameId);
+        mWebView.loadUrl("http://192.168.17.112:8860/btlTask.html" + "?teamId=" + teamId + "&etype=android&gamePointId="+gamePointId+"&type=" + type+"&token=" + access_token);
         mWebView.addJavascriptInterface(new JSInterface(), "native");
     }
 
@@ -98,10 +97,10 @@ public class GameWebActivity extends BaseActivity {
         @JavascriptInterface
         public void h5Result(String ss) {
             Log.e("dasa", "h5Result: " + ss);
-            Gson gson = new Gson();
-            GameEntity gameEntity = gson.fromJson(ss, GameEntity.class);
-            finishTask(gameEntity, 1);
-            Log.d("dasa", "h5Result: " + gameEntity.getGameid() + ",getScord:" + gameEntity.getScord() + ",getUid:" + gameEntity.getUid());
+//            Gson gson = new Gson();
+//            GameEntity gameEntity = gson.fromJson(ss, GameEntity.class);
+//            finishTask(gameEntity, 1);
+//            Log.d("dasa", "h5Result: " + gameEntity.getGameid() + ",getScord:" + gameEntity.getScord() + ",getUid:" + gameEntity.getUid());
         }
     }
 
@@ -110,10 +109,10 @@ public class GameWebActivity extends BaseActivity {
         showAlert("正在获取...", true);
         if (game_mode == 1)
             javaResultObservable = BaseApi.getJavaLoginDefaultService(this)
-                    .finishOfflineGame(70, 4, 23, 123);
+                    .finishOfflineGame(70, 4, 23);
         else
             javaResultObservable = BaseApi.getJavaLoginDefaultService(this)
-                    .finishOnlineGame(70, 4, 23, 123);
+                    .finishOnlineGame(70, 4, 23);
         javaResultObservable.map(new JavaRxFunction<Boolean>())
                 .compose(RxSchedulers.<Boolean>io_main())
                 .subscribe(new RxObserver<Boolean>(this, TAG, 1, false) {

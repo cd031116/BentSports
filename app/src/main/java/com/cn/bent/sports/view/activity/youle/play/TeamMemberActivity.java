@@ -44,8 +44,6 @@ import ua.naiksoftware.stomp.client.StompMessage;
  **/
 public class TeamMemberActivity extends BaseActivity {
     private JoinTeam bean;
-    @Bind(R.id.image_cover)
-    ImageView image_cover;
     @Bind(R.id.webview)
     WebView webView;
     private StompClient mStompClient;

@@ -7,7 +7,7 @@
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="720px"
-        android:background="@color/comm_white"
+        android:background="@drawable/bg_round_white"
         android:orientation="vertical">
 
         <TextView

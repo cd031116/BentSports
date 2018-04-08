@@ -1,5 +1,6 @@
 package com.cn.bent.sports.view.fragment;
 
+import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +20,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseFragment;
+import com.cn.bent.sports.bean.GameEntity;
 import com.cn.bent.sports.bean.GameInfo;
 import com.cn.bent.sports.evevt.ShowPoupEvent;
 import com.cn.bent.sports.sensor.UpdateUiCallBack;
@@ -35,16 +37,21 @@ import com.cn.bent.sports.view.activity.youle.PlayMultActivity;
 import com.cn.bent.sports.view.activity.youle.bean.JoinTeam;
 import com.cn.bent.sports.view.activity.youle.bean.TaskPoint;
 import com.cn.bent.sports.view.activity.youle.bean.UserInfo;
+import com.cn.bent.sports.view.activity.youle.play.GameWebActivity;
 import com.cn.bent.sports.view.activity.youle.play.MemberEditActivity;
 import com.cn.bent.sports.view.activity.youle.play.OrderDetailActivity;
 import com.cn.bent.sports.view.activity.youle.play.TeamMemberActivity;
 import com.cn.bent.sports.view.service.StepService;
+import com.cn.bent.sports.widget.CompletionDialog;
+import com.cn.bent.sports.widget.GameErrorDialog;
+import com.cn.bent.sports.widget.GameFailDialog;
 import com.kennyc.view.MultiStateView;
 import com.vondear.rxtools.RxActivityTool;
 import com.vondear.rxtools.activity.ActivityScanerCode;
 import com.vondear.rxtools.view.RxToast;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
+import com.zhl.network.huiqu.JavaResult;
 import com.zhl.network.huiqu.JavaRxFunction;
 
 import org.aisen.android.component.eventbus.NotificationCenter;
@@ -55,6 +62,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
 import ua.naiksoftware.stomp.client.StompMessage;
 
@@ -111,15 +119,75 @@ public class RecommendFragment extends BaseFragment {
                 break;
             case R.id.activity_one:
                 RxToast.warning("敬请期待下个版本");
+                finishTask(2);
                 break;
             case R.id.seek_rank:
-                startActivity(new Intent(getActivity(), WalkRankListActivity.class));
+                finishTask(1);
+//                startActivity(new Intent(getActivity(), WalkRankListActivity.class));
                 break;
             case R.id.see_my:
                 startActivity(new Intent(getActivity(), MyRouteListActivity.class));
                 break;
         }
     }
+    private void finishTask( int game_mode) {
+        Observable<JavaResult<Boolean>> javaResultObservable;
+        showAlert("正在获取...", true);
+        if (game_mode == 1)
+            javaResultObservable = BaseApi.getJavaLoginDefaultService(getActivity())
+                    .finishOfflineGame(218, 3, 22);
+        else
+            javaResultObservable = BaseApi.getJavaLoginDefaultService(getActivity())
+                    .finishOnlineGame(218, 4, 23);
+        javaResultObservable.map(new JavaRxFunction<Boolean>())
+                .compose(RxSchedulers.<Boolean>io_main())
+                .subscribe(new RxObserver<Boolean>(getActivity(), TAG, 1, false) {
+                    @Override
+                    public void onSuccess(int whichRequest, Boolean aBoolean) {
+                        dismissAlert();
+                        if (aBoolean)
+                            showSuccessDialog("game_name", 30);
+                        else
+                            showErrorDialog("game_name", 30);
+                    }
+
+                    @Override
+                    public void onError(int whichRequest, Throwable e) {
+                        dismissAlert();
+                        if (e.getMessage().equals("回答错误"))
+                            showAlertDialog();
+                    }
+                });
+    }
+
+    private void showAlertDialog() {
+        new GameErrorDialog(getActivity(), R.style.dialog, new GameErrorDialog.OnCloseListener() {
+            @Override
+            public void onClick(Dialog dialog, int index) {
+                dialog.dismiss();
+            }
+        }).show();
+    }
+
+    private void showErrorDialog(String game_name, int score) {
+        new GameFailDialog(getActivity(), R.style.dialog, new GameFailDialog.OnCloseListener() {
+            @Override
+            public void onClick(Dialog dialog, String index) {
+                dialog.dismiss();
+            }
+        }).setName(game_name).setScore(score).show();
+    }
+
+    private void showSuccessDialog(String game_name, int score) {
+        new CompletionDialog(getActivity(), R.style.dialog, new CompletionDialog.OnCloseListener() {
+            @Override
+            public void onClick(Dialog dialog, String index) {
+                dialog.dismiss();
+                getActivity().finish();
+            }
+        }).setName(game_name).setScore(score).show();
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

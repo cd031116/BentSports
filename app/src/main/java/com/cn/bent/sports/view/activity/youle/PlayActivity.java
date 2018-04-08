@@ -385,7 +385,7 @@ public class PlayActivity extends BaseActivity implements AMap.OnMyLocationChang
      * 退出比赛接口
      */
     private void outGameApi() {
-        BaseApi.getJavaLoginDefaultService(PlayActivity.this).outTeamGame(1, 15000)
+        BaseApi.getJavaLoginDefaultService(PlayActivity.this).outTeamGame(1)
                 .map(new JavaRxFunction<Boolean>())
                 .compose(RxSchedulers.<Boolean>io_main())
                 .subscribe(new RxObserver<Boolean>(PlayActivity.this, TAG, 2, false) {

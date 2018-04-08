@@ -7,7 +7,7 @@
         android:id="@+id/tab_layout"
         android:layout_width="904px"
         android:layout_height="match_parent"
-        android:background="@color/comm_white"
+        android:background="@drawable/bg_three_white"
         android:orientation="vertical">
 
         <LinearLayout
@@ -127,7 +127,7 @@
         android:layout_height="105px"
         android:layout_toRightOf="@id/tab_layout"
         android:gravity="center"
-        android:background="@color/comm_white"
+        android:background="@drawable/bg_two_white"
         android:orientation="horizontal">
 
         <TextView

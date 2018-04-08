@@ -3,7 +3,7 @@
     android:id="@+id/goto_layout"
     android:layout_width="721px"
     android:layout_height="wrap_content"
-    android:background="@color/comm_white"
+    android:background="@drawable/bg_round_white"
     android:orientation="vertical">
 
     <TextView

@@ -835,9 +835,9 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             }
         }
         Log.d("dddd", "calculateLatlng latitude: " + secLatlng.latitude + ",longitude:" + secLatlng.longitude);
-        Intent intent=new Intent(this, WalkNaviActivity.class);
-        intent.putExtra("enty",mPointsEntity);
-        intent.putExtra("startLatlng",secLatlng);
+        Intent intent = new Intent(this, WalkNaviActivity.class);
+        intent.putExtra("enty", mPointsEntity);
+        intent.putExtra("startLatlng", startLatlng);
         startActivity(intent);
         aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(secLatlng, mCurrentZoom));
     }

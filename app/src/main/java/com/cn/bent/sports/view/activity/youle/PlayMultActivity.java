@@ -391,7 +391,11 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
             }
             if (index == 1) {
                 //TODO 跳转游戏界面
-                startActivity(new Intent(PlayMultActivity.this, SettingActivity.class));
+                Intent intent = new Intent(PlayMultActivity.this, GameWebActivity.class);
+                intent.putExtra("teamId",teamGames.getId()+"");
+                intent.putExtra("gamePointId",gamePotins.getId()+"");
+                intent.putExtra("type","2");
+                startActivity(intent);
             }
             if (index == 2) {
                 Intent intent1 = new Intent(PlayMultActivity.this, MemberEditActivity.class);
@@ -644,7 +648,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
      * 退出比赛接口
      */
     private void outGameApi() {
-        BaseApi.getJavaLoginDefaultService(PlayMultActivity.this).outTeamGame(1, 15000)
+        BaseApi.getJavaLoginDefaultService(PlayMultActivity.this).outTeamGame(teamGame.getId())
                 .map(new JavaRxFunction<Boolean>())
                 .compose(RxSchedulers.<Boolean>io_main())
                 .subscribe(new RxObserver<Boolean>(PlayMultActivity.this, TAG, 2, false) {
