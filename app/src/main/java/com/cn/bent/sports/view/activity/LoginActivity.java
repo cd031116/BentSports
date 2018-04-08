@@ -132,7 +132,7 @@ public class LoginActivity extends BaseActivity implements Handler.Callback {
 
 
     private void weiChatLogin( Platform platform) {
-        BaseApi.getJavaLoginService(this).weichatLogin("password", platform.getDb().get("unionid"),"1","ANDROID",platform.getDb().getUserName(),platform.getDb().getUserIcon())
+        BaseApi.getJavaLoginService(this).weichatLogin(3,"password", platform.getDb().get("unionid"),"1","ANDROID",platform.getDb().getUserName(),platform.getDb().getUserIcon())
                 .map(new HuiquRxTBFunction<LoginResult>())
                 .compose(RxSchedulers.<LoginResult>io_main())
                 .subscribe(new RxObserver<LoginResult>(LoginActivity.this, "login", 1, false) {

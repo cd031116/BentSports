@@ -918,7 +918,6 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         @Override
         public boolean onMarkerClick(Marker marker) {
             mPointsEntity = mPointsEntityMap.get(Integer.parseInt(marker.getTitle()));
-
             Log.d("dddd", "onPointClick: " + marker.getTitle() + ",getPointId:" + mPointsEntity.getId() + "，mp3:" + mPointsEntity.getMp3());
             if (mPointsEntity.getType() == 2 && !TextUtils.isEmpty(mPointsEntity.getMp3()) && (mPointsEntity.getMp3()).endsWith(".mp3")) {
                 addAnimMarker(mPointsEntity);

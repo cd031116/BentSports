@@ -44,7 +44,7 @@
     <uses-feature
         android:name="android.hardware.bluetooth_le"
         android:required="true" />
-
+    <uses-sdk tools:overrideLibrary="tv.danmaku.ijk.media.player_arm64,tv.danmaku.ijk.media.player_x86_64" />
     <application
         android:name=".base.MyApplication"
         android:allowBackup="true"
@@ -53,6 +53,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:name">
+
         <activity android:name=".view.activity.StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

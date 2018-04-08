@@ -9,6 +9,7 @@ import com.cn.bent.sports.database.PlayPointManager;
 import com.cn.bent.sports.database.PlayUserManager;
 import com.cn.bent.sports.database.QueueManager;
 import com.cn.bent.sports.database.TaskCationManager;
+import com.danikula.videocache.HttpProxyCacheServer;
 import com.mob.MobSDK;
 import com.vondear.rxtools.RxTool;
 
@@ -22,7 +23,7 @@ import org.aisen.android.common.context.GlobalContext;
 public class MyApplication extends GlobalContext{
     public static MyApplication instance;
     private ActivityManagerd activityManager = null;
-
+    private HttpProxyCacheServer proxy;
 
 
     @Override
@@ -37,7 +38,17 @@ public class MyApplication extends GlobalContext{
         RxTool.init(this);
         MobSDK.init(this);
     }
+    public static HttpProxyCacheServer getProxy(Context context) {
+        MyApplication app = (MyApplication) context.getApplicationContext();
+        return app.proxy == null ? (app.proxy = app.newProxy()) : app.proxy;
+    }
 
+    private HttpProxyCacheServer newProxy() {
+        return new HttpProxyCacheServer.Builder(this)
+                .maxCacheSize(1024 * 1024 * 1024)       // 1 Gb for cache
+                .maxCacheFilesCount(50)
+                .build();
+    }
     public ActivityManagerd getActivityManager() {
         return activityManager;
     }

@@ -9,16 +9,21 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.cn.bent.sports.base.BaseConfig;
+import com.cn.bent.sports.base.MyApplication;
 import com.cn.bent.sports.bean.PlayBean;
 import com.cn.bent.sports.bean.PlayEvent;
 import com.cn.bent.sports.bean.StartEvent;
 import com.cn.bent.sports.database.TaskCationManager;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.SaveObjectUtils;
+import com.danikula.videocache.HttpProxyCacheServer;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import tv.danmaku.ijk.media.player.IMediaPlayer;
+import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
 /**
  * Created by lyj on 2018/3/7 0007.
@@ -26,8 +31,7 @@ import org.greenrobot.eventbus.ThreadMode;
  */
 
 public class MusicService extends Service {
-
-    private MediaPlayer mPlayer;
+    private IjkMediaPlayer mPlayer;
     private boolean isHave = false;
     public MusicService() {
     }
@@ -70,8 +74,8 @@ public class MusicService extends Service {
             mPlayer.pause();//暂停音乐
             Log.i("dddd", "mPlayer.pause");
             PlayBean bean = new PlayBean();
-            bean.setTotalPosition(mPlayer.getDuration());
-            bean.setCurentPosition(mPlayer.getCurrentPosition());
+            bean.setTotalPosition((int)mPlayer.getDuration());
+            bean.setCurentPosition((int)mPlayer.getCurrentPosition());
             SaveObjectUtils.getInstance(getApplicationContext()).setObject(Constants.PLAY_POSION, bean);
         }
 
@@ -112,17 +116,16 @@ public class MusicService extends Service {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(PlayEvent event) {
-        played(event.getPaths(), event.isHuan());
         Log.i("dddd", "onEvent");
+        played(event.getPaths(), event.isHuan());
     }
 
 
     private void played(final String paths, boolean qiehuan) {
         if (mPlayer == null) {
-            mPlayer = new MediaPlayer();
+            mPlayer = new IjkMediaPlayer();
         }
         if (qiehuan) {
-            mPlayer.stop();
             mPlayer.reset();
         }
         if (mPlayer.isPlaying() && !qiehuan) {
@@ -132,30 +135,33 @@ public class MusicService extends Service {
             @Override
             public void run() {
                 try {
-                    mPlayer.setDataSource(paths);
+                    mPlayer.reset();
+                    HttpProxyCacheServer proxy = MyApplication.getProxy(getApplicationContext());
+                    String proxyUrl = proxy.getProxyUrl(paths);
+                    mPlayer.setDataSource(proxyUrl);
                     Log.i("dddd", "setDataSource");
                     isHave = true;
                     mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
                     mPlayer.prepareAsync();
-                    mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    mPlayer.setOnPreparedListener(new IMediaPlayer.OnPreparedListener() {
                         @Override
-                        public void onPrepared(MediaPlayer mp) {
+                        public void onPrepared(IMediaPlayer iMediaPlayer) {
                             Log.i("dddd", "onPrepared");
                             mPlayer.start();
                             TaskCationManager.sethavePlay(paths);
                             EventBus.getDefault().post(new StartEvent(true));
                         }
                     });
-                    mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    mPlayer.setOnCompletionListener(new IMediaPlayer.OnCompletionListener() {
                         @Override
-                        public void onCompletion(MediaPlayer mp) {
-                            EventBus.getDefault().post(new StartEvent(false));
-                            TaskCationManager.updatePlay(paths);
-                            SaveObjectUtils.getInstance(getApplicationContext()).setObject(Constants.PLAY_POSION, null);
+                        public void onCompletion(IMediaPlayer iMediaPlayer) {
                             if (mPlayer.isPlaying()) {
                                 mPlayer.stop();
                             }
-                            mPlayer.release();
+                            mPlayer.reset();
+                            EventBus.getDefault().post(new StartEvent(false));
+                            TaskCationManager.updatePlay(paths);
+                            SaveObjectUtils.getInstance(getApplicationContext()).setObject(Constants.PLAY_POSION, null);
                         }
                     });
                 } catch (Exception e) {
@@ -185,7 +191,7 @@ public class MusicService extends Service {
         super.onCreate();
         EventBus.getDefault().register(this);
         if (mPlayer == null) {
-            mPlayer = new MediaPlayer();
+            mPlayer = new IjkMediaPlayer();
         }
     }
 
@@ -205,11 +211,11 @@ public class MusicService extends Service {
     public void onDestroy() {
         Log.i("dddd", "onDestroy=service");
         EventBus.getDefault().unregister(this);
-        if (mPlayer.isPlaying()) {
+        if (mPlayer != null) {
             mPlayer.stop();
+            mPlayer.release();
+            mPlayer = null;
         }
-        mPlayer.release();
-        mPlayer = null;
         SaveObjectUtils.getInstance(getApplicationContext()).setObject(Constants.PLAY_POSION, null);
         super.onDestroy();
     }

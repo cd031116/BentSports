@@ -136,6 +136,7 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("se/oauth/token")
     Observable<LoginResult> weichatLogin(
+            @Field("login_type") int login_type ,
             @Field("grant_type") String grant_type,
             @Field("username") String unicid,
             @Field("password") String password,
