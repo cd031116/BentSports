@@ -191,11 +191,10 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         if (aMap == null) {
             aMap = mMapView.getMap();
         }
-        String path = this.getFilesDir() + "/bent/sport.data";
-        aMap.setCustomMapStylePath(path);
-        aMap.setMapCustomEnable(true);//true 开启; false 关闭
-        aMap.showMapText(false);//关闭文字
-        aMap.getUiSettings().setZoomControlsEnabled(false);//去掉高德地图右下角隐藏的缩放按钮
+//        String path = this.getFilesDir() + "/bent/sport.data";
+//        aMap.setCustomMapStylePath(path);
+//        aMap.setMapCustomEnable(true);//true 开启; false 关闭
+
         aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lp.getLatitude(), lp.getLongitude()), 17));
         // 绑定海量点点击事件
 //        aMap.setOnMultiPointClickListener(multiPointClickListener);
@@ -1001,6 +1000,10 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     @Override
     public void onResume() {
         super.onResume();
+        if (aMap!=null){
+            aMap.showMapText(false);//关闭文字
+            aMap.getUiSettings().setZoomControlsEnabled(false);//去掉高德地图右下角隐藏的缩放按钮
+        }
         if (DataUtils.isBlue(MapActivity.this) && mMinewBeaconManager != null) {
             mMinewBeaconManager.startScan();
         }

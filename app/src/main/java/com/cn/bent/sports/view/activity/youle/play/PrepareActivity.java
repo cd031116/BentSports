@@ -3,6 +3,7 @@ package com.cn.bent.sports.view.activity.youle.play;
 import android.content.Intent;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.TextView;
 
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
@@ -33,6 +34,8 @@ public class PrepareActivity extends BaseActivity {
 
     @Bind(R.id.webview)
     WebView webView;
+    @Bind(R.id.top_title)
+    TextView top_title;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_prepare;
@@ -48,6 +51,7 @@ public class PrepareActivity extends BaseActivity {
     public void initData() {
         super.initData();
         getGamePrapre();
+        top_title.setText(teamGame.getTeamName());
     }
 
     @OnClick({R.id.start_t, R.id.look_peo,R.id.top_left,R.id.top_image})

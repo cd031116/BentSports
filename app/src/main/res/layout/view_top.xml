@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="60px"
             android:clickable="false"
-            android:src="@drawable/fanhui"
+            android:src="@drawable/d_return"
             android:contentDescription="@string/app_name" />
 
         <TextView
