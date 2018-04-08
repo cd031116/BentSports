@@ -35,7 +35,7 @@ public class ShoppingFragment extends BaseFragment {
 
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
-        multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+        multiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
     }
 
     @Override
