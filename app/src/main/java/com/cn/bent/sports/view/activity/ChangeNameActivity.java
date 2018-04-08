@@ -84,6 +84,7 @@ public class ChangeNameActivity extends BaseActivity {
                         user.setNickname(nickmane);
                         SaveObjectUtils.getInstance(ChangeNameActivity.this).setObject(Constants.USER_BASE,user);
                         RxToast.success("修改成功");
+                        finish();
                     }
                     @Override
                     public void onError(int whichRequest, Throwable e) {

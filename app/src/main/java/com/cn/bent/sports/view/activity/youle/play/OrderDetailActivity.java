@@ -184,7 +184,7 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
     }
 
 
-    @OnClick({R.id.submit,R.id.tab1_mian,R.id.tab2_mian,R.id.tab3_mian,R.id.go_rank})
+    @OnClick({R.id.submit,R.id.tab1_mian,R.id.tab2_mian,R.id.tab3_mian,R.id.go_rank,R.id.exit_image})
     void onclick(View v){
         switch (v.getId()){
             case R.id.submit:
@@ -203,6 +203,9 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
              Intent intent=new Intent(OrderDetailActivity.this, RankingListActivity.class);
                 intent.putExtra("gameId",Integer.parseInt(gameId));
              startActivity(intent);
+                break;
+            case R.id.exit_image:
+                finish();
                 break;
         }
     }

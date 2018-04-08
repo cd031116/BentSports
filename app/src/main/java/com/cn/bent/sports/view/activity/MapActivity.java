@@ -75,6 +75,7 @@ import com.cn.bent.sports.recyclebase.ViewHolder;
 import com.cn.bent.sports.sensor.UpdateUiCallBack;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.DataUtils;
+import com.cn.bent.sports.utils.ImageUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.utils.StepData;
 import com.cn.bent.sports.view.poupwindow.LineListPoupWindow;
@@ -355,9 +356,9 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                             Log.d("dddd", "onSuccess: " + scenicPointsEntity.getPoints().get(0).getPointName());
 
                             for (ScenicPointsEntity.PointsBean pointsBean : scenicPointsEntity.getPoints()) {
-                                pointsBean.setMp3(Constants.JAVA_YUN_URL + pointsBean.getMp3());
-                                pointsBean.setImagesUrl(Constants.JAVA_YUN_URL + pointsBean.getImagesUrl());
-                                pointsBean.setPointImg(Constants.JAVA_YUN_URL + pointsBean.getPointImg());
+                                pointsBean.setMp3(ImageUtils.getImageUrl(pointsBean.getMp3()));
+                                pointsBean.setImagesUrl(ImageUtils.getImageUrl(pointsBean.getImagesUrl()));
+                                pointsBean.setPointImg(ImageUtils.getImageUrl(pointsBean.getPointImg()));
                                 mPointsList.add(pointsBean);
                                 mPointsEntityMap.put(pointsBean.getId(), pointsBean);
                                 setOverLay(pointsBean.getType(), pointsBean);
