@@ -176,7 +176,6 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         teamGame = (TeamGame) getIntent().getSerializableExtra("teamGame");
         gameTeamId = getIntent().getExtras().getInt("gameTeamId");
 
-        createStompClient();
         getTeamInfo();
         line_two.setVisibility(View.GONE);
         if (aMap == null) {
@@ -336,8 +335,8 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     @Override
     public void onResume() {
         super.onResume();
-
         user = SaveObjectUtils.getInstance(PlayMultActivity.this).getObject(Constants.USER_BASE, null);
+        createStompClient();
         if (DataUtils.isBlue(PlayMultActivity.this) && mMinewBeaconManager != null) {
             mMinewBeaconManager.startScan();
         }
