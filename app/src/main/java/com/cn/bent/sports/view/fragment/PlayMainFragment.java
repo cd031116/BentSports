@@ -26,10 +26,8 @@ import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.cn.bent.sports.R;
-import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseConfig;
 import com.cn.bent.sports.base.BaseFragment;
-import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.bean.MajorBean;
 import com.cn.bent.sports.bean.MapDot;
 import com.cn.bent.sports.bean.PlayMapBean;
@@ -38,7 +36,6 @@ import com.cn.bent.sports.bean.ReFreshEvent;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.DataUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
-import com.cn.bent.sports.utils.ToastUtils;
 import com.cn.bent.sports.view.activity.ArActivity;
 import com.cn.bent.sports.view.activity.OfflineActivity;
 import com.cn.bent.sports.view.activity.PlayWebViewActivity;
@@ -51,15 +48,9 @@ import com.minew.beacon.BeaconValueIndex;
 import com.minew.beacon.BluetoothState;
 import com.minew.beacon.MinewBeacon;
 import com.minew.beacon.MinewBeaconManager;
-import com.vondear.rxtools.RxActivityTool;
 import com.vondear.rxtools.activity.ActivityScanerCode;
 import com.vondear.rxtools.interfaces.OnRxScanerListener;
 import com.vondear.rxtools.view.RxToast;
-import com.zhl.network.RxObserver;
-import com.zhl.network.RxSchedulers;
-import com.zhl.network.huiqu.HuiquRxFunction;
-import com.zhl.network.huiqu.HuiquRxTBFunction;
-import com.zhl.network.huiqu.HuiquTBResult;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -107,7 +98,6 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
     private int t_ids = -1;
     private long times_s = 0;
     private Handler handler2;
-    private LoginBase user;
     private boolean isBlue = false;
     private List<MapDot> place_list = new ArrayList<>();
     private DoTaskPoupWindow mopupWindow;
@@ -124,8 +114,6 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
         EventBus.getDefault().register(this);
-        user = SaveObjectUtils.getInstance(getActivity()).getObject(Constants.USER_INFO, null);
-        getMapMsg();
         handler2 = new Handler();
         mapView.onCreate(savedInstanceState);
         mMinewBeaconManager = MinewBeaconManager.getInstance(getActivity());
@@ -290,7 +278,6 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ReFreshEvent event) {
-        getMapMsg();
 
     }
 
@@ -331,10 +318,6 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
         }
         mapView.onResume();
         addLocaToMap();
-        LoginBase user = SaveObjectUtils.getInstance(getActivity()).getObject(Constants.USER_INFO, null);
-        if (user.getScore() != null) {
-            jifen_t.setText(user.getScore());
-        }
     }
 
 
@@ -496,27 +479,6 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
 
     //-------------------------------通知后台
     private void login() {
-        BaseApi.getDefaultService(getActivity()).startGame(user.getMember_id())
-                .map(new HuiquRxTBFunction<HuiquTBResult>())
-                .compose(RxSchedulers.<HuiquTBResult>io_main())
-                .subscribe(new RxObserver<HuiquTBResult>(getActivity(), "changeName", 1, false) {
-                    @Override
-                    public void onSuccess(int whichRequest, HuiquTBResult info) {
-                        BaseConfig bgs = BaseConfig.getInstance(getActivity());
-                        bgs.setLongValue(Constants.IS_TIME, System.currentTimeMillis());
-                        times_s = bgs.getLongValue(Constants.IS_TIME, 0);
-                        setTimes();
-                    }
-
-                    @Override
-                    public void onError(int whichRequest, Throwable e) {
-                        dismissAlert();
-                        BaseConfig bgs = BaseConfig.getInstance(getActivity());
-                        bgs.setLongValue(Constants.IS_TIME, System.currentTimeMillis());
-                        times_s = bgs.getLongValue(Constants.IS_TIME, 0);
-                        setTimes();
-                    }
-                });
     }
 
     //-------------------------------------------蓝牙
@@ -650,39 +612,6 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
         }
     }
 
-    //获取接口调用
-    private void getMapMsg() {
-        showAlert("......", true);
-        BaseApi.getDefaultService(getActivity()).getMapMsg(user.getMember_id())
-                .map(new HuiquRxFunction<PlayMapBean>())
-                .compose(RxSchedulers.<PlayMapBean>io_main())
-                .subscribe(new RxObserver<PlayMapBean>(getActivity(), "getMapMsg", 1, false) {
-                    @Override
-                    public void onSuccess(int whichRequest, PlayMapBean info) {
-                        dismissAlert();
-                        if (info.getPlace_list().size() > 0) {
-                            aMap.clear();
-                            if (place_list != null) {
-                                place_list.clear();
-                            }
-                            place_list.addAll(info.getPlace_list());
-                            settimesd();
-                            SaveObjectUtils.getInstance(getActivity()).setObject(Constants.DOT_LIST, info);
-                            if (daodan.isSelected()) {
-                                RailBean railBean = SaveObjectUtils.getInstance(getActivity()).getObject(Constants.DOT_INFO, null);
-                                place_list.addAll(railBean.getMp3_tag());
-                            }
-                            addMarkersToMap();
-                        }
-                    }
-
-                    @Override
-                    public void onError(int whichRequest, Throwable e) {
-                        dismissAlert();
-                        SaveObjectUtils.getInstance(getActivity()).setObject(Constants.DOT_LIST, null);
-                    }
-                });
-    }
 
     @Override
     public void onMyLocationChange(Location location) {

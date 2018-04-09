@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.support.multidex.MultiDex;
+import android.text.TextUtils;
 
 import com.cn.bent.sports.database.PlayPointManager;
 import com.cn.bent.sports.database.PlayUserManager;
@@ -11,9 +12,14 @@ import com.cn.bent.sports.database.QueueManager;
 import com.cn.bent.sports.database.TaskCationManager;
 import com.danikula.videocache.HttpProxyCacheServer;
 import com.mob.MobSDK;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.vondear.rxtools.RxTool;
 
 import org.aisen.android.common.context.GlobalContext;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 
 /**
@@ -30,6 +36,8 @@ public class MyApplication extends GlobalContext{
     public void onCreate() {
         super.onCreate();
         instance = this;
+// 初始化Bugly
+        CrashReport.initCrashReport(getApplicationContext(), "edd3b05320", false);
         activityManager = ActivityManagerd.getScreenManager();
         TaskCationManager.setup(this);
         PlayUserManager.setup(this);
@@ -38,6 +46,7 @@ public class MyApplication extends GlobalContext{
         RxTool.init(this);
         MobSDK.init(this);
     }
+
     public static HttpProxyCacheServer getProxy(Context context) {
         MyApplication app = (MyApplication) context.getApplicationContext();
         return app.proxy == null ? (app.proxy = app.newProxy()) : app.proxy;
@@ -86,6 +95,5 @@ public class MyApplication extends GlobalContext{
         // TODO Auto-generated method stub
         super.onTerminate();
     }
-
 
 }

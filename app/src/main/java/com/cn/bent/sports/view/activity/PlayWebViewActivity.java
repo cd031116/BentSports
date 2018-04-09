@@ -19,14 +19,11 @@ import com.cn.bent.sports.base.BaseConfig;
 import com.cn.bent.sports.bean.AddScoreEntity;
 import com.cn.bent.sports.bean.GameEntity;
 import com.cn.bent.sports.bean.InfoEvent;
-import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.bean.ReFreshEvent;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.DataUtils;
-import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.widget.GameDialog;
 import com.cn.bent.sports.widget.ToastDialog;
-import com.google.gson.Gson;
 import com.vondear.rxtools.view.RxToast;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
@@ -43,7 +40,6 @@ public class PlayWebViewActivity extends BaseActivity {
     WebView mWebView;
     @Bind(R.id.cut_down)
     TextView timer;
-    LoginBase user;
     String gameId;
     private int MAX_REQUEST = 2;
     private int isRequestNum = 1;
@@ -66,7 +62,6 @@ public class PlayWebViewActivity extends BaseActivity {
         super.initView();
         gameId = getIntent().getStringExtra("gameId");
         gameUrl = getIntent().getStringExtra("gameUrl");
-        user = (LoginBase) SaveObjectUtils.getInstance(this).getObject(Constants.USER_INFO, null);
         handler2 = new Handler();
         setTimes();
         initWebView();
@@ -127,7 +122,7 @@ public class PlayWebViewActivity extends BaseActivity {
         webSettings.setJavaScriptEnabled(true);
         // 设置允许JS弹窗
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
-        mWebView.loadUrl(gameUrl + "?uid=" + user.getMember_id() + "&etype=android&gameid=" + gameId);
+//        mWebView.loadUrl(gameUrl + "?uid=" + user.getMember_id() + "&etype=android&gameid=" + gameId);
         mWebView.addJavascriptInterface(new JSInterface(), "native");
         switch (Integer.parseInt(gameId))
         {
@@ -194,8 +189,6 @@ public class PlayWebViewActivity extends BaseActivity {
                         if (addScoreEntity.getBody().getAddStatus() == 1) {
                             dismissAlert();
 //                            TaskCationManager.update(gameId + "", DataUtils.getlongs());
-                            LoginBase user = (LoginBase) SaveObjectUtils.getInstance(PlayWebViewActivity.this).getObject(Constants.USER_INFO, null);
-                            setScore(user, gameEntity);
                             EventBus.getDefault().post(new InfoEvent());
                             EventBus.getDefault().post(new ReFreshEvent());
                             toContinue();
@@ -226,13 +219,6 @@ public class PlayWebViewActivity extends BaseActivity {
                 });
     }
 
-    private void setScore(LoginBase user, GameEntity gameEntity) {
-        if (user.getScore() != null)
-            user.setScore(Integer.parseInt(user.getScore()) + gameEntity.getScord() + "");
-        else
-            user.setScore(gameEntity.getScord() + "");
-        SaveObjectUtils.getInstance(PlayWebViewActivity.this).setObject(Constants.USER_INFO, user);
-    }
 
     @Override
     public void onDestroy() {

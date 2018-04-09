@@ -18,9 +18,6 @@ import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseActivity;
-import com.cn.bent.sports.bean.LoginBase;
-import com.cn.bent.sports.utils.Constants;
-import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.vondear.rxtools.view.RxToast;
 
 import java.util.ArrayList;
@@ -48,7 +45,6 @@ public class FriendActivity extends BaseActivity {
 
     private int maxSelectNum = 9;
     private List<String> imgSourceList = new ArrayList<>();
-    private LoginBase user;
     private String member_id;
 
     //声明AMapLocationClient类对象
@@ -88,10 +84,6 @@ public class FriendActivity extends BaseActivity {
     @Override
     public void onResume() {
         super.onResume();
-        user = SaveObjectUtils.getInstance(this).getObject(Constants.USER_INFO, null);
-        if (user != null) {
-            member_id = user.getMember_id();
-        }
     }
 
     @Override

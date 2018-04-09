@@ -18,7 +18,6 @@ import com.cn.bent.sports.MainActivity;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
-import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.bean.LoginResult;
 import com.cn.bent.sports.bean.RailBean;
 import com.cn.bent.sports.utils.Constants;

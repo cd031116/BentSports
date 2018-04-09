@@ -49,7 +49,6 @@ import com.cn.bent.sports.utils.ImageUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.view.activity.BitmapManager;
 import com.cn.bent.sports.view.activity.PlayWebViewActivity;
-import com.cn.bent.sports.view.activity.SettingActivity;
 import com.cn.bent.sports.view.activity.youle.bean.JoinTeam;
 import com.cn.bent.sports.view.activity.youle.bean.TaskPoint;
 import com.cn.bent.sports.view.activity.youle.bean.UserInfo;

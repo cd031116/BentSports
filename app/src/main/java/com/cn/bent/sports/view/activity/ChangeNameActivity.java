@@ -7,22 +7,13 @@ import android.widget.EditText;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
-import com.cn.bent.sports.bean.GameDetail;
-import com.cn.bent.sports.bean.InfoEvent;
-import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.view.activity.youle.bean.UserInfo;
-import com.cn.bent.sports.view.activity.youle.play.OrderDetailActivity;
-import com.kennyc.view.MultiStateView;
 import com.vondear.rxtools.view.RxToast;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.HuiquRxTBFunction;
-import com.zhl.network.huiqu.HuiquTBResult;
-import com.zhl.network.huiqu.JavaRxFunction;
-
-import org.greenrobot.eventbus.EventBus;
 
 import butterknife.Bind;
 import butterknife.OnClick;

@@ -3,7 +3,6 @@ package com.cn.bent.sports.view.activity;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Dialog;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -14,22 +13,11 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.cn.bent.sports.R;
-import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.ar.GLView;
 import com.cn.bent.sports.base.BaseActivity;
-import com.cn.bent.sports.bean.AddScoreEntity;
 import com.cn.bent.sports.bean.GameEntity;
-import com.cn.bent.sports.bean.InfoEvent;
-import com.cn.bent.sports.bean.LoginBase;
-import com.cn.bent.sports.bean.ReFreshEvent;
 import com.cn.bent.sports.bean.VideoEvent;
-import com.cn.bent.sports.utils.Constants;
-import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.widget.GameDialog;
-import com.vondear.rxtools.view.RxToast;
-import com.zhl.network.RxObserver;
-import com.zhl.network.RxSchedulers;
-import com.zhl.network.huiqu.HuiquRxTBFunction;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -53,7 +41,6 @@ public class ArActivity extends BaseActivity {
 
     @Bind(R.id.go_ahead)
     TextView go_ahead;
-    private LoginBase user;
     private String gameId;
     private int MAX_REQUEST = 2;
     private int isRequestNum = 1;
@@ -66,7 +53,6 @@ public class ArActivity extends BaseActivity {
     @Override
     public void initView() {
         super.initView();
-        user = (LoginBase) SaveObjectUtils.getInstance(this).getObject(Constants.USER_INFO, null);
         gameId = getIntent().getStringExtra("gameId");
         showDialogMsg(getResources().getString(R.string.ar_tuo),R.drawable.artuo);
     }
@@ -129,10 +115,8 @@ public class ArActivity extends BaseActivity {
                 break;
             case R.id.go_ahead:
                 GameEntity gameEntity = new GameEntity();
-                gameEntity.setUid(user.getMember_id());
                 gameEntity.setGameid(Integer.parseInt(gameId));
                 gameEntity.setScord(30);
-                commitScore(gameEntity);
                 break;
         }
     }
@@ -197,52 +181,5 @@ public class ArActivity extends BaseActivity {
         super.onPause();
     }
 
-    private void commitScore(final GameEntity gameEntity) {
-        BaseApi.getDefaultService(this).addScore(user.getMember_id(), 30, Integer.parseInt(gameId))
-                .map(new HuiquRxTBFunction<AddScoreEntity>())
-                .compose(RxSchedulers.<AddScoreEntity>io_main())
-                .subscribe(new RxObserver<AddScoreEntity>(this, "addScore", 1, false) {
-                    @Override
-                    public void onSuccess(int whichRequest, AddScoreEntity addScoreEntity) {
-                        if (addScoreEntity.getBody().getAddStatus() == 1) {
-                            dismissAlert();
-                            LoginBase user = (LoginBase) SaveObjectUtils.getInstance(ArActivity.this).getObject(Constants.USER_INFO, null);
-                            setScore(user);
-                            EventBus.getDefault().post(new InfoEvent());
-                            EventBus.getDefault().post(new ReFreshEvent());
-                            toContinue();
-                        } else {
-                            RxToast.normal( addScoreEntity.getMsg());
-                            dismissAlert();
-                        }
-                        isRequestNum = 1;
-                    }
 
-                    private void toContinue() {
-                        Intent intent = new Intent(ArActivity.this, ContinueActivity.class);
-                        intent.putExtra("game", gameEntity);
-                        startActivity(intent);
-                    }
-
-                    @Override
-                    public void onError(int whichRequest, Throwable e) {
-                        dismissAlert();
-                        if (isRequestNum < MAX_REQUEST) {
-                            isRequestNum++;
-                            RxToast.warning("积分上传失败,正在重新上传积分");
-                            commitScore(gameEntity);
-                        } else {
-                            RxToast.error("网络异常，积分上传失败，请重新提交成绩");
-                        }
-                    }
-                });
-    }
-
-    private void setScore(LoginBase user) {
-        if (user.getScore() != null)
-            user.setScore(String.valueOf(Integer.parseInt(user.getScore()) + 30));
-        else
-            user.setScore(String.valueOf(30));
-        SaveObjectUtils.getInstance(ArActivity.this).setObject(Constants.USER_INFO, user);
-    }
 }

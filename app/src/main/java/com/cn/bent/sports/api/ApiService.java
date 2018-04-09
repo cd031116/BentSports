@@ -11,7 +11,6 @@ import com.cn.bent.sports.bean.GameTeamScoreEntity;
 import com.cn.bent.sports.bean.LinesDetailEntity;
 import com.cn.bent.sports.bean.LinesPointsDetailEntity;
 import com.cn.bent.sports.bean.LinesPointsEntity;
-import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.bean.LoginResult;
 import com.cn.bent.sports.bean.MemberDataEntity;
 import com.cn.bent.sports.bean.PhotoPath;

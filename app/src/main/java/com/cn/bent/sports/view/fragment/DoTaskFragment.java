@@ -36,7 +36,6 @@ import com.amap.api.services.route.WalkRouteResult;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseConfig;
 import com.cn.bent.sports.base.BaseFragment;
-import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.bean.ReFreshEvent;
 import com.cn.bent.sports.database.TaskCationBean;
 import com.cn.bent.sports.ibeacon.UserRssi;
@@ -44,8 +43,6 @@ import com.cn.bent.sports.overlay.AMapUtil;
 import com.cn.bent.sports.overlay.WalkRouteOverlay;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.DataUtils;
-import com.cn.bent.sports.utils.SaveObjectUtils;
-import com.cn.bent.sports.utils.ToastUtils;
 import com.cn.bent.sports.view.activity.PlayWebViewActivity;
 import com.cn.bent.sports.view.activity.RuleActivity;
 import com.cn.bent.sports.view.activity.ZoomActivity;
@@ -348,10 +345,6 @@ public class DoTaskFragment extends BaseFragment implements AMap.OnMarkerClickLi
         mapView.onResume();
         aMap.clear();
         addLocaToMap();
-        LoginBase user = SaveObjectUtils.getInstance(getActivity()).getObject(Constants.USER_INFO, null);
-        if (user.getScore() != null) {
-            jifen_t.setText(user.getScore());
-        }
         setTimes();
     }
 

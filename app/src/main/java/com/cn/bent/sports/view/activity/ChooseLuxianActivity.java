@@ -2,22 +2,12 @@ package com.cn.bent.sports.view.activity;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
 
-import com.cn.bent.sports.MainActivity;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.base.BaseConfig;
-import com.cn.bent.sports.bean.LoginBase;
-import com.cn.bent.sports.database.TaskCationBean;
-import com.cn.bent.sports.database.TaskCationManager;
 import com.cn.bent.sports.utils.Constants;
-import com.cn.bent.sports.utils.SaveObjectUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import butterknife.Bind;
 import butterknife.OnClick;
 
 /**

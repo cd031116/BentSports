@@ -5,27 +5,16 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cn.bent.sports.MainActivity;
 import com.cn.bent.sports.R;
-import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
-import com.cn.bent.sports.base.BaseConfig;
 import com.cn.bent.sports.bean.AllFinishEntity;
-import com.cn.bent.sports.bean.InfoEvent;
-import com.cn.bent.sports.bean.LoginBase;
 import com.cn.bent.sports.bean.LookRankEvent;
 import com.cn.bent.sports.recyclebase.CommonAdapter;
 import com.cn.bent.sports.recyclebase.ViewHolder;
-import com.cn.bent.sports.utils.Constants;
-import com.cn.bent.sports.utils.DataUtils;
-import com.cn.bent.sports.utils.SaveObjectUtils;
-import com.zhl.network.RxObserver;
-import com.zhl.network.RxSchedulers;
-import com.zhl.network.huiqu.HuiquRxFunction;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -51,7 +40,6 @@ public class AllFinishActivity extends BaseActivity {
     @Bind(R.id.game_list)
     RecyclerView game_list;
 
-    private LoginBase user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,33 +54,12 @@ public class AllFinishActivity extends BaseActivity {
     @Override
     public void initView() {
         super.initView();
-        user = (LoginBase) SaveObjectUtils.getInstance(this).getObject(Constants.USER_INFO, null);
         game_list.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override
     public void initData() {
         super.initData();
-        BaseApi.getDefaultService(this).getGameRecord(user.getMember_id()).map(new HuiquRxFunction<AllFinishEntity>())
-                .compose(RxSchedulers.<AllFinishEntity>io_main())
-                .subscribe(new RxObserver<AllFinishEntity>(this, "getGameRecord", 1, false) {
-                    @Override
-                    public void onSuccess(int whichRequest, AllFinishEntity allFinishEntity) {
-                        if (allFinishEntity.getGame_record() != null && allFinishEntity.getGame_record().size() > 0)
-                            setRecView(allFinishEntity);
-                        if (allFinishEntity.getIs_reward() == 1) {
-                            shensu.setVisibility(View.VISIBLE);
-                            shensu_name.setText("神速奖");
-                            shensu_jifen.setText("30");
-                        } else
-                            shensu.setVisibility(View.GONE);
-                    }
-
-                    @Override
-                    public void onError(int whichRequest, Throwable e) {
-
-                    }
-                });
     }
 
     private void setRecView(AllFinishEntity allFinishEntity) {
