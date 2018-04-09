@@ -19,7 +19,7 @@ public class Constants {
     public static final String IS_TIME="is_time";
     public static final String TEST_URL="http://aihw.zhonghuilv.net/";
     public static final String BASE_URL="https://wxxcx.zhonghuilv.net/game/";
-    public static final String JAVA_YUN_URL="http://aistatic.huiqulx.com/";
+    public static final String JAVA_YUN_URL="http://aistatic.huiqulx.com";
     public static final String IS_SHOWS="is_shows";
     public static final String LU_XIAN="lu_xian";
     public static final String PLAY_POSION="play_posion";

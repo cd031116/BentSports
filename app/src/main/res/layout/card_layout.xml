@@ -14,22 +14,19 @@
         <ImageView
             android:id="@+id/caidengmi"
             android:layout_width="217px"
-            android:layout_height="217px"
-            android:background="@drawable/caidengmi1" />
+            android:layout_height="217px"/>
 
         <ImageView
             android:id="@+id/fangbianpao"
             android:layout_width="217px"
             android:layout_height="217px"
-            android:layout_marginLeft="120px"
-            android:background="@drawable/fangbianpao1" />
+            android:layout_marginLeft="120px"/>
 
         <ImageView
             android:id="@+id/hongbaoyu"
             android:layout_width="217px"
             android:layout_height="217px"
-            android:layout_marginLeft="120px"
-            android:background="@drawable/hongbaoyu1" />
+            android:layout_marginLeft="120px"/>
 
     </LinearLayout>
 
@@ -43,22 +40,19 @@
         <ImageView
             android:id="@+id/diandenglong"
             android:layout_width="217px"
-            android:layout_height="217px"
-            android:background="@drawable/diandenglong1" />
+            android:layout_height="217px" />
 
         <ImageView
             android:id="@+id/liunianshou"
             android:layout_width="217px"
             android:layout_height="217px"
-            android:layout_marginLeft="120px"
-            android:background="@drawable/liunianshou1" />
+            android:layout_marginLeft="120px" />
 
         <ImageView
             android:id="@+id/jixiangqian"
             android:layout_width="217px"
             android:layout_height="217px"
-            android:layout_marginLeft="120px"
-            android:background="@drawable/jixiangqian1" />
+            android:layout_marginLeft="120px" />
 
     </LinearLayout>
 
@@ -72,8 +66,7 @@
             android:id="@+id/kanyanchu"
             android:layout_width="217px"
             android:layout_height="217px"
-            android:layout_marginLeft="90px"
-            android:background="@drawable/kanyanchu1" />
+            android:layout_marginLeft="90px"/>
     </LinearLayout>
 
 </LinearLayout>

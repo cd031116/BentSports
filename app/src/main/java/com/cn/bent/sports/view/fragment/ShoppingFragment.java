@@ -2,6 +2,7 @@ package com.cn.bent.sports.view.fragment;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.base.BaseFragment;
@@ -23,7 +24,8 @@ public class ShoppingFragment extends BaseFragment {
 //        fragment.setArguments(bundle);
         return fragment;
     }
-
+    @Bind(R.id.top_image)
+    ImageView top_image;
     @Bind(R.id.multiStateView)
     MultiStateView multiStateView;
     @Bind(R.id.refresh)
@@ -36,6 +38,7 @@ public class ShoppingFragment extends BaseFragment {
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
         multiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+        top_image.setVisibility(View.GONE);
     }
 
     @Override
