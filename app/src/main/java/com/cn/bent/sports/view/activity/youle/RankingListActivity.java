@@ -87,12 +87,12 @@ public class RankingListActivity extends BaseActivity implements OnLoadMoreListe
         super.onResume();
     }
 
-    private void setRecyclerView(List<GameRankEntity.ListBean> rankListBeen, int type) {
+    private void setRecyclerView(final List<GameRankEntity.ListBean> rankListBeen, int type) {
 
         CommonAdapter<GameRankEntity.ListBean> mAdapter = new CommonAdapter<GameRankEntity.ListBean>(this, R.layout.item_range, rankListBeen) {
             @Override
             protected void convert(ViewHolder holder, GameRankEntity.ListBean rangeEntity, int position) {
-                holder.setText(R.id.range_num, (pageIndex - 2) * 10 + rangeEntity.getRank() + "");
+                holder.setText(R.id.range_num, rankListBeen.size() + "");
                 holder.setText(R.id.range_name, rangeEntity.getTeamName());
                 holder.setText(R.id.range_jifen, rangeEntity.getScore() + "");
                 ImageView NormalInfoImg = (ImageView) holder.getView(R.id.img_head);
@@ -133,7 +133,7 @@ public class RankingListActivity extends BaseActivity implements OnLoadMoreListe
 
     private void setView(List<GameRankEntity.ListBean> rankEntity, int type) {
         if (rankEntity != null && rankEntity.size() > 0) {
-            Log.d(TAG, "setView: " + rankEntity.size() + "---" + pageIndex);
+            Log.d(TAG, "setView: " + rankEntity.size() + "---" + pageIndex + ",:size:" + rankEntity.size());
             if (type == 1) {
                 setRankHeadView(rankEntity);
             }
@@ -227,7 +227,7 @@ public class RankingListActivity extends BaseActivity implements OnLoadMoreListe
                     .subscribe(new RxObserver<GameRankEntity>(this, "getRankList", 2, false) {
                         @Override
                         public void onSuccess(int whichRequest, GameRankEntity rankEntity) {
-                            Log.d(TAG, "onSuccess onLoadMore:" + rankEntity.getList().size());
+                            Log.d(TAG, "onSuccess onLoadMore:" + rankEntity.getList().size() + "-pageIndex:" + pageIndex + ",page:" + rankEntity.getPages());
                             if (rankEntity != null && rankEntity.getList().size() > 0) {
                                 if ((pageIndex - 1) != rankEntity.getPages()) {
                                     mListBean.addAll(rankEntity.getList());

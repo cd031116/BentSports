@@ -10,6 +10,7 @@ import android.webkit.WebViewClient;
 
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
+import com.cn.bent.sports.api.ConstantValues;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.GameEntity;
 import com.cn.bent.sports.bean.LoginResult;
@@ -40,7 +41,7 @@ public class GameWebActivity extends BaseActivity {
     @Bind(R.id.webview)
     WebView mWebView;
 
-    private String teamId, gamePointId, type, gameName;
+    private String teamId, gamePointId,type,gameName;
 
 
     @Override
@@ -92,8 +93,11 @@ public class GameWebActivity extends BaseActivity {
         webSettings.setJavaScriptEnabled(true);
         // 设置允许JS弹窗
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
-        Log.d(TAG, "initView: " + "http://192.168.17.143:8860/choice.html" + "?teamId=" + teamId + "&etype=android&gamePointId=" + gamePointId + "&type=" + type + "&token=" + access_token);
-        mWebView.loadUrl("http://192.168.17.143:8860/choice.html" + "?teamId=" + teamId + "&etype=android&gamePointId=" + gamePointId + "&type=" + type + "&token=" + access_token);
+        Log.d(TAG, "initView: "+"http://192.168.17.143:8860/choice.html" + "?teamId=" + teamId + "&etype=android&gamePointId="+gamePointId+"&type=" + type+"&token=" + access_token);
+        if(type.equals("1"))
+            mWebView.loadUrl(ConstantValues.GAME_ONLINE_URL + "?teamId=" + teamId + "&etype=android&gamePointId="+gamePointId+"&type=" + type+"&token=" + access_token);
+        else
+            mWebView.loadUrl(ConstantValues.GAME_OFFLINE_URL + "?teamId=" + teamId + "&etype=android&gamePointId="+gamePointId+"&type=" + type+"&token=" + access_token);
         mWebView.addJavascriptInterface(new JSInterface(), "native");
     }
 
@@ -137,21 +141,21 @@ public class GameWebActivity extends BaseActivity {
             BaseApi.getJavaLoginDefaultService(this)
                     .finishOnlineGame(youleGameEntity.getTeamId(), youleGameEntity.getGamePointId(), youleGameEntity.getScord())
                     .map(new JavaRxFunction<String>())
-                    .compose(RxSchedulers.<String>io_main())
-                    .subscribe(new RxObserver<String>(this, TAG, 1, false) {
-                        @Override
-                        public void onSuccess(int whichRequest, String aBoolean) {
-                            dismissAlert();
+                .compose(RxSchedulers.<String>io_main())
+                .subscribe(new RxObserver<String>(this, TAG, 1, false) {
+                    @Override
+                    public void onSuccess(int whichRequest, String aBoolean) {
+                        dismissAlert();
                             showSuccessDialog(gameName, youleGameEntity.getScord());
-                        }
+                    }
 
-                        @Override
-                        public void onError(int whichRequest, Throwable e) {
-                            dismissAlert();
-                            if (e.getMessage().equals("回答错误"))
-                                showAlertDialog();
-                        }
-                    });
+                    @Override
+                    public void onError(int whichRequest, Throwable e) {
+                        dismissAlert();
+                        if (e.getMessage().equals("回答错误"))
+                            showAlertDialog();
+                    }
+                });
     }
 
     private void showAlertDialog() {
