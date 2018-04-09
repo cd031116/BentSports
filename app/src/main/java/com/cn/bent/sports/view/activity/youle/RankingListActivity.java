@@ -94,7 +94,7 @@ public class RankingListActivity extends BaseActivity implements OnLoadMoreListe
             protected void convert(ViewHolder holder, GameRankEntity.ListBean rangeEntity, int position) {
                 for (int i = 0; i < rankListBeen.size(); i++) {
                     if (rangeEntity.getId()==rankListBeen.get(i).getId()){
-                        holder.setText(R.id.range_num, i+1 + "");
+                        holder.setText(R.id.range_num, i+4 + "");
                         break;
                     }
                 }
