@@ -62,8 +62,10 @@ public class GameWebActivity extends BaseActivity {
 
 
         WebSettings webSettings = mWebView.getSettings();
-        mWebView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-        webSettings.setJavaScriptEnabled(true);
+
+
+        webSettings.setLoadWithOverviewMode(true);
+//        webSettings.setJavaScriptEnabled(true);
         webSettings.setUseWideViewPort(true);
         webSettings.setLoadWithOverviewMode(true);
         webSettings.setBuiltInZoomControls(true);
@@ -74,7 +76,7 @@ public class GameWebActivity extends BaseActivity {
         webSettings.setDatabaseEnabled(true);
         //开启 Application Caches 功能
         webSettings.setAppCacheEnabled(true);
-
+//
         webSettings.setSupportZoom(false);
         webSettings.setBlockNetworkImage(true);
         mWebView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY); //取消滚动条白边效果

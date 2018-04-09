@@ -421,7 +421,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                                 latLngs.add(new LatLng(doubles.get(0), doubles.get(1)));
                             }
                             polyline = aMap.addPolyline(new PolylineOptions().
-                                    addAll(latLngs).width(10).color(Color.argb(255, 237, 237, 237)));
+                                    addAll(latLngs).width(10).color(Color.parseColor("#ededed")));
                         }
                         if (linesPointsDetailEntity.getVoicePoints() != null && linesPointsDetailEntity.getVoicePoints().size() > 0) {
                             voicePoints = linesPointsDetailEntity.getVoicePoints();
@@ -435,6 +435,10 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                                         @Override
                                         public void onClick(View view) {
                                             mPointsEntity = pointsBean;
+                                            if (pointsBean.getType() == 2 && !TextUtils.isEmpty(pointsBean.getMp3())&&mPointsEntity.getMp3().endsWith(".mp3")) {
+                                                RxToast.success("该点暂无语音讲解");
+                                            }
+
                                             for (ScenicPointsEntity.PointsBean entity : linesPointsDetailEntity.getVoicePoints()) {
                                                 entity.setShow(false);
                                             }
@@ -445,7 +449,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                                         }
                                     });
                                     if (pointsBean.isShow()) {
-                                        if (pointsBean.getType() == 2 && !TextUtils.isEmpty(pointsBean.getMp3())) {
+                                            if (pointsBean.getType() == 2 && !TextUtils.isEmpty(pointsBean.getMp3())&&mPointsEntity.getMp3().endsWith(".mp3")) {
                                             addAnimMarker(pointsBean);
                                             playMarkerAudio(pointsBean);
                                         }
@@ -913,6 +917,8 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                 addAnimMarker(mPointsEntity);
                 playMarkerAudio(mPointsEntity);
                 notifyRecyChanged();
+            }else {
+                RxToast.success("该点暂无语音讲解");
             }
             return true;
         }

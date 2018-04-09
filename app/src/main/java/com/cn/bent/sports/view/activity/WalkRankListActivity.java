@@ -134,8 +134,9 @@ public class WalkRankListActivity extends BaseActivity {
                 }else {
                     holder.setText(R.id.state,String.valueOf(position+1));
                 }
-                holder.setBitmapWithUrl(R.id.user_photo,"");
+                holder.setBitmapWithUrl(R.id.user_photo,listBean.getAvatar());
                 holder.setText(R.id.walk_num,listBean.getStep()+"");
+                holder.setText(R.id.name,listBean.getNickname());
             }
         };
         walk_list.setLayoutManager(new LinearLayoutManager(WalkRankListActivity.this));

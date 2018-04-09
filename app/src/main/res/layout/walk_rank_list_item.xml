@@ -1,55 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="160px"
     android:gravity="center_vertical">
-   <TextView
-       android:id="@+id/state"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:layout_marginLeft="43px"
-       android:textSize="@dimen/t51"/>
+
+    <TextView
+        android:id="@+id/state"
+        android:layout_width="60px"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="43px"
+        android:textSize="@dimen/t51" />
 
     <ImageView
         android:id="@+id/user_photo"
         android:layout_width="112px"
         android:layout_height="112px"
-        android:layout_marginLeft="22px"/>
+        android:layout_toRightOf="@+id/state"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="22px" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30px"
+        android:textColor="@color/c_aaaaaa"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/user_photo"
+        android:textSize="@dimen/t43" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:orientation="horizontal"
+        android:paddingRight="43px">
+
 
         <TextView
-            android:id="@+id/name"
+            android:id="@+id/walk_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="30px"
             android:textColor="@color/c_aaaaaa"
-            android:textSize="@dimen/t43"
-            android:layout_marginLeft="30px"/>
+            android:textSize="@dimen/t51" />
 
-        <LinearLayout
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:paddingRight="43px"
-            android:orientation="horizontal">
+            android:paddingLeft="14px"
+            android:text="步"
+            android:textSize="37px" />
 
 
-            <TextView
-                android:id="@+id/walk_num"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/c_aaaaaa"
-                android:textSize="@dimen/t51"
-                android:layout_marginLeft="30px"/>
-
-              <TextView
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:paddingLeft="14px"
-                  android:textSize="37px"
-                  android:text="步"/>
-
-
-        </LinearLayout>
+    </LinearLayout>
 
 
 </RelativeLayout>

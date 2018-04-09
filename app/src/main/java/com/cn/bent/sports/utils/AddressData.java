@@ -34,6 +34,29 @@ public class AddressData {
         editor = sharedPreferences.edit();
     }
 
+    public long getStepDataValues(long def) {
+        return sharedPreferences.getLong(key, def);
+    }
+    public void setStepDataValues(long value) {
+        if (value == 0) {
+            editor.remove(key);
+        } else {
+            editor.putLong(key, value);
+        }
+        editor.commit();
+    }
+
+    //是否大于 timeSpace 分钟
+    public boolean isThanNow(long timeSpace){
+        long nowTime=System.currentTimeMillis();
+        if(getStepDataValues(0)<=0){
+            return true;
+        }
+        if((nowTime-getStepDataValues(0))>(timeSpace*1000)){
+            return true;
+        }
+        return false;
+    }
 
     public void setStepDataValue(double mLatitude,double mLongitude) {
         if (mLatitude == 0||mLongitude==0) {
@@ -67,8 +90,7 @@ public class AddressData {
     }
 
     public void removeValue() {
-        editor.remove(key_mLatitude);
-        editor.remove(key_mLongitude);
+        editor.remove(key);
         editor.commit();
     }
 

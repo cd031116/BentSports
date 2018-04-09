@@ -611,7 +611,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         if (teamGame.getTeamMemberReal() <= 1) {
             return;
         }
-        boolean has = AddressData.getInstance(PlayMultActivity.this).isThan10(mStartPoint);
+        boolean has = AddressData.getInstance(PlayMultActivity.this).isThanNow(20);
         if (!has) {
             return;
         }
@@ -620,6 +620,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         }
         JoinTeam team = new JoinTeam(user.getAvatar(), gameTeamId, lat, longt, user.getNickname(), user.getId());
         String STARS = JSON.toJSONString(team);
+        Log.i("tttt", "STARS=" + STARS);
         String pats = "/app/" + gameTeamId + "/save_location";
         mStompClient.send(pats, STARS)
                 .subscribe(new Subscriber<Void>() {
@@ -640,7 +641,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 
                     @Override
                     public void onComplete() {
-                        AddressData.getInstance(PlayMultActivity.this).setStepDataValue(lat, longt);
+                        AddressData.getInstance(PlayMultActivity.this).setStepDataValues(System.currentTimeMillis());
                     }
                 });
     }
