@@ -382,17 +382,21 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
      * 获取线路数据
      */
     private void getXianluData() {
+        showAlert("正在获取路线列表..",true);
         BaseApi.getJavaLoginDefaultService(this).getScenicLines("1")
                 .map(new JavaRxFunction<List<LinesPointsEntity>>())
                 .compose(RxSchedulers.<List<LinesPointsEntity>>io_main())
                 .subscribe(new RxObserver<List<LinesPointsEntity>>(this, "getScenicLines", 1, false) {
                     @Override
                     public void onSuccess(int whichRequest, List<LinesPointsEntity> linesPointsEntityList) {
+                        dismissAlert();
                         shouLuxianPoup(linesPointsEntityList);
                     }
 
                     @Override
                     public void onError(int whichRequest, Throwable e) {
+                        dismissAlert();
+                        RxToast.error("获取路线失败");
                         Log.d("dddd", "onError: " + e.getMessage());
                     }
                 });

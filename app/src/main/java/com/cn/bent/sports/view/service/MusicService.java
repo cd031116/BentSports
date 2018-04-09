@@ -15,6 +15,7 @@ import com.cn.bent.sports.bean.PlayEvent;
 import com.cn.bent.sports.bean.StartEvent;
 import com.cn.bent.sports.database.TaskCationManager;
 import com.cn.bent.sports.utils.Constants;
+import com.cn.bent.sports.utils.ImageUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.danikula.videocache.HttpProxyCacheServer;
 
@@ -137,9 +138,9 @@ public class MusicService extends Service {
                 try {
                     mPlayer.reset();
                     HttpProxyCacheServer proxy = MyApplication.getProxy(getApplicationContext());
-                    String proxyUrl = proxy.getProxyUrl(paths);
+                    String proxyUrl = proxy.getProxyUrl(ImageUtils.getImageUrl(paths));
                     mPlayer.setDataSource(proxyUrl);
-                    Log.i("dddd", "setDataSource="+paths);
+                    Log.i("dddd", "setDataSource="+ImageUtils.getImageUrl(paths));
                     isHave = true;
                     mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
                     mPlayer.prepareAsync();
