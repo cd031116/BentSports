@@ -67,7 +67,6 @@ dependencies {
     compile "com.squareup.okhttp:okhttp:${rootProject.ext.okhttpLibVersion}"
     compile "com.android.support:recyclerview-v7:${rootProject.ext.supportLibVersion}"
     compile files('libs/minewBeaconScan.jar')
-    compile files('libs/EasyAR.jar')
     compile files('libs/lite-orm-1.7.0.jar')
     compile project(':h_recy')
     compile 'com.jakewharton:butterknife:7.0.1'

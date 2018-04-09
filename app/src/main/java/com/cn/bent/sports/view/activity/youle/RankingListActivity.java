@@ -92,7 +92,13 @@ public class RankingListActivity extends BaseActivity implements OnLoadMoreListe
         CommonAdapter<GameRankEntity.ListBean> mAdapter = new CommonAdapter<GameRankEntity.ListBean>(this, R.layout.item_range, rankListBeen) {
             @Override
             protected void convert(ViewHolder holder, GameRankEntity.ListBean rangeEntity, int position) {
-                holder.setText(R.id.range_num, rankListBeen.size() + "");
+                for (int i = 0; i < rankListBeen.size(); i++) {
+                    if (rangeEntity.getId()==rankListBeen.get(i).getId()){
+                        holder.setText(R.id.range_num, i+1 + "");
+                        break;
+                    }
+                }
+
                 holder.setText(R.id.range_name, rangeEntity.getTeamName());
                 holder.setText(R.id.range_jifen, rangeEntity.getScore() + "");
                 ImageView NormalInfoImg = (ImageView) holder.getView(R.id.img_head);

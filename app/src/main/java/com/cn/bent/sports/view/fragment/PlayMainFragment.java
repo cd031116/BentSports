@@ -450,10 +450,10 @@ public class PlayMainFragment extends BaseFragment implements AMap.OnMarkerClick
                     Intent intent = new Intent(getActivity(), ActivityScanerCode.class);
                     startActivityForResult(intent, REQUEST_Scan);
                 } else if ("15".equals(place_list.get(t_ids).getGame_id())) {
-                    Intent intent = new Intent(getActivity(), ArActivity.class);
-                    intent.putExtra("gameId", place_list.get(t_ids).getGame_id());
-                    startActivity(intent);
-                    t_ids = -1;
+//                    Intent intent = new Intent(getActivity(), ArActivity.class);
+//                    intent.putExtra("gameId", place_list.get(t_ids).getGame_id());
+//                    startActivity(intent);
+//                    t_ids = -1;
                 } else if ("18".equals(place_list.get(t_ids).getGame_id())) {
                     Intent intent = new Intent(getActivity(), OfflineActivity.class);
                     intent.putExtra("gameId", place_list.get(t_ids).getGame_id());
