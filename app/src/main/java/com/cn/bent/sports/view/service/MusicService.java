@@ -139,7 +139,7 @@ public class MusicService extends Service {
                     HttpProxyCacheServer proxy = MyApplication.getProxy(getApplicationContext());
                     String proxyUrl = proxy.getProxyUrl(paths);
                     mPlayer.setDataSource(proxyUrl);
-                    Log.i("dddd", "setDataSource");
+                    Log.i("dddd", "setDataSource="+paths);
                     isHave = true;
                     mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
                     mPlayer.prepareAsync();
