@@ -94,11 +94,11 @@ public class GameWebActivity extends BaseActivity {
         // 设置允许JS弹窗
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
        if(type.equals("1")) {
-           mWebView.loadUrl(ConstantValues.GAME_ONLINE_URL + "?teamId=" + teamId + "&etype=android&gamePointId=" + gamePointId + "&type=" + type + "&token=" + access_token);
-           Log.d(TAG, "initView: "+ConstantValues.GAME_ONLINE_URL + "?teamId=" + teamId + "&etype=android&gamePointId="+gamePointId+"&type=" + type+"&token=" + access_token);
+           mWebView.loadUrl(ConstantValues.GAME_ONLINE_URL + "?teamId=" + teamId + "&etype=android&gamePointId=" + gamePointId + "&type=" + type + "&token=" + access_token+"&apiUrl="+ConstantValues.JAVA_URL);
+           Log.d(TAG, "initView: "+ConstantValues.GAME_ONLINE_URL + "?teamId=" + teamId + "&etype=android&gamePointId="+gamePointId+"&type=" + type+"&token=" + access_token+"&apiUrl="+ConstantValues.JAVA_URL);
        }else {
-           mWebView.loadUrl(ConstantValues.GAME_OFFLINE_URL + "?teamId=" + teamId + "&etype=android&gamePointId=" + gamePointId + "&type=" + type + "&token=" + access_token);
-           Log.d(TAG, "initView: "+ConstantValues.GAME_OFFLINE_URL + "?teamId=" + teamId + "&etype=android&gamePointId="+gamePointId+"&type=" + type+"&token=" + access_token);
+           mWebView.loadUrl(ConstantValues.GAME_OFFLINE_URL + "?teamId=" + teamId + "&etype=android&gamePointId=" + gamePointId + "&type=" + type + "&token=" + access_token+"&apiUrl="+ConstantValues.JAVA_URL);
+           Log.d(TAG, "initView: "+ConstantValues.GAME_OFFLINE_URL + "?teamId=" + teamId + "&etype=android&gamePointId="+gamePointId+"&type=" + type+"&token=" + access_token+"&apiUrl="+ConstantValues.JAVA_URL);
        }mWebView.addJavascriptInterface(new JSInterface(), "native");
     }
 

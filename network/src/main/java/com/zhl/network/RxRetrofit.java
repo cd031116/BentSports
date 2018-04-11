@@ -34,7 +34,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class RxRetrofit {
 
-    private static final int READ_TI19901022ME_OUT = 20;
+    private static final int READ_TIME_OUT = 20;
     private static final int CONNECT_TIME_OUT = 20;
     private static Retrofit retrofit;
 

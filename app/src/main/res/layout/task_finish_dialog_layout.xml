@@ -120,12 +120,12 @@
 
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="503px"
         android:background="@drawable/task_complete_icon" />
     <ImageView
         android:id="@+id/task_close"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="213px"
         android:layout_below="@id/view_finish"
         android:layout_centerHorizontal="true"
         android:background="@drawable/task_close" />
