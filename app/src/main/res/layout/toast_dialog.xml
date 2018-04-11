@@ -13,7 +13,7 @@
         android:layout_marginTop="60px"
         android:gravity="center_horizontal"
         android:textColor="#333333"
-        android:textSize="70px"
+        android:textSize="50px"
         android:visibility="visible" />
 
 

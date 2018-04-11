@@ -51,6 +51,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getGameDetail();
+        BaseConfig.getInstance(MainActivity.this).setStringValue(Constants.SOKET_PATH,"aiws.huiqulx.com/my-websocket");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -258,7 +259,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
                     @Override
                     public void onSuccess(int whichRequest, String info) {
                         dismissAlert();
-                        BaseConfig.getInstance(MainActivity.this).setStringValue(Constants.SOKET_PATH,info);
+
                         Log.i("tttt","info="+info);
                     }
                     @Override

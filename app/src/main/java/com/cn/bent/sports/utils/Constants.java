@@ -29,7 +29,7 @@ public class Constants {
     public static final String LOGIN_TOKEN="Basic YWktdHJhdmVsLWFwcDphOWQ1NGQyYS03YzgxLTQwOWItOGFlOC1lY2NiZmU5NTAxNzc=";
 
     public static String getsocket(Context context){
-        return BaseConfig.getInstance(context).getStringValue(SOKET_PATH,"");
+        return BaseConfig.getInstance(context).getStringValue(SOKET_PATH,"aiws.huiqulx.com/my-websocket");
     }
 
 }

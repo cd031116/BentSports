@@ -199,11 +199,12 @@ public class OrganizeActivity extends BaseActivity {
     //组队长连接
     private void createStompClient() {
         LoginResult user = SaveObjectUtils.getInstance(OrganizeActivity.this).getObject(Constants.USER_INFO, null);
+        Log.i("tttt", "msg=" + "ws://" + Constants.getsocket(OrganizeActivity.this) + "/websocket?access_token=" + user.getAccess_token());
         try {
             mStompClient = Stomp.over(WebSocket.class, "ws://" + Constants.getsocket(OrganizeActivity.this) + "/websocket?access_token=" + user.getAccess_token());
             mStompClient.connect();
         } catch (Exception e) {
-            Log.i("tttt", "msg=" + e.getMessage());
+
         }
         mStompClient.lifecycle().subscribe(new Consumer<LifecycleEvent>() {
             @Override
