@@ -102,6 +102,9 @@ public class DataUtils {
         }
     }
     public   static   List  removeDuplicate(List list)  {
+        if(list.size()<=1){
+            return  list;
+        }
         for  ( int  i  =   0 ; i  <  list.size()  -   1 ; i ++ )  {
             for  ( int  j  =  list.size()  -   1 ; j  >  i; j -- )  {
                 if  (list.get(j).equals(list.get(i)))  {

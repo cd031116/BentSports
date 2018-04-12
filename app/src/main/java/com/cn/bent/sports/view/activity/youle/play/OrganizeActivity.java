@@ -177,7 +177,6 @@ public class OrganizeActivity extends BaseActivity {
 
 
     private void setview(TeamGame info) {
-        getMsg();
         RequestOptions myOptions = new RequestOptions()
                 .centerCrop()
                 .circleCropTransform();
@@ -213,7 +212,7 @@ public class OrganizeActivity extends BaseActivity {
                 switch (lifecycleEvent.getType()) {
                     case OPENED:
                         Log.d("tttt", "Stomp connection opened");
-
+                        getMsg();
                         break;
 
                     case ERROR:

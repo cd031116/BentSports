@@ -321,11 +321,13 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             if (animationDrawable != null && animationDrawable.isRunning()) {
                 animationDrawable.stop();
             }
+            Log.i("dddd", "isStart=false");
+            addAnimreset(event.getPaths());
             SaveObjectUtils.getInstance(getApplicationContext()).setObject(Constants.NOW_POION, null);
             yinp_bf.setBackgroundResource(R.drawable.tizhibf);
-            if (TaskCationManager.getQuen() >= 0) {
-                chanVioce(TaskCationManager.getQuen());
-            }
+//            if (TaskCationManager.getQuen() >= 0) {
+//                chanVioce(TaskCationManager.getQuen());
+//            }
         }
     }
 
@@ -556,6 +558,9 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                     animationDrawable = (AnimationDrawable) yinp_bf.getBackground();
                     if (animationDrawable != null && !animationDrawable.isRunning()) {
                         animationDrawable.start();
+                    }
+                    if (mPointsEntity!=null){
+                        addAnimMarkerTo(mPointsEntity);
                     }
                 }
                 break;
@@ -965,6 +970,36 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                 .title(pointsBean.getId() + "");
         Marker marker1 = aMap.addMarker(markerOption);
         mMarkerMap.put(pointsBean.getId(), marker1);
+    }
+
+    private void addAnimMarkerTo(ScenicPointsEntity.PointsBean pointsBean) {
+        mMarkerMap.get(pointsBean.getId()).remove();
+        MarkerOptions markerOption = new MarkerOptions();
+        markerOption.position(new LatLng(pointsBean.getLatitude(), pointsBean.getLongitude()))
+                .icons(BitmapManager.getInstance().getBitmapDescriptorOverlay())
+                .title(pointsBean.getId() + "");
+        Marker marker1 = aMap.addMarker(markerOption);
+        mMarkerMap.put(pointsBean.getId(), marker1);
+    }
+
+
+
+    private void addAnimreset(String pathUrl) {
+        for (ScenicPointsEntity.PointsBean pointsBean: mPointsList) {
+            if(pathUrl.equals(pointsBean.getMp3())){
+                mMarkerMap.get(pointsBean.getId()).remove();
+                MarkerOptions markerOption = new MarkerOptions();
+                markerOption.position(new LatLng(pointsBean.getLatitude(), pointsBean.getLongitude()));
+                markerOption.draggable(true);//设置Marker可拖动
+                markerOption.title(pointsBean.getId() + "");
+                markerOption.icon(BitmapManager.getInstance().getBitmapDescriptor(pointsBean.getType()));
+                // 将Marker设置为贴地显示，可以双指下拉地图查看效果
+                markerOption.setFlat(true);//设置marker平贴地图效果
+                Marker marker = aMap.addMarker(markerOption);
+                mMarkerMap.put(pointsBean.getId(), marker);
+                break;
+            }
+        }
     }
 
     AMap.OnCameraChangeListener onCameraChangeListener = new AMap.OnCameraChangeListener() {

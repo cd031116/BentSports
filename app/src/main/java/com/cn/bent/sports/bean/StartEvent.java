@@ -8,13 +8,18 @@ package com.cn.bent.sports.bean;
 public class StartEvent {
 
     private boolean isStart;
-
+    private String paths;
     public boolean isStart() {
         return isStart;
     }
 
-    public  StartEvent(boolean isStart) {
+    public String getPaths() {
+        return paths;
+    }
+
+    public  StartEvent(boolean isStart,String paths) {
         this.isStart = isStart;
+        this.paths=paths;
     }
 
 }

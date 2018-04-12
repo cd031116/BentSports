@@ -565,10 +565,8 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                     }
                     String jieguo = data.getStringExtra("SCAN_RESULT");
                     if ("B33832EF5EFF3EFF30B1B646B6F2410F".equals(jieguo)) {//玩游戏
-                        Intent intent = new Intent(this, PlayWebViewActivity.class);
-//                        intent.putExtra("gameId", place_list.get(t_ids).getGame_id());
-//                        intent.putExtra("gameUrl", place_list.get(t_ids).getGame_url());
-                        startActivity(intent);
+//                        shouPoup(mGamePotinsList.get(t_ids), teamGame, true);
+//                        t_ids = -1;
                     } else {
                         RxToast.error("二维码不匹配");
                     }
@@ -711,7 +709,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                     @Override
                     public void onError(int whichRequest, Throwable e) {
                         dismissAlert();
-                        RxToast.error(e.getMessage());
+                        RxToast.error("加载失败");
                     }
                 });
     }
@@ -742,7 +740,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                     @Override
                     public void onError(int whichRequest, Throwable e) {
                         dismissAlert();
-                        RxToast.error(e.getMessage());
+                        RxToast.error("加载失败");
                     }
                 });
     }
@@ -974,7 +972,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 
     //队员头像
     private void setUserInfo() {
-        DataUtils.removeDuplicate(mPosition);
+//        DataUtils.removeDuplicate(mPosition);
         if (teamGame == null && teamGame.getTeamMemberReal() <= 1) {
             return;
         }

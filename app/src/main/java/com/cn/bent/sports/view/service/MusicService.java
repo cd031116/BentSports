@@ -150,7 +150,7 @@ public class MusicService extends Service {
                             Log.i("dddd", "onPrepared");
                             mPlayer.start();
                             TaskCationManager.sethavePlay(paths);
-                            EventBus.getDefault().post(new StartEvent(true));
+                            EventBus.getDefault().post(new StartEvent(true,paths));
                         }
                     });
                     mPlayer.setOnCompletionListener(new IMediaPlayer.OnCompletionListener() {
@@ -159,8 +159,8 @@ public class MusicService extends Service {
                             if (mPlayer.isPlaying()) {
                                 mPlayer.stop();
                             }
-                            mPlayer.reset();
-                            EventBus.getDefault().post(new StartEvent(false));
+                            Log.i("dddd", "setOnCompletionListener");
+                            EventBus.getDefault().post(new StartEvent(false,paths));
                             TaskCationManager.updatePlay(paths);
                             SaveObjectUtils.getInstance(getApplicationContext()).setObject(Constants.PLAY_POSION, null);
                         }
