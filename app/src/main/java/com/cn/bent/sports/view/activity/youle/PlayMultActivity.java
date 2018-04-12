@@ -137,6 +137,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     private MinewBeaconManager mMinewBeaconManager;
     private int t_ids = -1;
     private long times_s = 0;
+    private int timings=0;
     private Handler handler2;
     private boolean isBlue = false;
     private DoTaskPoupWindow mopupWindow;
@@ -702,6 +703,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                         getPoints();
                         if (info.getStartTime() != null) {
                             times_s = DataUtils.getStringToDate(DataUtils.UTCtoString(info.getStartTime()));
+                            timings=info.getTiming();
 
                         }
                     }
@@ -772,8 +774,13 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         }
         tdialog = new TaskFinishDialog(PlayMultActivity.this, R.style.dialog, new TaskFinishDialog.OnCloseListener() {
             @Override
-            public void onClick(Dialog dialog, String index) {
+            public void onClick(Dialog dialog, int index) {
                 dialog.dismiss();
+                if (index==1){
+                    Intent intent2 = new Intent(PlayMultActivity.this, RankingListActivity.class);
+                    intent2.putExtra("gameId", teamGame.getGameId());
+                    startActivity(intent2);
+                }
             }
         });
         tdialog.setTime(times).setScore(PlayPointManager.getScore() + "").show();
@@ -1095,8 +1102,9 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     //计时器
     private void setTimes() {
         if (PlayPointManager.isHavaPlay()) {
-            time.setText(DataUtils.getDateToTime(System.currentTimeMillis() - times_s));
-            timing.setText(DataUtils.getDateToTime(System.currentTimeMillis() - times_s));
+
+            time.setText(DataUtils.getDateToTime(timings));
+            timing.setText(DataUtils.getDateToTime(timings));
             return;
         }
         handler2.postDelayed(runnable2, 1000);

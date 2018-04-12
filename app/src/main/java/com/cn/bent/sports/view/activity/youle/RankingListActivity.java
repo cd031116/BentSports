@@ -235,7 +235,7 @@ public class RankingListActivity extends BaseActivity implements OnLoadMoreListe
                         public void onSuccess(int whichRequest, GameRankEntity rankEntity) {
                             Log.d(TAG, "onSuccess onLoadMore:" + rankEntity.getList().size() + "-pageIndex:" + pageIndex + ",page:" + rankEntity.getPages());
                             if (rankEntity != null && rankEntity.getList().size() > 0) {
-                                if ((pageIndex - 1) != rankEntity.getPages()) {
+                                if ((pageIndex-2) != rankEntity.getPages()) {
                                     mListBean.addAll(rankEntity.getList());
                                     setView(mListBean, 2);
                                     mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);

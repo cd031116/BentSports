@@ -81,16 +81,16 @@ public class TaskFinishDialog extends Dialog implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.look_rank:
-                listener.onClick(this, "");
+                listener.onClick(this, 1);
                 break;
             case R.id.task_close:
-                listener.onClick(this, "");
+                listener.onClick(this, 2);
                 break;
         }
     }
 
     public interface OnCloseListener {
-        void onClick(Dialog dialog, String confirm);
+        void onClick(Dialog dialog, int confirm);
     }
 }
 
