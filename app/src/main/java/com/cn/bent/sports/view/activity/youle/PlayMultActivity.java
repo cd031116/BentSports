@@ -59,6 +59,7 @@ import com.cn.bent.sports.view.poupwindow.DoTaskPoupWindow;
 import com.cn.bent.sports.view.poupwindow.TalkPoupWindow;
 import com.cn.bent.sports.widget.OneTaskFinishDialog;
 import com.cn.bent.sports.widget.OutGameDialog;
+import com.cn.bent.sports.widget.TaskFinishDialog;
 import com.minew.beacon.BeaconValueIndex;
 import com.minew.beacon.BluetoothState;
 import com.minew.beacon.MinewBeacon;
@@ -754,6 +755,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                 .subscribe(new RxObserver<Boolean>(PlayMultActivity.this, TAG, 1, false) {
                     @Override
                     public void onSuccess(int whichRequest, final Boolean info) {
+                        gameOver();
                         setTimes();
                     }
 
@@ -763,6 +765,22 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                     }
                 });
     }
+
+    private void gameOver() {
+        TaskFinishDialog tdialog = null;
+        String times = DataUtils.getDateToTime(System.currentTimeMillis() - times_s);
+        if (tdialog != null && tdialog.isShowing()) {
+            return;
+        }
+        tdialog = new TaskFinishDialog(PlayMultActivity.this, R.style.dialog, new TaskFinishDialog.OnCloseListener() {
+            @Override
+            public void onClick(Dialog dialog, String index) {
+                dialog.dismiss();
+            }
+        });
+        tdialog.setTime(times).setScore(PlayPointManager.getScore() + "").show();
+    }
+
 
     /**
      * 设置点标

@@ -105,11 +105,6 @@ public class DialogManager {
      * 路线_任务完成
      */
     public void showTaskAllFinishDialog(String time,String score) {
-        new TaskFinishDialog(mContext, R.style.dialog, new TaskFinishDialog.OnCloseListener() {
-            @Override
-            public void onClick(Dialog dialog, String index) {
-                dialog.dismiss();
-            }
-        }).setTime(time).setScore(score).show();
+
     }
 }
