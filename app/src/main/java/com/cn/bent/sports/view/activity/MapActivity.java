@@ -64,8 +64,6 @@ import com.cn.bent.sports.bean.PlayBean;
 import com.cn.bent.sports.bean.PlayEvent;
 import com.cn.bent.sports.bean.ScenicPointsEntity;
 import com.cn.bent.sports.bean.StartEvent;
-import com.cn.bent.sports.database.QueueBean;
-import com.cn.bent.sports.database.QueueManager;
 import com.cn.bent.sports.database.TaskCationManager;
 import com.cn.bent.sports.evevt.DistanceEvent;
 import com.cn.bent.sports.evevt.ShowPoupEvent;
@@ -184,7 +182,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     @Override
     public void initView() {
         super.initView();
-        yyCheckBox.setSelected(true);
+        yyCheckBox.setChecked(true);
         mMinewBeaconManager = MinewBeaconManager.getInstance(this);
         checkBluetooth();
         NotificationCenter.defaultCenter().subscriber(ShowPoupEvent.class, disevent);
@@ -1161,7 +1159,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                             String jieguo = String.valueOf(mPointsList.get(i).getMajor());
                             if (jieguo.equals(majer)) {
                                 if (!TextUtils.isEmpty(mPointsList.get(i).getMp3()) && (mPointsList.get(i).getMp3()).endsWith(".mp3")) {
-                                    QueueManager.update(new QueueBean(mPointsList.get(i).getMp3()));
+//                                    QueueManager.update(new QueueBean(mPointsList.get(i).getMp3()));
                                     if (TaskCationManager.isPlay(i) || TaskCationManager.isNow(i)) {
 
                                     } else {
