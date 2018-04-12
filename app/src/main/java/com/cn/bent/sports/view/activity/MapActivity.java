@@ -184,6 +184,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     @Override
     public void initView() {
         super.initView();
+        yyCheckBox.setSelected(true);
         mMinewBeaconManager = MinewBeaconManager.getInstance(this);
         checkBluetooth();
         NotificationCenter.defaultCenter().subscriber(ShowPoupEvent.class, disevent);
@@ -562,6 +563,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                 break;
         }
     }
+
 
     private void shouLuxianPoup(List<LinesPointsEntity> linesPointsEntityList) {
         xlWindow = new XianluPoupWindow(MapActivity.this, linesPointsEntityList, luxianItemsOnClick);
@@ -1200,39 +1202,43 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     private void chanVioce(final int positon) {
         //没有播放过又不是当前播放的
         final String clickpath = mPointsList.get(positon).getMp3();
-        if (System.currentTimeMillis() - sTime < 7000) {
+        if (System.currentTimeMillis() - sTime < 5000) {
             return;
         }
+        EventBus.getDefault().post(new PlayEvent(clickpath, true));
+        TaskCationManager.updateNowPlay(positon);
+        mPointsEntity = mPointsList.get(positon);
+        tour_name.setText(mPointsEntity.getPointName());
         sTime = System.currentTimeMillis();
-        if (mycontrol.isPlay()) {
-            TaskCationManager.addQuen(positon);
-            if (mDialog != null && mDialog.isShowing()) {
-                return;
-            }
-
-            mDialog = new ExxitDialog(MapActivity.this, R.style.dialog, "正在介绍当前景点,是否切换至下一个点?", new ExxitDialog.OnCloseListener() {
-                @Override
-                public void onClick(Dialog dialog, boolean confirm) {
-                    if (confirm) {
-                        mDialog.dismiss();
-                        EventBus.getDefault().post(new PlayEvent(clickpath, true));
-                        TaskCationManager.updateNowPlay(positon);
-                        QueueManager.clear();
-                        mPointsEntity = mPointsList.get(positon);
-                        tour_name.setText(mPointsEntity.getPointName());
-                    } else {
-                        QueueManager.clear();
-                        mDialog.dismiss();
-                    }
-                }
-            });
-            mDialog.setPositiveButton("切换").show();
-        } else {
-            EventBus.getDefault().post(new PlayEvent(clickpath, true));
-            TaskCationManager.updateNowPlay(positon);
-            mPointsEntity = mPointsList.get(positon);
-            tour_name.setText(mPointsEntity.getPointName());
-        }
+//        if (mycontrol.isPlay()) {
+//            TaskCationManager.addQuen(positon);
+//            if (mDialog != null && mDialog.isShowing()) {
+//                return;
+//            }
+//
+//            mDialog = new ExxitDialog(MapActivity.this, R.style.dialog, "正在介绍当前景点,是否切换至下一个点?", new ExxitDialog.OnCloseListener() {
+//                @Override
+//                public void onClick(Dialog dialog, boolean confirm) {
+//                    if (confirm) {
+//                        mDialog.dismiss();
+//                        EventBus.getDefault().post(new PlayEvent(clickpath, true));
+//                        TaskCationManager.updateNowPlay(positon);
+//                        QueueManager.clear();
+//                        mPointsEntity = mPointsList.get(positon);
+//                        tour_name.setText(mPointsEntity.getPointName());
+//                    } else {
+//                        QueueManager.clear();
+//                        mDialog.dismiss();
+//                    }
+//                }
+//            });
+//            mDialog.setPositiveButton("切换").show();
+//        } else {
+//            EventBus.getDefault().post(new PlayEvent(clickpath, true));
+//            TaskCationManager.updateNowPlay(positon);
+//            mPointsEntity = mPointsList.get(positon);
+//            tour_name.setText(mPointsEntity.getPointName());
+//        }
     }
 
     @Override
