@@ -19,6 +19,7 @@ import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.widget.CompletionDialog;
 import com.cn.bent.sports.widget.GameErrorDialog;
 import com.cn.bent.sports.widget.GameFailDialog;
+import com.cn.bent.sports.widget.ToastDialog;
 import com.google.gson.Gson;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
@@ -196,6 +197,24 @@ public class GameWebActivity extends BaseActivity {
 
     @OnClick(R.id.map_return)
     void onClick(View view) {
-        finish();
+        showDialog();
+    }
+
+    @Override
+    public void onBackPressed() {
+        showDialog();
+    }
+
+    private void showDialog() {
+        new ToastDialog(this, R.style.dialog, "是否离开游戏", new ToastDialog.OnCloseListener() {
+            @Override
+            public void onClick(Dialog dialog, boolean confirm) {
+                if (confirm) {
+                    finish();
+                } else {
+                }
+                dialog.dismiss();
+            }
+        }).setTitle("提示").show();
     }
 }
