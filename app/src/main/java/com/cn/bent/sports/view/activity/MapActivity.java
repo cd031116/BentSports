@@ -425,7 +425,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                                 latLngs.add(new LatLng(doubles.get(0), doubles.get(1)));
                             }
                             polyline = aMap.addPolyline(new PolylineOptions().
-                                    addAll(latLngs).width(10).color(Color.parseColor("#ededed")));
+                                    addAll(latLngs).width(10).color(Color.parseColor("#ed0000")));
                         }
                         if (linesPointsDetailEntity.getVoicePoints() != null && linesPointsDetailEntity.getVoicePoints().size() > 0) {
                             voicePoints = linesPointsDetailEntity.getVoicePoints();
