@@ -145,7 +145,7 @@
                 android:layout_marginTop="20px"
                 android:paddingTop="20px"
                 android:button="@null"
-                android:checked="false"
+                android:checked="true"
                 android:background="@color/comm_white"
                 android:drawableTop="@drawable/choose_lx"
                 android:text="自动讲解"
