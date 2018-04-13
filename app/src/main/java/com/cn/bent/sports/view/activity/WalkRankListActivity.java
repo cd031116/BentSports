@@ -15,6 +15,8 @@ import android.widget.TextView;
 import com.cn.bent.sports.MainActivity;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
+import com.cn.bent.sports.api.RequestLisler;
+import com.cn.bent.sports.api.RxRequest;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.base.BaseConfig;
 import com.cn.bent.sports.bean.StepInfo;
@@ -94,9 +96,9 @@ public class WalkRankListActivity extends BaseActivity {
         BaseApi.getJavaLoginDefaultService(WalkRankListActivity.this).getStepList()
                 .map(new JavaRxFunction<StepInfo>())
                 .compose(RxSchedulers.<StepInfo>io_main())
-                .subscribe(new RxObserver<StepInfo>(WalkRankListActivity.this, TAG, 1, false) {
+                .subscribe(new RxRequest<StepInfo>(WalkRankListActivity.this, TAG, 1, new RequestLisler<StepInfo>() {
                     @Override
-                    public void onSuccess(int whichRequest, StepInfo info) {
+                    public void onSucess(int whichRequest, StepInfo info) {
                         dismissAlert();
                         if (info.getList().size()>0){
                             multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
@@ -109,16 +111,14 @@ public class WalkRankListActivity extends BaseActivity {
                         }else {
                             multiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
                         }
-
-                        Log.i("tttt", "info=" + info);
                     }
 
                     @Override
-                    public void onError(int whichRequest, Throwable e){
+                    public void on_error(int whichRequest, Throwable e) {
                         dismissAlert();
                         multiStateView.setViewState(MultiStateView.VIEW_STATE_ERROR);
                     }
-                });
+                }));
     }
 
     private void sertview() {
@@ -134,7 +134,7 @@ public class WalkRankListActivity extends BaseActivity {
                 }else {
                     holder.setText(R.id.state,String.valueOf(position+1));
                 }
-                holder.setBitmapWithUrl(R.id.user_photo,listBean.getAvatar());
+                holder.setRunderWithUrl(R.id.user_photo,listBean.getAvatar());
                 holder.setText(R.id.walk_num,listBean.getStep()+"");
                 holder.setText(R.id.name,listBean.getNickname());
             }

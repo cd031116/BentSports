@@ -18,6 +18,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.cn.bent.sports.MainActivity;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
+import com.cn.bent.sports.api.RequestLisler;
+import com.cn.bent.sports.api.RxRequest;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.base.BaseConfig;
 import com.cn.bent.sports.bean.GameDetail;
@@ -215,22 +217,23 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
         BaseApi.getJavaLoginDefaultService(OrderDetailActivity.this).getGameDetail(gameId)
                 .map(new JavaRxFunction<GameDetail>())
                 .compose(RxSchedulers.<GameDetail>io_main())
-                .subscribe(new RxObserver<GameDetail>(OrderDetailActivity.this, TAG, 1, false) {
+                .subscribe(new RxRequest<GameDetail>(OrderDetailActivity.this, TAG, 1, new RequestLisler<GameDetail>() {
                     @Override
-                    public void onSuccess(int whichRequest, GameDetail info) {
+                    public void onSucess(int whichRequest, GameDetail info) {
                         dismissAlert();
                         multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
                         myGame=info;
                         setview(info);
                         changeview(select);
                     }
+
                     @Override
-                    public void onError(int whichRequest, Throwable e) {
+                    public void on_error(int whichRequest, Throwable e) {
                         dismissAlert();
                         multiStateView.setViewState(MultiStateView.VIEW_STATE_ERROR);
                         RxToast.error(e.getMessage());
                     }
-                });
+                }));
     }
 
     private void  setview(GameDetail info){
@@ -262,9 +265,9 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
         BaseApi.getJavaLoginDefaultService(OrderDetailActivity.this).getTeamGame(gameId)
                 .map(new JavaRxFunction<TeamGame>())
                 .compose(RxSchedulers.<TeamGame>io_main())
-                .subscribe(new RxObserver<TeamGame>(OrderDetailActivity.this, TAG, 1, false) {
+                .subscribe(new RxRequest<TeamGame>(OrderDetailActivity.this, TAG, 1, new RequestLisler<TeamGame>() {
                     @Override
-                    public void onSuccess(int whichRequest, TeamGame info) {
+                    public void onSucess(int whichRequest, TeamGame teamGame) {
                         dismissAlert();
                         Intent intent=new Intent(OrderDetailActivity.this,MyRouteListActivity.class);
                         startActivity(intent);
@@ -272,11 +275,11 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
                     }
 
                     @Override
-                    public void onError(int whichRequest, Throwable e) {
+                    public void on_error(int whichRequest, Throwable e) {
                         dismissAlert();
                         RxToast.error(e.getMessage());
                     }
-                });
+                }));
     }
 //
 // 3. 先进第二个或第三个的子模块，再返回首页

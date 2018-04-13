@@ -82,6 +82,7 @@
                 android:layout_height="110px"
                 android:layout_below="@id/top_layout"
                 android:gravity="center_vertical"
+                android:background="#f5f5f5"
                 android:paddingLeft="@dimen/t43"
                 android:text="步数前20名"
                 android:textColor="@color/color_666666"
@@ -101,7 +102,7 @@
                     android:id="@+id/walk_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="#ededed" />
+                    android:background="#ffffff" />
             </com.kennyc.view.MultiStateView>
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>

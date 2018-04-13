@@ -14,6 +14,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
+import com.cn.bent.sports.api.RequestLisler;
+import com.cn.bent.sports.api.RxRequest;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.GameTeamScoreEntity;
 import com.cn.bent.sports.bean.MemberDataEntity;
@@ -87,9 +89,9 @@ public class MemberEditActivity extends BaseActivity {
         BaseApi.getJavaLoginDefaultService(MemberEditActivity.this).getTeamInfo(gameTeamId + "")
                 .map(new JavaRxFunction<TeamGame>())
                 .compose(RxSchedulers.<TeamGame>io_main())
-                .subscribe(new RxObserver<TeamGame>(MemberEditActivity.this, TAG, 1, false) {
+                .subscribe(new RxRequest<>(MemberEditActivity.this, TAG, 1, new RequestLisler<TeamGame>() {
                     @Override
-                    public void onSuccess(int whichRequest, TeamGame info) {
+                    public void onSucess(int whichRequest, TeamGame info) {
                         dismissAlert();
                         member_name.setText(info.getTeamName());
                         m_finish.setText(info.getTeamMemberReal() + "");
@@ -104,11 +106,11 @@ public class MemberEditActivity extends BaseActivity {
                     }
 
                     @Override
-                    public void onError(int whichRequest, Throwable e) {
+                    public void on_error(int whichRequest, Throwable e) {
                         dismissAlert();
                         RxToast.error(e.getMessage());
                     }
-                });
+                }));
     }
 
     @Override
@@ -136,10 +138,9 @@ public class MemberEditActivity extends BaseActivity {
         BaseApi.getJavaLoginDefaultService(this).getTeamScore(gameTeamId)
                 .map(new JavaRxFunction<List<GameTeamScoreEntity>>())
                 .compose(RxSchedulers.<List<GameTeamScoreEntity>>io_main())
-                .subscribe(new RxObserver<List<GameTeamScoreEntity>>(this, TAG, 2, false) {
+                .subscribe(new RxRequest<>(this, TAG, 2, new RequestLisler<List<GameTeamScoreEntity>>() {
                     @Override
-                    public void onSuccess(int whichRequest, List<GameTeamScoreEntity> gameTeamScoreEntities) {
-
+                    public void onSucess(int whichRequest, List<GameTeamScoreEntity> gameTeamScoreEntities) {
                         for (GameTeamScoreEntity gameTeamScoreEntity : gameTeamScoreEntities) {
                             PlayUserManager.updatePlay(gameTeamScoreEntity.getUserId(), gameTeamScoreEntity.getScore());
                         }
@@ -149,10 +150,10 @@ public class MemberEditActivity extends BaseActivity {
                     }
 
                     @Override
-                    public void onError(int whichRequest, Throwable e) {
+                    public void on_error(int whichRequest, Throwable e) {
 
                     }
-                });
+                }));
     }
 
     /**
@@ -200,19 +201,19 @@ public class MemberEditActivity extends BaseActivity {
         BaseApi.getJavaLoginDefaultService(this).getMemberDetailData(gameTeamId + "")
                 .map(new JavaRxFunction<List<MemberDataEntity>>())
                 .compose(RxSchedulers.<List<MemberDataEntity>>io_main())
-                .subscribe(new RxObserver<List<MemberDataEntity>>(this, TAG, 3, false) {
+                .subscribe(new RxRequest<>(this, TAG, 3, new RequestLisler<List<MemberDataEntity>>() {
                     @Override
-                    public void onSuccess(int whichRequest, List<MemberDataEntity> memberDataEntities) {
-
+                    public void onSucess(int whichRequest, List<MemberDataEntity> memberDataEntities) {
                         if (memberDataEntities != null && memberDataEntities.size() > 0)
                             setRecyList(memberDataEntities);
                     }
 
                     @Override
-                    public void onError(int whichRequest, Throwable e) {
+                    public void on_error(int whichRequest, Throwable e) {
                         RxToast.error(e.getMessage());
                     }
-                });
+                }));
+
     }
 
     private void setRecyList(List<MemberDataEntity> memberDataEntities) {

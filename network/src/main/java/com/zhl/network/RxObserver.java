@@ -76,7 +76,8 @@ public abstract class RxObserver<T> implements Observer<T> {
             HttpException httpException = (HttpException) e;
             switch (httpException.code()) {
                 case UNAUTHORIZED:
-
+                    onError(401, e);
+                    break;
                 case FORBIDDEN:
                 case NOT_FOUND:
                 case REQUEST_TIMEOUT:
@@ -112,7 +113,6 @@ public abstract class RxObserver<T> implements Observer<T> {
     public abstract void onSuccess(int whichRequest, T t);
 
     public abstract void onError(int whichRequest, Throwable e);
-
     public void onStart(int whichRequest) {
 
     }

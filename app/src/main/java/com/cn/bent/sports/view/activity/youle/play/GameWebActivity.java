@@ -11,6 +11,8 @@ import android.webkit.WebViewClient;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.api.ConstantValues;
+import com.cn.bent.sports.api.RequestLisler;
+import com.cn.bent.sports.api.RxRequest;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.LoginResult;
 import com.cn.bent.sports.bean.YouleGameEntity;
@@ -122,9 +124,9 @@ public class GameWebActivity extends BaseActivity {
                     .finishOfflineGame(youleGameEntity.getTeamId(), youleGameEntity.getGamePointId(), youleGameEntity.getScord())
                     .map(new JavaRxFunction<Boolean>())
                     .compose(RxSchedulers.<Boolean>io_main())
-                    .subscribe(new RxObserver<Boolean>(this, TAG, 1, false) {
+                    .subscribe(new RxRequest<>(this, TAG, 1, new RequestLisler<Boolean>() {
                         @Override
-                        public void onSuccess(int whichRequest, Boolean aBoolean) {
+                        public void onSucess(int whichRequest, Boolean aBoolean) {
                             dismissAlert();
                             if (aBoolean)
                                 showSuccessDialog(gameName, youleGameEntity.getScord());
@@ -133,31 +135,31 @@ public class GameWebActivity extends BaseActivity {
                         }
 
                         @Override
-                        public void onError(int whichRequest, Throwable e) {
+                        public void on_error(int whichRequest, Throwable e) {
                             dismissAlert();
                             if (e.getMessage().equals("回答错误"))
                                 showAlertDialog();
                         }
-                    });
+                    }));
         else
             BaseApi.getJavaLoginDefaultService(this)
                     .finishOnlineGame(youleGameEntity.getTeamId(), youleGameEntity.getGamePointId(), youleGameEntity.getScord())
                     .map(new JavaRxFunction<String>())
                 .compose(RxSchedulers.<String>io_main())
-                .subscribe(new RxObserver<String>(this, TAG, 1, false) {
-                    @Override
-                    public void onSuccess(int whichRequest, String aBoolean) {
-                        dismissAlert();
-                            showSuccessDialog(gameName, youleGameEntity.getScord());
-                    }
+                .subscribe(new RxRequest<>(this, TAG, 1,new RequestLisler<String>() {
+            @Override
+            public void onSucess(int whichRequest, String s) {
+                dismissAlert();
+                showSuccessDialog(gameName, youleGameEntity.getScord());
+            }
 
-                    @Override
-                    public void onError(int whichRequest, Throwable e) {
-                        dismissAlert();
-                        if (e.getMessage().equals("回答错误"))
-                            showAlertDialog();
-                    }
-                });
+            @Override
+            public void on_error(int whichRequest, Throwable e) {
+                dismissAlert();
+                if (e.getMessage().equals("回答错误"))
+                    showAlertDialog();
+            }
+        }));
     }
 
     private void showAlertDialog() {

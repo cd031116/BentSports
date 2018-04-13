@@ -7,8 +7,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
+
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
+import com.cn.bent.sports.api.RequestLisler;
+import com.cn.bent.sports.api.RxRequest;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.recyclebase.CommonAdapter;
 import com.cn.bent.sports.recyclebase.ViewHolder;
@@ -26,15 +29,17 @@ import com.vondear.rxtools.view.RxToast;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.JavaRxFunction;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.Bind;
 import butterknife.OnClick;
 
 /**
-*aunthor lyj
-* create 2018/3/27/027 15:27  我的线路列表
-**/
+ * aunthor lyj
+ * create 2018/3/27/027 15:27  我的线路列表
+ **/
 public class MyRouteListActivity extends BaseActivity {
     @Bind(R.id.multiStateView)
     MultiStateView multiStateView;
@@ -47,7 +52,8 @@ public class MyRouteListActivity extends BaseActivity {
     TextView top_title;
 
     private CommonAdapter<MyGame> mAdapter;
-    private List<MyGame> mList=new ArrayList<>();
+    private List<MyGame> mList = new ArrayList<>();
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_my_route_list;
@@ -85,94 +91,94 @@ public class MyRouteListActivity extends BaseActivity {
 
 
     private void getMyRoute(boolean show) {
-        if(show){
+        if (show) {
             showAlert("正在获取数据...", true);
         }
-        BaseApi.getJavaLoginDefaultService(MyRouteListActivity.this).getMyRoute( )
+        BaseApi.getJavaLoginDefaultService(MyRouteListActivity.this).getMyRoute()
                 .map(new JavaRxFunction<List<MyGame>>())
                 .compose(RxSchedulers.<List<MyGame>>io_main())
-                .subscribe(new RxObserver<List<MyGame>>(MyRouteListActivity.this, TAG, 1, false) {
+                .subscribe(new RxRequest<>(MyRouteListActivity.this, TAG, 1, new RequestLisler<List<MyGame>>() {
                     @Override
-                    public void onSuccess(int whichRequest, List<MyGame> info) {
+                    public void onSucess(int whichRequest, List<MyGame> info) {
                         dismissAlert();
                         refresh.finishRefresh();
-                        if (info.size()>0) {
+                        if (info.size() > 0) {
                             multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
-                            if(mList!=null){
+                            if (mList != null) {
                                 mList.clear();
                             }
                             mList.addAll(info);
                             mAdapter.notifyDataSetChanged();
-                        }else {
+                        } else {
                             multiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
                         }
                     }
 
                     @Override
-                    public void onError(int whichRequest, Throwable e) {
+                    public void on_error(int whichRequest, Throwable e) {
                         dismissAlert();
                         refresh.finishRefresh();
                         multiStateView.setViewState(MultiStateView.VIEW_STATE_ERROR);
                         RxToast.error(e.getMessage());
                     }
-                });
+                }));
     }
 
 
-    private void  setview(){
-        mAdapter=new CommonAdapter<MyGame>(MyRouteListActivity.this,R.layout.my_route_item,mList) {
+    private void setview() {
+        mAdapter = new CommonAdapter<MyGame>(MyRouteListActivity.this, R.layout.my_route_item, mList) {
             @Override
-            protected void convert(ViewHolder holder,final MyGame myGame, int position) {
+            protected void convert(ViewHolder holder, final MyGame myGame, int position) {
 
-                holder.setText(R.id.name,myGame.getTitle());
-                holder.setRunderBackrund(R.id.photo,myGame.getCover(),MyRouteListActivity.this);
-                if(myGame.getState()==1){
+                holder.setText(R.id.name, myGame.getTitle());
+                holder.setRunderBackrund(R.id.photo, myGame.getCover(), MyRouteListActivity.this);
+                if (myGame.getState() == 1) {
                     holder.setTextColor(R.id.state, Color.parseColor("#ffffff"));
-                    holder.setText(R.id.state,"未开始");
-                holder.setBackgroundRes(R.id.state,R.drawable.my_un_start);
+                    holder.setText(R.id.state, "未开始");
+                    holder.setBackgroundRes(R.id.state, R.drawable.my_un_start);
                 }
-                if(myGame.getState()==2){
+                if (myGame.getState() == 2) {
                     holder.setTextColor(R.id.state, Color.parseColor("#ffffff"));
-                    holder.setText(R.id.state,"进行中");
-                    holder.setBackgroundRes(R.id.state,R.drawable.my_playing);
+                    holder.setText(R.id.state, "进行中");
+                    holder.setBackgroundRes(R.id.state, R.drawable.my_playing);
                 }
-                if(myGame.getState()==3){
+                if (myGame.getState() == 3) {
                     holder.setTextColor(R.id.state, Color.parseColor("#ffffff"));
-                    holder.setText(R.id.state,"已完成");
-                    holder.setBackgroundRes(R.id.state,R.drawable.my_finish);
+                    holder.setText(R.id.state, "已完成");
+                    holder.setBackgroundRes(R.id.state, R.drawable.my_finish);
                 }
 
-                if(myGame.getState()==4){
+                if (myGame.getState() == 4) {
                     holder.setTextColor(R.id.state, Color.parseColor("#3fcfe4"));
-                    holder.setText(R.id.state,"强制结束");
-                    holder.setBackgroundRes(R.id.state,R.drawable.my_ending);
+                    holder.setText(R.id.state, "强制结束");
+                    holder.setBackgroundRes(R.id.state, R.drawable.my_ending);
                 }
-                if(myGame.getState()==5){
+                if (myGame.getState() == 5) {
                     holder.setTextColor(R.id.state, Color.parseColor("#fd7d6f"));
-                    holder.setText(R.id.state,"超时结束");
-                    holder.setBackgroundRes(R.id.state,R.drawable.my_ending);
+                    holder.setText(R.id.state, "超时结束");
+                    holder.setBackgroundRes(R.id.state, R.drawable.my_ending);
                 }
                 holder.setOnClickListener(R.id.top_click, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        UserInfo infos= SaveObjectUtils.getInstance(MyRouteListActivity.this).getObject(Constants.USER_BASE, null);
-                        if(myGame.getState()==1){
-                            if(infos.getId()==myGame.getLeaderId()){
+                        UserInfo infos = SaveObjectUtils.getInstance(MyRouteListActivity.this).getObject(Constants.USER_BASE, null);
+                        if (myGame.getState() == 1) {
+                            if (infos.getId() == myGame.getLeaderId()) {
                                 Intent intent = new Intent(MyRouteListActivity.this, OrganizeActivity.class);
-                                intent.putExtra("gameTeamId", myGame.getGameTeamId()+"");
+                                intent.putExtra("gameTeamId", myGame.getGameTeamId() + "");
                                 startActivity(intent);
-                            }else {
+                            } else {
                                 Intent intent = new Intent(MyRouteListActivity.this, TeamMemberActivity.class);
                                 intent.putExtra("gameTeamId", myGame.getGameTeamId());
                                 startActivity(intent);
                             }
                         }
-                        if (myGame.getState()==2||myGame.getState()==3) {
+                        if (myGame.getState() == 2 || myGame.getState() == 3) {
                             Intent intent = new Intent(MyRouteListActivity.this, PlayMultActivity.class);
                             intent.putExtra("gameTeamId", myGame.getGameTeamId());
                             startActivity(intent);
                         }
-                        if (myGame.getState()==4) {
+                        if (myGame.getState() == 4) {
                             new GameErrorDialog(mContext, R.style.dialog, new GameErrorDialog.OnCloseListener() {
                                 @Override
                                 public void onClick(Dialog dialog, int index) {
@@ -180,7 +186,7 @@ public class MyRouteListActivity extends BaseActivity {
                                 }
                             }).setMsg("已强制结束").show();
                         }
-                        if (myGame.getState()==5) {
+                        if (myGame.getState() == 5) {
                             new GameErrorDialog(mContext, R.style.dialog, new GameErrorDialog.OnCloseListener() {
                                 @Override
                                 public void onClick(Dialog dialog, int index) {
@@ -197,9 +203,9 @@ public class MyRouteListActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.top_left,R.id.top_image})
-    void onclik(View v){
-        switch (v.getId()){
+    @OnClick({R.id.top_left, R.id.top_image})
+    void onclik(View v) {
+        switch (v.getId()) {
             case R.id.top_left:
             case R.id.top_image:
                 MyRouteListActivity.this.finish();

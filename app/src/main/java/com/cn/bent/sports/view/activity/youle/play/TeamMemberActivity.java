@@ -12,6 +12,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
+import com.cn.bent.sports.api.RequestLisler;
+import com.cn.bent.sports.api.RxRequest;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.LoginResult;
 import com.cn.bent.sports.bean.MemberDataEntity;
@@ -88,18 +90,19 @@ public class TeamMemberActivity extends BaseActivity {
         BaseApi.getJavaLoginDefaultService(TeamMemberActivity.this).getGamePrapre(gameTeamId)
                 .map(new JavaRxFunction<String>())
                 .compose(RxSchedulers.<String>io_main())
-                .subscribe(new RxObserver<String>(TeamMemberActivity.this, TAG, 1, false) {
+                .subscribe(new RxRequest<>(TeamMemberActivity.this, TAG, 1, new RequestLisler<String>() {
                     @Override
-                    public void onSuccess(int whichRequest, String info) {
+                    public void onSucess(int whichRequest, String info) {
                         dismissAlert();
                         setview(info);
                     }
+
                     @Override
-                    public void onError(int whichRequest, Throwable e) {
+                    public void on_error(int whichRequest, Throwable e) {
                         dismissAlert();
                         RxToast.error(e.getMessage());
                     }
-                });
+                }));
     }
 
 
@@ -179,9 +182,9 @@ public class TeamMemberActivity extends BaseActivity {
         BaseApi.getJavaLoginDefaultService(TeamMemberActivity.this).getMemberDetailData(gameTeamId+"")
                 .map(new JavaRxFunction<List<MemberDataEntity>>())
                 .compose(RxSchedulers.<List<MemberDataEntity>>io_main())
-                .subscribe(new RxObserver<List<MemberDataEntity>>(TeamMemberActivity.this, TAG, 1, false) {
+                .subscribe(new RxRequest<>(TeamMemberActivity.this, TAG, 1, new RequestLisler<List<MemberDataEntity>>() {
                     @Override
-                    public void onSuccess(int whichRequest, List<MemberDataEntity> info) {
+                    public void onSucess(int whichRequest, List<MemberDataEntity> info) {
                         if(info!=null){
                             PlayUserManager.insert(info);
                         }
@@ -190,15 +193,16 @@ public class TeamMemberActivity extends BaseActivity {
                         startActivity(intent);
                         finish();
                     }
+
                     @Override
-                    public void onError(int whichRequest, Throwable e) {
+                    public void on_error(int whichRequest, Throwable e) {
                         dismissAlert();
                         Intent intent = new Intent(TeamMemberActivity.this, PlayMultActivity.class);
                         intent.putExtra("gameTeamId",  gameTeamId);
                         startActivity(intent);
                         finish();
                     }
-                });
+                }));
     }
 
 

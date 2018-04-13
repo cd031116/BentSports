@@ -13,6 +13,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
+import com.cn.bent.sports.api.RequestLisler;
+import com.cn.bent.sports.api.RxRequest;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.GameInfo;
 import com.cn.bent.sports.bean.LoginResult;
@@ -174,9 +176,9 @@ public class PlayFunActivity extends BaseActivity {
         BaseApi.getJavaLoginDefaultService(PlayFunActivity.this).getGameList("1")
                 .map(new JavaRxFunction<List<GameInfo>>())
                 .compose(RxSchedulers.<List<GameInfo>>io_main())
-                .subscribe(new RxObserver<List<GameInfo>>(PlayFunActivity.this, TAG, 1, false) {
+                .subscribe(new RxRequest<List<GameInfo>>(PlayFunActivity.this, TAG, 1, new RequestLisler<List<GameInfo>>() {
                     @Override
-                    public void onSuccess(int whichRequest, List<GameInfo> info) {
+                    public void onSucess(int whichRequest, List<GameInfo> info) {
                         dismissAlert();
                         if (info.size()>0){
                             multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
@@ -189,12 +191,13 @@ public class PlayFunActivity extends BaseActivity {
                     }
 
                     @Override
-                    public void onError(int whichRequest, Throwable e) {
+                    public void on_error(int whichRequest, Throwable e) {
                         dismissAlert();
                         multiStateView.setViewState(MultiStateView.VIEW_STATE_ERROR);
                         RxToast.error(e.getMessage());
                     }
-                });
+                }));
+
     }
 
     @OnClick({R.id.top_left})

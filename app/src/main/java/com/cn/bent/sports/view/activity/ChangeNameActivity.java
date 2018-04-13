@@ -6,6 +6,8 @@ import android.widget.EditText;
 
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
+import com.cn.bent.sports.api.RequestLisler;
+import com.cn.bent.sports.api.RxRequest;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.SaveObjectUtils;
@@ -68,21 +70,21 @@ public class ChangeNameActivity extends BaseActivity {
         BaseApi.getJavaLoginDefaultService(ChangeNameActivity.this).exchangeName(mysuer)
                 .map(new HuiquRxTBFunction<Boolean>())
                 .compose(RxSchedulers.<Boolean>io_main())
-                .subscribe(new RxObserver<Boolean>(ChangeNameActivity.this, TAG, 1, false) {
+                .subscribe(new RxRequest<Boolean>(ChangeNameActivity.this, TAG, 1, new RequestLisler<Boolean>() {
                     @Override
-                    public void onSuccess(int whichRequest, Boolean bean) {
+                    public void onSucess(int whichRequest, Boolean aBoolean) {
                         dismissAlert();
                         user.setNickname(nickmane);
                         SaveObjectUtils.getInstance(ChangeNameActivity.this).setObject(Constants.USER_BASE,user);
                         RxToast.success("修改成功");
                         finish();
                     }
-                    @Override
-                    public void onError(int whichRequest, Throwable e) {
-                        dismissAlert();
 
+                    @Override
+                    public void on_error(int whichRequest, Throwable e) {
+                        dismissAlert();
                     }
-                });
+                }));
     }
 
 

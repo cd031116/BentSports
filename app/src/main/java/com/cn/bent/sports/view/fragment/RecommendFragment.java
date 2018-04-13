@@ -19,6 +19,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
+import com.cn.bent.sports.api.RequestLisler;
+import com.cn.bent.sports.api.RxRequest;
 import com.cn.bent.sports.base.BaseFragment;
 import com.cn.bent.sports.bean.GameEntity;
 import com.cn.bent.sports.bean.GameInfo;
@@ -183,9 +185,9 @@ public class RecommendFragment extends BaseFragment {
         BaseApi.getJavaLoginDefaultService(getActivity()).joinTeamGame(teamId )
                 .map(new JavaRxFunction<JoinTeam>())
                 .compose(RxSchedulers.<JoinTeam>io_main())
-                .subscribe(new RxObserver<JoinTeam>(getActivity(), TAG, 1, false) {
+                .subscribe(new RxRequest<JoinTeam>(getActivity(), TAG, 1, new RequestLisler<JoinTeam>() {
                     @Override
-                    public void onSuccess(int whichRequest, JoinTeam info) {
+                    public void onSucess(int whichRequest, JoinTeam joinTeam) {
                         dismissAlert();
                         Intent intent=new Intent(getActivity(),TeamMemberActivity.class);
                         intent.putExtra("gameTeamId",Integer.parseInt(teamId));
@@ -193,11 +195,11 @@ public class RecommendFragment extends BaseFragment {
                     }
 
                     @Override
-                    public void onError(int whichRequest, Throwable e) {
+                    public void on_error(int whichRequest, Throwable e) {
                         dismissAlert();
                         RxToast.error(e.getMessage());
                     }
-                });
+                }));
     }
 
 
@@ -264,26 +266,26 @@ public class RecommendFragment extends BaseFragment {
         BaseApi.getJavaLoginDefaultService(getActivity()).sendStep(steps)
                 .map(new JavaRxFunction<Boolean>())
                 .compose(RxSchedulers.<Boolean>io_main())
-                .subscribe(new RxObserver<Boolean>(getActivity(), TAG, 1, false) {
+                .subscribe(new RxRequest<Boolean>(getActivity(), TAG, 1, new RequestLisler<Boolean>() {
                     @Override
-                    public void onSuccess(int whichRequest, Boolean aBoolean) {
+                    public void onSucess(int whichRequest, Boolean aBoolean) {
                         StepData.getInstance(getActivity()).setStepDataValue(System.currentTimeMillis());
-
                     }
+
                     @Override
-                    public void onError(int whichRequest, Throwable e) {
+                    public void on_error(int whichRequest, Throwable e) {
 
                     }
-                });
+                }));
     }
 
     private void getGameList() {
         BaseApi.getJavaLoginDefaultService(getActivity()).getGameList("1")
                 .map(new JavaRxFunction<List<GameInfo>>())
                 .compose(RxSchedulers.<List<GameInfo>>io_main())
-                .subscribe(new RxObserver<List<GameInfo>>(getActivity(), TAG, 1, false) {
+                .subscribe(new RxRequest<List<GameInfo>>(getActivity(), TAG, 1, new RequestLisler<List<GameInfo>>() {
                     @Override
-                    public void onSuccess(int whichRequest, List<GameInfo> info) {
+                    public void onSucess(int whichRequest, List<GameInfo> info) {
                         if (info!=null){
                             mList.clear();
                             mList.addAll(info);
@@ -292,10 +294,10 @@ public class RecommendFragment extends BaseFragment {
                     }
 
                     @Override
-                    public void onError(int whichRequest, Throwable e) {
+                    public void on_error(int whichRequest, Throwable e) {
                         dismissAlert();
                     }
-                });
+                }));
     }
 
 

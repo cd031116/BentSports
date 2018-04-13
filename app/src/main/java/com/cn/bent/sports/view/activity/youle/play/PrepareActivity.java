@@ -7,6 +7,8 @@ import android.widget.TextView;
 
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
+import com.cn.bent.sports.api.RequestLisler;
+import com.cn.bent.sports.api.RxRequest;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.TeamGame;
 import com.cn.bent.sports.view.activity.youle.PlayActivity;
@@ -78,15 +80,15 @@ public class PrepareActivity extends BaseActivity {
         BaseApi.getJavaLoginDefaultService(PrepareActivity.this).startTeamGame((long)teamGame.getId())
                 .map(new JavaRxFunction<Boolean>())
                 .compose(RxSchedulers.<Boolean>io_main())
-                .subscribe(new RxObserver<Boolean>(PrepareActivity.this, TAG, 1, false) {
+                .subscribe(new RxRequest<Boolean>(PrepareActivity.this, TAG, 1, new RequestLisler<Boolean>() {
                     @Override
-                    public void onSuccess(int whichRequest, Boolean info) {
+                    public void onSucess(int whichRequest, Boolean info) {
                         dismissAlert();
                         if (info) {
 //                            if(teamGame.getTeamMemberReal()>1){
-                                Intent intent = new Intent(PrepareActivity.this, PlayMultActivity.class);
-                                intent.putExtra("gameTeamId", teamGame.getId());
-                                startActivity(intent);
+                            Intent intent = new Intent(PrepareActivity.this, PlayMultActivity.class);
+                            intent.putExtra("gameTeamId", teamGame.getId());
+                            startActivity(intent);
 //                            }else {
 //                                Intent intent = new Intent(PrepareActivity.this, PlayActivity.class);
 //                                intent.putExtra("gameTeamId", teamGame.getId());
@@ -99,11 +101,11 @@ public class PrepareActivity extends BaseActivity {
                     }
 
                     @Override
-                    public void onError(int whichRequest, Throwable e) {
+                    public void on_error(int whichRequest, Throwable e) {
                         dismissAlert();
                         RxToast.error(e.getMessage());
                     }
-                });
+                }));
     }
 
     private void getGamePrapre() {
@@ -111,19 +113,19 @@ public class PrepareActivity extends BaseActivity {
         BaseApi.getJavaLoginDefaultService(PrepareActivity.this).getGamePrapre((long)teamGame.getGameId())
                 .map(new JavaRxFunction<String>())
                 .compose(RxSchedulers.<String>io_main())
-                .subscribe(new RxObserver<String>(PrepareActivity.this, TAG, 1, false) {
+                .subscribe(new RxRequest<String>(PrepareActivity.this, TAG, 1, new RequestLisler<String>() {
                     @Override
-                    public void onSuccess(int whichRequest, String info) {
+                    public void onSucess(int whichRequest, String info) {
                         dismissAlert();
                         setview(info);
                     }
 
                     @Override
-                    public void onError(int whichRequest, Throwable e) {
+                    public void on_error(int whichRequest, Throwable e) {
                         dismissAlert();
                         RxToast.error(e.getMessage());
                     }
-                });
+                }));
     }
 
     private void setview(String info) {

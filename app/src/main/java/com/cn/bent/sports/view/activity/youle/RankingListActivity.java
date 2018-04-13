@@ -17,6 +17,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
+import com.cn.bent.sports.api.RequestLisler;
+import com.cn.bent.sports.api.RxRequest;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.GameRankEntity;
 import com.cn.bent.sports.bean.ReFreshEvent;
@@ -120,9 +122,9 @@ public class RankingListActivity extends BaseActivity implements OnLoadMoreListe
         BaseApi.getJavaLoginDefaultService(this).getRankList(new QueryInfo(true, pageIndex, 10, gameId))
                 .map(new HuiquRxTBFunction<GameRankEntity>())
                 .compose(RxSchedulers.<GameRankEntity>io_main())
-                .subscribe(new RxObserver<GameRankEntity>(this, "getRankList", 1, false) {
+                .subscribe(new RxRequest<GameRankEntity>(this, "getRankList", 1, new RequestLisler<GameRankEntity>() {
                     @Override
-                    public void onSuccess(int whichRequest, GameRankEntity rankEntity) {
+                    public void onSucess(int whichRequest, GameRankEntity rankEntity) {
                         if (rankEntity != null) {
                             mListBean.addAll(rankEntity.getList());
                             setView(mListBean, 1);
@@ -131,10 +133,10 @@ public class RankingListActivity extends BaseActivity implements OnLoadMoreListe
                     }
 
                     @Override
-                    public void onError(int whichRequest, Throwable e) {
+                    public void on_error(int whichRequest, Throwable e) {
 
                     }
-                });
+                }));
     }
 
     private void setView(List<GameRankEntity.ListBean> rankEntity, int type) {
@@ -230,10 +232,9 @@ public class RankingListActivity extends BaseActivity implements OnLoadMoreListe
             BaseApi.getJavaLoginDefaultService(this).getRankList(new QueryInfo(true, pageIndex++, 10, gameId))
                     .map(new HuiquRxTBFunction<GameRankEntity>())
                     .compose(RxSchedulers.<GameRankEntity>io_main())
-                    .subscribe(new RxObserver<GameRankEntity>(this, "getRankList", 2, false) {
+                    .subscribe(new RxRequest<GameRankEntity>(this, "getRankList", 2, new RequestLisler<GameRankEntity>() {
                         @Override
-                        public void onSuccess(int whichRequest, GameRankEntity rankEntity) {
-                            Log.d(TAG, "onSuccess onLoadMore:" + rankEntity.getList().size() + "-pageIndex:" + pageIndex + ",page:" + rankEntity.getPages());
+                        public void onSucess(int whichRequest, GameRankEntity rankEntity) {
                             if (rankEntity != null && rankEntity.getList().size() > 0) {
                                 if ((pageIndex-2) != rankEntity.getPages()) {
                                     mListBean.addAll(rankEntity.getList());
@@ -246,10 +247,10 @@ public class RankingListActivity extends BaseActivity implements OnLoadMoreListe
                         }
 
                         @Override
-                        public void onError(int whichRequest, Throwable e) {
+                        public void on_error(int whichRequest, Throwable e) {
                             mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.ERROR);
                         }
-                    });
+                    }));
         }
     }
 }

@@ -57,6 +57,8 @@ import com.amap.api.services.route.WalkPath;
 import com.amap.api.services.route.WalkRouteResult;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
+import com.cn.bent.sports.api.RequestLisler;
+import com.cn.bent.sports.api.RxRequest;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.LinesDetailEntity;
 import com.cn.bent.sports.bean.LinesPointsEntity;
@@ -346,9 +348,9 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         BaseApi.getJavaLoginDefaultService(this).getScenicPoints("1")
                 .map(new JavaRxFunction<ScenicPointsEntity>())
                 .compose(RxSchedulers.<ScenicPointsEntity>io_main())
-                .subscribe(new RxObserver<ScenicPointsEntity>(MapActivity.this, "getScenicPoints", 1, false) {
+                .subscribe(new RxRequest<>(MapActivity.this, "getScenicPoints", 1, new RequestLisler<ScenicPointsEntity>() {
                     @Override
-                    public void onSuccess(int whichRequest, ScenicPointsEntity scenicPointsEntity) {
+                    public void onSucess(int whichRequest, ScenicPointsEntity scenicPointsEntity) {
                         dismissAlert();
                         if (scenicPointsEntity != null)
                             lp = new LatLonPoint(scenicPointsEntity.getLatitude(), scenicPointsEntity.getLatitude());
@@ -372,11 +374,11 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                     }
 
                     @Override
-                    public void onError(int whichRequest, Throwable e) {
+                    public void on_error(int whichRequest, Throwable e) {
                         dismissAlert();
                         RxToast.error(e.getMessage());
                     }
-                });
+                }));
     }
 
     /**
@@ -387,20 +389,20 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         BaseApi.getJavaLoginDefaultService(this).getScenicLines("1")
                 .map(new JavaRxFunction<List<LinesPointsEntity>>())
                 .compose(RxSchedulers.<List<LinesPointsEntity>>io_main())
-                .subscribe(new RxObserver<List<LinesPointsEntity>>(this, "getScenicLines", 1, false) {
+                .subscribe(new RxRequest<>(this, "getScenicLines", 1, new RequestLisler<List<LinesPointsEntity>>() {
                     @Override
-                    public void onSuccess(int whichRequest, List<LinesPointsEntity> linesPointsEntityList) {
+                    public void onSucess(int whichRequest, List<LinesPointsEntity> linesPointsEntities) {
                         dismissAlert();
-                        shouLuxianPoup(linesPointsEntityList);
+                        shouLuxianPoup(linesPointsEntities);
                     }
 
                     @Override
-                    public void onError(int whichRequest, Throwable e) {
+                    public void on_error(int whichRequest, Throwable e) {
                         dismissAlert();
                         RxToast.error("获取路线失败");
                         Log.d("dddd", "onError: " + e.getMessage());
                     }
-                });
+                }));
     }
 
     /**
@@ -414,9 +416,9 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         BaseApi.getJavaLoginDefaultService(this).getScenicLinesDetail(linesId)
                 .map(new JavaRxFunction<LinesDetailEntity>())
                 .compose(RxSchedulers.<LinesDetailEntity>io_main())
-                .subscribe(new RxObserver<LinesDetailEntity>(this, "getScenicLines", 1, false) {
+                .subscribe(new RxRequest<>(this, "getScenicLines", 1, new RequestLisler<LinesDetailEntity>() {
                     @Override
-                    public void onSuccess(int whichRequest, final LinesDetailEntity linesPointsDetailEntity) {
+                    public void onSucess(int whichRequest,final LinesDetailEntity linesPointsDetailEntity) {
                         Log.d("dddd", "onSuccess: " + linesPointsDetailEntity.getPoints().size());
                         if (linesPointsDetailEntity.getPoints() != null && linesPointsDetailEntity.getPoints().size() > 0) {
                             aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
@@ -440,9 +442,9 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                                         @Override
                                         public void onClick(View view) {
                                             mPointsEntity = pointsBean;
-                                            if (pointsBean.getType() == 2 && !TextUtils.isEmpty(pointsBean.getMp3())&&mPointsEntity.getMp3().endsWith(".mp3")) {
+                                            if (pointsBean.getType() == 2 && !TextUtils.isEmpty(pointsBean.getMp3()) && mPointsEntity.getMp3().endsWith(".mp3")) {
 
-                                            }else {
+                                            } else {
                                                 RxToast.warning("该点暂无语音讲解");
                                             }
 
@@ -456,7 +458,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                                         }
                                     });
                                     if (pointsBean.isShow()) {
-                                            if (pointsBean.getType() == 2 && !TextUtils.isEmpty(pointsBean.getMp3())&&mPointsEntity.getMp3().endsWith(".mp3")) {
+                                        if (pointsBean.getType() == 2 && !TextUtils.isEmpty(pointsBean.getMp3()) && mPointsEntity.getMp3().endsWith(".mp3")) {
                                             addAnimMarker(pointsBean);
                                             playMarkerAudio(pointsBean);
                                         }
@@ -477,10 +479,11 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                     }
 
                     @Override
-                    public void onError(int whichRequest, Throwable e) {
+                    public void on_error(int whichRequest, Throwable e) {
                         Log.d("dddd", "onError: " + e.getMessage());
                     }
-                });
+                }));
+
     }
 
     /**
@@ -1304,18 +1307,17 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         BaseApi.getJavaLoginDefaultService(MapActivity.this).sendStep(steps)
                 .map(new JavaRxFunction<Boolean>())
                 .compose(RxSchedulers.<Boolean>io_main())
-                .subscribe(new RxObserver<Boolean>(MapActivity.this, TAG, 1, false) {
+                .subscribe(new RxRequest<Boolean>(MapActivity.this, TAG, 1, new RequestLisler<Boolean>() {
                     @Override
-                    public void onSuccess(int whichRequest, Boolean aBoolean) {
+                    public void onSucess(int whichRequest, Boolean aBoolean) {
                         StepData.getInstance(MapActivity.this).setStepDataValue(System.currentTimeMillis());
-
                     }
 
                     @Override
-                    public void onError(int whichRequest, Throwable e) {
+                    public void on_error(int whichRequest, Throwable e) {
 
                     }
-                });
+                }));
     }
 
 }

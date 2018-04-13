@@ -37,6 +37,8 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
+import com.cn.bent.sports.api.RequestLisler;
+import com.cn.bent.sports.api.RxRequest;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.GamePotins;
 import com.cn.bent.sports.bean.LoginResult;
@@ -675,18 +677,18 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         BaseApi.getJavaLoginDefaultService(PlayMultActivity.this).outTeamGame(teamGame.getId())
                 .map(new JavaRxFunction<Boolean>())
                 .compose(RxSchedulers.<Boolean>io_main())
-                .subscribe(new RxObserver<Boolean>(PlayMultActivity.this, TAG, 2, false) {
+                .subscribe(new RxRequest<>(PlayMultActivity.this, TAG, 2, new RequestLisler<Boolean>() {
                     @Override
-                    public void onSuccess(int whichRequest, Boolean aBoolean) {
+                    public void onSucess(int whichRequest, Boolean aBoolean) {
                         RxToast.success("退赛成功");
                         PlayMultActivity.this.finish();
                     }
 
                     @Override
-                    public void onError(int whichRequest, Throwable e) {
+                    public void on_error(int whichRequest, Throwable e) {
                         Log.d(TAG, "onError: " + e.getMessage());
                     }
-                });
+                }));
     }
 
     //获取队伍信息
@@ -695,11 +697,10 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         BaseApi.getJavaLoginDefaultService(PlayMultActivity.this).getTeamInfo(gameTeamId + "")
                 .map(new JavaRxFunction<TeamGame>())
                 .compose(RxSchedulers.<TeamGame>io_main())
-                .subscribe(new RxObserver<TeamGame>(PlayMultActivity.this, TAG, 1, false) {
+                .subscribe(new RxRequest<TeamGame>(PlayMultActivity.this, TAG, 1, new RequestLisler<TeamGame>() {
                     @Override
-                    public void onSuccess(int whichRequest, TeamGame info) {
+                    public void onSucess(int whichRequest, TeamGame info) {
                         teamGame = info;
-
                         getPoints();
                         if (info.getStartTime() != null) {
                             times_s = DataUtils.getStringToDate(DataUtils.UTCtoString(info.getStartTime()));
@@ -709,11 +710,11 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                     }
 
                     @Override
-                    public void onError(int whichRequest, Throwable e) {
+                    public void on_error(int whichRequest, Throwable e) {
                         dismissAlert();
                         RxToast.error("加载失败");
                     }
-                });
+                }));
     }
 
     //获取点位
@@ -721,9 +722,9 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         BaseApi.getJavaLoginDefaultService(PlayMultActivity.this).getGamePoints(gameTeamId)
                 .map(new JavaRxFunction<List<GamePotins>>())
                 .compose(RxSchedulers.<List<GamePotins>>io_main())
-                .subscribe(new RxObserver<List<GamePotins>>(PlayMultActivity.this, TAG, 1, false) {
+                .subscribe(new RxRequest<>(PlayMultActivity.this, TAG, 1, new RequestLisler<List<GamePotins>>() {
                     @Override
-                    public void onSuccess(int whichRequest, final List<GamePotins> info) {
+                    public void onSucess(int whichRequest, List<GamePotins> info) {
                         dismissAlert();
                         PlayPointManager.insert(info);
                         if (mGamePotinsList != null) {
@@ -740,11 +741,11 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                     }
 
                     @Override
-                    public void onError(int whichRequest, Throwable e) {
+                    public void on_error(int whichRequest, Throwable e) {
                         dismissAlert();
                         RxToast.error("加载失败");
                     }
-                });
+                    }));
     }
 
     //游戏结束调用
@@ -752,18 +753,18 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         BaseApi.getJavaLoginDefaultService(PlayMultActivity.this).getGameOver(gameTeamId)
                 .map(new JavaRxFunction<Boolean>())
                 .compose(RxSchedulers.<Boolean>io_main())
-                .subscribe(new RxObserver<Boolean>(PlayMultActivity.this, TAG, 1, false) {
+                .subscribe(new RxRequest<>(PlayMultActivity.this, TAG, 1, new RequestLisler<Boolean>() {
                     @Override
-                    public void onSuccess(int whichRequest, final Boolean info) {
+                    public void onSucess(int whichRequest, Boolean aBoolean) {
                         gameOver();
                         setTimes();
                     }
 
                     @Override
-                    public void onError(int whichRequest, Throwable e) {
+                    public void on_error(int whichRequest, Throwable e) {
                         dismissAlert();
                     }
-                });
+                }));
     }
 
     private void gameOver() {

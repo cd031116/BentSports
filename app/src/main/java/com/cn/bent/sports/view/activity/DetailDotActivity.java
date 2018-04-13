@@ -15,6 +15,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
+import com.cn.bent.sports.api.RequestLisler;
+import com.cn.bent.sports.api.RxRequest;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.PlayBean;
 import com.cn.bent.sports.bean.PlayEvent;
@@ -149,17 +151,17 @@ public class DetailDotActivity extends BaseActivity {
         BaseApi.getJavaLoginDefaultService(this).getPointsDetailData(pEnty.getId()+"")
                 .map(new JavaRxFunction<PointsDetailEntity>())
                 .compose(RxSchedulers.<PointsDetailEntity>io_main())
-                .subscribe(new RxObserver<PointsDetailEntity>(this,TAG,1,false) {
+                .subscribe(new RxRequest<>(this, TAG, 1, new RequestLisler<PointsDetailEntity>() {
                     @Override
-                    public void onSuccess(int whichRequest, PointsDetailEntity pointsDetailEntity) {
+                    public void onSucess(int whichRequest, PointsDetailEntity pointsDetailEntity) {
                         title_c.setText(pointsDetailEntity.getDetails());
                     }
 
                     @Override
-                    public void onError(int whichRequest, Throwable e) {
+                    public void on_error(int whichRequest, Throwable e) {
 
                     }
-                });
+                }));
     }
 
     @Override

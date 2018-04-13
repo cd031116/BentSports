@@ -256,6 +256,7 @@ public class DoTaskPoupWindow extends PopupWindow {
 
     public void setclose() {
         if (mPlayer != null) {
+
             mPlayer.stop();
             mPlayer.release();
         }

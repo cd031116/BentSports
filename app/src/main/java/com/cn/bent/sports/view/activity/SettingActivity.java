@@ -14,6 +14,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
+import com.cn.bent.sports.api.RequestLisler;
+import com.cn.bent.sports.api.RxRequest;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.base.MyApplication;
 import com.cn.bent.sports.bean.InfoEvent;
@@ -186,9 +188,9 @@ public class SettingActivity extends BaseActivity {
         BaseApi.getDefaultService(this).modifyUserPhoto(user.getId()+"", "2", imag)
                 .map(new HuiquRxFunction<PhotoPath>())
                 .compose(RxSchedulers.<PhotoPath>io_main())
-                .subscribe(new RxObserver<PhotoPath>(SettingActivity.this, "changeName", 1, false) {
+                .subscribe(new RxRequest<PhotoPath>(SettingActivity.this, "changeName", 1, new RequestLisler<PhotoPath>() {
                     @Override
-                    public void onSuccess(int whichRequest, PhotoPath info) {
+                    public void onSucess(int whichRequest, PhotoPath info) {
                         dismissAlert();
                         UserInfo users=SaveObjectUtils.getInstance(SettingActivity.this).getObject(Constants.USER_BASE, null);
                         users.setAvatar(info.getHeadimgurl());
@@ -203,11 +205,11 @@ public class SettingActivity extends BaseActivity {
                     }
 
                     @Override
-                    public void onError(int whichRequest, Throwable e) {
+                    public void on_error(int whichRequest, Throwable e) {
                         dismissAlert();
                         RxToast.error( e.getMessage());
                     }
-                });
+                }));
     }
 
 

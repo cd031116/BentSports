@@ -139,6 +139,7 @@ public class OrganizeActivity extends BaseActivity {
                     public void onSuccess(int whichRequest, TeamGame info) {
                         dismissAlert();
                         teamGame=info;
+                        getMsg();
                         setview(info);
                     }
                     @Override
@@ -230,6 +231,9 @@ public class OrganizeActivity extends BaseActivity {
 
     //    //接受消息
     private void getMsg() {
+        if(teamGame==null){
+            return;
+        }
         String path="/topic/"+teamGame.getId()+"/join_team";
         mStompClient.topic(path).subscribe(new Consumer<StompMessage>() {
             @Override
