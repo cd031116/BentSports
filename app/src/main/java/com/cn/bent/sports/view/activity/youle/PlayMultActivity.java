@@ -139,7 +139,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     private MinewBeaconManager mMinewBeaconManager;
     private int t_ids = -1;
     private long times_s = 0;
-    private int timings=0;
+    private int timings = 0;
     private Handler handler2;
     private boolean isBlue = false;
     private DoTaskPoupWindow mopupWindow;
@@ -704,7 +704,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                         getPoints();
                         if (info.getStartTime() != null) {
                             times_s = DataUtils.getStringToDate(DataUtils.UTCtoString(info.getStartTime()));
-                            timings=info.getTiming();
+                            timings = info.getTiming();
 
                         }
                     }
@@ -777,7 +777,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
             @Override
             public void onClick(Dialog dialog, int index) {
                 dialog.dismiss();
-                if (index==1){
+                if (index == 1) {
                     Intent intent2 = new Intent(PlayMultActivity.this, RankingListActivity.class);
                     intent2.putExtra("gameId", teamGame.getGameId());
                     startActivity(intent2);
@@ -867,6 +867,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                 finish_situation.setVisibility(View.VISIBLE);
                 title_two.setText("团队成绩");
             }
+            timing.setText("已完成");
             score_two.setText(PlayPointManager.getScore() + "分");
             finish_task_two.setText(PlayPointManager.getHavaPlay() + "");
             all_task_two.setText("/" + mGamePotinsList.size());
@@ -1102,10 +1103,12 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 
     //计时器
     private void setTimes() {
+        Log.d(TAG, "setTimes isHavaPlay: "+PlayPointManager.isHavaPlay()+",timings="+timings * 1000);
         if (PlayPointManager.isHavaPlay()) {
 
-            time.setText(DataUtils.getDateToTime(timings));
-            timing.setText(DataUtils.getDateToTime(timings));
+//            time.setText(DataUtils.getDateToTime(timings * 1000));
+            time.setText("已完成");
+            timing.setText("已完成");
             return;
         }
         handler2.postDelayed(runnable2, 1000);

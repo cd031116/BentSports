@@ -89,28 +89,34 @@ public class RankingListActivity extends BaseActivity implements OnLoadMoreListe
         super.onResume();
     }
 
-    private void setRecyclerView(final List<GameRankEntity.ListBean> rankListBeen, int type) {
+    private void setRecyclerView(List<GameRankEntity.ListBean> rankListBeen, int type) {
 
-        CommonAdapter<GameRankEntity.ListBean> mAdapter = new CommonAdapter<GameRankEntity.ListBean>(this, R.layout.item_range, rankListBeen) {
-            @Override
-            protected void convert(ViewHolder holder, GameRankEntity.ListBean rangeEntity, int position) {
-                for (int i = 0; i < rankListBeen.size(); i++) {
-                    if (rangeEntity.getId()==rankListBeen.get(i).getId()){
-                        holder.setText(R.id.range_num, i+4 + "");
-                        break;
+        if (rankListBeen != null && rankListBeen.size() <= 3)
+            rankListBeen=new ArrayList<>();
+
+        final List<GameRankEntity.ListBean> finalRankListBeen = rankListBeen;
+        CommonAdapter<GameRankEntity.ListBean> mAdapter = new CommonAdapter<GameRankEntity.ListBean>(this, R.layout.item_range, finalRankListBeen) {
+                @Override
+                protected void convert(ViewHolder holder, GameRankEntity.ListBean rangeEntity, int position) {
+
+                    for (int i = 0; i < finalRankListBeen.size(); i++) {
+                        if (rangeEntity.getId() == finalRankListBeen.get(i).getId()) {
+                            holder.setText(R.id.range_num, i + 4 + "");
+                            break;
+                        }
                     }
+
+                    holder.setText(R.id.range_name, rangeEntity.getTeamName());
+                    holder.setText(R.id.range_jifen, rangeEntity.getScore() + "");
+                    ImageView NormalInfoImg = (ImageView) holder.getView(R.id.img_head);
+                    RequestOptions requestOptions = RequestOptions.circleCropTransform();
+                    Glide.with(NormalInfoImg.getContext()).load(ImageUtils.getImageUrl(rangeEntity.getAvatar()))
+                            .apply(requestOptions)
+                            .into(NormalInfoImg);
+
                 }
 
-                holder.setText(R.id.range_name, rangeEntity.getTeamName());
-                holder.setText(R.id.range_jifen, rangeEntity.getScore() + "");
-                ImageView NormalInfoImg = (ImageView) holder.getView(R.id.img_head);
-                RequestOptions requestOptions = RequestOptions.circleCropTransform();
-                Glide.with(NormalInfoImg.getContext()).load(ImageUtils.getImageUrl(rangeEntity.getAvatar()))
-                        .apply(requestOptions)
-                        .into(NormalInfoImg);
-
-            }
-        };
+            };
         if (type == 1)
             range_list.setAdapter(mAdapter);
         else
@@ -236,7 +242,7 @@ public class RankingListActivity extends BaseActivity implements OnLoadMoreListe
                         @Override
                         public void onSucess(int whichRequest, GameRankEntity rankEntity) {
                             if (rankEntity != null && rankEntity.getList().size() > 0) {
-                                if ((pageIndex-2) != rankEntity.getPages()) {
+                                if ((pageIndex - 2) != rankEntity.getPages()) {
                                     mListBean.addAll(rankEntity.getList());
                                     setView(mListBean, 2);
                                     mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
