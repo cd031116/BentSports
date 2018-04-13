@@ -1,12 +1,15 @@
 package com.cn.bent.sports.view.fragment;
 
+import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -322,6 +325,7 @@ public class RecommendFragment extends BaseFragment {
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void setviews(List<GameInfo> info){
         if(info.size()<=0){
             return;
@@ -333,11 +337,15 @@ public class RecommendFragment extends BaseFragment {
                 .load(ImageUtils.getImageUrl(info.get(0).getCover()))
                 .apply(myOptions)
                 .into(play_one);
+        play_one.setElevation(2);
+        play_one.setClipToOutline(true);
         if (info.size()>1){
             Glide.with(getActivity())
                     .load(ImageUtils.getImageUrl(info.get(1).getCover()))
                     .apply(myOptions)
                     .into(play_two);
+            play_two.setClipToOutline(true);
+            play_two.setElevation(2);
         }
 
     }

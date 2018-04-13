@@ -243,7 +243,7 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
                 .load(ImageUtils.getImageUrl(info.getCover()))
                 .apply(myOptions)
                 .into(image_cover);
-        name_t.setText(info.getTitle());
+        name_t.setText(info.getLineName());
         group_price.setText(info.getPrice()+"");
         if (info.getType()==1){
             type_t.setText("依次穿越");

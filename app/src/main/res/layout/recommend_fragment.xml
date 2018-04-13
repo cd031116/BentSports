@@ -150,6 +150,8 @@
                     android:id="@+id/play_one"
                     android:layout_width="484px"
                     android:layout_height="254px"
+                    android:translationZ="2dp"
+                    android:background="#ffffff"
                     android:elevation="4dp"/>
 
                 <ImageView
@@ -157,6 +159,7 @@
                     android:layout_width="484px"
                     android:layout_height="254px"
                     android:layout_marginLeft="28px"
+                    android:background="#ffffff"
                     android:translationZ="2dp"
                     android:elevation="4dp"/>
 
