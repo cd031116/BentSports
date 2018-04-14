@@ -419,7 +419,6 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                         for (int i = 0; i < linesPointsDetailEntity.getVoicePoints().size(); i++) {
                             setMarkerLay(linesPointsDetailEntity.getVoicePoints().get(i).getType());
                         }
-                        Log.d("dddd", "onSuccess: " + linesPointsDetailEntity.getPoints().size());
                         if (linesPointsDetailEntity.getPoints() != null && linesPointsDetailEntity.getPoints().size() > 0) {
                             aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                     new LatLng(linesPointsDetailEntity.getPoints().get(0).get(0), linesPointsDetailEntity.getPoints().get(0).get(1)), mCurrentZoom));
