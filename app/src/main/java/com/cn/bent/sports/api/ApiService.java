@@ -27,6 +27,7 @@ import com.cn.bent.sports.view.activity.youle.bean.JoinTeam;
 import com.cn.bent.sports.view.activity.youle.bean.MyGame;
 import com.cn.bent.sports.view.activity.youle.bean.QueryInfo;
 import com.cn.bent.sports.view.activity.youle.bean.TaskPoint;
+import com.cn.bent.sports.view.activity.youle.bean.TeamDetail;
 import com.cn.bent.sports.view.activity.youle.bean.UserInfo;
 import com.zhl.network.huiqu.HuiquResult;
 import com.zhl.network.huiqu.HuiquTBResult;
@@ -221,6 +222,14 @@ public interface ApiService {
     Observable<JavaResult<List<GameTeamScoreEntity>>> getTeamScore(
              @Path("teamId") long teamId);
 
+
+    /**
+     * 团队完成情况
+     *
+     * @return
+     */
+    @GET("api/travel/game_team/{teamId}/score_max")
+    Observable<JavaResult<List<TeamDetail>>> GetTeamDrtail(@Path("teamId") String teamId);
 
     /**
      * 获取队伍信息

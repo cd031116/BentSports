@@ -1,33 +1,34 @@
 package com.cn.bent.sports.view.activity;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import com.cn.bent.sports.MainActivity;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.api.RequestLisler;
 import com.cn.bent.sports.api.RxRequest;
 import com.cn.bent.sports.base.BaseActivity;
-import com.cn.bent.sports.base.BaseConfig;
 import com.cn.bent.sports.bean.StepInfo;
 import com.cn.bent.sports.recyclebase.CommonAdapter;
 import com.cn.bent.sports.recyclebase.ViewHolder;
+import com.cn.bent.sports.sensor.UpdateUiCallBack;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.view.activity.youle.bean.UserInfo;
+import com.cn.bent.sports.view.service.StepService;
 import com.kennyc.view.MultiStateView;
-import com.vondear.rxtools.view.RxToast;
-import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.JavaRxFunction;
 
@@ -50,6 +51,8 @@ public class WalkRankListActivity extends BaseActivity {
     MultiStateView multiStateView;
     private CommonAdapter<StepInfo.ListBean> mAdapter;
     private List<StepInfo.ListBean> mList = new ArrayList<>();
+    private boolean isBind = false;
+    private int stepNum=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +77,7 @@ public class WalkRankListActivity extends BaseActivity {
         super.initView();
         getGameDetail();
         sertview();
+        setupService();
     }
 
     @Override
@@ -157,8 +161,62 @@ public class WalkRankListActivity extends BaseActivity {
              }
                 if(!ishave){
                     walk_rank.setText("未上榜");
+                    walk_num.setText(stepNum+"");
+
                 }
     }
 
+//
+    /**
+     * 开启计步服务
+     */
+    private void setupService() {
+        Intent intent = new Intent(WalkRankListActivity.this, StepService.class);
+        isBind = WalkRankListActivity.this.bindService(intent, conn, Context.BIND_AUTO_CREATE);
+        startService(intent);
+    }
+    /**
+     * 用于查询应用服务（application Service）的状态的一种interface，
+     * 更详细的信息可以参考Service 和 context.bindService()中的描述，
+     * 和许多来自系统的回调方式一样，ServiceConnection的方法都是进程的主线程中调用的。
+     */
+    ServiceConnection conn = new ServiceConnection() {
+        /**
+         * 在建立起于Service的连接时会调用该方法，目前Android是通过IBind机制实现与服务的连接。
+         * @param name 实际所连接到的Service组件名称
+         * @param service 服务的通信信道的IBind，可以通过Service访问对应服务
+         */
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            StepService stepService = ((StepService.StepBinder) service).getService();
+            //设置初始化数据
 
+            //设置步数监听回调
+            stepService.registerCallback(new UpdateUiCallBack() {
+                @Override
+                public void updateUi(int stepCount) {
+                    stepNum=stepCount;
+                }
+            });
+        }
+
+        /**
+         *
+         * 当与Service之间的连接丢失的时候会调用该方法，
+         * 这种情况经常发生在Service所在的进程崩溃或者被Kill的时候调用，
+         * 此方法不会移除与Service的连接，当服务重新启动的时候仍然会调用 onServiceConnected()。
+         * @param name 丢失连接的组件名称
+         */
+        @Override
+        public void onServiceDisconnected(ComponentName name){
+
+        }
+    };
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (isBind) {
+           unbindService(conn);
+        }
+    }
 }

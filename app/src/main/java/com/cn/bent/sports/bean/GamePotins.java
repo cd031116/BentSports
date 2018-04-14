@@ -13,7 +13,6 @@ import java.util.List;
 
 public class GamePotins implements Serializable {
 
-
     /**
      * alias : string
      * hasQuestion : false

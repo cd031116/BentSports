@@ -7,6 +7,7 @@
     android:fitsSystemWindows="true">
 
     <ImageView
+        android:id="@+id/close_imag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -35,7 +36,7 @@
         android:layout_alignBottom="@id/member_head"
         android:layout_marginLeft="@dimen/t51"
         android:layout_toRightOf="@id/member_head"
-        android:text="小拓"
+        android:text=""
         android:textColor="@color/c_333333"
         android:textSize="@dimen/t51" />
 
@@ -108,6 +109,6 @@
         android:scrollbarSize="@dimen/t15"
         android:saveEnabled="true"
         android:scrollbars="vertical"
-        android:paddingLeft="@dimen/t136"
+        android:paddingLeft="@dimen/t116"
         android:paddingRight="@dimen/t56" />
 </RelativeLayout>

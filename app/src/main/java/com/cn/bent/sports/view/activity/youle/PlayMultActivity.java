@@ -76,6 +76,7 @@ import org.java_websocket.WebSocket;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -239,7 +240,10 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                 startActivity(intent2);
                 break;
             case R.id.finish_situation:
-                startActivity(new Intent(PlayMultActivity.this, CompleteInfoActivity.class));
+                Intent intent3=new Intent(PlayMultActivity.this, CompleteInfoActivity.class);
+                intent3.putExtra("gameTeamId", gameTeamId);
+                intent3.putExtra("mlsit", JSON.toJSONString(mGamePotinsList));
+                startActivity(intent3);
                 break;
             case R.id.exit_game:
                 OpenOutDialog();

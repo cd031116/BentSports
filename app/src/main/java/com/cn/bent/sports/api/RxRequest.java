@@ -1,12 +1,16 @@
 package com.cn.bent.sports.api;
 
 import android.content.Context;
+import android.content.Intent;
 
+import com.cn.bent.sports.base.MyApplication;
 import com.cn.bent.sports.bean.LoginResult;
 import com.cn.bent.sports.bean.TeamGame;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.view.activity.LoginActivity;
+import com.cn.bent.sports.view.activity.SettingActivity;
+import com.vondear.rxtools.view.RxToast;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.HuiquRxTBFunction;
@@ -52,7 +56,10 @@ public  class RxRequest<T> extends RxObserver<T> {
                     }
                     @Override
                     public void onError(int whichRequest, Throwable e) {
-
+                        RxToast.warning("请从新登陆");
+                        SaveObjectUtils.getInstance(context).setObject(Constants.USER_INFO, null);
+                        MyApplication.instance.getActivityManager().popAllActivity();
+                        context.startActivity(new Intent(context, LoginActivity.class));
                     }
                 });
     }
