@@ -25,6 +25,7 @@ import com.cn.bent.sports.bean.ReFreshEvent;
 import com.cn.bent.sports.recyclebase.CommonAdapter;
 import com.cn.bent.sports.recyclebase.ViewHolder;
 import com.cn.bent.sports.utils.Constants;
+import com.cn.bent.sports.utils.DataUtils;
 import com.cn.bent.sports.utils.ImageUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.view.activity.youle.bean.QueryInfo;
@@ -106,6 +107,7 @@ public class RankingListActivity extends BaseActivity implements OnLoadMoreListe
                         }
                     }
 
+                    holder.setText(R.id.range_time,DataUtils.getDateToTime(rangeEntity.getTiming() * 1000));
                     holder.setText(R.id.range_name, rangeEntity.getTeamName());
                     holder.setText(R.id.range_jifen, rangeEntity.getScore() + "");
                     ImageView NormalInfoImg = (ImageView) holder.getView(R.id.img_head);
@@ -161,12 +163,15 @@ public class RankingListActivity extends BaseActivity implements OnLoadMoreListe
         ImageView head_1 = (ImageView) headView.findViewById(R.id.head_1);
         TextView name_1 = (TextView) headView.findViewById(R.id.name_1);
         TextView jifen_1 = (TextView) headView.findViewById(R.id.jifen_1);
+        TextView time_1 = (TextView) headView.findViewById(R.id.time_1);
         ImageView head_2 = (ImageView) headView.findViewById(R.id.head_2);
         TextView name_2 = (TextView) headView.findViewById(R.id.name_2);
         TextView jifen_2 = (TextView) headView.findViewById(R.id.jifen_2);
+        TextView time_2 = (TextView) headView.findViewById(R.id.time_2);
         ImageView head_3 = (ImageView) headView.findViewById(R.id.head_3);
         TextView name_3 = (TextView) headView.findViewById(R.id.name_3);
         TextView jifen_3 = (TextView) headView.findViewById(R.id.jifen_3);
+        TextView time_3 = (TextView) headView.findViewById(R.id.time_3);
         TextView range_num = (TextView) headView.findViewById(R.id.range_num);
         TextView range_jifen = (TextView) headView.findViewById(R.id.range_jifen);
         TextView range_name = (TextView) headView.findViewById(R.id.range_name);
@@ -195,6 +200,7 @@ public class RankingListActivity extends BaseActivity implements OnLoadMoreListe
         if (rankEntity.size() > 0) {
             name_1.setText(rankEntity.get(0).getTeamName());
             jifen_1.setText(rankEntity.get(0).getScore() + "");
+            time_1.setText(DataUtils.getDateToTime(rankEntity.get(0).getTiming() * 1000));
             RequestOptions requestOptions = RequestOptions.circleCropTransform();
             Glide.with(head_1.getContext()).load(ImageUtils.getImageUrl(rankEntity.get(0).getAvatar()))
                     .apply(requestOptions)
@@ -203,6 +209,7 @@ public class RankingListActivity extends BaseActivity implements OnLoadMoreListe
         if (rankEntity.size() > 1) {
             name_2.setText(rankEntity.get(1).getTeamName());
             jifen_2.setText(rankEntity.get(1).getScore() + "");
+            time_2.setText(DataUtils.getDateToTime(rankEntity.get(1).getTiming() * 1000));
             RequestOptions requestOptions = RequestOptions.circleCropTransform();
             Glide.with(head_2.getContext()).load(ImageUtils.getImageUrl(rankEntity.get(1).getAvatar()))
                     .apply(requestOptions)
@@ -211,6 +218,7 @@ public class RankingListActivity extends BaseActivity implements OnLoadMoreListe
         if (rankEntity.size() > 2) {
             name_3.setText(rankEntity.get(2).getTeamName());
             jifen_3.setText(rankEntity.get(2).getScore() + "");
+            time_3.setText(DataUtils.getDateToTime(rankEntity.get(2).getTiming() * 1000));
             RequestOptions requestOptions = RequestOptions.circleCropTransform();
             Glide.with(head_3.getContext()).load(ImageUtils.getImageUrl(rankEntity.get(2).getAvatar()))
                     .apply(requestOptions)

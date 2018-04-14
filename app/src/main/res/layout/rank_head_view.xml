@@ -44,6 +44,17 @@
                 android:text="dasads"
                 android:textColor="#de4852"
                 android:textSize="37px" />
+
+            <TextView
+                android:id="@+id/time_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/jifen_1"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="22px"
+                android:text="00:00:00"
+                android:textColor="#de4852"
+                android:textSize="37px" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -76,9 +87,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/name_3"
-                android:layout_marginLeft="48px"
+                android:layout_marginLeft="40px"
                 android:layout_marginTop="100px"
                 android:text="dasads"
+                android:textColor="#de4852"
+                android:textSize="37px" />
+            <TextView
+                android:id="@+id/time_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/jifen_3"
+                android:layout_marginLeft="40px"
+                android:layout_marginTop="22px"
+                android:text="00:00:00"
                 android:textColor="#de4852"
                 android:textSize="37px" />
         </RelativeLayout>
@@ -116,6 +137,16 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="152px"
                 android:text="dasads"
+                android:textColor="#de4852"
+                android:textSize="37px" />
+            <TextView
+                android:id="@+id/time_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/jifen_2"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="22px"
+                android:text="00:00:00"
                 android:textColor="#de4852"
                 android:textSize="37px" />
         </RelativeLayout>

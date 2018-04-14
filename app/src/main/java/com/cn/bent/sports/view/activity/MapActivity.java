@@ -150,7 +150,6 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
 
     private Map<Integer, ScenicPointsEntity.PointsBean> mPointsEntityMap = new HashMap<>();
     private Map<Integer, Marker> mMarkerMap = new HashMap<>();
-    private List<List<ScenicPointsEntity.PointsBean>> mPointsEntityList = new ArrayList<List<ScenicPointsEntity.PointsBean>>();
     ServiceConnection serviceConnection;
     MusicService.MusicController mycontrol;
     private boolean isBind = false;
@@ -368,8 +367,6 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                             if (TaskCationManager.getSize() <= 0) {
                                 TaskCationManager.insert(scenicPointsEntity.getPoints());
                             }
-                            mPointsEntityList.add(mPointsList);
-                            mPointsEntityList.add(mPointsList);
                         }
                     }
 
@@ -419,6 +416,9 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                 .subscribe(new RxRequest<>(this, "getScenicLines", 1, new RequestLisler<LinesDetailEntity>() {
                     @Override
                     public void onSucess(int whichRequest,final LinesDetailEntity linesPointsDetailEntity) {
+                        for (int i = 0; i < linesPointsDetailEntity.getVoicePoints().size(); i++) {
+                            setMarkerLay(linesPointsDetailEntity.getVoicePoints().get(i).getType());
+                        }
                         Log.d("dddd", "onSuccess: " + linesPointsDetailEntity.getPoints().size());
                         if (linesPointsDetailEntity.getPoints() != null && linesPointsDetailEntity.getPoints().size() > 0) {
                             aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
@@ -583,9 +583,6 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             xlWindow.dismiss();
             getXianluDetailData(index);
             aMap.clear();
-            for (int i = 0; i < mPointsEntityList.get(index).size(); i++) {
-                setMarkerLay(mPointsEntityList.get(index).get(i).getType());
-            }
 //            chooseItem = index;
         }
     };
