@@ -357,16 +357,13 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                             Log.d("dddd", "onSuccess: " + scenicPointsEntity.getPoints().get(0).getPointName());
 
                             for (ScenicPointsEntity.PointsBean pointsBean : scenicPointsEntity.getPoints()) {
-                                pointsBean.setMp3(ImageUtils.getImageUrl(pointsBean.getMp3()));
                                 pointsBean.setImagesUrl(ImageUtils.getImageUrl(pointsBean.getImagesUrl()));
                                 pointsBean.setPointImg(ImageUtils.getImageUrl(pointsBean.getPointImg()));
                                 mPointsList.add(pointsBean);
                                 mPointsEntityMap.put(pointsBean.getId(), pointsBean);
                                 setOverLay(pointsBean.getType(), pointsBean);
                             }
-                            if (TaskCationManager.getSize() <= 0) {
                                 TaskCationManager.insert(scenicPointsEntity.getPoints());
-                            }
                         }
                     }
 
@@ -1240,6 +1237,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         EventBus.getDefault().post(new PlayEvent(clickpath, true));
         TaskCationManager.updateNowPlay(positon);
         mPointsEntity = mPointsList.get(positon);
+        addAnimMarker(mPointsEntity);
         tour_name.setText(mPointsEntity.getPointName());
         sTime = System.currentTimeMillis();
 //        if (mycontrol.isPlay()) {

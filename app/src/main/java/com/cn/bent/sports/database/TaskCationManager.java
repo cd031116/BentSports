@@ -1,8 +1,10 @@
 package com.cn.bent.sports.database;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.cn.bent.sports.bean.ScenicPointsEntity;
+import com.cn.bent.sports.utils.ImageUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +47,7 @@ public class TaskCationManager {
 
     //插入集合数据(初始一次)
     public static void insert(List<ScenicPointsEntity.PointsBean> list) {
+        clear();
         for (ScenicPointsEntity.PointsBean bean : list) {
             bean.setNow(false);
             bean.setPlay(false);
@@ -73,7 +76,11 @@ public class TaskCationManager {
     public static void sethavePlay(String paths) {
         List<ScenicPointsEntity.PointsBean> mTaskLists = TaskCationDB.getDB().select(null, ScenicPointsEntity.PointsBean.class);
         for (ScenicPointsEntity.PointsBean info : mTaskLists) {
-            if(info.getMp3().equals(paths)){
+            if(info.getType()==2&&info.getMp3()!=null){
+                Log.i("dddd", "info="+info.getMp3()+"============paths"+paths);
+            }
+            if(info.getType()==2&&info.getMp3()!=null&&paths.equals(info.getMp3())){
+                Log.i("dddd", "getType=");
                 info.setPlay(true);
                 TaskCationDB.getDB().update(null,info);
                 break;
