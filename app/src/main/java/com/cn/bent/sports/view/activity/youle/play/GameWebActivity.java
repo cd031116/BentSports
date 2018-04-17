@@ -21,6 +21,7 @@ import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.widget.CompletionDialog;
 import com.cn.bent.sports.widget.GameErrorDialog;
 import com.cn.bent.sports.widget.GameFailDialog;
+import com.cn.bent.sports.widget.ProgressWebView;
 import com.cn.bent.sports.widget.ToastDialog;
 import com.google.gson.Gson;
 import com.zhl.network.RxObserver;
@@ -40,7 +41,7 @@ import io.reactivex.Observable;
 public class GameWebActivity extends BaseActivity {
 
     @Bind(R.id.webview)
-    WebView mWebView;
+    ProgressWebView mWebView;
 
     private String teamId, gamePointId,type,gameName;
 
@@ -63,8 +64,6 @@ public class GameWebActivity extends BaseActivity {
 
 
         WebSettings webSettings = mWebView.getSettings();
-
-
         webSettings.setLoadWithOverviewMode(true);
 //        webSettings.setJavaScriptEnabled(true);
         webSettings.setUseWideViewPort(true);
@@ -81,16 +80,8 @@ public class GameWebActivity extends BaseActivity {
         webSettings.setSupportZoom(false);
         webSettings.setBlockNetworkImage(true);
         mWebView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY); //取消滚动条白边效果
-        mWebView.setWebViewClient(new WebViewClient() {
-            //覆盖shouldOverrideUrlLoading 方法
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
-                return true;
-            }
-        });
         webSettings.setDefaultTextEncodingName("UTF-8");
-        webSettings.setBlockNetworkImage(false);
+        webSettings.setBlockNetworkImage(true);
 
         // 设置与Js交互的权限
         webSettings.setJavaScriptEnabled(true);
@@ -108,10 +99,18 @@ public class GameWebActivity extends BaseActivity {
     class JSInterface {
         @JavascriptInterface
         public void h5Result(String ss) {
+            LoginResult user = SaveObjectUtils.getInstance(GameWebActivity.this).getObject(Constants.USER_INFO, null);
+            String access_token = user.getAccess_token();
+
             Log.e("dasa", "h5Result: " + ss);
             Gson gson = new Gson();
             YouleGameEntity youleGameEntity = gson.fromJson(ss, YouleGameEntity.class);
-            finishTask(youleGameEntity);
+
+            if(youleGameEntity.getScord()>=youleGameEntity.getPassScore()){
+                finishTask(youleGameEntity);
+            }else {
+                showErrorDialog(gameName, youleGameEntity.getScord());
+            }
 //            Log.d("dasa", "h5Result: " + gameEntity.getGameid() + ",getScord:" + gameEntity.getScord() + ",getUid:" + gameEntity.getUid());
         }
     }
@@ -218,5 +217,12 @@ public class GameWebActivity extends BaseActivity {
                 dialog.dismiss();
             }
         }).setTitle("提示").show();
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mWebView!= null) {
+            mWebView.destroy();
+        }
     }
 }

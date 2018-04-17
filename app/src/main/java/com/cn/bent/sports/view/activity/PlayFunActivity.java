@@ -131,7 +131,7 @@ public class PlayFunActivity extends BaseActivity {
             type_t.setText("依次穿越");
 
             num_dot.setText(mList.get(position).getPointCount() + "个点标");
-            name_p.setText(mList.get(position).getLineName());
+            name_p.setText(mList.get(position).getTitle());
             p_num.setText(mList.get(position).getMaxPeople() + "人/组");
             go_task.setOnClickListener(new View.OnClickListener() {
                 @Override

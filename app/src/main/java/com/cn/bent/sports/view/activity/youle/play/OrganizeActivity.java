@@ -99,7 +99,7 @@ public class OrganizeActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.creat_scan:
                 if(teamGame!=null){
-                    ScanType st=new ScanType("game",teamGame.getId()+"");
+                    ScanType st=new ScanType("game",teamGame.getId()+"",teamGame.getGameId());
                     String STARS = JSON.toJSONString(st);
                     shouPoup(STARS);
                 }else {

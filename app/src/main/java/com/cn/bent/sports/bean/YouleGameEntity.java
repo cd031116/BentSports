@@ -16,8 +16,17 @@ public class YouleGameEntity implements Serializable{
 
     private String teamId;
     private int scord;
+    private int passScore;
     private int type;
     private String gamePointId;
+
+    public int getPassScore() {
+        return passScore;
+    }
+
+    public void setPassScore(int passScore) {
+        this.passScore = passScore;
+    }
 
     public int getType() {
         return type;

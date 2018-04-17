@@ -174,7 +174,7 @@ public class RecommendFragment extends BaseFragment {
                     JSONObject jsonObject = JSONObject.parseObject(jieguo);
                     String  types = jsonObject.getString("type");
                     if("game".equals(types)){
-                        getJoinTeam(jsonObject.getString("param"));
+                        getJoinTeam(jsonObject.getString("param"),jsonObject.getIntValue("gameId"));
                     }else {
                         RxToast.warning("二维码不正确");
                     }
@@ -183,7 +183,7 @@ public class RecommendFragment extends BaseFragment {
         }
     }
 
-    private void getJoinTeam(final  String teamId ) {
+    private void getJoinTeam(final  String teamId ,final int gameId) {
         showAlert("正在加入组队...", true);
         BaseApi.getJavaLoginDefaultService(getActivity()).joinTeamGame(teamId )
                 .map(new JavaRxFunction<JoinTeam>())
@@ -194,6 +194,7 @@ public class RecommendFragment extends BaseFragment {
                         dismissAlert();
                         Intent intent=new Intent(getActivity(),TeamMemberActivity.class);
                         intent.putExtra("gameTeamId",Integer.parseInt(teamId));
+                        intent.putExtra("gameId",gameId);
                         startActivity(intent);
                     }
 

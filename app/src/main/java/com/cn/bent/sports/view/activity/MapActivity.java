@@ -40,6 +40,7 @@ import com.amap.api.maps.AMap;
 import com.amap.api.maps.AMapUtils;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
+import com.amap.api.maps.UiSettings;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
@@ -168,7 +169,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     private CommonAdapter<ScenicPointsEntity.PointsBean> mAdapter;
     private RouteSearch routeSearch;
     private List<ScenicPointsEntity.PointsBean> voicePoints = new ArrayList<>();
-
+    long chekTime=-1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -194,7 +195,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
 //        String path = this.getFilesDir() + "/bent/sport.data";
 //        aMap.setCustomMapStylePath(path);
 //        aMap.setMapCustomEnable(true);//true 开启; false 关闭
-
+        aMap.getUiSettings().setRotateGesturesEnabled(false);
         aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lp.getLatitude(), lp.getLongitude()), 17));
         // 绑定海量点点击事件
 //        aMap.setOnMultiPointClickListener(multiPointClickListener);
@@ -1182,11 +1183,16 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
              */
             @Override
             public void onRangeBeacons(List<MinewBeacon> minewBeacons) {
+                if (System.currentTimeMillis()-chekTime<5000){
+                    return;
+                }
+                chekTime=System.currentTimeMillis();
+                  int mposinSize=mPointsList.size();
                 if (minewBeacons != null && minewBeacons.size() > 0 && yyCheckBox.isChecked()) {
 //                    String distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
-                    for (MinewBeacon beacon : minewBeacons) {
+                    labe:for (MinewBeacon beacon : minewBeacons) {
                         String majer = beacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Major).getStringValue();
-                        for (int i = 0; i < mPointsList.size(); i++) {
+                        for (int i = 0; i <mposinSize; i++) {
                             String jieguo = String.valueOf(mPointsList.get(i).getMajor());
                             if (jieguo.equals(majer)) {
                                 if (!TextUtils.isEmpty(mPointsList.get(i).getMp3()) && (mPointsList.get(i).getMp3()).endsWith(".mp3")) {
@@ -1195,8 +1201,8 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
 
                                     } else {
                                         chanVioce(i);
+                                        break labe;
                                     }
-                                    break;
                                 }
                             }
                         }
@@ -1227,17 +1233,25 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
 
     //------------------------切换语音
     long sTime = 0;
-
+    int oldPosition=-1;
     private void chanVioce(final int positon) {
         //没有播放过又不是当前播放的
         final String clickpath = mPointsList.get(positon).getMp3();
-        if (System.currentTimeMillis() - sTime < 5000) {
+        if (System.currentTimeMillis() - sTime < 1000) {
             return;
         }
         EventBus.getDefault().post(new PlayEvent(clickpath, true));
         TaskCationManager.updateNowPlay(positon);
+        TaskCationManager.sethavePlay(clickpath);
         mPointsEntity = mPointsList.get(positon);
-        addAnimMarker(mPointsEntity);
+        if (oldPosition>=0){
+            addAnimreset(mPointsList.get(oldPosition).getMp3());
+            addAnimMarkerTo(mPointsEntity);
+        }else {
+            addAnimMarkerTo(mPointsEntity);
+        }
+        Log.i("oldPosition","oldPosition="+oldPosition);
+        oldPosition=positon;
         tour_name.setText(mPointsEntity.getPointName());
         sTime = System.currentTimeMillis();
 //        if (mycontrol.isPlay()) {

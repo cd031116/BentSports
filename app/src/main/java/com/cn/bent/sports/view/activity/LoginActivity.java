@@ -137,8 +137,8 @@ public class LoginActivity extends BaseActivity implements Handler.Callback {
                 .subscribe(new RxObserver<LoginResult>(LoginActivity.this, "login", 1, false) {
                     @Override
                     public void onSuccess(int whichRequest, LoginResult info) {
-                        SaveObjectUtils.getInstance(LoginActivity.this).setObject(Constants.USER_INFO, info);
                         dismissAlert();
+                        SaveObjectUtils.getInstance(LoginActivity.this).setObject(Constants.USER_INFO, info);
                         getUserInfo();
                     }
 
@@ -185,6 +185,7 @@ public class LoginActivity extends BaseActivity implements Handler.Callback {
                 .subscribe(new RxObserver<UserInfo>(LoginActivity.this, "getcode", 1, false) {
                     @Override
                     public void onSuccess(int whichRequest, UserInfo result) {
+                        dismissAlert();
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         SaveObjectUtils.getInstance(LoginActivity.this).setObject(Constants.USER_BASE, result);
                         finish();
@@ -192,6 +193,7 @@ public class LoginActivity extends BaseActivity implements Handler.Callback {
 
                     @Override
                     public void onError(int whichRequest, Throwable e) {
+                        dismissAlert();
                         RxToast.error(e.getMessage());
                     }
                 });
@@ -252,7 +254,7 @@ public class LoginActivity extends BaseActivity implements Handler.Callback {
                 wechat.setPlatformActionListener(paListener);
                 wechat.authorize();
                 wechat.showUser(null);
-                showAlert("正在调用微信登录...", true);
+                showAlert("正在使用微信登录...", true);
                 break;
         }
     }
@@ -300,13 +302,13 @@ public class LoginActivity extends BaseActivity implements Handler.Callback {
             switch(msg.what) {
                 case MSG_AUTH_CANCEL: {
                     // 取消
-                    dismissAlert();
                     RxToast.normal("取消");
+                    dismissAlert();
                 }
                 break;
                 case MSG_AUTH_ERROR: {
-                    dismissAlert();
                     // 失败
+                    dismissAlert();
                     Throwable t = (Throwable) msg.obj;
                     String text = "caught error: " + t.getMessage();
                     RxToast.info(text);

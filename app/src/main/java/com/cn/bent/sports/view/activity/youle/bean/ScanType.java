@@ -9,6 +9,15 @@ import java.io.Serializable;
 public class ScanType implements Serializable{
     private String type;
     private String param;
+    private int gameId;
+
+    public int getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(int gameId) {
+        this.gameId = gameId;
+    }
 
     public String getType() {
         return type;
@@ -26,8 +35,10 @@ public class ScanType implements Serializable{
         this.param = param;
     }
 
-    public ScanType(String type, String param) {
+    public ScanType(String type, String param, int gameId) {
         this.type = type;
         this.param = param;
+        this.gameId = gameId;
     }
+
 }

@@ -50,6 +50,7 @@ public class TeamMemberActivity extends BaseActivity {
     WebView webView;
     private StompClient mStompClient;
    private int gameTeamId ;
+   private int gameId;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_team_member;
@@ -59,6 +60,7 @@ public class TeamMemberActivity extends BaseActivity {
     public void initView() {
         super.initView();
         gameTeamId=getIntent().getExtras().getInt("gameTeamId");
+        gameId=getIntent().getExtras().getInt("gameId");
         createStompClient();
         getGameDetail();
     }
@@ -87,7 +89,7 @@ public class TeamMemberActivity extends BaseActivity {
 
     private void getGameDetail() {
         showAlert("正在获取...", true);
-        BaseApi.getJavaLoginDefaultService(TeamMemberActivity.this).getGamePrapre(gameTeamId)
+        BaseApi.getJavaLoginDefaultService(TeamMemberActivity.this).getGamePrapre(gameId)
                 .map(new JavaRxFunction<String>())
                 .compose(RxSchedulers.<String>io_main())
                 .subscribe(new RxRequest<>(TeamMemberActivity.this, TAG, 1, new RequestLisler<String>() {
