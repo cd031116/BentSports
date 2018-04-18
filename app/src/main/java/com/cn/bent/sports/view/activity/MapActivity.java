@@ -121,8 +121,8 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     TextView shaixuan;
     @Bind(R.id.fujin)
     TextView fujin;
-    @Bind(R.id.waik_num)
-    TextView waik_num;
+//    @Bind(R.id.waik_num)
+//    TextView waik_num;
     @Bind(R.id.luxian)
     TextView luxian;
     @Bind(R.id.yinp_bf)
@@ -256,12 +256,12 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         public void onServiceConnected(ComponentName name, IBinder service) {
             StepService stepService = ((StepService.StepBinder) service).getService();
             //设置初始化数据
-            waik_num.setText(stepService.getStepCount() + "");
+//            waik_num.setText(stepService.getStepCount() + "");
             //设置步数监听回调
             stepService.registerCallback(new UpdateUiCallBack() {
                 @Override
                 public void updateUi(int stepCount) {
-                    waik_num.setText(stepCount + "");
+//                    waik_num.setText(stepCount + "");
                     sendStepMsg(stepCount);
                 }
             });
@@ -362,7 +362,8 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                                 pointsBean.setPointImg(ImageUtils.getImageUrl(pointsBean.getPointImg()));
                                 mPointsList.add(pointsBean);
                                 mPointsEntityMap.put(pointsBean.getId(), pointsBean);
-                                setOverLay(pointsBean.getType(), pointsBean);
+                                if (pointsBean.getType()==2)
+                                    setOverLay(pointsBean.getType(), pointsBean);
                             }
                                 TaskCationManager.insert(scenicPointsEntity.getPoints());
                         }

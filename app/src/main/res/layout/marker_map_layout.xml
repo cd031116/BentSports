@@ -59,7 +59,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="28px"
             android:layout_marginTop="56px"
-            android:background="@color/comm_white"
+            android:background="@drawable/bg_small_round_white"
             android:drawablePadding="9px"
             android:drawableTop="@drawable/shaixuan"
             android:gravity="center_horizontal"
@@ -76,7 +76,7 @@
             android:layout_below="@id/shaixuan"
             android:layout_marginRight="28px"
             android:layout_marginTop="28px"
-            android:background="@color/comm_white"
+            android:background="@drawable/bg_small_round_white"
             android:drawablePadding="9px"
             android:drawableTop="@drawable/fujin"
             android:gravity="center_horizontal"
@@ -98,8 +98,8 @@
             android:button="@null"
             android:checked="false"
             android:drawableTop="@drawable/choose_lx"
-            android:text="步数轨迹"
-            android:background="@color/comm_white"
+            android:text="轨迹"
+            android:background="@drawable/bg_small_round_white"
             android:textColor="#333333"
             android:textSize="23px" />
 
@@ -111,7 +111,7 @@
             android:layout_above="@id/bsgj_layout"
             android:layout_marginBottom="28px"
             android:layout_marginLeft="28px"
-            android:background="@color/comm_white"
+            android:background="@drawable/bg_small_round_white"
             android:drawablePadding="9px"
             android:drawableTop="@drawable/luxian_1"
             android:gravity="center_horizontal"
@@ -127,7 +127,7 @@
             android:layout_above="@id/luxian"
             android:layout_marginBottom="28px"
             android:layout_marginLeft="28px"
-            android:background="@color/comm_white"
+            android:background="@drawable/bg_small_round_white"
             android:drawableTop="@drawable/saomiao"
             android:gravity="center"
             android:paddingTop="28px" />
@@ -146,7 +146,7 @@
                 android:paddingTop="20px"
                 android:button="@null"
                 android:checked="true"
-                android:background="@color/comm_white"
+                android:background="@drawable/bg_small_round_white"
                 android:drawableTop="@drawable/choose_lx"
                 android:text="自动讲解"
                 android:textColor="#333333"
@@ -154,35 +154,35 @@
 
 
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="102px"
-            android:layout_marginLeft="30px"
-            android:layout_marginTop="56px"
-            android:background="@drawable/bg_round_white"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingLeft="30px"
-            android:paddingRight="30px">
+        <!--<LinearLayout-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="102px"-->
+            <!--android:layout_marginLeft="30px"-->
+            <!--android:layout_marginTop="56px"-->
+            <!--android:background="@drawable/bg_small_round_white"-->
+            <!--android:gravity="center"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:paddingLeft="30px"-->
+            <!--android:paddingRight="30px">-->
 
-            <TextView
-                android:id="@+id/waik_num"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0"
-                android:textColor="#3fcfe4"
-                android:textSize="72px" />
+            <!--<TextView-->
+                <!--android:id="@+id/waik_num"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="0"-->
+                <!--android:textColor="#3fcfe4"-->
+                <!--android:textSize="72px" />-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="bottom"
-                android:paddingLeft="3px"
-                android:paddingTop="5px"
-                android:text="步"
-                android:textColor="#999999"
-                android:textSize="43px" />
-        </LinearLayout>
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:gravity="bottom"-->
+                <!--android:paddingLeft="3px"-->
+                <!--android:paddingTop="5px"-->
+                <!--android:text="步"-->
+                <!--android:textColor="#999999"-->
+                <!--android:textSize="43px" />-->
+        <!--</LinearLayout>-->
 
 
     </RelativeLayout>
@@ -191,6 +191,7 @@
         android:id="@+id/bf_layout"
         android:layout_width="match_parent"
         android:layout_height="126px"
+        android:background="@color/white"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
