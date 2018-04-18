@@ -166,11 +166,13 @@ public class MyRouteListActivity extends BaseActivity {
                             if (infos.getId() == myGame.getLeaderId()) {
                                 Intent intent = new Intent(MyRouteListActivity.this, OrganizeActivity.class);
                                 intent.putExtra("gameTeamId", myGame.getGameTeamId() + "");
+                                intent.putExtra("gameName", myGame.getTitle());
                                 startActivity(intent);
                             } else {
                                 Intent intent = new Intent(MyRouteListActivity.this, TeamMemberActivity.class);
                                 intent.putExtra("gameTeamId", myGame.getGameTeamId());
                                 intent.putExtra("gameId", myGame.getGameId());
+                                intent.putExtra("gameName", myGame.getTitle());
                                 startActivity(intent);
                             }
                         }

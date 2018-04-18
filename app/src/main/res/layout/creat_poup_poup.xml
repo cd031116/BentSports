@@ -25,7 +25,7 @@
             android:layout_marginTop="100px"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
-            android:text="队员用app扫描上方二维码\n即可扫描"/>
+            android:text="队员用app或小程序扫描上方二维码\n即可扫描"/>
 
     </LinearLayout>
 

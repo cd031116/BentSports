@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
@@ -48,6 +49,8 @@ public class TeamMemberActivity extends BaseActivity {
     private JoinTeam bean;
     @Bind(R.id.webview)
     WebView webView;
+    @Bind(R.id.top_title)
+    TextView top_title;
     private StompClient mStompClient;
    private int gameTeamId ;
    private int gameId;
@@ -61,6 +64,8 @@ public class TeamMemberActivity extends BaseActivity {
         super.initView();
         gameTeamId=getIntent().getExtras().getInt("gameTeamId");
         gameId=getIntent().getExtras().getInt("gameId");
+        String gameName=getIntent().getExtras().getString("gameName");
+        top_title.setText(gameName);
         createStompClient();
         getGameDetail();
     }

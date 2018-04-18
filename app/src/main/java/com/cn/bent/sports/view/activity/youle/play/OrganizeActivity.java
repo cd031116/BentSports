@@ -3,6 +3,7 @@ package com.cn.bent.sports.view.activity.youle.play;
 import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -65,6 +66,8 @@ public class OrganizeActivity extends BaseActivity {
     RecyclerView m_recycle;
      @Bind(R.id.top_title)
      TextView top_title;
+     @Bind(R.id.team_name)
+     TextView team_name;
 
     private CommonAdapter<MemberDataEntity> mAdapter;
     private List<MemberDataEntity> mList = new ArrayList<>();
@@ -72,6 +75,7 @@ public class OrganizeActivity extends BaseActivity {
     private String gameTeamId;
     TeamGame teamGame;
     private StompClient mStompClient;
+    private String gameName;
 
     @Override
     protected int getLayoutId() {
@@ -81,8 +85,9 @@ public class OrganizeActivity extends BaseActivity {
     @Override
     public void initView() {
         super.initView();
-        top_title.setText("我的团队");
         gameTeamId =  getIntent().getExtras().getString("gameTeamId");
+        gameName =  getIntent().getExtras().getString("gameName");
+        top_title.setText("我的团队");
         createStompClient();
     }
 
@@ -110,6 +115,7 @@ public class OrganizeActivity extends BaseActivity {
                 PlayUserManager.insert(mList);
                 Intent intent = new Intent(OrganizeActivity.this, PrepareActivity.class);
                 intent.putExtra("teamGame", teamGame);
+                intent.putExtra("gameName", gameName);
                 startActivity(intent);
                 finish();
                 break;
@@ -187,6 +193,7 @@ public class OrganizeActivity extends BaseActivity {
                 .into(user_photo);
         total_num.setText(info.getTeamMemberMax() + "");
         join_num.setText(info.getTeamMemberReal() + "");
+        team_name.setText(info.getTeamName());
 //        UserInfo infos=SaveObjectUtils.getInstance(OrganizeActivity.this).getObject(Constants.USER_BASE, null);
 //        JoinTeam bean=new JoinTeam();
 //        bean.setAvatar(infos.getAvatar());

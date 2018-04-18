@@ -38,6 +38,7 @@ public class PrepareActivity extends BaseActivity {
     WebView webView;
     @Bind(R.id.top_title)
     TextView top_title;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_prepare;
@@ -47,13 +48,14 @@ public class PrepareActivity extends BaseActivity {
     public void initView() {
         super.initView();
         teamGame = (TeamGame) getIntent().getSerializableExtra("teamGame");
+        String gameName =getIntent().getExtras().getString("gameName");
+        top_title.setText(gameName);
     }
 
     @Override
     public void initData() {
         super.initData();
         getGamePrapre();
-        top_title.setText(teamGame.getTeamName());
     }
 
     @OnClick({R.id.start_t, R.id.look_peo,R.id.top_left,R.id.top_image})
