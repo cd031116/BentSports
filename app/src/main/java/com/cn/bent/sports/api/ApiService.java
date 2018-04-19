@@ -353,7 +353,7 @@ public interface ApiService {
      * @param teamId
      * @return
      */
-    @GET("api/travel//game_team/{teamId}/members")
+    @GET("api/travel/game_team/{teamId}/members")
     Observable<JavaResult<List<MemberDataEntity>>> getMemberDetailData(@Path("teamId") String teamId);
 
 

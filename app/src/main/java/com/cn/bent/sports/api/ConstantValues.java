@@ -18,16 +18,17 @@ public class ConstantValues {
     public static final String GAME_OFFLINE_URL = "https://aistatic.huiqulx.com/h5/videoZoom/btlTask.html";
 //    public static final String JAVA_URL = "http://192.168.19.22:8840/";
     //开发测试域名
-    public static final String JAVA_URL = "https://aiapi-dev.huiqulx.com/";
+//    public static final String JAVA_URL = "https://aiapi-dev.huiqulx.com/";
     //正式域名
-//    public static final String JAVA_URL = "http://aiapi.huiqulx.com/";
+    public static final String JAVA_URL = "http://aiapi.huiqulx.com/";
     public static final String KEY_FRAGMENT_INDEX = "key_fragment_index";
     //正式websocket
-//    public static final String JAVA_URL_WEBSOCKET = "aiws.huiqulx.com/my-websocket";
+    public static final String JAVA_URL_WEBSOCKET = "aiws.huiqulx.com/my-websocket";
     //开发websocket
-    public static final String JAVA_URL_WEBSOCKET = "aiws-dev.huiqulx.com/my-websocket";
+//    public static final String JAVA_URL_WEBSOCKET = "192.168.19.21:8012";
+//    public static final String JAVA_URL_WEBSOCKET = "aiws-dev.huiqulx.com/my-websocket";
     //    生产环境 静态资源
-//    public static final String JAVA_YUN_URL="https://aistatic.huiqulx.com";
+    public static final String JAVA_YUN_URL="https://aistatic.huiqulx.com";
     //    开发环境 静态资源
-    public static final String JAVA_YUN_URL="https://aistatic-dev.huiqulx.com";
+//    public static final String JAVA_YUN_URL="https://aistatic-dev.huiqulx.com";
 }
