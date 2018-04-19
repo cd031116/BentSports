@@ -28,6 +28,7 @@
         android:id="@+id/rlist"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#ffffff"
        />
 
     </com.jwenfeng.library.pulltorefresh.PullToRefreshLayout>

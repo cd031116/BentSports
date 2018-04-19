@@ -250,7 +250,7 @@
                     <LinearLayout
                         android:id="@+id/search02"
                         android:layout_width="match_parent"
-                        android:layout_height="120px"
+                        android:layout_height="140px"
                         android:layout_marginTop="30px"
                         android:background="#ffffff"
                         android:orientation="vertical">
@@ -318,7 +318,7 @@
             <LinearLayout
                 android:id="@+id/search01"
                 android:layout_width="match_parent"
-                android:layout_height="120px"
+                android:layout_height="140px"
                 android:layout_below="@+id/top_layout"
                 android:orientation="vertical"></LinearLayout>
         </RelativeLayout>

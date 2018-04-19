@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -127,21 +128,18 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
 
 
     private void changeview(int index) {
-        tab1_t.setTextColor(Color.parseColor("#333333"));
-        tab2_t.setTextColor(Color.parseColor("#333333"));
-        tab3_t.setTextColor(Color.parseColor("#333333"));
-        tab1_v.setTextColor(Color.parseColor("#ffffff"));
-        tab2_v.setTextColor(Color.parseColor("#ffffff"));
-        tab3_v.setTextColor(Color.parseColor("#ffffff"));
+        tab1_v.setSelected(false);
+        tab2_v.setSelected(false);
+        tab3_v.setSelected(false);
         if (index == 1) {
             changeFrament("afragment",0);
-            tab1_v.setTextColor(Color.parseColor("#fd7d6f"));
+            tab1_v.setSelected(true);
         } else if (index == 2) {
             changeFrament("bfragment",1);
-            tab2_v.setTextColor(Color.parseColor("#fd7d6f"));
+            tab2_v.setSelected(true);
         } else {
             changeFrament("cfragment",2);
-            tab3_v.setTextColor(Color.parseColor("#fd7d6f"));
+            tab3_v.setSelected(true);
         }
     }
 

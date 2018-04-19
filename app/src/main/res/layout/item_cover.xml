@@ -8,13 +8,14 @@
         android:layout_width="870px"
         android:layout_height="1225px"
         android:layout_centerInParent="true"
-        android:foreground="?android:attr/selectableItemBackground"
+        android:layout_margin="1dp"
+        app:cardBackgroundColor="#ededed"
         app:cardCornerRadius="8dp"
-        android:elevation="4dp"
+        android:elevation="10dp"
         android:translationZ="2dp"
         app:cardElevation="5dp"
         app:cardUseCompatPadding="true"
-        app:cardPreventCornerOverlap="false">
+        app:cardPreventCornerOverlap="true">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
