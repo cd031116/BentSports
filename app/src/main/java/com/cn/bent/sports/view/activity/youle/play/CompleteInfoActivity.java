@@ -26,6 +26,7 @@ import com.vondear.rxtools.view.RxToast;
 import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.JavaRxFunction;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -72,7 +73,8 @@ public class CompleteInfoActivity extends BaseActivity {
         super.initView();
         gameTeamId = getIntent().getIntExtra("gameTeamId", 1);
         String mlist = getIntent().getStringExtra("mlsit");
-        mpoints.addAll(JSON.parseArray(mlist, GamePotins.class));
+        List<GamePotins> mMap = (List<GamePotins>)getIntent().getSerializableExtra("mMap");
+        mpoints.addAll(mMap);
     }
 
     @Override

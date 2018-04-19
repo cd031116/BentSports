@@ -78,7 +78,9 @@ import org.reactivestreams.Subscription;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -149,7 +151,8 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     private TeamGame teamGame;
     //-------------------------------------------------
     private List<JoinTeam> mPosition = new ArrayList<>();
-    private List<GamePotins> mGamePotinsList = new ArrayList<>();
+//    private List<GamePotins> mGamePotinsList = new ArrayList<>();
+    private Map<Integer,GamePotins> mGamePointsMap=new HashMap<>();
     private boolean isDo = false;
     private UserInfo user;
 
@@ -242,7 +245,8 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
             case R.id.finish_situation:
                 Intent intent3 = new Intent(PlayMultActivity.this, CompleteInfoActivity.class);
                 intent3.putExtra("gameTeamId", gameTeamId);
-                intent3.putExtra("mlsit", JSON.toJSONString(mGamePotinsList));
+//                intent3.putExtra("mlsit", JSON.toJSONString(mGamePotinsList));
+                intent3.putExtra("mMap",(Serializable)mGamePointsMap);
                 startActivity(intent3);
                 break;
             case R.id.exit_game:
@@ -277,18 +281,16 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        for (int i = 0; i < mGamePotinsList.size(); i++) {
-            if (Integer.parseInt(marker.getTitle()) == mGamePotinsList.get(i).getId()) {
-                if (mGamePotinsList.get(i).getState() == -1) {//未开始
+                GamePotins markGamePotins=mGamePointsMap.get(Integer.parseInt(marker.getTitle()));
+                if (markGamePotins.getState() == -1) {//未开始
 //                    getPointGame(gameTeamId, mGamePotinsList.get(i).getId(), mGamePotinsList.get(i).isHasQuestion(), !mGamePotinsList.get(i).isHasTask());
-                    shouPoup(mGamePotinsList.get(i), teamGame, false);
-                    mEndPoint = new LatLng(Double.valueOf(mGamePotinsList.get(i).getLatitude()).doubleValue(),
-                            Double.valueOf(mGamePotinsList.get(i).getLongitude()).doubleValue());
-                    t_ids = i;
-                    break;
-                } else if (mGamePotinsList.get(i).getState() == 1) {
+                    shouPoup(markGamePotins, teamGame, false);
+                    mEndPoint = new LatLng(Double.valueOf(markGamePotins.getLatitude()).doubleValue(),
+                            Double.valueOf(markGamePotins.getLongitude()).doubleValue());
+                    t_ids = Integer.parseInt(marker.getTitle());
+                } else if (markGamePotins.getState() == 1) {
                     boolean isPlayGame = false;
-                    for (GamePotins.TeamTaskDetailsBean teamTaskDetailsBean : mGamePotinsList.get(i).getTeamTaskDetails()) {
+                    for (GamePotins.TeamTaskDetailsBean teamTaskDetailsBean : markGamePotins.getTeamTaskDetails()) {
                         if (user.getId() == teamTaskDetailsBean.getUserId()) {
                             isPlayGame = true;
                             break;
@@ -300,24 +302,22 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                             public void onClick(Dialog dialog, int index) {
                                 dialog.dismiss();
                             }
-                        }).setListData(teamGame, mGamePotinsList.get(i)).show();
+                        }).setListData(teamGame, markGamePotins).show();
                     else {
-                        shouPoup(mGamePotinsList.get(i), teamGame, false);
-                        mEndPoint = new LatLng(Double.valueOf(mGamePotinsList.get(i).getLatitude()).doubleValue(),
-                                Double.valueOf(mGamePotinsList.get(i).getLongitude()).doubleValue());
-                        t_ids = i;
+                        shouPoup(markGamePotins, teamGame, false);
+                        mEndPoint = new LatLng(Double.valueOf(markGamePotins.getLatitude()).doubleValue(),
+                                Double.valueOf(markGamePotins.getLongitude()).doubleValue());
+                        t_ids = Integer.parseInt(marker.getTitle());
                     }
-                    break;
-                } else if (mGamePotinsList.get(i).getState() == 2) {
+
+                } else if (markGamePotins.getState() == 2) {
                     new OneTaskFinishDialog(PlayMultActivity.this, R.style.dialog, new OneTaskFinishDialog.OnClickListener() {
                         @Override
                         public void onClick(Dialog dialog, int index) {
                             dialog.dismiss();
                         }
-                    }).setListData(teamGame, mGamePotinsList.get(i)).show();
-                    break;
-                }
-            }
+                    }).setListData(teamGame, markGamePotins).show();
+
         }
         return true;
     }
@@ -506,12 +506,12 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
             public void onRangeBeacons(List<MinewBeacon> minewBeacons) {
                 if (minewBeacons != null && minewBeacons.size() > 0) {
 //                    String distance = String.valueOf(AMapUtils.calculateLineDistance(mStartPoint, mEndPoint));
-                    if (mGamePotinsList != null && mGamePotinsList.size() > 0 && t_ids >= 0) {
+                    if (mGamePointsMap != null && mGamePointsMap.size() > 0 && t_ids >= 0) {
                         for (MinewBeacon beacon : minewBeacons) {
                             String majer = beacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Major).getStringValue();
                             if (majer != null) {
-                                if (majer.equals(mGamePotinsList.get(t_ids).getMajor() + "")) {
-                                    shouPoup(mGamePotinsList.get(t_ids), teamGame, true);
+                                if (majer.equals(mGamePointsMap.get(t_ids).getMajor() + "")) {
+                                    shouPoup(mGamePointsMap.get(t_ids), teamGame, true);
                                     t_ids = -1;
                                     break;
                                 }
@@ -747,10 +747,11 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                     public void onSucess(int whichRequest, List<GamePotins> info) {
                         dismissAlert();
                         PlayPointManager.insert(info);
-                        if (mGamePotinsList != null) {
-                            mGamePotinsList.clear();
-                        }
-                        mGamePotinsList = info;
+//                        if (mGamePotinsList != null) {
+//                            mGamePotinsList.clear();
+//                        }
+//                        mGamePotinsList = info;
+
                         aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(info.get(0).getLatitude(), info.get(0).getLongitude()), mCurrentZoom));
                         if (mMarkerList != null && mMarkerList.size() > 0)
                             for (Marker marker : mMarkerList) {
@@ -817,7 +818,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         if (teamGame.getGameType() == 1) {
             DataUtils.compareDaXiao(info);
             for (GamePotins gamePotins : info) {
-
+                mGamePointsMap.put(gamePotins.getId(),gamePotins);
                 Log.d(TAG, "setMarkerView: " + gamePotins.getOrderNo() + "----getState:" + gamePotins.getState() + "--:" + teamGame.getPassRate());
                 if (gamePotins.getOrderNo() != 0) {
                     if (gamePotins.getState() == 2) {
@@ -890,7 +891,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
             timing.setText("已完成");
             score_two.setText(PlayPointManager.getScore() + "分");
             finish_task_two.setText(PlayPointManager.getHavaPlay() + "");
-            all_task_two.setText("/" + mGamePotinsList.size());
+            all_task_two.setText("/" + mGamePointsMap.size());
             getGameOver();
         } else {
             setTimes();
@@ -898,7 +899,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
             line_two.setVisibility(View.GONE);
             score_one.setText(PlayPointManager.getScore() + "分");
             finish_task.setText(PlayPointManager.getHavaPlay() + "");
-            all_task.setText("/" + mGamePotinsList.size());
+            all_task.setText("/" + mGamePointsMap.size());
         }
     }
 

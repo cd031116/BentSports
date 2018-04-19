@@ -14,8 +14,8 @@ public class ConstantValues {
     public static final String ORDER_TYPE="orderType";
 
     public static final String BASE_URL = "http://wxxcx.zhonghuilv.net/";
-    public static final String GAME_ONLINE_URL = "http://aistatic.huiqulx.com/h5/questions/choice.html";
-    public static final String GAME_OFFLINE_URL = "http://aistatic.huiqulx.com/h5/videoZoom/btlTask.html";
+    public static final String GAME_ONLINE_URL = "https://aistatic.huiqulx.com/h5/questions/choice.html";
+    public static final String GAME_OFFLINE_URL = "https://aistatic.huiqulx.com/h5/videoZoom/btlTask.html";
 //    public static final String JAVA_URL = "http://192.168.19.22:8840/";
     //开发测试域名
     public static final String JAVA_URL = "https://aiapi-dev.huiqulx.com/";
@@ -27,7 +27,7 @@ public class ConstantValues {
     //开发websocket
     public static final String JAVA_URL_WEBSOCKET = "aiws-dev.huiqulx.com/my-websocket";
     //    生产环境 静态资源
-//    public static final String JAVA_YUN_URL="http://aistatic.huiqulx.com";
+//    public static final String JAVA_YUN_URL="https://aistatic.huiqulx.com";
     //    开发环境 静态资源
-    public static final String JAVA_YUN_URL="http://aistatic-dev.huiqulx.com";
+    public static final String JAVA_YUN_URL="https://aistatic-dev.huiqulx.com";
 }
