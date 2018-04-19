@@ -94,7 +94,6 @@ public class WalkRankListActivity extends BaseActivity {
         }
     }
 
-    //获取websocket连接
     private void getGameDetail() {
         showAlert("正在获取....", true);
         BaseApi.getJavaLoginDefaultService(WalkRankListActivity.this).getStepList()

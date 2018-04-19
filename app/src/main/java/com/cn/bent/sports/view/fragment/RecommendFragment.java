@@ -30,6 +30,7 @@ import com.cn.bent.sports.api.RxRequest;
 import com.cn.bent.sports.base.BaseFragment;
 import com.cn.bent.sports.bean.GameEntity;
 import com.cn.bent.sports.bean.GameInfo;
+import com.cn.bent.sports.bean.StepInfo;
 import com.cn.bent.sports.evevt.ShowPoupEvent;
 import com.cn.bent.sports.sensor.UpdateUiCallBack;
 import com.cn.bent.sports.utils.Constants;
@@ -168,6 +169,11 @@ public class RecommendFragment extends BaseFragment {
         }).setName(game_name).setScore(score).show();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getBushuDetail();
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -236,12 +242,12 @@ public class RecommendFragment extends BaseFragment {
         public void onServiceConnected(ComponentName name, IBinder service) {
             StepService stepService = ((StepService.StepBinder) service).getService();
             //设置初始化数据
-            walk_num.setText(stepService.getStepCount() + "");
+            walk_num.setText("0");//stepService.getStepCount() +
             //设置步数监听回调
             stepService.registerCallback(new UpdateUiCallBack() {
                 @Override
                 public void updateUi(int stepCount) {
-                    walk_num.setText(stepCount + "");
+//                  walk_num.setText(stepCount + "");
                     sendStepMsg(stepCount);
                 }
             });
@@ -275,7 +281,7 @@ public class RecommendFragment extends BaseFragment {
         BaseApi.getJavaLoginDefaultService(getActivity()).sendStep(steps)
                 .map(new JavaRxFunction<Boolean>())
                 .compose(RxSchedulers.<Boolean>io_main())
-                .subscribe(new RxRequest<Boolean>(getActivity(), TAG, 1, new RequestLisler<Boolean>() {
+                .subscribe(new RxRequest<>(getActivity(), TAG, 1, new RequestLisler<Boolean>() {
                     @Override
                     public void onSucess(int whichRequest, Boolean aBoolean) {
                         StepData.getInstance(getActivity()).setStepDataValue(System.currentTimeMillis());
@@ -356,4 +362,30 @@ public class RecommendFragment extends BaseFragment {
 
     }
 
+    //
+    private void getBushuDetail() {
+        BaseApi.getJavaLoginDefaultService(getActivity()).getStepList()
+                .map(new JavaRxFunction<StepInfo>())
+                .compose(RxSchedulers.<StepInfo>io_main())
+                .subscribe(new RxRequest<StepInfo>(getActivity(), TAG, 1, new RequestLisler<StepInfo>() {
+                    @Override
+                    public void onSucess(int whichRequest, StepInfo info) {
+                            setMyView(info);
+                    }
+
+                    @Override
+                    public void on_error(int whichRequest, Throwable e) {
+                    }
+                }));
+    }
+    private void setMyView( StepInfo infos){
+        UserInfo users= SaveObjectUtils.getInstance(getActivity()).getObject(Constants.USER_BASE,null);
+        int sizes=infos.getList().size();
+        for (int i=0;i<sizes;i++){
+            if (infos.getList().get(i).getUserId()==users.getId()){
+                walk_num.setText(infos.getList().get(i).getStep()+"");
+                break;
+            }
+        }
+    }
 }

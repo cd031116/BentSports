@@ -437,7 +437,7 @@ public interface ApiService {
             @Field("cur_user_id") String cur_user_id);
 
     /**
-     * 获取队员信息（后面的接口都只有id 头像等信息前端需要存起来）
+     * 获取步数排行
      *
      * @param
      * @return
