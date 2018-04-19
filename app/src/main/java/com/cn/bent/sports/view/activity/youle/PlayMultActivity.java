@@ -549,6 +549,11 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
             else
                 allNum = teamGame.getPassRate() * teamGame.getTeamMemberReal() / 100 + 1;
             needNum = allNum - passNum;
+        }else if (gamePotins.getState() == -1){
+            if (teamGame.getPassRate() * teamGame.getTeamMemberReal() % 100 == 0)
+                needNum = teamGame.getPassRate() * teamGame.getTeamMemberReal() / 100;
+            else
+                needNum = teamGame.getPassRate() * teamGame.getTeamMemberReal() / 100 + 1;
         }
         return needNum;
     }

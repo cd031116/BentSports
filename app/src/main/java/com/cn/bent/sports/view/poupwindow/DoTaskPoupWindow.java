@@ -9,6 +9,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -83,7 +84,20 @@ public class DoTaskPoupWindow extends PopupWindow {
                 need_people.setText("还需" + needNum + "人完成");
             } else
                 need_people.setVisibility(View.GONE);
-        } else
+        } else if (gamePotins.getState()==-1){
+            int allNum;
+            if (teamGame.getPassRate() * teamGame.getTeamMemberReal() % 100 == 0)
+                allNum = teamGame.getPassRate() * teamGame.getTeamMemberReal() / 100;
+            else
+                allNum = teamGame.getPassRate() * teamGame.getTeamMemberReal() / 100 + 1;
+            Log.d("dddd", "DoTaskPoupWindow: "+allNum+"--real:"+teamGame.getTeamMemberReal());
+            if (allNum>0){
+                need_people.setVisibility(View.VISIBLE);
+                need_people.setText("还需" + allNum + "人完成");
+            }
+            else
+                need_people.setVisibility(View.GONE);
+        }else
             need_people.setVisibility(View.GONE);
 
         webview.loadDataWithBaseURL(null, gamePotins.getDescription(), "text/html", "UTF-8", null);

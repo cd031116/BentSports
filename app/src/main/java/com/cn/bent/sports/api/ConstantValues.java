@@ -13,30 +13,14 @@ public class ConstantValues {
 
     public static final String ORDER_TYPE="orderType";
 
-    public static final int STATUS_FORCE_KILLED = -1;
-    public static final int STATUS_LOGOUT = 0;
-    public static final int STATUS_OFFLINE = 1;
-    public static final int STATUS_ONLINE = 2;
-    public static final int STATUS_KICK_OUT = 3;
     public static final String BASE_URL = "http://wxxcx.zhonghuilv.net/";
     public static final String GAME_ONLINE_URL = "http://aistatic.huiqulx.com/h5/questions/choice.html";
     public static final String GAME_OFFLINE_URL = "http://aistatic.huiqulx.com/h5/videoZoom/btlTask.html";
 //    public static final String JAVA_URL = "http://192.168.19.22:8840/";
-    public static final String JAVA_URL = "http://aiapi.huiqulx.com/";
-    public static final String KEY_HOME_ACTION = "key_home_action";
-    public static final int ACTION_BACK_TO_HOME = 0;
-    public static final int ACTION_RESTART_APP = 1;
-    public static final int ACTION_LOGOUT = 2;
-    public static final int ACTION_KICK_OUT = 3;
-    public static final String KEY_FRAGMENT_PAGE = "key_fragment_page";
+    //开发测试域名
+    public static final String JAVA_URL = "https://aiapi-dev.huiqulx.com/";
+    //正式域名
+//    public static final String JAVA_URL = "http://aiapi.huiqulx.com/";
     public static final String KEY_FRAGMENT_INDEX = "key_fragment_index";
-    public static final String KEY_FRAGMENT_PARAMS = "key_fragment_params";
-    public static final String KEY_SAVE_LIST = "key_save_list";
-    public static final String MAIN_HU = "key_main_hq";
-
-    public static final String PAY_PRODUCT_ID="payProductId";
-    public static final String PAY_PRODUCTS_TYPE="payProducts";
-    public static final String ORDER_ID="order_id";
-    public static final String PAY_MONEY="payMoney";
 
 }

@@ -55,6 +55,7 @@
                 android:id="@+id/need_people"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/t12"
                 android:text="还需要2人完成"/>
 
         </LinearLayout>
