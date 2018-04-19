@@ -34,21 +34,29 @@
                     android:textSize="34px" />
 
 
-                <ImageView
-                    android:id="@+id/user_photo"
+                <RelativeLayout
+                    android:id="@+id/user_rela"
                     android:layout_width="250px"
                     android:layout_height="250px"
-                    android:layout_marginLeft="171px"
                     android:layout_marginTop="186px"
-                    android:layout_toRightOf="@id/nick_name"
-                    android:background="@drawable/default_head" />
+                    android:layout_marginLeft="171px"
+                    android:background="@drawable/circle_withe_bg"
+                    android:layout_toRightOf="@id/nick_name">
+
+                    <ImageView
+                        android:id="@+id/user_photo"
+                        android:layout_width="230px"
+                        android:layout_height="230px"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/mo_ren" />
+                </RelativeLayout>
 
 
                 <TextView
                     android:id="@+id/setting"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/user_photo"
+                    android:layout_toRightOf="@id/user_rela"
                     android:layout_marginLeft="166px"
                     android:layout_marginTop="274px"
                     android:drawableTop="@drawable/xiaoxi"
@@ -62,14 +70,14 @@
                     android:layout_height="36px"
                     android:layout_marginLeft="214px"
                     android:layout_marginTop="256px"
-                    android:layout_toRightOf="@id/user_photo"
+                    android:layout_toRightOf="@id/user_rela"
                     android:background="@drawable/xiaoxtx" />
 
                 <TextView
                     android:id="@+id/nickname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/user_photo"
+                    android:layout_below="@id/user_rela"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="38px"
                     android:textColor="#ffffff"
@@ -86,8 +94,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
                     android:layout_marginRight="20px"
-                    android:layout_marginTop="86px"
+                    android:layout_marginTop="76px"
                     android:orientation="horizontal">
 
 

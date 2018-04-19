@@ -240,7 +240,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                 startActivity(intent2);
                 break;
             case R.id.finish_situation:
-                Intent intent3=new Intent(PlayMultActivity.this, CompleteInfoActivity.class);
+                Intent intent3 = new Intent(PlayMultActivity.this, CompleteInfoActivity.class);
                 intent3.putExtra("gameTeamId", gameTeamId);
                 intent3.putExtra("mlsit", JSON.toJSONString(mGamePotinsList));
                 startActivity(intent3);
@@ -404,7 +404,9 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
             mopupWindow.setvisib(isDo);
             mopupWindow.setDistance((int) (Double.parseDouble(distance)) + "m");
             int num = getSyPeople(gamePotins);
+            Log.i("tttt","ggggg="+"还需" + num + "人完成");
             if (num > 0)
+                Log.i("tttt","fff="+"还需" + num + "人完成");
                 mopupWindow.setNeedPeople("还需" + num + "人完成");
         } else {
             mopupWindow = new DoTaskPoupWindow(this, isDo, gamePotins, teamGame, (int) (Double.parseDouble(distance)) + "m", itemsOnClick);
@@ -429,18 +431,18 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                 startActivity(intent);
             }
             if (index == 2) {
-                if(gamePotins.getType()==2){
+                if (gamePotins.getType() == 2) {
                     Intent intent1 = new Intent(PlayMultActivity.this, MemberEditActivity.class);
                     intent1.putExtra("type", "game_team");
                     intent1.putExtra("gameTeamId", teamGames.getId());
                     startActivity(intent1);
-                }else {
+                } else {
                     new OneTaskFinishDialog(PlayMultActivity.this, R.style.dialog, new OneTaskFinishDialog.OnClickListener() {
                         @Override
                         public void onClick(Dialog dialog, int index) {
                             dialog.dismiss();
                         }
-                    }).setListData(teamGame,gamePotins).show();
+                    }).setListData(teamGame, gamePotins).show();
                 }
             }
 
@@ -758,7 +760,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                         dismissAlert();
                         RxToast.error("加载失败");
                     }
-                    }));
+                }));
     }
 
     //游戏结束调用
@@ -1005,29 +1007,31 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         mList.clear();
         for (final JoinTeam bean : mPosition) {
             Log.i("tttt", "bean=" + bean.getAvatar());
-            if (bean.getUserId() != user.getId() && bean.getLatitude() > 0 && bean.getLongitude() > 0) {
-                MarkerOptions markerOption = new MarkerOptions();
-                markerOption.position(new LatLng(bean.getLatitude(), bean.getLongitude()));
-                markerOption.draggable(false);//设置Marker可拖动
-                markerOption.title(bean.getUserId() + "");
-                RequestOptions myOptions = new RequestOptions()
-                        .centerCrop()
-                        .circleCropTransform();
-                Glide.with(PlayMultActivity.this).load(ImageUtils.getImageUrl(bean.getAvatar()))
-                        .apply(myOptions)
-                        .into(new SimpleTarget<Drawable>(100, 100) {
-                            @Override
-                            public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
-                                MarkerOptions markerOption = new MarkerOptions();
-                                ImageView imageView = new ImageView(PlayMultActivity.this);
-                                imageView.setImageDrawable(resource);
-                                markerOption.position(new LatLng(bean.getLatitude(), bean.getLongitude()));
-                                BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromView(imageView);
-                                markerOption.icon(bitmapDescriptor);
-                                Marker marker = aMap.addMarker(markerOption);
-                                mList.add(marker);
-                            }
-                        });
+            synchronized (this) {
+                if (bean.getUserId() != user.getId() && bean.getLatitude() > 0 && bean.getLongitude() > 0) {
+                    MarkerOptions markerOption = new MarkerOptions();
+                    markerOption.position(new LatLng(bean.getLatitude(), bean.getLongitude()));
+                    markerOption.draggable(false);//设置Marker可拖动
+                    markerOption.title(bean.getUserId() + "");
+                    RequestOptions myOptions = new RequestOptions()
+                            .centerCrop()
+                            .circleCropTransform();
+                    Glide.with(PlayMultActivity.this).load(ImageUtils.getImageUrl(bean.getAvatar()))
+                            .apply(myOptions)
+                            .into(new SimpleTarget<Drawable>(100, 100) {
+                                @Override
+                                public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
+                                    MarkerOptions markerOption = new MarkerOptions();
+                                    ImageView imageView = new ImageView(PlayMultActivity.this);
+                                    imageView.setImageDrawable(resource);
+                                    markerOption.position(new LatLng(bean.getLatitude(), bean.getLongitude()));
+                                    BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromView(imageView);
+                                    markerOption.icon(bitmapDescriptor);
+                                    Marker marker = aMap.addMarker(markerOption);
+                                    mList.add(marker);
+                                }
+                            });
+                }
             }
         }
     }
@@ -1116,7 +1120,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 
     //计时器
     private void setTimes() {
-        Log.d(TAG, "setTimes isHavaPlay: "+PlayPointManager.isHavaPlay()+",timings="+timings * 1000);
+        Log.d(TAG, "setTimes isHavaPlay: " + PlayPointManager.isHavaPlay() + ",timings=" + timings * 1000);
         if (PlayPointManager.isHavaPlay()) {
 
 //            time.setText(DataUtils.getDateToTime(timings * 1000));

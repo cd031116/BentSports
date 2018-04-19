@@ -26,7 +26,7 @@
             android:layout_height="112px"
 
             android:layout_centerVertical="true"
-            android:background="@drawable/default_head"
+            android:background="@drawable/mo_ren"
             android:layout_marginLeft="22px" />
 
         <TextView

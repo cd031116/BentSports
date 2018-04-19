@@ -8,14 +8,20 @@ import android.view.animation.Animation;
 
 import com.cn.bent.sports.MainActivity;
 import com.cn.bent.sports.R;
+import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.base.BaseConfig;
+import com.cn.bent.sports.base.MyApplication;
 import com.cn.bent.sports.base.SdcardPermissionAction;
 import com.cn.bent.sports.base.SensorsPermission;
 import com.cn.bent.sports.bean.LoginResult;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.DataUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
+import com.vondear.rxtools.view.RxToast;
+import com.zhl.network.RxObserver;
+import com.zhl.network.RxSchedulers;
+import com.zhl.network.huiqu.HuiquRxTBFunction;
 
 import org.aisen.android.support.action.IAction;
 
@@ -132,7 +138,6 @@ public class StartActivity extends BaseActivity {
         }
 
     }
-
 
 
 }

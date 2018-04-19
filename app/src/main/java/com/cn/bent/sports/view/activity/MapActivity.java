@@ -56,6 +56,7 @@ import com.amap.api.services.route.RideRouteResult;
 import com.amap.api.services.route.RouteSearch;
 import com.amap.api.services.route.WalkPath;
 import com.amap.api.services.route.WalkRouteResult;
+import com.cn.bent.sports.MainActivity;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.api.RequestLisler;
@@ -78,6 +79,7 @@ import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.DataUtils;
 import com.cn.bent.sports.utils.ImageUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
+import com.cn.bent.sports.utils.StatusBarUtil;
 import com.cn.bent.sports.utils.StepData;
 import com.cn.bent.sports.view.poupwindow.LineListPoupWindow;
 import com.cn.bent.sports.view.poupwindow.XianluPoupWindow;
@@ -184,6 +186,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
     @Override
     public void initView() {
         super.initView();
+        StatusBarUtil.setTranslucent(MapActivity.this,180);
         yyCheckBox.setChecked(true);
         mMinewBeaconManager = MinewBeaconManager.getInstance(this);
         checkBluetooth();
