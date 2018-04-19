@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -88,6 +89,7 @@ public class MemberEditActivity extends BaseActivity {
      * 获取队员信息
      */
     private void getMemberInfo() {
+        showAlert("正在获取队员积分信息", true);
         BaseApi.getJavaLoginDefaultService(this).getMemberDetailData(gameTeamId + "")
                 .map(new JavaRxFunction<List<MemberDataEntity>>())
                 .compose(RxSchedulers.<List<MemberDataEntity>>io_main())
@@ -102,7 +104,7 @@ public class MemberEditActivity extends BaseActivity {
 
                     @Override
                     public void on_error(int whichRequest, Throwable e) {
-                        RxToast.error(e.getMessage());
+                        RxToast.error("获取队员信息失败");
                     }
                 }));
 
@@ -178,17 +180,27 @@ public class MemberEditActivity extends BaseActivity {
                 .subscribe(new RxRequest<>(this, TAG, 2, new RequestLisler<List<GameTeamScoreEntity>>() {
                     @Override
                     public void onSucess(int whichRequest, List<GameTeamScoreEntity> gameTeamScoreEntities) {
+                        dismissAlert();
                         List<MemberDataEntity> memberDataEntityList=new ArrayList<>();
-                        for (GameTeamScoreEntity gameTeamScoreEntity : gameTeamScoreEntities) {
-                            memberDataEntityList.add(memberDataEntityMap.get(gameTeamScoreEntity.getUserId()));
+                        if (gameTeamScoreEntities!=null&&gameTeamScoreEntities.size()>0){
+                            for (GameTeamScoreEntity gameTeamScoreEntity : gameTeamScoreEntities) {
+                                MemberDataEntity memberDataEntity = memberDataEntityMap.get(gameTeamScoreEntity.getUserId());
+                                memberDataEntity.setScore(gameTeamScoreEntity.getScore());
+                                memberDataEntityList.add(memberDataEntity);
+                            }
+                            compareDaXiao(memberDataEntityList);
                         }
-                        compareDaXiao(memberDataEntityList);
+                        else
+                            for (Integer key : memberDataEntityMap.keySet()) {
+                                memberDataEntityList.add(memberDataEntityMap.get(key));
+                            }
                         setRecyView(memberDataEntityList);
                     }
 
                     @Override
                     public void on_error(int whichRequest, Throwable e) {
-
+                        dismissAlert();
+                        RxToast.error("获取队员积分信息失败");
                     }
                 }));
     }
