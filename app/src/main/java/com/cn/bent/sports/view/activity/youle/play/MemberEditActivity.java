@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,21 +19,20 @@ import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.GameTeamScoreEntity;
 import com.cn.bent.sports.bean.MemberDataEntity;
 import com.cn.bent.sports.bean.TeamGame;
-import com.cn.bent.sports.database.PlayUserManager;
 import com.cn.bent.sports.recyclebase.CommonAdapter;
 import com.cn.bent.sports.recyclebase.ViewHolder;
-import com.cn.bent.sports.utils.CornersTransform;
 import com.cn.bent.sports.utils.ImageUtils;
 import com.cn.bent.sports.widget.DividerItemDecoration;
 import com.vondear.rxtools.view.RxToast;
-import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.JavaRxFunction;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -60,6 +58,7 @@ public class MemberEditActivity extends BaseActivity {
 
     private int gameTeamId;
     private int leadId = -100;
+    private String gameName;
 
     @Override
     protected int getLayoutId() {
@@ -70,21 +69,49 @@ public class MemberEditActivity extends BaseActivity {
     public void initView() {
         String type = getIntent().getStringExtra("type");
         gameTeamId = getIntent().getIntExtra("gameTeamId", 1);
+        gameName = getIntent().getStringExtra("gameName");
         member_list.setLayoutManager(new LinearLayoutManager(this));
         if (!TextUtils.isEmpty(type) && ("personal".equals(type))) {
             m_edit.setVisibility(View.GONE);
-            obtainMemberInfo();
+            getGameDetail(1);
         } else if (!TextUtils.isEmpty(type) && ("team".equals(type))) {
             m_edit.setVisibility(View.VISIBLE);
-            obtainMemberInfo();
+            getGameDetail(1);
         } else {
             m_edit.setVisibility(View.GONE);
-            obtainTeamScore();
+            getGameDetail(2);
+            getMemberInfo();
         }
-        getGameDetail();
     }
 
-    private void getGameDetail() {
+    /**
+     * 获取队员信息
+     */
+    private void getMemberInfo() {
+        BaseApi.getJavaLoginDefaultService(this).getMemberDetailData(gameTeamId + "")
+                .map(new JavaRxFunction<List<MemberDataEntity>>())
+                .compose(RxSchedulers.<List<MemberDataEntity>>io_main())
+                .subscribe(new RxRequest<>(this, TAG, 3, new RequestLisler<List<MemberDataEntity>>() {
+                    @Override
+                    public void onSucess(int whichRequest, List<MemberDataEntity> memberDataEntities) {
+                        Map<Integer,MemberDataEntity> memberDataEntityMap=new HashMap<>();
+                        for (MemberDataEntity memberDataEntity : memberDataEntities)
+                            memberDataEntityMap.put(memberDataEntity.getUserId(),memberDataEntity);
+                        obtainTeamScore(memberDataEntityMap);
+                    }
+
+                    @Override
+                    public void on_error(int whichRequest, Throwable e) {
+                        RxToast.error(e.getMessage());
+                    }
+                }));
+
+    }
+
+    /**
+     * 获取队伍信息
+     */
+    private void getGameDetail(final int type) {
         showAlert("正在获取...", true);
         BaseApi.getJavaLoginDefaultService(MemberEditActivity.this).getTeamInfo(gameTeamId + "")
                 .map(new JavaRxFunction<TeamGame>())
@@ -98,6 +125,8 @@ public class MemberEditActivity extends BaseActivity {
                         m_all.setText("/" + info.getTeamMemberMax());
                         member_name.setText(info.getTeamName());
                         leadId = info.getLeaderId();
+                        if (type==1)
+                            obtainMemberInfo();
                         RequestOptions myOptions = new RequestOptions()
                                 .centerCrop()
                                 .circleCropTransform();
@@ -126,25 +155,33 @@ public class MemberEditActivity extends BaseActivity {
                 this.finish();
                 break;
             case R.id.m_edit:
+                if (!TextUtils.isEmpty(gameName)){
                 Intent intent = new Intent(this, OrganizeActivity.class);
                 intent.putExtra("gameTeamId", String.valueOf(gameTeamId));
+                intent.putExtra("gameName", gameName);
                 startActivity(intent);
+                finish();
+                }
                 break;
         }
 
     }
 
-    private void obtainTeamScore() {
+    /**
+     * 获取团队积分情况
+     * @param memberDataEntityMap
+     */
+    private void obtainTeamScore(final Map<Integer, MemberDataEntity> memberDataEntityMap) {
         BaseApi.getJavaLoginDefaultService(this).getTeamScore(gameTeamId)
                 .map(new JavaRxFunction<List<GameTeamScoreEntity>>())
                 .compose(RxSchedulers.<List<GameTeamScoreEntity>>io_main())
                 .subscribe(new RxRequest<>(this, TAG, 2, new RequestLisler<List<GameTeamScoreEntity>>() {
                     @Override
                     public void onSucess(int whichRequest, List<GameTeamScoreEntity> gameTeamScoreEntities) {
+                        List<MemberDataEntity> memberDataEntityList=new ArrayList<>();
                         for (GameTeamScoreEntity gameTeamScoreEntity : gameTeamScoreEntities) {
-                            PlayUserManager.updatePlay(gameTeamScoreEntity.getUserId(), gameTeamScoreEntity.getScore());
+                            memberDataEntityList.add(memberDataEntityMap.get(gameTeamScoreEntity.getUserId()));
                         }
-                        List<MemberDataEntity> memberDataEntityList = PlayUserManager.getHistory();
                         compareDaXiao(memberDataEntityList);
                         setRecyView(memberDataEntityList);
                     }
@@ -179,10 +216,7 @@ public class MemberEditActivity extends BaseActivity {
             CommonAdapter mAdapter = new CommonAdapter<MemberDataEntity>(this, R.layout.one_task_finish_item, historyList) {
                 @Override
                 protected void convert(ViewHolder holder, MemberDataEntity memberDataEntity, int position) {
-//                    if (memberDataEntity.getScore() == 0)
-//                        holder.setText(R.id.item_score, 0+"分");
-//                    else
-                        holder.setText(R.id.item_score, memberDataEntity.getScore() + "分");
+                    holder.setText(R.id.item_score, memberDataEntity.getScore() + "分");
                     holder.setText(R.id.item_name, memberDataEntity.getNickname() + "");
                     ImageView view = (ImageView) holder.getView(R.id.item_img);
                     RequestOptions myOptions = new RequestOptions()
@@ -197,6 +231,9 @@ public class MemberEditActivity extends BaseActivity {
         }
     }
 
+    /**
+     * 获取队员信息
+     */
     private void obtainMemberInfo() {
         BaseApi.getJavaLoginDefaultService(this).getMemberDetailData(gameTeamId + "")
                 .map(new JavaRxFunction<List<MemberDataEntity>>())
@@ -204,8 +241,15 @@ public class MemberEditActivity extends BaseActivity {
                 .subscribe(new RxRequest<>(this, TAG, 3, new RequestLisler<List<MemberDataEntity>>() {
                     @Override
                     public void onSucess(int whichRequest, List<MemberDataEntity> memberDataEntities) {
-                        if (memberDataEntities != null && memberDataEntities.size() > 0)
-                            setRecyList(memberDataEntities);
+                        if (memberDataEntities != null && memberDataEntities.size() > 0) {
+                            Map<Integer,Boolean> isLeader=new HashMap<>();
+                            for (MemberDataEntity memberDataEntity : memberDataEntities) {
+                                isLeader.put(memberDataEntity.getUserId(),false);
+                                if (leadId==memberDataEntity.getUserId())
+                                    isLeader.put(memberDataEntity.getUserId(),true);
+                            }
+                            setRecyList(memberDataEntities,isLeader);
+                        }
                     }
 
                     @Override
@@ -216,7 +260,7 @@ public class MemberEditActivity extends BaseActivity {
 
     }
 
-    private void setRecyList(List<MemberDataEntity> memberDataEntities) {
+    private void setRecyList(List<MemberDataEntity> memberDataEntities, final Map<Integer, Boolean> isLeaderMap) {
 
         CommonAdapter mAdapter = new CommonAdapter<MemberDataEntity>(this, R.layout.luxian_member_item, memberDataEntities) {
 
@@ -225,7 +269,7 @@ public class MemberEditActivity extends BaseActivity {
                 holder.setText(R.id.m_name, memberDataEntity.getNickname());
                 ImageView view = (ImageView) holder.getView(R.id.img_head);
                 ImageView img_head_cap = (ImageView) holder.getView(R.id.img_head_cap);
-                if (leadId == memberDataEntity.getUserId())
+                if (isLeaderMap.get(memberDataEntity.getUserId()))
                     img_head_cap.setVisibility(View.VISIBLE);
                 else
                     img_head_cap.setVisibility(View.GONE);

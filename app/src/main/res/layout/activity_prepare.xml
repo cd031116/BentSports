@@ -32,14 +32,19 @@
     </LinearLayout>
 
 
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="519px"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/half_circle_bg"
-        android:orientation="vertical"
-        android:paddingTop="60px">
+        android:background="@color/white"
+        android:orientation="vertical">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/half_circle_bg"
+            android:paddingTop="60px">
         <TextView
             android:id="@+id/start_t"
             android:layout_width="338px"
@@ -70,7 +75,7 @@
             android:layout_marginBottom="58px"
             android:layout_marginRight="43px"
             android:background="@drawable/teammate_enter" />
-
+        </RelativeLayout>
 
     </RelativeLayout>
 </RelativeLayout>

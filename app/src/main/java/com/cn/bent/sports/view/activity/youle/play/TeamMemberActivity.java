@@ -54,6 +54,8 @@ public class TeamMemberActivity extends BaseActivity {
     private StompClient mStompClient;
    private int gameTeamId ;
    private int gameId;
+    private String gameName;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_team_member;
@@ -64,7 +66,7 @@ public class TeamMemberActivity extends BaseActivity {
         super.initView();
         gameTeamId=getIntent().getExtras().getInt("gameTeamId");
         gameId=getIntent().getExtras().getInt("gameId");
-        String gameName=getIntent().getExtras().getString("gameName");
+        gameName=getIntent().getExtras().getString("gameName");
         top_title.setText(gameName);
         createStompClient();
         getGameDetail();
@@ -82,6 +84,7 @@ public class TeamMemberActivity extends BaseActivity {
                 Intent intent = new Intent(TeamMemberActivity.this, MemberEditActivity.class);
                 intent.putExtra("type", "personal");
                 intent.putExtra("gameTeamId", gameTeamId);
+                intent.putExtra("gameName", gameName);
                 startActivity(intent);
                 break;
             case  R.id.top_left:

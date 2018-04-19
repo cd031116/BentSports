@@ -38,6 +38,7 @@ public class PrepareActivity extends BaseActivity {
     WebView webView;
     @Bind(R.id.top_title)
     TextView top_title;
+    private String gameName;
 
     @Override
     protected int getLayoutId() {
@@ -48,7 +49,7 @@ public class PrepareActivity extends BaseActivity {
     public void initView() {
         super.initView();
         teamGame = (TeamGame) getIntent().getSerializableExtra("teamGame");
-        String gameName =getIntent().getExtras().getString("gameName");
+        gameName =getIntent().getExtras().getString("gameName");
         top_title.setText(gameName);
     }
 
@@ -68,6 +69,7 @@ public class PrepareActivity extends BaseActivity {
                 Intent intent = new Intent(PrepareActivity.this, MemberEditActivity.class);
                 intent.putExtra("type", "team");
                 intent.putExtra("gameTeamId", teamGame.getId());
+                intent.putExtra("gameName", gameName);
                 startActivity(intent);
                 break;
             case  R.id.top_left:
