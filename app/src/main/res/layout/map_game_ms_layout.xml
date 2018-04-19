@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/t995"
-    android:layout_height="@dimen/t146"
+    android:layout_height="@dimen/t160"
     android:id="@+id/map_game_ms_layout"
     android:layout_alignParentBottom="true"
     android:layout_centerHorizontal="true"
@@ -13,8 +13,9 @@
         android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/t48"
+        android:layout_marginLeft="@dimen/t54"
         android:drawableLeft="@drawable/task_time"
+        android:gravity="center_vertical"
         android:drawablePadding="@dimen/t15"
         android:text="00:00:00"
         android:textColor="@color/color_666666"
@@ -27,6 +28,7 @@
         android:layout_marginLeft="@dimen/t400"
         android:drawableLeft="@drawable/score"
         android:drawablePadding="@dimen/t15"
+        android:gravity="center_vertical"
         android:text="120分"
         android:textColor="@color/color_666666"
         android:textSize="@dimen/t43" />
@@ -46,6 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@id/all_task"
         android:drawableLeft="@drawable/map_task"
+        android:gravity="center_vertical"
         android:text="6"
         android:textColor="@color/c_fd7d6f"
         android:textSize="@dimen/t43" />

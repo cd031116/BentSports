@@ -6,12 +6,15 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -33,6 +36,7 @@ import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.CornersTransform;
 import com.cn.bent.sports.utils.ImageUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
+import com.cn.bent.sports.utils.StatusBarUtil;
 import com.cn.bent.sports.utils.StepData;
 import com.cn.bent.sports.view.activity.MapActivity;
 import com.cn.bent.sports.view.activity.WalkRankListActivity;
@@ -102,7 +106,8 @@ public class RecommendFragment extends BaseFragment {
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
 
-    }
+
+        }
 
     @Override
     protected void initData() {

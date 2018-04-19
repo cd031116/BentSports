@@ -33,7 +33,7 @@
         android:textSize="43px" />
 
     <TextView
-        android:id="@+id/range_time"
+        android:id="@+id/range_jifen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
@@ -43,11 +43,11 @@
         android:textSize="43px" />
 
     <TextView
-        android:id="@+id/range_jifen"
+        android:id="@+id/range_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toLeftOf="@id/range_time"
+        android:layout_toLeftOf="@id/range_jifen"
         android:paddingRight="42px"
         android:textColor="#000000"
         android:textSize="43px" />
@@ -59,6 +59,7 @@
         android:layout_toLeftOf="@id/range_jifen"
         android:background="@drawable/jifen_huang"
         android:layout_centerVertical="true"
+        android:visibility="gone"
         android:layout_marginRight="32px"/>
 
 </RelativeLayout>

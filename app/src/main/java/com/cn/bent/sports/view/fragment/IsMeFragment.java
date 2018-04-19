@@ -14,6 +14,7 @@ import com.cn.bent.sports.base.BaseFragment;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.ImageUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
+import com.cn.bent.sports.utils.StatusBarUtil;
 import com.cn.bent.sports.view.activity.SettingActivity;
 import com.cn.bent.sports.view.activity.youle.MyRouteListActivity;
 import com.cn.bent.sports.view.activity.youle.bean.UserInfo;
@@ -53,8 +54,6 @@ public class IsMeFragment extends BaseFragment {
 
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
-
-
     }
 
     @Override

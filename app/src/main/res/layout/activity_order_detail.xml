@@ -102,6 +102,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="/"
+                                android:layout_marginTop="12px"
                                 android:textColor="#999999"
                                 android:textSize="69px" />
 
@@ -109,6 +110,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="组"
+                                android:layout_marginTop="12px"
                                 android:textColor="#999999"
                                 android:textSize="37px" />
                         </LinearLayout>

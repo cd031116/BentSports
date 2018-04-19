@@ -130,21 +130,18 @@ public class OrderDetailActivity extends BaseActivity implements MyScroview.OnSc
         tab1_t.setTextColor(Color.parseColor("#333333"));
         tab2_t.setTextColor(Color.parseColor("#333333"));
         tab3_t.setTextColor(Color.parseColor("#333333"));
-        tab1_v.setSelected(false);
-        tab2_v.setSelected(false);
-        tab3_v.setSelected(false);
+        tab1_v.setTextColor(Color.parseColor("#ffffff"));
+        tab2_v.setTextColor(Color.parseColor("#ffffff"));
+        tab3_v.setTextColor(Color.parseColor("#ffffff"));
         if (index == 1) {
             changeFrament("afragment",0);
-            tab1_t.setTextColor(Color.parseColor("#e11818"));
-            tab1_v.setSelected(true);
+            tab1_v.setTextColor(Color.parseColor("#fd7d6f"));
         } else if (index == 2) {
             changeFrament("bfragment",1);
-            tab2_t.setTextColor(Color.parseColor("#e11818"));
-            tab2_v.setSelected(true);
+            tab2_v.setTextColor(Color.parseColor("#fd7d6f"));
         } else {
             changeFrament("cfragment",2);
-            tab3_t.setTextColor(Color.parseColor("#e11818"));
-            tab3_v.setSelected(true);
+            tab3_v.setTextColor(Color.parseColor("#fd7d6f"));
         }
     }
 

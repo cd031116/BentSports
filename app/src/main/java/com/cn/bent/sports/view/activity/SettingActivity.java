@@ -23,6 +23,8 @@ import com.cn.bent.sports.bean.PhotoPath;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.ImageUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
+import com.cn.bent.sports.utils.StatusBarUtil;
+import com.cn.bent.sports.view.activity.youle.MyRouteListActivity;
 import com.cn.bent.sports.view.activity.youle.bean.UserInfo;
 import com.cn.bent.sports.widget.ToastDialog;
 import com.vondear.rxtools.view.RxToast;
@@ -62,7 +64,7 @@ public class SettingActivity extends BaseActivity {
     @Override
     public void initView() {
         super.initView();
-
+        StatusBarUtil.setTranslucent(SettingActivity.this, 55);
     }
 
     @Override

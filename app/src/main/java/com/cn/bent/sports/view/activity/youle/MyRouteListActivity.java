@@ -3,9 +3,12 @@ package com.cn.bent.sports.view.activity.youle;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.cn.bent.sports.R;
@@ -17,6 +20,7 @@ import com.cn.bent.sports.recyclebase.CommonAdapter;
 import com.cn.bent.sports.recyclebase.ViewHolder;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.SaveObjectUtils;
+import com.cn.bent.sports.utils.StatusBarUtil;
 import com.cn.bent.sports.view.activity.youle.bean.MyGame;
 import com.cn.bent.sports.view.activity.youle.bean.UserInfo;
 import com.cn.bent.sports.view.activity.youle.play.OrganizeActivity;
@@ -25,6 +29,7 @@ import com.cn.bent.sports.widget.GameErrorDialog;
 import com.jwenfeng.library.pulltorefresh.BaseRefreshListener;
 import com.jwenfeng.library.pulltorefresh.PullToRefreshLayout;
 import com.kennyc.view.MultiStateView;
+import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.vondear.rxtools.view.RxToast;
 import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
@@ -62,6 +67,7 @@ public class MyRouteListActivity extends BaseActivity {
     @Override
     public void initView() {
         super.initView();
+        StatusBarUtil.setTranslucent(MyRouteListActivity.this, 55);
         top_title.setText("我的路线");
         setview();
     }

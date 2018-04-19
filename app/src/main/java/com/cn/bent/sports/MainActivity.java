@@ -21,6 +21,7 @@ import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.base.BaseConfig;
 import com.cn.bent.sports.utils.Constants;
+import com.cn.bent.sports.utils.StatusBarUtil;
 import com.cn.bent.sports.view.activity.youle.play.TeamMemberActivity;
 import com.cn.bent.sports.view.fragment.CardFragment;
 import com.cn.bent.sports.view.fragment.IsMeFragment;
@@ -52,8 +53,9 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         super.onCreate(savedInstanceState);
         getGameDetail();
         BaseConfig.getInstance(MainActivity.this).setStringValue(Constants.SOKET_PATH,"aiws.huiqulx.com/my-websocket");
+        mFragmentMan = getSupportFragmentManager();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
+            Window window =getWindow();
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
@@ -62,8 +64,6 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
-
-        mFragmentMan = getSupportFragmentManager();
     }
 
 
@@ -84,7 +84,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
                 .setFirstSelectedPosition(0)
                 .initialise();
         navigationBar.setTabSelectedListener(this);
-    //new BottomNavigationItem(R.drawable.wode1, "推荐").setInactiveIcon(ContextCompat.getDrawable(this, R.drawable.wode2))
+      //new BottomNavigationItem(R.drawable.wode1, "推荐").setInactiveIcon(ContextCompat.getDrawable(this, R.drawable.wode2))
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

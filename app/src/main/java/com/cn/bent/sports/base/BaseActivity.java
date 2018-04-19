@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -15,17 +16,20 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.cn.bent.sports.R;
 import com.cn.bent.sports.bean.LoginResult;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.utils.SupportMultipleScreensUtil;
 import com.cn.bent.sports.view.activity.PlayFunActivity;
 import com.cn.bent.sports.widget.ShowMsgDialog;
+import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.vondear.rxtools.view.dialog.RxDialogLoading;
 import com.zhl.network.RxManager;
 
@@ -85,7 +89,6 @@ public class BaseActivity extends org.aisen.android.ui.activity.basic.BaseActivi
     protected int getLayoutId(){
         return 0;
     }
-
 
 
     @Override

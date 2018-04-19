@@ -2,6 +2,7 @@ package com.cn.bent.sports.widget;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -174,9 +175,11 @@ public class OneTaskFinishDialog extends Dialog implements View.OnClickListener 
             CommonAdapter mAdapter = new CommonAdapter<MemberDataEntity>(mContext, R.layout.one_task_finish_item, historyList) {
                 @Override
                 protected void convert(ViewHolder holder, MemberDataEntity memberDataEntity, int position) {
-//                    if (memberDataEntity.getScore() == 0)
-//                        holder.setText(R.id.item_score, "未完成");
-//                    else
+                    if (memberDataEntity.getScore() == 0){
+                        holder.setText(R.id.item_score, "未完成");
+                        holder.setTextColor(R.id.item_score, Color.parseColor("#999999"));
+                    }else
+                        holder.setTextColor(R.id.item_score, Color.parseColor("#fd7d6f"));
                         holder.setText(R.id.item_score, memberDataEntity.getScore() + "分");
                     holder.setText(R.id.item_name, memberDataEntity.getNickname() + "");
                     ImageView view = (ImageView) holder.getView(R.id.item_img);

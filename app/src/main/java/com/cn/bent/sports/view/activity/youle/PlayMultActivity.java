@@ -429,10 +429,19 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                 startActivity(intent);
             }
             if (index == 2) {
-                Intent intent1 = new Intent(PlayMultActivity.this, MemberEditActivity.class);
-                intent1.putExtra("type", "game_team");
-                intent1.putExtra("gameTeamId", teamGames.getId());
-                startActivity(intent1);
+                if(gamePotins.getType()==2){
+                    Intent intent1 = new Intent(PlayMultActivity.this, MemberEditActivity.class);
+                    intent1.putExtra("type", "game_team");
+                    intent1.putExtra("gameTeamId", teamGames.getId());
+                    startActivity(intent1);
+                }else {
+                    new OneTaskFinishDialog(PlayMultActivity.this, R.style.dialog, new OneTaskFinishDialog.OnClickListener() {
+                        @Override
+                        public void onClick(Dialog dialog, int index) {
+                            dialog.dismiss();
+                        }
+                    }).setListData(teamGame,gamePotins).show();
+                }
             }
 
             mopupWindow.dismiss();
