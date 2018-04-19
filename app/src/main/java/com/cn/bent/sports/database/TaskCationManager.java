@@ -100,7 +100,7 @@ public class TaskCationManager {
     }
 
 
-    //重置所有播放
+    //
     public static void updatePlay(String paths) {
         List<ScenicPointsEntity.PointsBean> mTaskLists = TaskCationDB.getDB().select(null, ScenicPointsEntity.PointsBean.class);
         for (ScenicPointsEntity.PointsBean info : mTaskLists) {

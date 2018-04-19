@@ -266,10 +266,8 @@ public class OrganizeActivity extends BaseActivity {
                         });
                     }
                 }).start();
-
             }
         });
-
     }
 
     private void setList() {
