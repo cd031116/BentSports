@@ -2,6 +2,7 @@ package com.cn.bent.sports.utils;
 
 import android.content.Context;
 
+import com.cn.bent.sports.api.ConstantValues;
 import com.cn.bent.sports.base.BaseConfig;
 
 /**
@@ -19,7 +20,6 @@ public class Constants {
     public static final String IS_TIME="is_time";
     public static final String TEST_URL="http://aihw.zhonghuilv.net/";
     public static final String BASE_URL="https://wxxcx.zhonghuilv.net/game/";
-    public static final String JAVA_YUN_URL="http://aistatic.huiqulx.com";
     public static final String IS_SHOWS="is_shows";
     public static final String LU_XIAN="lu_xian";
     public static final String PLAY_POSION="play_posion";
@@ -29,7 +29,7 @@ public class Constants {
     public static final String LOGIN_TOKEN="Basic YWktdHJhdmVsLWFwcDphOWQ1NGQyYS03YzgxLTQwOWItOGFlOC1lY2NiZmU5NTAxNzc=";
 
     public static String getsocket(Context context){
-        return BaseConfig.getInstance(context).getStringValue(SOKET_PATH,"aiws.huiqulx.com/my-websocket");
+        return ConstantValues.JAVA_URL_WEBSOCKET;
     }
 
 }

@@ -22,5 +22,12 @@ public class ConstantValues {
     //正式域名
 //    public static final String JAVA_URL = "http://aiapi.huiqulx.com/";
     public static final String KEY_FRAGMENT_INDEX = "key_fragment_index";
-
+    //正式websocket
+//    public static final String JAVA_URL_WEBSOCKET = "aiws.huiqulx.com/my-websocket";
+    //开发websocket
+    public static final String JAVA_URL_WEBSOCKET = "aiws-dev.huiqulx.com/my-websocket";
+    //    生产环境 静态资源
+//    public static final String JAVA_YUN_URL="http://aistatic.huiqulx.com";
+    //    开发环境 静态资源
+    public static final String JAVA_YUN_URL="http://aistatic-dev.huiqulx.com";
 }

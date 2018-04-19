@@ -96,8 +96,7 @@ public class TaskCationManager {
         }
         mTaskLists.get(position).setNow(true);
         mTaskLists.get(position).setQuen(false);
-        TaskCationDB.getDB().deleteAll(null, ScenicPointsEntity.PointsBean.class);
-        TaskCationDB.getDB().insert(null, mTaskLists);
+        TaskCationDB.getDB().update(null, mTaskLists);
     }
 
 

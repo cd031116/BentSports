@@ -51,8 +51,6 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getGameDetail();
-        BaseConfig.getInstance(MainActivity.this).setStringValue(Constants.SOKET_PATH,"aiws.huiqulx.com/my-websocket");
         mFragmentMan = getSupportFragmentManager();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window =getWindow();
@@ -250,24 +248,24 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         }).show();
     }
 
-    //获取websocket连接
-    private void getGameDetail() {
-        BaseApi.getJavaLoginDefaultService(MainActivity.this).getWebSocket()
-                .map(new JavaRxFunction<String>())
-                .compose(RxSchedulers.<String>io_main())
-                .subscribe(new RxObserver<String>(MainActivity.this, TAG, 1, false) {
-                    @Override
-                    public void onSuccess(int whichRequest, String info) {
-                        dismissAlert();
-
-                        Log.i("tttt","info="+info);
-                    }
-                    @Override
-                    public void onError(int whichRequest, Throwable e) {
-                        dismissAlert();
-                        RxToast.error(e.getMessage());
-                    }
-                });
-    }
+//    //获取websocket连接
+//    private void getGameDetail() {
+//        BaseApi.getJavaLoginDefaultService(MainActivity.this).getWebSocket()
+//                .map(new JavaRxFunction<String>())
+//                .compose(RxSchedulers.<String>io_main())
+//                .subscribe(new RxObserver<String>(MainActivity.this, TAG, 1, false) {
+//                    @Override
+//                    public void onSuccess(int whichRequest, String info) {
+//                        dismissAlert();
+//
+//                        Log.i("tttt","info="+info);
+//                    }
+//                    @Override
+//                    public void onError(int whichRequest, Throwable e) {
+//                        dismissAlert();
+//                        RxToast.error(e.getMessage());
+//                    }
+//                });
+//    }
 
 }

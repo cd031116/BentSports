@@ -360,8 +360,6 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                             Log.d("dddd", "onSuccess: " + scenicPointsEntity.getPoints().get(0).getPointName());
 
                             for (ScenicPointsEntity.PointsBean pointsBean : scenicPointsEntity.getPoints()) {
-                                pointsBean.setImagesUrl(ImageUtils.getImageUrl(pointsBean.getImagesUrl()));
-                                pointsBean.setPointImg(ImageUtils.getImageUrl(pointsBean.getPointImg()));
                                 mPointsList.add(pointsBean);
                                 mPointsEntityMap.put(pointsBean.getId(), pointsBean);
                                 if (pointsBean.getType()==2)
@@ -1196,7 +1194,6 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
                             String jieguo = String.valueOf(mPointsList.get(i).getMajor());
                             if (jieguo.equals(majer)) {
                                 if (!TextUtils.isEmpty(mPointsList.get(i).getMp3()) && (mPointsList.get(i).getMp3()).endsWith(".mp3")) {
-//                                    QueueManager.update(new QueueBean(mPointsList.get(i).getMp3()));
                                     if (TaskCationManager.isPlay(i) || TaskCationManager.isNow(i)) {
 
                                     } else {

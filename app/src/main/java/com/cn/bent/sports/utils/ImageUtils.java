@@ -5,6 +5,8 @@ import android.graphics.BitmapFactory;
 import android.text.TextUtils;
 import android.util.Base64;
 
+import com.cn.bent.sports.api.ConstantValues;
+
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -68,7 +70,7 @@ public class ImageUtils {
         if (url.contains("http://") || url.contains("www.")|| url.contains("https://")) {
             return url;
         } else {
-            url = Constants.JAVA_YUN_URL + url;
+            url = ConstantValues.JAVA_YUN_URL + url;
             return url;
         }
     }
