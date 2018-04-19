@@ -9,20 +9,15 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.ashokvarma.bottomnavigation.BottomNavigationBar;
-import com.ashokvarma.bottomnavigation.BottomNavigationItem;
-import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.base.BaseConfig;
-import com.cn.bent.sports.utils.Constants;
-import com.cn.bent.sports.utils.StatusBarUtil;
-import com.cn.bent.sports.view.activity.youle.play.TeamMemberActivity;
 import com.cn.bent.sports.view.fragment.CardFragment;
 import com.cn.bent.sports.view.fragment.IsMeFragment;
 import com.cn.bent.sports.view.fragment.RecommendFragment;
@@ -30,22 +25,26 @@ import com.cn.bent.sports.view.fragment.ShoppingFragment;
 import com.cn.bent.sports.view.poupwindow.LineListPoupWindow;
 import com.cn.bent.sports.view.poupwindow.MainPoupWindow;
 import com.cn.bent.sports.widget.ExxitDialog;
-import com.vondear.rxtools.view.RxToast;
-import com.zhl.network.RxObserver;
-import com.zhl.network.RxSchedulers;
-import com.zhl.network.huiqu.JavaRxFunction;
 
 import java.util.ArrayList;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
-public class MainActivity extends BaseActivity implements BottomNavigationBar.OnTabSelectedListener {
+public class MainActivity extends BaseActivity {
     int selected = 1;
     FragmentManager mFragmentMan;
     private MainPoupWindow ropupWindow;
-    //e11818
-    @Bind(R.id.navigationBar)
-    BottomNavigationBar navigationBar;
+    @Bind(R.id.text_one)
+    TextView text_one;
+    @Bind(R.id.text_four)
+    TextView text_four;
+    @Bind(R.id.image_one)
+    ImageView image_one;
+    @Bind(R.id.image_four)
+    ImageView image_four;
+
+    private int select=1;
     private LineListPoupWindow mopupWindow;
 
     @Override
@@ -53,7 +52,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         super.onCreate(savedInstanceState);
         mFragmentMan = getSupportFragmentManager();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window =getWindow();
+            Window window = getWindow();
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
@@ -73,22 +72,12 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     @Override
     public void initView() {
         super.initView();
-        navigationBar.setMode(BottomNavigationBar.MODE_FIXED);
-        navigationBar.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC);
-        navigationBar.addItem(new BottomNavigationItem(R.drawable.jinngx_w, "推荐").setActiveColor("#e11818").setInActiveColor("#777777"))
-                .addItem(new BottomNavigationItem(R.drawable.shangd_w, "商店").setActiveColor("#e11818").setInActiveColor("#777777"))
-                .addItem(new BottomNavigationItem(R.drawable.mingxp_w, "明信片").setActiveColor("#e11818").setInActiveColor("#777777"))
-                .addItem(new BottomNavigationItem(R.drawable.wode_w, "我的").setActiveColor("#e11818").setInActiveColor("#777777"))
-                .setFirstSelectedPosition(0)
-                .initialise();
-        navigationBar.setTabSelectedListener(this);
-      //new BottomNavigationItem(R.drawable.wode1, "推荐").setInactiveIcon(ContextCompat.getDrawable(this, R.drawable.wode2))
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 switchContent(0);
             }
-        },20);
+        }, 20);
     }
 
     @Override
@@ -103,25 +92,6 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         super.initData();
     }
 
-    /**
-     * 设置默认的
-     */
-    private void setDefaultFragment() {
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.id_content, IsMeFragment.newInstance());
-        transaction.commit();
-    }
-
-    private ArrayList<Fragment> getFragments() {
-        ArrayList<Fragment> fragments = new ArrayList<>();
-        fragments.add(IsMeFragment.newInstance());
-        fragments.add(IsMeFragment.newInstance());
-        fragments.add(IsMeFragment.newInstance());
-        fragments.add(IsMeFragment.newInstance());
-        fragments.add(IsMeFragment.newInstance());
-        return fragments;
-    }
 
     // 3. 先进第二个或第三个的子模块，再返回首页
     private String lastFragmentTag = null;
@@ -178,51 +148,45 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     }
 
     void switchContent(int select) {
+        text_one.setTextColor(Color.parseColor("#999999"));
+        text_four.setTextColor(Color.parseColor("#999999"));
+        image_one.setSelected(false);
+        image_four.setSelected(false);
         if (select == 0) {
+            image_one.setSelected(true);
+            text_one.setTextColor(Color.parseColor("#fd7e6f"));
             changeFrament("aFragment", 0);
         } else if (select == 1) {
             changeFrament("bFragment", 1);
         } else if (select == 2) {
             changeFrament("cFragment", 2);
         } else if (select == 3) {
+            image_four.setSelected(true);
+            text_four.setTextColor(Color.parseColor("#fd7e6f"));
             changeFrament("dFragment", 3);
         }
     }
 
-    @Override
-    public void onTabSelected(int position) {
-        switchContent(position);
-//        if (fragments != null) {
-//            if (position < fragments.size()) {
-//                FragmentManager fm = getSupportFragmentManager();
-//                FragmentTransaction ft = fm.beginTransaction();
-//                Fragment fragment = fragments.get(position);
-//                if (fragment.isAdded()) {
-//                    ft.replace(R.id.id_content, fragment);
-//                } else {
-//                    ft.add(R.id.id_content, fragment);
-//                }
-//                ft.commitAllowingStateLoss();
-//            }
-//        }
-    }
-
-    @Override
-    public void onTabUnselected(int position) {
-//        if (fragments != null) {
-//            if (position < fragments.size()) {
-//                FragmentManager fm = getSupportFragmentManager();
-//                FragmentTransaction ft = fm.beginTransaction();
-//                Fragment fragment = fragments.get(position);
-//                ft.remove(fragment);
-//                ft.commitAllowingStateLoss();
-//            }
-//        }
-    }
-
-    @Override
-    public void onTabReselected(int position) {
-
+    @OnClick({R.id.image_one, R.id.text_one, R.id.image_four, R.id.text_four,})
+    void onclik(View v) {
+        switch (v.getId()) {
+            case R.id.image_one:
+            case R.id.text_one:
+                if(select==1){
+                    break;
+                }
+                select=0;
+                switchContent(select);
+                break;
+            case R.id.image_four:
+            case R.id.text_four:
+                if(select==3){
+                    break;
+                }
+                select=3;
+                switchContent(select);
+                break;
+        }
     }
 
     @Override
@@ -248,24 +212,5 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         }).show();
     }
 
-//    //获取websocket连接
-//    private void getGameDetail() {
-//        BaseApi.getJavaLoginDefaultService(MainActivity.this).getWebSocket()
-//                .map(new JavaRxFunction<String>())
-//                .compose(RxSchedulers.<String>io_main())
-//                .subscribe(new RxObserver<String>(MainActivity.this, TAG, 1, false) {
-//                    @Override
-//                    public void onSuccess(int whichRequest, String info) {
-//                        dismissAlert();
-//
-//                        Log.i("tttt","info="+info);
-//                    }
-//                    @Override
-//                    public void onError(int whichRequest, Throwable e) {
-//                        dismissAlert();
-//                        RxToast.error(e.getMessage());
-//                    }
-//                });
-//    }
 
 }

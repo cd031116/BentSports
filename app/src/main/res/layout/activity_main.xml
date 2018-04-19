@@ -7,18 +7,73 @@
     android:orientation="vertical"
     tools:context="com.cn.bent.sports.MainActivity">
 
-   <FrameLayout
-       android:id="@+id/id_content"
-       android:layout_width="match_parent"
-       android:layout_height="0dp"
-       android:layout_weight="1"/>
+    <FrameLayout
+        android:id="@+id/id_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
-   <com.ashokvarma.bottomnavigation.BottomNavigationBar
-       android:id="@+id/navigationBar"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:layout_gravity="bottom"
-       android:layout_alignParentBottom="true"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#dddddd"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="142px"
+        android:layout_alignParentBottom="true"
+        android:background="#ffffff"
+        android:paddingTop="10px"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/image_one"
+                android:layout_width="82px"
+                android:layout_height="66px"
+                android:background="@drawable/souye_bottom_bg" />
+
+            <TextView
+                android:id="@+id/text_one"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12px"
+                android:text="推荐"
+                android:textColor="@color/_9"
+                android:textSize="28px" />
 
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/image_four"
+                android:layout_width="82px"
+                android:layout_height="66px"
+                android:background="@drawable/my_bottom_bg" />
+
+            <TextView
+                android:id="@+id/text_four"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12px"
+                android:text="我的"
+                android:textColor="@color/_9"
+                android:textSize="28px" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
 </LinearLayout>
