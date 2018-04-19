@@ -19,6 +19,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
+import com.cn.bent.sports.api.RequestLisler;
+import com.cn.bent.sports.api.RxRequest;
 import com.cn.bent.sports.bean.GamePotins;
 import com.cn.bent.sports.bean.GameTeamScoreEntity;
 import com.cn.bent.sports.bean.MemberDataEntity;
@@ -33,9 +35,12 @@ import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.JavaRxFunction;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by dawn on 2018/3/24.
@@ -98,8 +103,77 @@ public class OneTaskFinishDialog extends Dialog implements View.OnClickListener 
         white_layout.setOnClickListener(null);
         dialog_layout.setOnClickListener(this);
         game_name.setOnClickListener(this);
-        setRecyData(teamGame, gamePoints);
+//        setRecyData(teamGame, gamePoints);
+        getMemberInfo();
     }
+
+    /**
+     * 获取队员信息
+     */
+    private void getMemberInfo() {
+        int finish_num=  getSyPeople(gamePoints);
+        if (finish_num > 0) {
+            game_finish_num.setVisibility(View.VISIBLE);
+            String finish_num_str = "还需" + finish_num + "人完成";
+            SpannableStringBuilder builder = new SpannableStringBuilder(finish_num_str);
+            builder.setSpan(new ForegroundColorSpan(mContext.getResources().getColor(R.color.color_fd7d6f)), 2, finish_num_str.length() - 3, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            game_finish_num.setText(builder);
+        } else
+            game_finish_num.setVisibility(View.GONE);
+        BaseApi.getJavaLoginDefaultService(mContext).getMemberDetailData(teamGame.getId() + "")
+                .map(new JavaRxFunction<List<MemberDataEntity>>())
+                .compose(RxSchedulers.<List<MemberDataEntity>>io_main())
+                .subscribe(new RxRequest<>(mContext, "getMemberInfo", 3, new RequestLisler<List<MemberDataEntity>>() {
+                    @Override
+                    public void onSucess(int whichRequest, List<MemberDataEntity> memberDataEntities) {
+                        Map<Integer,MemberDataEntity> memberDataEntityMap=new HashMap<>();
+                        for (MemberDataEntity memberDataEntity : memberDataEntities)
+                            memberDataEntityMap.put(memberDataEntity.getUserId(),memberDataEntity);
+                        obtainTeamScore(memberDataEntityMap);
+                    }
+
+                    @Override
+                    public void on_error(int whichRequest, Throwable e) {
+                        RxToast.error("获取队员信息失败");
+                    }
+                }));
+
+    }
+
+    /**
+     * 获取团队积分情况
+     * @param memberDataEntityMap
+     */
+    private void obtainTeamScore(final Map<Integer, MemberDataEntity> memberDataEntityMap) {
+        BaseApi.getJavaLoginDefaultService(mContext).getPointTask(teamGame.getId(), gamePoints.getId())
+                .map(new JavaRxFunction<List<GameTeamScoreEntity>>())
+                .compose(RxSchedulers.<List<GameTeamScoreEntity>>io_main())
+                .subscribe(new RxRequest<>(mContext, "obtainTeamScore", 2, new RequestLisler<List<GameTeamScoreEntity>>() {
+                    @Override
+                    public void onSucess(int whichRequest, List<GameTeamScoreEntity> gameTeamScoreEntities) {
+                        List<MemberDataEntity> memberDataEntityList=new ArrayList<>();
+                        if (gameTeamScoreEntities!=null&&gameTeamScoreEntities.size()>0){
+                            for (GameTeamScoreEntity gameTeamScoreEntity : gameTeamScoreEntities) {
+                                MemberDataEntity memberDataEntity = memberDataEntityMap.get(gameTeamScoreEntity.getUserId());
+                                memberDataEntity.setScore(gameTeamScoreEntity.getScore());
+                                memberDataEntityList.add(memberDataEntity);
+                            }
+                            compareDaXiao(memberDataEntityList);
+                        }
+                        else
+                            for (Integer key : memberDataEntityMap.keySet()) {
+                                memberDataEntityList.add(memberDataEntityMap.get(key));
+                            }
+                        setRecyView(memberDataEntityList);
+                    }
+
+                    @Override
+                    public void on_error(int whichRequest, Throwable e) {
+                        RxToast.error("获取队员积分信息失败");
+                    }
+                }));
+    }
+
 
     private void setRecyData(final TeamGame teamGame, final GamePotins gamePoints) {
         final List<MemberDataEntity> history = PlayUserManager.getHistory();
@@ -149,6 +223,11 @@ public class OneTaskFinishDialog extends Dialog implements View.OnClickListener 
             else
                 allNum = teamGame.getPassRate() * teamGame.getTeamMemberReal() / 100 + 1;
             needNum = allNum - passNum;
+        }else if (gamePotins.getState() == -1){
+            if (teamGame.getPassRate() * teamGame.getTeamMemberReal() % 100 == 0)
+                needNum = teamGame.getPassRate() * teamGame.getTeamMemberReal() / 100;
+            else
+                needNum = teamGame.getPassRate() * teamGame.getTeamMemberReal() / 100 + 1;
         }
         return needNum;
     }
