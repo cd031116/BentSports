@@ -851,7 +851,7 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
         intent.putExtra("enty", mPointsEntity);
         intent.putExtra("startLatlng", startLatlng);
         startActivity(intent);
-        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(secLatlng, mCurrentZoom));
+//        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(secLatlng, mCurrentZoom));
     }
 
     @Override
