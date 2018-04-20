@@ -31,4 +31,8 @@ public class ConstantValues {
     public static final String JAVA_YUN_URL="https://aistatic.huiqulx.com";
     //    开发环境 静态资源
 //    public static final String JAVA_YUN_URL="https://aistatic-dev.huiqulx.com";
+
+
+    //    生产环境 静态资源(音乐)
+    public static final String JAVA_MUSI_URL="http://aistatic.huiqulx.com";
 }

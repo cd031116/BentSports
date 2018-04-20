@@ -325,7 +325,6 @@ public class MapActivity extends BaseActivity implements AMap.OnMyLocationChange
             if (animationDrawable != null && animationDrawable.isRunning()) {
                 animationDrawable.stop();
             }
-            Log.i("dddd", "isStart=false");
             addAnimreset(event.getPaths());
             SaveObjectUtils.getInstance(getApplicationContext()).setObject(Constants.NOW_POION, null);
             yinp_bf.setBackgroundResource(R.drawable.tizhibf);

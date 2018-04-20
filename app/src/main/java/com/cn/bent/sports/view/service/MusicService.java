@@ -3,12 +3,10 @@ package com.cn.bent.sports.view.service;
 import android.app.Service;
 import android.content.Intent;
 import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.cn.bent.sports.base.BaseConfig;
 import com.cn.bent.sports.base.MyApplication;
 import com.cn.bent.sports.bean.PlayBean;
 import com.cn.bent.sports.bean.PlayEvent;

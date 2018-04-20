@@ -77,7 +77,6 @@ public class TaskCationManager {
         List<ScenicPointsEntity.PointsBean> mTaskLists = TaskCationDB.getDB().select(null, ScenicPointsEntity.PointsBean.class);
         for (ScenicPointsEntity.PointsBean info : mTaskLists) {
             if(info.getType()==2&&info.getMp3()!=null){
-                Log.i("dddd", "info="+info.getMp3()+"============paths"+paths);
             }
             if(info.getType()==2&&info.getMp3()!=null&&paths.equals(info.getMp3())){
                 Log.i("dddd", "getType=");

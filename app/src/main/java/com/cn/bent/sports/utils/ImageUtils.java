@@ -70,7 +70,7 @@ public class ImageUtils {
         if (url.contains("http://") || url.contains("www.")|| url.contains("https://")) {
             return url;
         } else {
-            url = ConstantValues.JAVA_YUN_URL + url;
+            url = ConstantValues.JAVA_MUSI_URL + url;
             return url;
         }
     }
