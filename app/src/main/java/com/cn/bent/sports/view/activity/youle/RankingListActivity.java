@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 public class RankingListActivity extends BaseActivity implements OnLoadMoreListener {
     @Bind(R.id.range_list)
@@ -229,6 +230,15 @@ public class RankingListActivity extends BaseActivity implements OnLoadMoreListe
                 rankEntity.remove(0);
         }
         range_list.addHeaderView(headView);
+    }
+
+    @OnClick({R.id.return_ima})
+    void onclick(View v){
+        switch (v.getId()){
+            case R.id.return_ima:
+                finish();
+                break;
+        }
     }
 
 

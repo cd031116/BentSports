@@ -42,8 +42,10 @@ import com.cn.bent.sports.api.RxRequest;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.bean.GamePotins;
 import com.cn.bent.sports.bean.LoginResult;
+import com.cn.bent.sports.bean.MemberDataEntity;
 import com.cn.bent.sports.bean.TeamGame;
 import com.cn.bent.sports.database.PlayPointManager;
+import com.cn.bent.sports.database.PlayUserManager;
 import com.cn.bent.sports.utils.AddressData;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.DataUtils;
@@ -57,6 +59,7 @@ import com.cn.bent.sports.view.activity.youle.bean.UserInfo;
 import com.cn.bent.sports.view.activity.youle.play.CompleteInfoActivity;
 import com.cn.bent.sports.view.activity.youle.play.GameWebActivity;
 import com.cn.bent.sports.view.activity.youle.play.MemberEditActivity;
+import com.cn.bent.sports.view.activity.youle.play.TeamMemberActivity;
 import com.cn.bent.sports.view.poupwindow.DoTaskPoupWindow;
 import com.cn.bent.sports.view.poupwindow.TalkPoupWindow;
 import com.cn.bent.sports.widget.OneTaskFinishDialog;
@@ -182,8 +185,8 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         super.initView();
         teamGame = (TeamGame) getIntent().getSerializableExtra("teamGame");
         gameTeamId = getIntent().getExtras().getInt("gameTeamId");
-
         getTeamInfo();
+        getPeople();
         line_two.setVisibility(View.GONE);
         if (aMap == null) {
             aMap = mapView.getMap();
@@ -737,6 +740,30 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                 }));
     }
 
+
+    //获取人图像
+    private void  getPeople(){
+        BaseApi.getJavaLoginDefaultService(PlayMultActivity.this).getMemberDetailData(gameTeamId+"")
+                .map(new JavaRxFunction<List<MemberDataEntity>>())
+                .compose(RxSchedulers.<List<MemberDataEntity>>io_main())
+                .subscribe(new RxRequest<>(PlayMultActivity.this, TAG, 1, new RequestLisler<List<MemberDataEntity>>() {
+                    @Override
+                    public void onSucess(int whichRequest, List<MemberDataEntity> info) {
+                        if(info!=null){
+                            PlayUserManager.insert(info);
+
+
+
+
+                        }
+                    }
+
+                    @Override
+                    public void on_error(int whichRequest, Throwable e) {
+                    }
+                }));
+    }
+
     //获取点位
     private void getPoints() {
         BaseApi.getJavaLoginDefaultService(PlayMultActivity.this).getGamePoints(gameTeamId)
@@ -1013,7 +1040,6 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         mList.clear();
         for (final JoinTeam bean : mPosition) {
             Log.i("tttt", "bean=" + bean.getAvatar());
-            synchronized (this) {
                 if (bean.getUserId() != user.getId() && bean.getLatitude() > 0 && bean.getLongitude() > 0) {
                     MarkerOptions markerOption = new MarkerOptions();
                     markerOption.position(new LatLng(bean.getLatitude(), bean.getLongitude()));
@@ -1037,7 +1063,6 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                                     mList.add(marker);
                                 }
                             });
-                }
             }
         }
     }

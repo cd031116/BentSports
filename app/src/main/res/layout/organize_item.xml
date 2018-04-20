@@ -16,7 +16,7 @@
             android:layout_width="126px"
             android:layout_height="126px"
             android:layout_alignParentBottom="true"
-            android:background="@drawable/default_head" />
+            android:background="@drawable/mo_ren" />
         <ImageView
             android:id="@+id/top_h"
             android:layout_width="wrap_content"

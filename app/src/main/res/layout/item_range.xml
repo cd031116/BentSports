@@ -29,16 +29,18 @@
         android:layout_marginLeft="28px"
         android:layout_toRightOf="@id/img_head"
         android:textColor="#333333"
+        android:maxLength="7"
         android:layout_centerVertical="true"
         android:textSize="43px" />
 
     <TextView
         android:id="@+id/range_jifen"
-        android:layout_width="wrap_content"
+        android:layout_width="250px"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:paddingRight="42px"
+        android:gravity="right"
         android:textColor="#000000"
         android:textSize="43px" />
 

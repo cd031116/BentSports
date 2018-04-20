@@ -16,4 +16,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
+
+
+    <ImageView
+        android:id="@+id/return_ima"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/t43"
+        android:paddingLeft="@dimen/t43"
+        android:paddingRight="@dimen/t43"
+        android:src="@drawable/return_rank" />
+
 </RelativeLayout>

@@ -242,7 +242,7 @@ public class RecommendFragment extends BaseFragment {
         public void onServiceConnected(ComponentName name, IBinder service) {
             StepService stepService = ((StepService.StepBinder) service).getService();
             //设置初始化数据
-            walk_num.setText("0");//stepService.getStepCount() +
+//            walk_num.setText("0");//stepService.getStepCount() +
             //设置步数监听回调
             stepService.registerCallback(new UpdateUiCallBack() {
                 @Override
