@@ -23,8 +23,11 @@
         android:id="@+id/member_head"
         android:layout_width="@dimen/t246"
         android:layout_height="@dimen/t246"
-        android:layout_marginLeft="@dimen/t92"
-        android:layout_marginTop="@dimen/t252" />
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/close_btn"
+        android:background="@drawable/mo_ren"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="40dp" />
 
 
     <TextView

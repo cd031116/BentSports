@@ -1,6 +1,7 @@
 package com.cn.bent.sports.base;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.support.multidex.MultiDex;
@@ -10,6 +11,7 @@ import com.cn.bent.sports.database.PlayPointManager;
 import com.cn.bent.sports.database.PlayUserManager;
 import com.cn.bent.sports.database.QueueManager;
 import com.cn.bent.sports.database.TaskCationManager;
+import com.cn.bent.sports.view.service.X5NetService;
 import com.danikula.videocache.HttpProxyCacheServer;
 import com.mob.MobSDK;
 import com.tencent.bugly.crashreport.CrashReport;
@@ -45,6 +47,15 @@ public class MyApplication extends GlobalContext{
         PlayPointManager.setup(this);
         RxTool.init(this);
         MobSDK.init(this);
+        preInitX5Core();
+    }
+
+    //预加载x5内核
+    private void preInitX5Core() {
+        //（在加载X5内核的时候，X5内核需要进行一些初始化，这些初始化如果不明确指出运行的线程，
+        // 它就会在你启动页面的时候，默认在主线程中执行，因此就会出现卡顿）
+        Intent intent=new Intent(this, X5NetService.class);
+        startService(intent);
     }
 
     public static HttpProxyCacheServer getProxy(Context context) {

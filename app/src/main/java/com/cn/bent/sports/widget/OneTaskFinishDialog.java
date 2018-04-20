@@ -174,45 +174,6 @@ public class OneTaskFinishDialog extends Dialog implements View.OnClickListener 
                 }));
     }
 
-
-    private void setRecyData(final TeamGame teamGame, final GamePotins gamePoints) {
-        final List<MemberDataEntity> history = PlayUserManager.getHistory();
-        BaseApi.getJavaLoginDefaultService(mContext).getPointTask(teamGame.getId(), gamePoints.getId())
-                .map(new JavaRxFunction<List<GameTeamScoreEntity>>())
-                .compose(RxSchedulers.<List<GameTeamScoreEntity>>io_main())
-                .subscribe(new RxObserver<List<GameTeamScoreEntity>>(mContext, "getPointTask", 1, false) {
-                    @Override
-                    public void onSuccess(int whichRequest, List<GameTeamScoreEntity> gameTeamScoreEntities) {
-                        if (gameTeamScoreEntities != null && gameTeamScoreEntities.size() > 0) {
-                            int finish_num=  getSyPeople(gamePoints);
-                            if (finish_num > 0) {
-                                game_finish_num.setVisibility(View.VISIBLE);
-                                String finish_num_str = "还需" + finish_num + "人完成";
-                                SpannableStringBuilder builder = new SpannableStringBuilder(finish_num_str);
-                                builder.setSpan(new ForegroundColorSpan(mContext.getResources().getColor(R.color.color_fd7d6f)), 2, finish_num_str.length() - 3, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                                game_finish_num.setText(builder);
-                            } else
-                                game_finish_num.setVisibility(View.GONE);
-                            for (GameTeamScoreEntity gameTeamScoreEntity : gameTeamScoreEntities) {
-                                for (MemberDataEntity memberDataEntity : history) {
-                                    if (gameTeamScoreEntity.getUserId() == memberDataEntity.getUserId()) {
-                                        memberDataEntity.setScore(gameTeamScoreEntity.getScore());
-                                        break;
-                                    }
-                                }
-                            }
-                            compareDaXiao(history);
-                            setRecyView(history);
-                        }
-                    }
-
-                    @Override
-                    public void onError(int whichRequest, Throwable e) {
-                        RxToast.error(e.getMessage());
-                    }
-                });
-    }
-
     private int getSyPeople(GamePotins gamePotins) {
         int needNum = 0;
         if (gamePotins.getState() == 1) {

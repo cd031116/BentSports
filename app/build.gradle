@@ -12,7 +12,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         ndk {
-            abiFilters "armeabi-v7a","armeabi";
+            abiFilters "armeabi", "armeabi-v7a", "x86", "mips"
         }
     }
     lintOptions {
@@ -90,9 +90,12 @@ dependencies {
     compile 'tv.danmaku.ijk.media:ijkplayer-x86:0.8.8'
     compile 'tv.danmaku.ijk.media:ijkplayer-x86_64:0.8.8'
     compile 'com.danikula:videocache:2.6.3'
-    compile 'com.tencent.bugly:crashreport:latest.release' //
-    compile 'com.tencent.bugly:nativecrashreport:latest.release' //
+    compile 'com.tencent.bugly:crashreport:latest.release'
+    //
+    compile 'com.tencent.bugly:nativecrashreport:latest.release'
+    //
     testCompile 'junit:junit:4.12'
+    compile files('libs/tbs_sdk_thirdapp_v3.6.0.1183_43604_sharewithdownload_withoutGame_obfs_20180211_105126.jar')
 }
 
 MobSDK {
