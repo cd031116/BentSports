@@ -24,6 +24,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
+
 /**
  * Created by lyj on 2018/3/7 0007.
  * description
@@ -135,6 +136,8 @@ public class MusicService extends Service {
             public void run() {
                 try {
                     mPlayer.reset();
+                    mPlayer.loadLibrariesOnce(null);
+                    mPlayer.native_profileBegin("libijkplayer.so");
                     HttpProxyCacheServer proxy = MyApplication.getProxy(getApplicationContext());
                     String proxyUrl = proxy.getProxyUrl(ImageUtils.getImageUrl(paths));
                     mPlayer.setDataSource(proxyUrl);
