@@ -9,6 +9,7 @@
         android:id="@+id/img_head"
         android:layout_width="@dimen/t108"
         android:layout_height="@dimen/t108"
+        android:background="@drawable/mo_ren"
         android:layout_centerVertical="true" />
 
     <ImageView

@@ -29,6 +29,7 @@ import com.zhl.network.huiqu.JavaRxFunction;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import butterknife.Bind;
@@ -73,8 +74,10 @@ public class CompleteInfoActivity extends BaseActivity {
         super.initView();
         gameTeamId = getIntent().getIntExtra("gameTeamId", 1);
         String mlist = getIntent().getStringExtra("mlsit");
-        List<GamePotins> mMap = (List<GamePotins>)getIntent().getSerializableExtra("mMap");
-        mpoints.addAll(mMap);
+        Map<Integer, GamePotins> mMap = (Map<Integer, GamePotins>)getIntent().getSerializableExtra("mMap");
+        for (Integer integer : mMap.keySet()) {
+            mpoints.add(mMap.get(integer));
+        }
     }
 
     @Override
