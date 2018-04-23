@@ -35,7 +35,7 @@ public class BaseApi {
     }
     public static ApiService getJavaLoginDefaultService(Context context) {
             LoginResult user= SaveObjectUtils.getInstance(context).getObject(Constants.USER_INFO, null);
-            apiService = RxRetrofit.getLoginRetrofit(ConstantValues.JAVA_URL,context,user.getAccess_token()).create(ApiService.class);
+            apiService = RxRetrofit.getLoginRetrofit(ConstantValues.JAVA_URL,context,user.getAccess_token()!=null?user.getAccess_token():"").create(ApiService.class);
         return apiService;
     }
 

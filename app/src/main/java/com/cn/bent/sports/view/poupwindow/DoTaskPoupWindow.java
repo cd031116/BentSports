@@ -9,6 +9,9 @@ import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -81,7 +84,10 @@ public class DoTaskPoupWindow extends PopupWindow {
             int needNum = allNum - passNum;
             if (needNum > 0) {
                 need_people.setVisibility(View.VISIBLE);
-                need_people.setText("还需" + needNum + "人完成");
+                String finish_num_str = "还需" + needNum + "人完成";
+                SpannableStringBuilder builder = new SpannableStringBuilder(finish_num_str);
+                builder.setSpan(new ForegroundColorSpan(mContext.getResources().getColor(R.color.color_fd7d6f)), 2, finish_num_str.length() - 3, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                need_people.setText(builder);
             } else
                 need_people.setVisibility(View.GONE);
         } else if (gamePotins.getState()==-1){
@@ -93,7 +99,10 @@ public class DoTaskPoupWindow extends PopupWindow {
             Log.d("dddd", "DoTaskPoupWindow: "+allNum+"--real:"+teamGame.getTeamMemberReal());
             if (allNum>0){
                 need_people.setVisibility(View.VISIBLE);
-                need_people.setText("还需" + allNum + "人完成");
+                String finish_num_str = "还需" + allNum + "人完成";
+                SpannableStringBuilder builder = new SpannableStringBuilder(finish_num_str);
+                builder.setSpan(new ForegroundColorSpan(mContext.getResources().getColor(R.color.color_fd7d6f)), 2, finish_num_str.length() - 3, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                need_people.setText(builder);
             }
             else
                 need_people.setVisibility(View.GONE);

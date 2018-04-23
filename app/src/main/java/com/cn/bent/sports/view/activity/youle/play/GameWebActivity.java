@@ -5,9 +5,6 @@ import android.graphics.PixelFormat;
 import android.util.Log;
 import android.view.View;
 import android.webkit.JavascriptInterface;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
@@ -23,14 +20,11 @@ import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.cn.bent.sports.widget.CompletionDialog;
 import com.cn.bent.sports.widget.GameErrorDialog;
 import com.cn.bent.sports.widget.GameFailDialog;
-import com.cn.bent.sports.widget.ProgressWebView;
 import com.cn.bent.sports.widget.ToastDialog;
 import com.google.gson.Gson;
-import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.JavaResult;
 import com.zhl.network.huiqu.JavaRxFunction;
-
 import butterknife.Bind;
 import butterknife.OnClick;
 import io.reactivex.Observable;

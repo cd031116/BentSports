@@ -41,7 +41,10 @@ import com.zhl.network.huiqu.JavaRxFunction;
 import org.java_websocket.WebSocket;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -260,6 +263,7 @@ public class OrganizeActivity extends BaseActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                removeDuplicteUsers(mList);
                                 mAdapter.notifyDataSetChanged();
                                 join_num.setText(mList.size() + "");
                             }
@@ -269,6 +273,20 @@ public class OrganizeActivity extends BaseActivity {
             }
         });
     }
+
+
+    public ArrayList<MemberDataEntity> removeDuplicteUsers(List<MemberDataEntity> userList){
+        Set<MemberDataEntity> s= new TreeSet<MemberDataEntity>(new Comparator<MemberDataEntity>(){
+            @Override
+            public int compare(MemberDataEntity o1, MemberDataEntity o2) {
+                return String.valueOf(o1.getUserId()).compareTo(o2.getUserId()+"");
+            }
+        });
+        s.addAll(userList);
+        return new ArrayList<MemberDataEntity>(s);
+    }
+
+
 
     private void setList() {
       final   UserInfo infos= SaveObjectUtils.getInstance(OrganizeActivity.this).getObject(Constants.USER_BASE, null);

@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,7 +35,7 @@ import java.util.List;
 
 public class MyX5WebView extends WebView {
 
-    private static final String TAG = "cn.bent.sports.MyWebView";
+    private static final String TAG = "com.cn.bent.sports.base.MyX5WebView";
     private static final int MAX_LENGTH = 8;
 
     ProgressBar progressBar;
@@ -72,7 +71,7 @@ public class MyX5WebView extends WebView {
 
     private void initUI() {
 
-        getX5WebViewExtension().setScrollBarFadingEnabled(false);
+        this.getX5WebViewExtension().setScrollBarFadingEnabled(false);
         setHorizontalScrollBarEnabled(false);//水平不显示小方块
         setVerticalScrollBarEnabled(false); //垂直不显示小方块
 
