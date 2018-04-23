@@ -156,14 +156,12 @@ public class OneTaskFinishDialog extends Dialog implements View.OnClickListener 
                             for (GameTeamScoreEntity gameTeamScoreEntity : gameTeamScoreEntities) {
                                 MemberDataEntity memberDataEntity = memberDataEntityMap.get(gameTeamScoreEntity.getUserId());
                                 memberDataEntity.setScore(gameTeamScoreEntity.getScore());
-                                memberDataEntityList.add(memberDataEntity);
                             }
-                            compareDaXiao(memberDataEntityList);
                         }
-                        else
-                            for (Integer key : memberDataEntityMap.keySet()) {
-                                memberDataEntityList.add(memberDataEntityMap.get(key));
-                            }
+                        for (Integer key : memberDataEntityMap.keySet()) {
+                            memberDataEntityList.add(memberDataEntityMap.get(key));
+                        }
+                        compareDaXiao(memberDataEntityList);
                         setRecyView(memberDataEntityList);
                     }
 

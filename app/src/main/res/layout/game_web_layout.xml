@@ -8,8 +8,7 @@
     <com.cn.bent.sports.base.MyX5WebView
         android:id="@+id/webview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layerType="software" />
+        android:layout_height="match_parent" />
 
     <ImageView
         android:id="@+id/map_return"

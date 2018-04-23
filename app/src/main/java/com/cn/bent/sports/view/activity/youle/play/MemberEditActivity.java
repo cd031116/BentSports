@@ -186,14 +186,11 @@ public class MemberEditActivity extends BaseActivity {
                             for (GameTeamScoreEntity gameTeamScoreEntity : gameTeamScoreEntities) {
                                 MemberDataEntity memberDataEntity = memberDataEntityMap.get(gameTeamScoreEntity.getUserId());
                                 memberDataEntity.setScore(gameTeamScoreEntity.getScore());
-                                memberDataEntityList.add(memberDataEntity);
                             }
-                            compareDaXiao(memberDataEntityList);
                         }
-                        else
-                            for (Integer key : memberDataEntityMap.keySet()) {
-                                memberDataEntityList.add(memberDataEntityMap.get(key));
-                            }
+                        for (Integer key : memberDataEntityMap.keySet())
+                            memberDataEntityList.add(memberDataEntityMap.get(key));
+                        compareDaXiao(memberDataEntityList);
                         setRecyView(memberDataEntityList);
                     }
 
@@ -240,6 +237,7 @@ public class MemberEditActivity extends BaseActivity {
                 }
             };
             member_list.setAdapter(mAdapter);
+            member_list.addItemDecoration(new DividerItemDecoration(this, R.drawable.list_divider));
         }
     }
 

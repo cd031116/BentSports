@@ -57,6 +57,7 @@ import com.cn.bent.sports.view.activity.youle.play.GameWebActivity;
 import com.cn.bent.sports.view.activity.youle.play.MemberEditActivity;
 import com.cn.bent.sports.view.poupwindow.DoTaskPoupWindow;
 import com.cn.bent.sports.view.poupwindow.TalkPoupWindow;
+import com.cn.bent.sports.widget.CompletionDialog;
 import com.cn.bent.sports.widget.OneTaskFinishDialog;
 import com.cn.bent.sports.widget.OutGameDialog;
 import com.cn.bent.sports.widget.TaskFinishDialog;
@@ -428,7 +429,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                 startActivity(intent);
             }
             if (index == 2) {
-                if (gamePotins.getType() == 2) {
+                if (gamePotins.getState() == 2) {
                     Intent intent1 = new Intent(PlayMultActivity.this, MemberEditActivity.class);
                     intent1.putExtra("type", "game_team");
                     intent1.putExtra("gameTeamId", teamGames.getId());
@@ -749,7 +750,6 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
 //                        }
 //                        mGamePotinsList = info;
 
-                        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(info.get(0).getLatitude(), info.get(0).getLongitude()), mCurrentZoom));
                         if (mMarkerList != null && mMarkerList.size() > 0)
                             for (Marker marker : mMarkerList) {
                                 marker.remove();
@@ -814,6 +814,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
     private void setMarkerView(List<GamePotins> info) {
         if (teamGame.getGameType() == 1) {
             DataUtils.compareDaXiao(info);
+            aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(info.get(0).getLatitude(), info.get(0).getLongitude()), mCurrentZoom));
             for (GamePotins gamePotins : info) {
                 mGamePointsMap.put(gamePotins.getId(), gamePotins);
                 Log.d(TAG, "setMarkerView: " + gamePotins.getOrderNo() + "----getState:" + gamePotins.getState() + "--:" + teamGame.getPassRate());
@@ -955,6 +956,7 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
                                 @Override
                                 public void run() {
                                     getPoints();
+
                                 }
                             });
                         }
@@ -964,6 +966,18 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
             }
         });
 
+    }
+
+    /**
+     * 路线_任务通关
+     */
+    public void showTaskOneFinishDialog(String name,int score) {
+        new CompletionDialog(this, R.style.dialog, new CompletionDialog.OnCloseListener() {
+            @Override
+            public void onClick(Dialog dialog, String index) {
+                dialog.dismiss();
+            }
+        }).setName(name).setScore(score).show();
     }
 
     //监听任务完成
@@ -1004,12 +1018,13 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
         if (teamGame == null && teamGame.getTeamMemberReal() <= 1) {
             return;
         }
-        Log.i("tttt", "teamGame.getTeamMemberReal()=" + teamGame.getTeamMemberReal());
+        Log.i("tttt", "teamGame.getTeamMemberReal()=" + teamGame.getTeamMemberReal()+",size:"+mPositionMap.size());
         for (Marker marker : mList) {
             marker.remove();
         }
         mList=new ArrayList<>();
         for (final Integer userId : mPositionMap.keySet()) {
+            Log.d(TAG, "setUserInfo getLatitude: "+mPositionMap.get(userId).getLatitude()+",nickname:"+mPositionMap.get(userId).getNickname());
               synchronized (PlayMultActivity.this) {
                 if (userId != user.getId() && mPositionMap.get(userId).getLatitude() > 0 && mPositionMap.get(userId).getLongitude() > 0) {
                     final MarkerOptions markerOption = new MarkerOptions();

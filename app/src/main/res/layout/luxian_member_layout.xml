@@ -99,6 +99,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/m_finish"
         android:layout_marginTop="@dimen/t136"
-        android:paddingLeft="@dimen/t136"
-        android:paddingRight="@dimen/t56" />
+        android:layout_marginLeft="@dimen/t136"
+        android:layout_marginRight="@dimen/t56" />
 </RelativeLayout>

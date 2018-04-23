@@ -12,7 +12,7 @@ import com.cn.bent.sports.api.ConstantValues;
 import com.cn.bent.sports.api.RequestLisler;
 import com.cn.bent.sports.api.RxRequest;
 import com.cn.bent.sports.base.BaseActivity;
-import com.cn.bent.sports.base.MyX5WebView;
+import com.tencent.smtt.sdk.WebView;
 import com.cn.bent.sports.bean.LoginResult;
 import com.cn.bent.sports.bean.YouleGameEntity;
 import com.cn.bent.sports.utils.Constants;
@@ -37,7 +37,7 @@ import io.reactivex.Observable;
 public class GameWebActivity extends BaseActivity {
 
     @Bind(R.id.webview)
-    MyX5WebView mWebView;
+    WebView mWebView;
     private String teamId, gamePointId,type,gameName;
     private String access_token;
 
@@ -49,6 +49,7 @@ public class GameWebActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        Log.d(TAG, "initView: ");
         LoginResult user = SaveObjectUtils.getInstance(this).getObject(Constants.USER_INFO, null);
         access_token = user.getAccess_token();
         teamId = getIntent().getStringExtra("teamId");
