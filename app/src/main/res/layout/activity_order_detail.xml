@@ -79,7 +79,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                            android:gravity="center_vertical"
+                            android:gravity="bottom"
                             android:orientation="horizontal">
 
                             <TextView
@@ -102,17 +102,15 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="/"
-                                android:layout_marginTop="12px"
                                 android:textColor="#999999"
-                                android:textSize="69px" />
+                                android:textSize="43px" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="组"
-                                android:layout_marginTop="12px"
                                 android:textColor="#999999"
-                                android:textSize="37px" />
+                                android:textSize="43px" />
                         </LinearLayout>
                     </RelativeLayout>
 
@@ -177,12 +175,17 @@
                                 android:text=""
                                 android:textColor="@color/red_text"
                                 android:textSize="43px" />
-
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="/"
+                                android:layout_gravity="top"
+                                android:textSize="43px" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="/组"
+                                android:text="组"
                                 android:textColor="@color/color_666666"
                                 android:textSize="43px" />
 
@@ -256,6 +259,10 @@
                         android:orientation="vertical">
 
                         <include layout="@layout/team_tab_detail" />
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1px"
+                            android:background="#ededed"/>
                     </LinearLayout>
 
 

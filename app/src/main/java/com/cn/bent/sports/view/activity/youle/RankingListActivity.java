@@ -32,6 +32,7 @@ import com.cn.bent.sports.view.activity.youle.bean.QueryInfo;
 import com.cn.bent.sports.view.activity.youle.bean.UserInfo;
 import com.cn.bent.sports.widget.DividerItemDecoration;
 import com.cn.bent.sports.widget.pull.LoadMoreFooterView;
+import com.kennyc.view.MultiStateView;
 import com.lvr.library.recyclerview.HRecyclerView;
 import com.lvr.library.recyclerview.OnLoadMoreListener;
 import com.zhl.network.RxObserver;
@@ -51,7 +52,8 @@ import butterknife.OnClick;
 public class RankingListActivity extends BaseActivity implements OnLoadMoreListener {
     @Bind(R.id.range_list)
     HRecyclerView range_list;
-
+    @Bind(R.id.multiStateView)
+    MultiStateView multiStateView;
     private UserInfo user;
     private int gameId;
     private int pageIndex = 1;
@@ -101,6 +103,8 @@ public class RankingListActivity extends BaseActivity implements OnLoadMoreListe
                 @Override
                 protected void convert(ViewHolder holder, GameRankEntity.ListBean rangeEntity, int position) {
 
+
+
                     for (int i = 0; i < finalRankListBeen.size(); i++) {
                         if (rangeEntity.getId() == finalRankListBeen.get(i).getId()) {
                             holder.setText(R.id.range_num, i + 4 + "");
@@ -110,7 +114,7 @@ public class RankingListActivity extends BaseActivity implements OnLoadMoreListe
 
                     holder.setText(R.id.range_time,DataUtils.getDateToTime(rangeEntity.getTiming() * 1000));
                     holder.setText(R.id.range_name, rangeEntity.getTeamName());
-                    holder.setText(R.id.range_jifen, rangeEntity.getScore() + "");
+                    holder.setText(R.id.range_jifen, rangeEntity.getScore() + "分");
                     ImageView NormalInfoImg = (ImageView) holder.getView(R.id.img_head);
                     RequestOptions requestOptions = RequestOptions.circleCropTransform();
                     Glide.with(NormalInfoImg.getContext()).load(ImageUtils.getImageUrl(rangeEntity.getAvatar()))
@@ -135,15 +139,18 @@ public class RankingListActivity extends BaseActivity implements OnLoadMoreListe
                     @Override
                     public void onSucess(int whichRequest, GameRankEntity rankEntity) {
                         if (rankEntity != null) {
+                            multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
                             mListBean.addAll(rankEntity.getList());
                             setView(mListBean, 1);
                             pageIndex++;
+                        }else {
+                            multiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
                         }
                     }
 
                     @Override
                     public void on_error(int whichRequest, Throwable e) {
-
+                        multiStateView.setViewState(MultiStateView.VIEW_STATE_ERROR);
                     }
                 }));
     }

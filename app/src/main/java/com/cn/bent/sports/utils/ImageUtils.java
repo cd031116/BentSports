@@ -67,9 +67,11 @@ public class ImageUtils {
         if (TextUtils.isEmpty(url)) {
             return "";
         }
-        if (url.contains("http://") || url.contains("www.")|| url.contains("https://")) {
+        if (url.contains("http://") || url.contains("www.")) {
             return url;
-        } else {
+        } else if(url.contains("https://")){
+            return   url.replace("https","http");
+        }else {
             url = ConstantValues.JAVA_MUSI_URL + url;
             return url;
         }

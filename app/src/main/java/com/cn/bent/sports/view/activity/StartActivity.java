@@ -5,7 +5,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.cn.bent.sports.MainActivity;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
@@ -17,6 +19,7 @@ import com.cn.bent.sports.base.SensorsPermission;
 import com.cn.bent.sports.bean.LoginResult;
 import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.DataUtils;
+import com.cn.bent.sports.utils.ImageUtils;
 import com.cn.bent.sports.utils.SaveObjectUtils;
 import com.vondear.rxtools.view.RxToast;
 import com.zhl.network.RxObserver;
@@ -25,9 +28,10 @@ import com.zhl.network.huiqu.HuiquRxTBFunction;
 
 import org.aisen.android.support.action.IAction;
 
+import butterknife.Bind;
+
 
 public class StartActivity extends BaseActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,8 +69,6 @@ public class StartActivity extends BaseActivity {
     @Override
     public void initData() {
         super.initData();
-
-
     }
 
     private void redirectTo() {

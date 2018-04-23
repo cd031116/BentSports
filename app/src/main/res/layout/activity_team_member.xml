@@ -31,7 +31,11 @@
             <WebView
                 android:id="@+id/webview"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:paddingLeft="42px"
+                android:paddingRight="42px"
+                android:paddingTop="70px"
+                android:paddingBottom="70px"/>
         </android.support.v4.widget.NestedScrollView>
     </LinearLayout>
 

@@ -88,7 +88,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/t20"
                     android:layout_toRightOf="@id/score"
-                    android:text="用时"
+                    android:text="分数"
                     android:textColor="@color/color_666666"
                     android:textSize="@dimen/t40" />
 
