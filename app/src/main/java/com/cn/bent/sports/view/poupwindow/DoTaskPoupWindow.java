@@ -250,7 +250,7 @@ public class DoTaskPoupWindow extends PopupWindow {
         juli.setText(istrue);
     }
 
-    public void setNeedPeople(String istrue) {
+    public void setNeedPeople(SpannableStringBuilder istrue) {
         need_people.setText(istrue);
     }
 

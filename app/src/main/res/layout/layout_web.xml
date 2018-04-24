@@ -1,21 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="42px"
-    android:paddingRight="42px"
-    android:paddingTop="70px"
-    android:paddingBottom="70px"
-    android:background="#ffffff">
+    android:orientation="vertical"
+    android:background="#f5f5f5">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10px"
+        android:background="#f5f5f5"
+        />
     <WebView
         android:id="@+id/webview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingTop="70px"
+        android:paddingLeft="42px"
+        android:paddingRight="42px"
+        android:paddingBottom="70px"
         android:background="#ffffff"/>
 
 
 
 
-</RelativeLayout>
+</LinearLayout>

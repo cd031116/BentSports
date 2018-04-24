@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/t170"
             android:paddingTop="@dimen/t74"
-            android:text="我的成绩"
+            android:text="成绩"
             android:textColor="@color/c_333333"
             android:textSize="@dimen/t51" />
 

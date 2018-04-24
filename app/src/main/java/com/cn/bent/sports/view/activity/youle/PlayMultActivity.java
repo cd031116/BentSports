@@ -9,6 +9,9 @@ import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -405,7 +408,11 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
             Log.i("tttt", "ggggg=" + "还需" + num + "人完成");
             if (num > 0)
                 Log.i("tttt", "fff=" + "还需" + num + "人完成");
-            mopupWindow.setNeedPeople("还需" + num + "人完成");
+
+            String finish_num_str = "还需" + num + "人完成";
+            SpannableStringBuilder builder = new SpannableStringBuilder(finish_num_str);
+            builder.setSpan(new ForegroundColorSpan(PlayMultActivity.this.getResources().getColor(R.color.color_fd7d6f)), 2, finish_num_str.length() - 3, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            mopupWindow.setNeedPeople(builder);
         } else {
             mopupWindow = new DoTaskPoupWindow(this, isDo, gamePotins, teamGame, (int) (Double.parseDouble(distance)) + "m", itemsOnClick);
             mopupWindow.showAtLocation(this.findViewById(R.id.mapView),
@@ -881,12 +888,13 @@ public class PlayMultActivity extends BaseActivity implements AMap.OnMarkerClick
             team_game.setVisibility(View.GONE);
             if (teamGame.getTeamMemberReal() <= 1) {
                 finish_situation.setVisibility(View.GONE);
-                title_two.setText("我的成绩");
+                title_two.setText("成绩");
             } else {
                 finish_situation.setVisibility(View.VISIBLE);
                 title_two.setText("团队成绩");
             }
             timing.setText("已完成");
+            exit_game.setVisibility(View.GONE);
             score_two.setText(PlayPointManager.getScore() + "分");
             finish_task_two.setText(PlayPointManager.getHavaPlay() + "");
             all_task_two.setText("/" + mGamePointsMap.size());

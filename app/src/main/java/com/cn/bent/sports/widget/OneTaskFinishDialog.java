@@ -216,9 +216,10 @@ public class OneTaskFinishDialog extends Dialog implements View.OnClickListener 
                     if (memberDataEntity.getScore() == 0){
                         holder.setText(R.id.item_score, "未完成");
                         holder.setTextColor(R.id.item_score, Color.parseColor("#999999"));
-                    }else
+                    }else{
                         holder.setTextColor(R.id.item_score, Color.parseColor("#fd7d6f"));
                         holder.setText(R.id.item_score, memberDataEntity.getScore() + "分");
+                    }
                     holder.setText(R.id.item_name, memberDataEntity.getNickname() + "");
                     ImageView view = (ImageView) holder.getView(R.id.item_img);
                     RequestOptions myOptions = new RequestOptions()

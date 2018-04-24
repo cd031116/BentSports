@@ -1,22 +1,17 @@
 package com.cn.bent.sports.view.activity.youle.play;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.Options;
 import com.bumptech.glide.request.RequestOptions;
-import com.cn.bent.sports.MainActivity;
 import com.cn.bent.sports.R;
 import com.cn.bent.sports.api.BaseApi;
 import com.cn.bent.sports.api.RequestLisler;
@@ -24,28 +19,16 @@ import com.cn.bent.sports.api.RxRequest;
 import com.cn.bent.sports.base.BaseActivity;
 import com.cn.bent.sports.base.BaseConfig;
 import com.cn.bent.sports.bean.GameDetail;
-import com.cn.bent.sports.bean.GameInfo;
-import com.cn.bent.sports.bean.LoginResult;
 import com.cn.bent.sports.bean.TeamGame;
-import com.cn.bent.sports.utils.Constants;
 import com.cn.bent.sports.utils.ImageUtils;
-import com.cn.bent.sports.utils.SaveObjectUtils;
-import com.cn.bent.sports.view.activity.PlayFunActivity;
 import com.cn.bent.sports.view.activity.youle.MyRouteListActivity;
 import com.cn.bent.sports.view.activity.youle.RankingListActivity;
-import com.cn.bent.sports.view.fragment.CardFragment;
-import com.cn.bent.sports.view.fragment.IsMeFragment;
-import com.cn.bent.sports.view.fragment.RecommendFragment;
-import com.cn.bent.sports.view.fragment.ShoppingFragment;
 import com.cn.bent.sports.view.fragment.WebViewFragment;
 import com.cn.bent.sports.widget.MyScroview;
 import com.kennyc.view.MultiStateView;
 import com.vondear.rxtools.view.RxToast;
-import com.zhl.network.RxObserver;
 import com.zhl.network.RxSchedulers;
 import com.zhl.network.huiqu.JavaRxFunction;
-
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;

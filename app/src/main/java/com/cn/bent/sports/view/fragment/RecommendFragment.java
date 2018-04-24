@@ -349,15 +349,11 @@ public class RecommendFragment extends BaseFragment {
                 .load(ImageUtils.getImageUrl(info.get(0).getCover()))
                 .apply(myOptions)
                 .into(play_one);
-        play_one.setElevation(2);
-        play_one.setClipToOutline(true);
         if (info.size()>1){
             Glide.with(getActivity())
                     .load(ImageUtils.getImageUrl(info.get(1).getCover()))
                     .apply(myOptions)
                     .into(play_two);
-            play_two.setClipToOutline(true);
-            play_two.setElevation(2);
         }
 
     }
