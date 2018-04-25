@@ -18,6 +18,7 @@ import com.cn.bent.sports.utils.StatusBarUtil;
 import com.cn.bent.sports.view.activity.SettingActivity;
 import com.cn.bent.sports.view.activity.youle.MyRouteListActivity;
 import com.cn.bent.sports.view.activity.youle.bean.UserInfo;
+import com.vondear.rxtools.view.RxToast;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -82,7 +83,7 @@ public class IsMeFragment extends BaseFragment {
         scrore.setText("0");
     }
 
-    @OnClick({R.id.setting, R.id.user_photo,R.id.quwan,R.id.xitong})
+    @OnClick({R.id.setting, R.id.user_photo,R.id.quwan,R.id.xitong,R.id.user_rela,R.id.lixian,R.id.menpiao,R.id.duihuan,R.id.youhui,R.id.changjian,R.id.zhuanqu})
     void conlick(View view) {
         switch (view.getId()) {
             case R.id.setting:
@@ -93,7 +94,19 @@ public class IsMeFragment extends BaseFragment {
                 startActivity(new Intent(getActivity(), MyRouteListActivity.class));
                 break;
             case R.id.xitong:
+
                 startActivity(new Intent(getActivity(), SettingActivity.class));
+                break;
+            case R.id.nick_name:
+            case R.id.user_rela:
+            case R.id.lixian:
+            case R.id.menpiao:
+            case R.id.duihuan:
+            case R.id.jifen:
+            case R.id.youhui:
+            case R.id.changjian:
+            case R.id.zhuanqu:
+                RxToast.normal("敬请期待");
                 break;
         }
     }
