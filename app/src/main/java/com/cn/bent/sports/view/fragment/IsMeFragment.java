@@ -108,6 +108,7 @@ public class IsMeFragment extends BaseFragment {
             case R.id.zhuanqu:
                 RxToast.normal("敬请期待");
                 break;
+
         }
     }
 }
