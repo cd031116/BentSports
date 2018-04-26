@@ -289,9 +289,11 @@
 
 
             <ImageView
+                android:id="@+id/recomm_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="40px"
+                android:visibility="gone"
                 android:background="@drawable/recomm_message"
                 android:textColor="#ffffff"
                 android:textSize="34px" />
